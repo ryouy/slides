@@ -9,7 +9,7 @@ import { dailyNumber, jstDateKey } from '../../../utils/date';
 import { Footer } from '../../../ui/Home';
 import { Page } from '../../../ui/Pages';
 import { ArtGameView } from '../components/ArtGameView';
-import { ARTWORKS, getArtwork, nextArtwork } from '../data';
+import { ARTWORKS, getArtwork, nextArtwork, pickRandomArtwork } from '../data';
 import { ART_LEVELS, type ArtLevel } from '../logic/board';
 import { GROUP_OPTIONS, SORT_OPTIONS, filterArtworks, groupArtworks, type GroupBy, type SortBy } from '../logic/gallery';
 import { dailyArtworkId, generateArtDaily, generateArtFree } from '../logic/generator';
@@ -37,6 +37,7 @@ export function ArtHome() {
       </Link>
       <nav className="menu">
         <button className="btn big" data-testid="art-gallery" onClick={() => go('gallery')}>{t('art.gallery')}</button>
+        <button className="btn big" data-testid="art-random" onClick={() => go(`play/${pickRandomArtwork().id}`)}>{t('art.random')}</button>
         {resumable && <button className="btn big" data-testid="art-resume" onClick={() => go('play')}>{t('art.resume')}</button>}
       </nav>
       <HomeLinks items={[{ label: t('home.howTo'), to: 'how' }, { label: t('home.stats'), to: 'stats' }, { label: t('home.credits'), to: 'credits' }, { label: t('home.settings'), to: 'settings' }]} />
@@ -70,6 +71,7 @@ export function ArtGallery() {
       </header>
       <div className="gal-controls">
         <input className="gal-search" data-testid="gal-search" type="search" placeholder={t('gal.search')} aria-label={t('gal.search')} value={query} onChange={(e) => setQuery(e.target.value)} />
+        <button className="btn gal-random" data-testid="gal-random" onClick={() => go(`play/${pickRandomArtwork().id}`)}>{t('art.random')}</button>
         <label>
           <span>{t('gal.groupBy')}</span>
           <select aria-label={t('gal.groupBy')} data-testid="group-by" value={groupBy} onChange={(e) => setPrefs({ groupBy: e.target.value as GroupBy })}>

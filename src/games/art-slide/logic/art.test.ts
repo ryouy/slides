@@ -6,7 +6,7 @@ import { artReducer, newArtGame } from './game';
 import { gridFor } from './grid';
 import { planReshuffle, reduceBlankPath } from './reshuffle';
 import { tileBackground, tileRegion } from './tiles';
-import { ARTWORKS, getArtwork, nextArtwork } from '../data';
+import { ARTWORKS, getArtwork, nextArtwork, pickRandomArtwork } from '../data';
 import { DAILY_POOL_V2 } from '../data/daily-pools';
 import { ERA_ORDER, THEME_ORDER, filterArtworks, groupArtworks, sortArtworks } from './gallery';
 import { rngFromString } from '../../../utils/rng';
@@ -357,6 +357,20 @@ describe('artwork data & rights', () => {
       expect(a.width).toBeGreaterThan(300);
       expect(a.height).toBeGreaterThan(300);
     }
+  });
+  it('pickRandomArtwork covers the whole list, never returns the excluded painting', () => {
+    const first = ARTWORKS[0].id;
+    expect(pickRandomArtwork(first, () => 0).id).toBe(ARTWORKS[1].id); // skips the excluded one
+    expect(pickRandomArtwork(undefined, () => 0).id).toBe(first);
+    expect(pickRandomArtwork(undefined, () => 0.9999999).id).toBe(ARTWORKS[ARTWORKS.length - 1].id);
+    const seen = new Set<string>();
+    const rng = rngFromString('random-pick');
+    for (let i = 0; i < 400; i++) {
+      const a = pickRandomArtwork('van-gogh-bedroom', rng);
+      expect(a.id).not.toBe('van-gogh-bedroom');
+      seen.add(a.id);
+    }
+    expect(seen.size).toBeGreaterThan(60);
   });
   it('includes both landscape and portrait works; nextArtwork wraps around', () => {
     expect(ARTWORKS.some((a) => a.width > a.height * 1.2)).toBe(true);

@@ -272,24 +272,93 @@ test('pages glide in: forward from the right, back from the left', async ({ page
   expect(box!.width).toBeGreaterThan(page.viewportSize()!.width - 2); // the overlay covers the viewport
 });
 
-test('preview shows the whole painting and pauses the board', async ({ page }) => {
+test('preview lies over the real puzzle a little larger, with tiny credits, and fades out smoothly', async ({ page }) => {
   await page.goto('/art-slide/play/hokusai-great-wave');
+  await page.waitForTimeout(450);
+  const board = (await page.locator('.aboard').boundingBox())!;
   await page.getByTestId('preview').click();
-  const dlg = page.getByRole('dialog', { name: 'Preview' });
-  await expect(dlg).toBeVisible();
-  const img = dlg.locator('img');
+  const layer = page.getByRole('dialog', { name: 'Preview' });
+  await expect(layer).toBeVisible();
+  await page.waitForTimeout(450);
+  const card = (await page.getByTestId('preview-card').boundingBox())!;
+  const vp = page.viewportSize()!;
+  // right on top of the board, centred on it, a bit larger (never beyond the screen)
+  expect(card.x).toBeLessThanOrEqual(board.x + 1);
+  expect(card.y).toBeLessThanOrEqual(board.y + 1);
+  expect(card.x + card.width).toBeGreaterThanOrEqual(board.x + board.width - 1);
+  expect(card.y + card.height).toBeGreaterThanOrEqual(board.y + board.height - 1);
+  expect(card.width).toBeGreaterThan(board.width + 4);
+  expect(card.width).toBeLessThanOrEqual(board.width * 1.09);
+  expect(Math.abs(card.x + card.width / 2 - (board.x + board.width / 2))).toBeLessThan(2);
+  expect(card.x).toBeGreaterThanOrEqual(-0.5);
+  expect(card.x + card.width).toBeLessThanOrEqual(vp.width + 0.5);
+  // the picture is whole, not stretched, and its credits are small
+  const img = layer.locator('img');
   await expect(img).toHaveAttribute('alt', /Great Wave/);
   await expect(img).toHaveCSS('object-fit', 'contain');
   const [nw, nh] = await img.evaluate((e: HTMLImageElement) => [e.naturalWidth, e.naturalHeight]);
-  expect(nw / nh).toBeGreaterThan(1.3);
+  expect(Math.abs(card.width / card.height - nw / nh)).toBeLessThan(0.03);
+  expect(await layer.locator('.pv-title').evaluate((e) => parseFloat(getComputedStyle(e).fontSize))).toBeLessThanOrEqual(12);
+  expect(await layer.locator('.pv-credit').evaluate((e) => parseFloat(getComputedStyle(e).fontSize))).toBeLessThanOrEqual(10.5);
+  await expect(layer.locator('.pv-credit')).toContainText('CC0');
+  // the game is paused underneath
   await page.keyboard.press('ArrowLeft');
   await page.keyboard.press('ArrowUp');
   await expect(page.getByTestId('moves')).toHaveText('0');
-  await page.getByTestId('preview-close').click();
-  await expect(dlg).toHaveCount(0);
+  // tapping outside eases it away (opacity passes through in-between values) instead of vanishing at once
+  const opacities = await page.evaluate(
+    () =>
+      new Promise<number[]>((res) => {
+        const vals: number[] = [];
+        const layerEl = document.querySelector('[data-testid=preview-layer]') as HTMLElement;
+        const t0 = performance.now();
+        layerEl.click();
+        const tick = () => {
+          const el = document.querySelector('[data-testid=preview-layer]');
+          vals.push(el ? +getComputedStyle(el).opacity : 0);
+          if (performance.now() - t0 < 520) requestAnimationFrame(tick);
+          else res(vals);
+        };
+        tick();
+      }),
+  );
+  expect(opacities.length).toBeGreaterThan(12);
+  expect(opacities.some((o) => o > 0.08 && o < 0.92)).toBe(true); // a fade, not a cut
+  expect(opacities[opacities.length - 1]).toBe(0);
+  await expect(layer).toHaveCount(0);
+  // closing also works with Escape, and the board is playable afterwards
+  await page.getByTestId('preview').click();
+  await expect(layer).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByTestId('preview-layer')).toHaveAttribute('data-state', 'closing');
+  await expect(layer).toHaveCount(0);
   const sol = await solution(page, 'free');
   await page.locator(`.atile[data-cell="${sol[0]}"]`).click();
   await expect(page.getByTestId('moves')).toHaveText('1');
+});
+
+test('the home and the gallery are about visiting a gallery, with a random-painting button in both', async ({ page }) => {
+  await page.goto('/art-slide');
+  await expect(page.getByTestId('art-gallery')).toHaveText('Visit the gallery');
+  await expect(page.getByTestId('art-random')).toHaveText('Random painting');
+  await page.getByTestId('art-gallery').click();
+  await expect(page.locator('.topbar h1')).toHaveText('GALLERY');
+  await expect(page.getByTestId('gal-random')).toBeVisible();
+  const seen = new Set<string>();
+  for (let i = 0; i < 6; i++) {
+    await page.getByTestId('gal-random').click();
+    await expect(page).toHaveURL(/\/art-slide\/play\/[a-z0-9-]+$/);
+    const id = page.url().split('/').pop()!;
+    seen.add(id);
+    await expect(page.locator('.atile').first()).toBeVisible();
+    await page.getByTestId('change-artwork').click(); // back to the gallery
+    await expect(page).toHaveURL(/\/art-slide\/gallery$/);
+  }
+  expect(seen.size).toBeGreaterThanOrEqual(2); // it really varies
+  await page.goto('/art-slide');
+  await page.getByTestId('art-random').click();
+  await expect(page).toHaveURL(/\/art-slide\/play\/[a-z0-9-]+$/);
+  await expect(page.getByTestId('art-title')).not.toBeEmpty();
 });
 
 test('slicing is seamless and uncropped in the browser for landscape and portrait works', async ({ page }) => {
@@ -409,7 +478,7 @@ test('language: switch in Settings, it applies everywhere and is remembered', as
   await expect(page.locator('.topbar h1')).toHaveText('設定');
   await page.goto('/art-slide');
   await expect(page.getByTestId('exhibit')).toContainText('本日の展示');
-  await expect(page.getByTestId('art-gallery')).toHaveText('絵画を選ぶ');
+  await expect(page.getByTestId('art-gallery')).toHaveText('ギャラリーを見に行く');
   await page.goto('/art-slide/play/van-gogh-bedroom');
   await expect(page.getByTestId('shuffle')).toHaveText('シャッフル');
   await expect(page.getByTestId('asize-3')).toContainText('やさしい');
@@ -438,7 +507,7 @@ test('first visit follows the browser language', async ({ browser }) => {
   const p = await ctx.newPage();
   await p.goto('/art-slide');
   await expect(p.locator('html')).toHaveAttribute('lang', 'ja');
-  await expect(p.getByTestId('art-gallery')).toHaveText('絵画を選ぶ');
+  await expect(p.getByTestId('art-gallery')).toHaveText('ギャラリーを見に行く');
   await ctx.close();
 });
 

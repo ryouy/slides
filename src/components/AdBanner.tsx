@@ -46,8 +46,8 @@ function useSlot(): boolean {
  *  - 728x90 on screens >= 728px wide, 300x250 below (scaled down on screens narrower than 316px)
  *  - the ad runs in its own sandboxed iframe: it cannot touch the page, navigate it, or clash with the
  *    other unit's global `atOptions`; if it fails or is blocked the game is unaffected
- *  - dev server: a placeholder. Production: nothing at all unless VITE_ADS_ENABLED=true, and then only
- *    when the visitor's consent status allows it
+ *  - dev server: a placeholder. Production: the live ad, only when the visitor's consent status allows it
+ *    (and VITE_ADS_ENABLED is not "false")
  */
 export const AdBanner = memo(function AdBanner() {
   const t = useT();
