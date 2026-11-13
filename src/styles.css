@@ -252,3 +252,6 @@ a.card { text-decoration: none; color: inherit; }
 .gen-note { text-align: center; color: var(--muted); font-size: 14px; padding: 24px 0; }
 .bt.shaped .cell > i { box-shadow: 0 0 0 .7px var(--bigc, var(--big)); }
 .bigslide .topbar h1 { font-size: 13px; letter-spacing: .08em; text-align: center; line-height: 1.25; }
+/* hit-testing follows the real shape: tapping the empty notch of an L block does not select it */
+.bt.shaped { pointer-events: none; }
+.bt.shaped .cell { pointer-events: auto; }

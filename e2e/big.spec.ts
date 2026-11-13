@@ -25,7 +25,9 @@ async function readSolution(page: Page, mode: 'daily' | 'endless'): Promise<Move
 /** Plays one move by tapping the piece (and the arrow if the tap was ambiguous). */
 async function playMove(page: Page, m: Move) {
   const before = Number(await page.getByTestId('moves').innerText());
-  await page.locator(`[data-piece="${m.id}"] .bt`).click();
+  // shaped blocks only react on their real cells (not on the empty notch of the bounding box)
+  const piece = page.locator(`[data-piece="${m.id}"]`);
+  await ((await piece.locator('.cell').count()) ? piece.locator('.cell').first() : piece.locator('.bt')).click();
   const arrow = page.getByTestId(`arrow-${m.dir}`);
   if (await arrow.count()) await arrow.click();
   await expect(page.getByTestId('moves')).toHaveText(String(before + 1));
