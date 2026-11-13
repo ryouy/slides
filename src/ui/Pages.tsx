@@ -156,7 +156,7 @@ export function SettingsPage() {
 export function AboutPage() {
   return (
     <Page title="ABOUT">
-      <p>WORD SLIDE combines the classic 15-puzzle with Wordle-style deduction. It is free to play, needs no account, and stores your progress only in your browser.</p>
+      <p>SLIDE GAMES is a small collection of sliding puzzles. <b>WORD SLIDE</b> combines the classic 15-puzzle with Wordle-style deduction, <b>BIG SLIDE</b> adds giant blocks that need room to move, and <b>ART SLIDE</b> asks you to reassemble famous public-domain paintings. Everything is free to play, needs no account, and stores your progress only in your browser.</p>
       <p>A new Daily Puzzle appears every day at 0:00 Japan Standard Time, and Endless Mode offers as many random puzzles as you like.</p>
     </Page>
   );
