@@ -8,7 +8,8 @@ import { Page } from '../../../ui/Pages';
 import { BigGameView } from '../components/BigGameView';
 import { generateBigDaily, generateBigEndless } from '../logic/generator';
 import { newBigGame, type BigState } from '../logic/game';
-import { BOARD_SIZES, type BoardSize, type Difficulty } from '../logic/types';
+import { BOARD_SIZES, VARIANT_IDS, type BoardSize, type Difficulty, type Variant } from '../logic/types';
+import { VARIANTS } from '../logic/variants';
 import { bestKey, recordBigClear, useBigSave } from '../storage';
 
 export function BigHome() {
@@ -58,24 +59,31 @@ export function BigDaily() {
 }
 
 const DIFFS: { id: Difficulty; name: string; desc: string }[] = [
-  { id: 'easy', name: 'Easy', desc: 'About 5-8 moves, one big-tile move' },
-  { id: 'normal', name: 'Normal', desc: 'About 12-16 moves, the big tile must move' },
-  { id: 'hard', name: 'Hard', desc: '20+ moves, several big-tile moves' },
+  { id: 'easy', name: 'Easy', desc: 'Short solution (about 4-8 moves)' },
+  { id: 'normal', name: 'Normal', desc: 'Medium solution (about 8-16 moves)' },
+  { id: 'hard', name: 'Hard', desc: 'Long solution, every big block must travel' },
 ];
 
 export function BigEndless() {
   const { data, getData, setProgress, update } = useBigSave();
   const [size, setSize] = useState<BoardSize>(() => data.lastSize);
+  const [variant, setVariant] = useState<Variant>(() => data.lastVariant ?? 'classic');
+  const [generating, setGenerating] = useState(false);
   const [game, setGame] = useState<{ key: number; state: BigState } | null>(() => {
     const s = getData().inProgress.endless;
     return s ? { key: 0, state: s } : null;
   });
 
-  const start = (sz: BoardSize, difficulty: Difficulty) => {
-    update((d) => ({ ...d, lastSize: sz, lastDifficulty: difficulty }));
-    const state = newBigGame(generateBigEndless(sz, difficulty));
-    setProgress('endless', state);
-    setGame((g) => ({ key: (g?.key ?? 0) + 1, state }));
+  const start = (v: Variant, sz: BoardSize, difficulty: Difficulty) => {
+    update((d) => ({ ...d, lastSize: sz, lastDifficulty: difficulty, lastVariant: v }));
+    setGenerating(true);
+    // let the "Building puzzle" note paint first: generating can take a moment on big boards
+    setTimeout(() => {
+      const state = newBigGame(generateBigEndless(sz, difficulty, undefined, v));
+      setProgress('endless', state);
+      setGame((g) => ({ key: (g?.key ?? 0) + 1, state }));
+      setGenerating(false);
+    }, 30);
   };
 
   const abandon = () => {
@@ -93,7 +101,17 @@ export function BigEndless() {
           <h1>ENDLESS</h1>
           <div className="top-right" />
         </header>
-        <p className="lead">Board size · Streak: <b>{data.endlessStreak}</b></p>
+        <p className="lead">Streak: <b>{data.endlessStreak}</b></p>
+        <div className="picker-label">Blocks</div>
+        <div className="variant-grid" role="group" aria-label="Block set">
+          {VARIANT_IDS.map((v) => (
+            <button key={v} className={`variant-btn${variant === v ? ' on' : ''}`} aria-pressed={variant === v} data-testid={`variant-${v}`} onClick={() => setVariant(v)}>
+              <strong>{VARIANTS[v].label}</strong>
+              <span>{VARIANTS[v].desc}</span>
+            </button>
+          ))}
+        </div>
+        <div className="picker-label">Board size</div>
         <div className="seg" role="group" aria-label="Board size">
           {BOARD_SIZES.map((s) => (
             <button key={s} className={`seg-btn${size === s ? ' on' : ''}`} aria-pressed={size === s} data-testid={`size-${s}`} onClick={() => setSize(s)}>
@@ -101,33 +119,39 @@ export function BigEndless() {
             </button>
           ))}
         </div>
-        <div className="cards">
-          {DIFFS.map((d) => {
-            const best = data.bests[bestKey(size, d.id)];
-            return (
-              <button key={d.id} className="card" data-testid={`bdiff-${d.id}`} onClick={() => start(size, d.id)}>
-                <strong>{d.name}</strong>
-                <span>{d.desc}</span>
-                <small>{best?.timeMs !== undefined ? `Best ${formatTime(best.timeMs)} · ${best.moves} moves` : 'No record yet'}</small>
-              </button>
-            );
-          })}
-        </div>
+        <div className="picker-label">Difficulty</div>
+        {generating ? (
+          <p className="gen-note" role="status" data-testid="generating">Building puzzle…</p>
+        ) : (
+          <div className="cards">
+            {DIFFS.map((d) => {
+              const best = data.bests[bestKey(size, d.id, variant)];
+              return (
+                <button key={d.id} className="card" data-testid={`bdiff-${d.id}`} onClick={() => start(variant, size, d.id)}>
+                  <strong>{d.name}</strong>
+                  <span>{d.desc}</span>
+                  <small>{best?.timeMs !== undefined ? `Best ${formatTime(best.timeMs)} · ${best.moves} moves` : 'No record yet'}</small>
+                </button>
+              );
+            })}
+          </div>
+        )}
         <AdSlot />
       </div>
     );
   }
 
   const p = game.state.puzzle;
+  const v = p.variant ?? 'classic';
   return (
     <BigGameView
       key={game.key}
       initial={game.state}
-      title={`ENDLESS · ${p.size}×${p.size} · ${p.difficulty.toUpperCase()}`}
+      title={`ENDLESS · ${v === 'classic' ? '' : `${VARIANTS[v].label.toUpperCase()} · `}${p.size}×${p.size} · ${p.difficulty.toUpperCase()}`}
       onBack={() => go('')}
       onProgress={(s) => setProgress('endless', s)}
       onCleared={(s) => update((d) => recordBigClear(d, { puzzle: s.puzzle, dateKey: jstDateKey(), timeMs: s.elapsedMs, moves: s.moves, bigMoves: s.bigMoves }))}
-      onNext={() => start(p.size, p.difficulty)}
+      onNext={() => start(v, p.size, p.difficulty)}
       nextLabel="NEXT PUZZLE"
       headerRight={<span className="streak" title="Streak">🔥 {data.endlessStreak}</span>}
       footerExtra={<button className="btn" onClick={abandon}>NEW</button>}
@@ -138,22 +162,29 @@ export function BigEndless() {
 export function BigHowPage() {
   return (
     <Page title="HOW TO PLAY">
-      <p>Slide the tiles until the board matches the <b>GOAL</b> picture: every numbered tile and the <b>BIG</b> tile on its goal cell.</p>
+      <p>Slide the tiles until the board matches the <b>GOAL</b> picture: every numbered tile and every big block on its goal cell.</p>
       <ul>
-        <li>Numbered tiles are 1×1. The BIG tile is 2×2 and moves as one piece.</li>
-        <li>There are two blank cells. A numbered tile slides into a blank cell next to it.</li>
-        <li>The BIG tile slides one step only if <b>every cell it would newly cover is blank</b>: a whole row or column of two blanks beside it.</li>
-        <li>No diagonals, no rotating, one tile per move. The BIG tile always needs to move at least once.</li>
-        <li>Tiles that already sit on their goal cell get a green outline.</li>
+        <li>Numbered tiles are 1×1. Big blocks are single pieces that slide as a whole and never rotate.</li>
+        <li>A numbered tile slides into a gap next to it.</li>
+        <li>A big block slides one step only if <b>every cell it would newly cover is a gap</b>. A 2×2 block needs two gaps side by side; an L-shaped block needs gaps that fit its notch.</li>
+        <li>No diagonals, no rotating, one piece per move. Every big block always has to move at least once.</li>
+        <li>Pieces that already sit on their goal cell get a green outline.</li>
+      </ul>
+      <h3>Block sets (Endless)</h3>
+      <ul>
+        <li><b>Classic</b>: one 2×2 block, 2 gaps.</li>
+        <li><b>Duo</b>: two 2×2 blocks, A and B, 3 gaps. They are not interchangeable.</li>
+        <li><b>Shapes</b>: an L-shaped block and a 1×2 block, 3 gaps.</li>
+        <li><b>Mega</b>: one huge 2×3 block, 3 gaps.</li>
       </ul>
       <h3>Controls</h3>
       <ul>
         <li>Tap a tile beside a gap to slide it. If it could go in several directions, arrows appear: tap one.</li>
-        <li>Or swipe a tile in the direction you want. Keyboard: arrow keys move the selected tile (or the only tile that can go that way).</li>
+        <li>Or swipe a piece in the direction you want. Keyboard: arrow keys move the selected piece (or the only piece that can go that way).</li>
       </ul>
       <h3>Modes</h3>
-      <p><b>Daily</b>: the same 4×4 Normal puzzle for everyone, new every day at 0:00 Japan time. <b>Endless</b>: 4×4, 5×5 or 6×6 at Easy, Normal or Hard.</p>
-      <p className="muted">Easy and Normal puzzles are built so that the shortest solution has a known length. Hard puzzles force several BIG-tile moves.</p>
+      <p><b>Daily</b>: the same 4×4 Classic Normal puzzle for everyone, new every day at 0:00 Japan time. <b>Endless</b>: any block set, 4×4, 5×5 or 6×6, at Easy, Normal or Hard.</p>
+      <p className="muted">Easy and Normal puzzles are built so that their shortest solution has a verified length. Hard puzzles are guaranteed to need a long solution where every big block travels; on big Duo/Shapes/Mega boards Hard can occasionally be served as Normal (the title always shows the real level).</p>
     </Page>
   );
 }
@@ -170,28 +201,29 @@ export function BigStatsPage() {
         <Big n={data.endlessStreak} l="ENDLESS STREAK" />
       </div>
       <h3>Endless personal bests (time / fewest moves)</h3>
-      <table className="table">
-        <tbody>
-          {BOARD_SIZES.flatMap((s) =>
-            (['easy', 'normal', 'hard'] as const).map((d) => {
-              const b = data.bests[bestKey(s, d)];
+      {Object.keys(data.bests).length === 0 ? <p>No records yet.</p> : (
+        <table className="table">
+          <tbody>
+            {Object.entries(data.bests).sort(([a], [b]) => a.localeCompare(b)).map(([k, b]) => {
+              const parts = k.split('-');
+              const [variant, size, diff] = parts.length === 3 ? parts : ['classic', parts[0], parts[1]];
               return (
-                <tr key={`${s}${d}`}>
-                  <th>{s}×{s} {d}</th>
-                  <td>{b?.timeMs === undefined ? '–' : `${formatTime(b.timeMs)} / ${b.moves} moves`}</td>
+                <tr key={k}>
+                  <th>{variant === 'classic' ? '' : `${variant} `}{size}×{size} {diff}</th>
+                  <td>{b.timeMs === undefined ? '–' : `${formatTime(b.timeMs)} / ${b.moves} moves`}</td>
                 </tr>
               );
-            }),
-          )}
-        </tbody>
-      </table>
+            })}
+          </tbody>
+        </table>
+      )}
       <h3>Recent games</h3>
       {data.history.length === 0 ? <p>No games yet.</p> : (
         <table className="table">
           <tbody>
             {data.history.slice(-8).reverse().map((h, i) => (
               <tr key={i}>
-                <th>{h.date.slice(5)} {h.mode === 'daily' ? 'Daily' : `${h.size}×${h.size} ${h.difficulty}`}</th>
+                <th>{h.date.slice(5)} {h.mode === 'daily' ? 'Daily' : `${h.variant && h.variant !== 'classic' ? `${h.variant} ` : ''}${h.size}×${h.size} ${h.difficulty}`}</th>
                 <td>{formatTime(h.timeMs)} · {h.moves}m · {h.bigMoves}B</td>
               </tr>
             ))}

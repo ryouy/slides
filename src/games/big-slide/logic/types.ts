@@ -12,16 +12,25 @@ export const DELTA: Record<BigDirection, { dr: number; dc: number }> = {
 export const OPPOSITE: Record<BigDirection, BigDirection> = { up: 'down', down: 'up', left: 'right', right: 'left' };
 
 export type BoardSize = 4 | 5 | 6;
+export type Variant = 'classic' | 'duo' | 'shapes' | 'mega';
+export const VARIANT_IDS: readonly Variant[] = ['classic', 'duo', 'shapes', 'mega'];
+
 export const BOARD_SIZES: readonly BoardSize[] = [4, 5, 6];
 
-/** A rectangular piece (1x1 number tile, 2x2 big tile; other shapes can be added later). */
+/** A piece: a 1x1 number tile, or a big block of any (possibly non-rectangular) shape. */
 export interface Piece {
   /** Stable identity. Number tiles are distinct, so a piece is "home" only at its own goal cell. */
   id: number;
   kind: 'small' | 'big';
+  /** Bounding box size. */
   w: number;
   h: number;
-  /** Top-left cell. */
+  /**
+   * Occupied cells as [row, col] offsets from the top-left of the bounding box.
+   * Omitted = the full w x h rectangle (older saves). Shapes never rotate.
+   */
+  cells?: [number, number][];
+  /** Top-left of the bounding box. */
   r: number;
   c: number;
   label: string;
@@ -37,6 +46,8 @@ export interface BigPuzzle {
   mode: Mode;
   difficulty: Difficulty;
   size: BoardSize;
+  /** Which set of big blocks is used. Omitted = 'classic' (older saves). */
+  variant?: Variant;
   number?: number;
   /** Goal positions (same ids/labels as `initial`). */
   goal: Piece[];

@@ -224,3 +224,31 @@ a.card { text-decoration: none; color: inherit; }
 .bpiece[data-kind='small'] .arrow.right { right: -14px; }
 .bpiece[data-kind='small'] .arrow.up { top: -14px; }
 .bpiece[data-kind='small'] .arrow.down { bottom: -14px; }
+
+/* ---------- big blocks: colours per block and shaped (L/T) blocks ---------- */
+:root { --big0: #3b6fd4; --big1: #e07a2f; --big2: #2f9e8f; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) { --big0: #4f82e0; --big1: #ec8c43; --big2: #3fb3a3; } }
+:root[data-theme='dark'] { --big0: #4f82e0; --big1: #ec8c43; --big2: #3fb3a3; }
+.bt.big.b0 { --bigc: var(--big0); }
+.bt.big.b1 { --bigc: var(--big1); }
+.bt.big.b2 { --bigc: var(--big2); }
+.bt.big { background: var(--bigc, var(--big)); }
+.bt.shaped { background: transparent !important; border: 0 !important; overflow: visible; }
+.bt.shaped .cell { position: absolute; box-sizing: border-box; }
+.bt.shaped .cell i { position: absolute; inset: 0; background: var(--bigc, var(--big)); }
+.bt.shaped .cell { inset: auto; }
+.bt.shaped .cell > i { display: block; position: static; width: 100%; height: 100%; }
+.bt.shaped .shape-label { position: absolute; display: grid; place-items: center; font-weight: 800; color: var(--big-fg); font-size: calc(100cqw / var(--n) * .5); pointer-events: none; }
+.bt.shaped.home { filter: drop-shadow(2px 0 0 var(--home)) drop-shadow(-2px 0 0 var(--home)) drop-shadow(0 2px 0 var(--home)) drop-shadow(0 -2px 0 var(--home)); }
+.bt.shaped.sel { outline: 0; filter: drop-shadow(2px 0 0 var(--found-line)) drop-shadow(-2px 0 0 var(--found-line)) drop-shadow(0 2px 0 var(--found-line)) drop-shadow(0 -2px 0 var(--found-line)); }
+.bt.mini.shaped .shape-label { font-size: calc(100cqw / var(--n) * .45); }
+.bt.mini.shaped.home { filter: none; }
+.variant-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.variant-btn { text-align: left; border: 2px solid var(--line); background: var(--bg); border-radius: 12px; padding: 10px 12px; display: grid; gap: 2px; min-height: 64px; }
+.variant-btn strong { font-size: 15px; }
+.variant-btn span { font-size: 11px; color: var(--muted); line-height: 1.3; }
+.variant-btn.on { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 2px var(--accent) inset; }
+.picker-label { font-size: 11px; font-weight: 800; letter-spacing: .12em; color: var(--muted); margin: 10px 0 6px; text-transform: uppercase; }
+.gen-note { text-align: center; color: var(--muted); font-size: 14px; padding: 24px 0; }
+.bt.shaped .cell > i { box-shadow: 0 0 0 .7px var(--bigc, var(--big)); }
+.bigslide .topbar h1 { font-size: 13px; letter-spacing: .08em; text-align: center; line-height: 1.25; }

@@ -173,3 +173,45 @@ test('layout: tabs and board fit the viewport, no horizontal scroll', async ({ p
   const vw = page.viewportSize()!.width;
   expect(box!.x + box!.width).toBeLessThanOrEqual(vw);
 });
+
+const counts: Record<string, { n4: number; bigs: number }> = {
+  classic: { n4: 11, bigs: 1 },
+  duo: { n4: 7, bigs: 2 }, // 2 big + 5 numbers
+  shapes: { n4: 9, bigs: 2 }, // L + 1x2 + 7 numbers
+  mega: { n4: 8, bigs: 1 }, // 2x3 + 7 numbers
+};
+
+for (const v of ['duo', 'shapes', 'mega'] as const) {
+  test(`block set ${v}: right pieces, goal picture, solvable through the UI`, async ({ page }) => {
+    await page.goto('/big-slide/endless');
+    await page.getByTestId(`variant-${v}`).click();
+    await page.getByTestId('size-4').click();
+    await page.getByTestId('bdiff-easy').click();
+    await expect(page.locator('.bboard .bpiece')).toHaveCount(counts[v].n4);
+    await expect(page.locator('.bboard .bpiece[data-kind="big"]')).toHaveCount(counts[v].bigs);
+    await expect(page.getByTestId('goal-mini')).toBeVisible();
+    if (v === 'shapes') {
+      // the L block is drawn as one shaped object made of 4 joined cells
+      await expect(page.locator('.bboard .bt.shaped')).toHaveCount(1);
+      await expect(page.locator('.bboard .bt.shaped .cell')).toHaveCount(4);
+    }
+    await solve(page, 'endless');
+    await expect(page.getByRole('dialog', { name: 'Puzzle cleared' })).toBeVisible();
+    const save = await readBig(page);
+    expect(Object.keys(save.bests).some((k: string) => k.startsWith(`${v}-4-`))).toBe(true);
+  });
+}
+
+test('variant choice is remembered and shown in the title', async ({ page }) => {
+  await page.goto('/big-slide/endless');
+  await page.getByTestId('variant-duo').click();
+  await page.getByTestId('size-5').click();
+  await page.getByTestId('bdiff-normal').click();
+  await expect(page.locator('.topbar h1')).toContainText('DUO');
+  await expect(page.locator('.topbar h1')).toContainText('5×5');
+  await page.reload();
+  await expect(page.locator('.bboard .bpiece[data-kind="big"]')).toHaveCount(2); // resumed in progress
+  await page.getByRole('button', { name: 'NEW' }).click();
+  await expect(page.getByTestId('variant-duo')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByTestId('size-5')).toHaveAttribute('aria-pressed', 'true');
+});
