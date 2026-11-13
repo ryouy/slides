@@ -3,9 +3,9 @@
  * `atOptions`, the next loads the ad. Both units use the same global name, so they must never run in
  * the same window: every ad lives in its own sandboxed <iframe srcdoc> (see AdBanner).
  *
- * The script host comes from the code Adsterra showed in the dashboard. It can be changed without a
- * code edit with VITE_ADSTERRA_SCRIPT_BASE, and nothing is loaded in production unless
- * VITE_ADS_ENABLED=true is set at build time.
+ * The script host comes from the code Adsterra showed in the dashboard (confirmed as the official
+ * domain). It can be changed without a code edit with VITE_ADSTERRA_SCRIPT_BASE; VITE_ADS_ENABLED=false
+ * turns ads off for a build. The dev server never loads real ads.
  */
 export type AdUnitId = 'mobile' | 'desktop';
 
@@ -24,8 +24,8 @@ export const AD_UNITS: Record<AdUnitId, AdUnit> = {
 export const DEFAULT_SCRIPT_BASE = 'https://bauval.org/22';
 export const scriptBase = (): string => ((import.meta.env.VITE_ADSTERRA_SCRIPT_BASE as string | undefined) || DEFAULT_SCRIPT_BASE).replace(/\/+$/, '');
 
-/** Real ads are only requested in production builds that opted in. */
-export const adsEnabled = (): boolean => import.meta.env.VITE_ADS_ENABLED === 'true';
+/** Real ads are requested in production builds; VITE_ADS_ENABLED=false switches them off (e.g. for a preview deploy). */
+export const adsEnabled = (): boolean => import.meta.env.VITE_ADS_ENABLED !== 'false';
 
 /** 728x90 from 728px of viewport width up, 300x250 below. */
 export const DESKTOP_MIN_WIDTH = 728;

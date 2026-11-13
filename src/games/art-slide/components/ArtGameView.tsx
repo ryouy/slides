@@ -12,6 +12,7 @@ import { aspectOf, gridFor } from '../logic/grid';
 import { planReshuffle } from '../logic/reshuffle';
 import type { Artwork } from '../types';
 import { ArtBoard } from './ArtBoard';
+import { ArtPreview } from './ArtPreview';
 
 const KEY_DIR: Record<string, ArtDirection> = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' };
 /** Time between two slides of a shuffle (each slide itself takes a little less than this to glide). */
@@ -37,7 +38,8 @@ export function ArtGameView(p: Props) {
   const { initial, artwork, daily } = p;
   const t = useT();
   const [state, dispatch] = useReducer(artReducer, initial);
-  const [preview, setPreview] = useState(false);
+  const [preview, setPreview] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
+  const boardRef = useRef<HTMLDivElement>(null);
   const [pending, setPending] = useState<{ kind: 'level'; level: ArtLevel } | { kind: 'shuffle' } | null>(null);
   const [showResult, setShowResult] = useState(initial.status === 'cleared');
   const [shuffling, setShuffling] = useState(false);
@@ -49,7 +51,7 @@ export function ArtGameView(p: Props) {
   const cleared = state.status === 'cleared';
   const img = useImageStatus(artwork.imageUrl);
   stateRef.current = state;
-  const locked = preview || cleared || shuffling || img.status !== 'ready';
+  const locked = !!preview || cleared || shuffling || img.status !== 'ready';
   const aspect = aspectOf(artwork);
 
   useGameTimer((ms) => dispatch({ type: 'tick', ms }));
@@ -57,7 +59,6 @@ export function ArtGameView(p: Props) {
   // keyboard: arrow = direction the tile moves
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setPreview(false);
       const dir = KEY_DIR[e.key];
       if (!dir || e.metaKey || e.ctrlKey || e.altKey || locked) return;
       e.preventDefault();
@@ -110,7 +111,7 @@ export function ArtGameView(p: Props) {
     const plan = planReshuffle(stateRef.current, `${Date.now()}-${Math.random()}`);
     setPending(null);
     setShowResult(false);
-    setPreview(false);
+    setPreview(null);
     recorded.current = false; // a finished painting can be finished again
     const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
     if (reduced) {
@@ -193,14 +194,22 @@ export function ArtGameView(p: Props) {
           </div>
         </div>
       ) : (
-        <div className="aboard-wrap" style={{ ['--aspect' as string]: aspect }}>
+        <div className="aboard-wrap" ref={boardRef} style={{ ['--aspect' as string]: aspect }}>
           <ArtBoard board={state.board} dims={dims} artwork={artwork} showNumbers={p.showNumbers} disabled={locked} complete={cleared} shuffling={shuffling} onTap={(cell) => dispatch({ type: 'move', cell })} onSwipe={swipe} />
           {img.status === 'loading' && <div className="art-loading" role="status">{t('art.loading')}</div>}
         </div>
       )}
 
       <div className="actions art-actions">
-        <button className="btn" data-testid="preview" disabled={shuffling} onClick={() => setPreview(true)}>{t('art.preview')}</button>
+        <button
+          className="btn"
+          data-testid="preview"
+          disabled={shuffling}
+          onClick={() => {
+            const r = boardRef.current?.getBoundingClientRect();
+            if (r) setPreview({ left: r.left, top: r.top, width: r.width, height: r.height });
+          }}
+        >{t('art.preview')}</button>
         {!daily && <button className="btn" data-testid="shuffle" disabled={shuffling} onClick={shuffle}>{t('art.shuffle')}</button>}
         <button className="btn" data-testid="restart" disabled={shuffling} onClick={() => dispatch({ type: 'restart' })}>{t('art.restart')}</button>
       </div>
@@ -220,15 +229,7 @@ export function ArtGameView(p: Props) {
       </div>
       <AdSlot />
 
-      {preview && (
-        <div className="modal-back" role="dialog" aria-modal="true" aria-label={t('art.preview')} onClick={() => setPreview(false)}>
-          <div className="modal preview" onClick={(e) => e.stopPropagation()}>
-            <img src={artwork.imageUrl} alt={`${artwork.title} – ${artwork.artist}`} width={artwork.width} height={artwork.height} />
-            <p className="preview-cap"><b>{artwork.title}</b> · {artwork.artist}, {artwork.year}</p>
-            <button className="btn primary" data-testid="preview-close" onClick={() => setPreview(false)}>{t('common.close')}</button>
-          </div>
-        </div>
-      )}
+      {preview && <ArtPreview artwork={artwork} rect={preview} label={t('art.preview')} onClosed={() => setPreview(null)} />}
 
       {cleared && showResult && (
         <ResultModal
