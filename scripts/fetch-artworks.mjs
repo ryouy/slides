@@ -30,7 +30,7 @@ const MANIFEST = [
   { id: 'toulouse-lautrec-moulin-rouge', museum: 'aic', sid: 61128, year: '1892–95', focus: [0.5, 0.5], description: 'Toulouse-Lautrec captured the nightlife of Montmartre with strong colours, cropped figures and a sharply cut-off composition that feels like a snapshot.' },
   { id: 'gauguin-day-of-the-god', museum: 'aic', sid: 27943, title: 'Day of the God (Mahana no atua)', focus: [0.5, 0.5], description: 'Gauguin’s colourful scene of Tahitian life shows a carved idol above a pool of bathers, painted in flat, saturated colours rather than realistic shading.' },
   { id: 'cezanne-basket-of-apples', museum: 'aic', sid: 111436, artist: 'Paul Cézanne', focus: [0.5, 0.5], description: 'Cézanne tilted the table and shifted viewpoints so the bottle, basket and fruit seem to float in a space of their own, an approach that inspired later modern art.' },
-  { id: 'hokusai-shower-below-the-summit', museum: 'aic', sid: 87008, title: 'Shower Below the Summit', focus: [0.5, 0.5], description: 'A woodblock print from Hokusai’s series of Mount Fuji views, showing a storm raging below the summit while the peak itself stays in clear sky.' },
+  { id: 'hokusai-shower-below-the-summit', museum: 'aic', sid: 87008, title: 'Shower Below the Summit', inset: [0.03, 0.025, 0.025, 0.02], focus: [0.5, 0.5], description: 'A woodblock print from Hokusai’s series of Mount Fuji views, showing a storm raging below the summit while the peak itself stays in clear sky.' },
   { id: 'vermeer-water-pitcher', museum: 'met', sid: 437881, focus: [0.5, 0.5], description: 'A young woman opens a window and holds a water pitcher in a quiet room, lit by soft daylight, in one of Vermeer’s calm domestic scenes.' },
   { id: 'van-gogh-wheat-field-cypresses', museum: 'met', sid: 436535, focus: [0.5, 0.5], description: 'Painted in 1889 in southern France, this view has swirling clouds and dark cypress trees rising from a golden wheat field.' },
   { id: 'sargent-madame-x', museum: 'met', sid: 12127, title: 'Madame X (Madame Pierre Gautreau)', focus: [0.5, 0.08], description: 'Sargent’s portrait of a Parisian socialite caused a scandal at the 1884 Salon, partly because of the daring neckline of the black dress.' },
@@ -78,6 +78,13 @@ for (const m of MANIFEST) {
   if (m.museum === 'met') {
     const trimmed = await base.trim({ threshold: 40 }).toBuffer();
     base = sharp(trimmed);
+  }
+  if (m.inset) {
+    // optional manual crop (fractions of top, right, bottom, left): removes paper margins of prints
+    const buf1 = await base.toBuffer();
+    const { width: bw, height: bh } = await sharp(buf1).metadata();
+    const [t, r, b2, l] = m.inset;
+    base = sharp(buf1).extract({ left: Math.round(bw * l), top: Math.round(bh * t), width: Math.round(bw * (1 - l - r)), height: Math.round(bh * (1 - t - b2)) });
   }
   const img = base;
   const game = await img.clone().resize({ width: GAME_MAX, height: GAME_MAX, fit: 'inside', withoutEnlargement: true }).webp({ quality: 82 }).toBuffer({ resolveWithObject: true });

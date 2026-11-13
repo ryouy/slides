@@ -29,18 +29,33 @@ async function solve(page: Page, mode: 'daily' | 'free') {
 }
 const tiles = (page: Page) => page.locator('.aboard .apiece:not(.ghost)');
 
-test('three tabs, landing card and URLs', async ({ page }) => {
+test('landing card, home navigation and URLs', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByTestId('landing-art')).toBeVisible();
   await page.getByTestId('landing-art').click();
   await expect(page).toHaveURL(/\/art-slide$/);
-  await expect(page.getByTestId('tab-art-slide')).toHaveAttribute('aria-selected', 'true');
-  await page.getByTestId('tab-word-slide').click();
-  await expect(page).toHaveURL(/\/word-slide$/);
+  await page.getByTestId('all-games').click();
+  await expect(page).toHaveURL(/\/$/);
   await page.goBack();
   await expect(page).toHaveURL(/\/art-slide$/);
+  await page.getByTestId('art-gallery').click();
+  await expect(page).toHaveURL(/\/art-slide\/gallery$/);
+  await page.getByRole('button', { name: 'Back' }).click();
+  await expect(page).toHaveURL(/\/art-slide$/);
+  await expect(page.getByTestId('more-word-slide')).toBeVisible();
   await page.goto('/art-slide/gallery'); // direct URL
   await expect(page.getByTestId('gallery')).toBeVisible();
+});
+
+test('ART SLIDE home: exhibit with today\'s painting that slides by itself', async ({ page }) => {
+  await page.goto('/art-slide');
+  await expect(page.locator('.gold-frame')).toBeVisible();
+  await expect(page.getByTestId('plaque')).toContainText("TODAY'S EXHIBIT");
+  await expect(page.locator('.hero-board .apiece:not(.ghost)')).toHaveCount(8);
+  const snap = () => page.locator('.hero-board .atile').evaluateAll((els) => els.map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).join());
+  const first = await snap();
+  await expect.poll(snap, { timeout: 8000 }).not.toBe(first); // the demo keeps moving tiles
+  await expect(page.getByTestId('art-daily')).toBeVisible();
 });
 
 test('gallery shows 15+ paintings with title, artist, year and lazy thumbnails', async ({ page }) => {
@@ -222,23 +237,33 @@ test('credits list every painting with licence and source; other games untouched
   expect(await page.evaluate(() => localStorage.getItem('wordslide:save') ?? '')).not.toContain('artslide');
 });
 
-test('layout: no horizontal scroll, board fits the screen, tabs usable', async ({ page }) => {
+test('puzzle is the main thing: big board; on desktop the info sits beside it', async ({ page }, info) => {
   await page.goto('/art-slide/play/renoir-two-sisters');
   await page.getByTestId('asize-5').click();
   expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
-  const box = await page.locator('.aboard').boundingBox();
-  expect(box!.width).toBeGreaterThan(240);
-  expect(box!.x + box!.width).toBeLessThanOrEqual(page.viewportSize()!.width);
-  await expect(page.getByTestId('tab-art-slide')).toBeVisible();
-  const tab = await page.getByTestId('tab-word-slide').boundingBox();
-  expect(tab!.height).toBeGreaterThanOrEqual(40);
+  const board = (await page.locator('.aboard').boundingBox())!;
+  const vp = page.viewportSize()!;
+  expect(board.x + board.width).toBeLessThanOrEqual(vp.width);
+  if (info.project.name === 'desktop') {
+    expect(board.width).toBeGreaterThan(500); // large on PC
+    const side = (await page.locator('.art-info').boundingBox())!;
+    const size = (await page.getByTestId('asize-3').boundingBox())!;
+    const stats = (await page.getByTestId('time').boundingBox())!;
+    expect(side.x).toBeGreaterThanOrEqual(board.x + board.width); // description beside the board
+    expect(size.x).toBeGreaterThanOrEqual(board.x + board.width); // size choice beside the board
+    expect(stats.x).toBeGreaterThanOrEqual(board.x + board.width);
+    expect(board.y + board.height).toBeLessThanOrEqual(vp.height); // whole board visible without scrolling
+  } else {
+    expect(board.width).toBeGreaterThan(vp.width * 0.85); // fills the phone width
+  }
 });
 
 test('dark theme keeps the art UI readable', async ({ page }) => {
   await page.goto('/settings');
   await page.locator('select').selectOption('dark');
-  await page.getByTestId('tab-art-slide').click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await page.goto('/art-slide');
+  await expect(page.locator('.gold-frame')).toBeVisible();
   await page.goto('/art-slide/play/degas-dance-class');
   await expect(tiles(page)).toHaveCount(8);
 });

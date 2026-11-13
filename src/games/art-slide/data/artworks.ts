@@ -253,8 +253,8 @@ export const ARTWORKS: Artwork[] = [
     "year": "c. 1830/33",
     "imageUrl": "/artworks/hokusai-shower-below-the-summit.webp",
     "thumbnailUrl": "/artworks/hokusai-shower-below-the-summit-thumb.webp",
-    "width": 843,
-    "height": 583,
+    "width": 805,
+    "height": 551,
     "focus": {
       "x": 0.5,
       "y": 0.5

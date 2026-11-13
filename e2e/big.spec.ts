@@ -37,21 +37,26 @@ async function solve(page: Page, mode: 'daily' | 'endless') {
   for (const m of await readSolution(page, mode)) await playMove(page, m);
 }
 
-test('landing offers both games; tabs switch with real URLs; back/forward work', async ({ page }) => {
+test('landing offers all games; each game links back; back/forward work', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByTestId('landing-word')).toBeVisible();
   await expect(page.getByTestId('landing-big')).toBeVisible();
+  await expect(page.getByTestId('landing-art')).toBeVisible();
+  await expect(page.getByTestId('all-games')).toHaveCount(0); // the chooser itself has no way "back" to itself
   await page.getByTestId('landing-big').click();
   await expect(page).toHaveURL(/\/big-slide$/);
-  await expect(page.getByTestId('tab-big-slide')).toHaveAttribute('aria-selected', 'true');
-  await page.getByTestId('tab-word-slide').click();
+  await expect(page.getByTestId('big-daily')).toBeVisible();
+  await page.getByTestId('all-games').click();
+  await expect(page).toHaveURL(/\/$/);
+  await page.getByTestId('landing-word').click();
   await expect(page).toHaveURL(/\/word-slide$/);
   await expect(page.getByTestId('daily')).toBeVisible();
-  await page.goBack();
+  await page.getByTestId('more-big-slide').click(); // "more games" row at the bottom of a game's home
   await expect(page).toHaveURL(/\/big-slide$/);
-  await expect(page.getByTestId('big-daily')).toBeVisible();
+  await page.goBack();
+  await expect(page).toHaveURL(/\/word-slide$/);
   await page.goForward();
-  await expect(page.getByTestId('daily')).toBeVisible();
+  await expect(page.getByTestId('big-daily')).toBeVisible();
 });
 
 test('direct URLs and legacy hash URLs work', async ({ page }) => {
@@ -155,20 +160,21 @@ test('WORD SLIDE progress is untouched by visiting BIG SLIDE; theme applies to b
   await page.getByTestId('hint-first-0').click();
   await page.goto('/settings');
   await page.locator('select').selectOption('dark');
-  await page.getByTestId('tab-big-slide').click();
+  await page.getByRole('button', { name: 'Back' }).click(); // settings -> the game home we came from
+  await page.getByTestId('all-games').click();
+  await page.getByTestId('landing-big').click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.getByTestId('big-daily').click();
   await expect(page.locator('.bboard .bpiece')).toHaveCount(11);
-  await page.getByTestId('tab-word-slide').click();
+  await page.goto('/word-slide'); // full reload: progress must come back from storage
   await page.getByTestId('daily').click();
   await expect(page.getByTestId('slots-0').locator('.slot-l.shown')).toHaveCount(1); // hint survived
 });
 
-test('layout: tabs and board fit the viewport, no horizontal scroll', async ({ page }) => {
+test('layout: board fits the viewport, no horizontal scroll', async ({ page }) => {
   await page.goto('/big-slide/endless');
   await page.getByTestId('size-6').click();
   await page.getByTestId('bdiff-normal').click();
-  await expect(page.getByTestId('tab-word-slide')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
   const box = await page.locator('.bboard').boundingBox();
   expect(box!.width).toBeGreaterThan(240);
