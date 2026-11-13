@@ -77,9 +77,35 @@ test('on phones the ad sits right under the controls and above the description',
   expect(ad.y + 20).toBeLessThan(915); // on the first screen
 });
 
+for (const [name, url] of [['ART SLIDE', '/art-slide/play/monet-water-lilies'], ['BIG SLIDE', '/big-slide/daily']] as const) {
+  test(`${name} on desktop: the ad sits at the bottom of the right-hand column (300x250), the puzzle stays large and the page does not scroll`, async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 720 });
+    await page.goto(url);
+    await page.waitForTimeout(500);
+    await expect(page.getByTestId('ad-box')).toHaveAttribute('data-unit', 'mobile'); // 300x250 is what fits the column
+    const ad = (await page.getByTestId('ad-box').boundingBox())!;
+    const board = (await (name === 'ART SLIDE' ? page.locator('.aboard') : page.locator('.bboard')).boundingBox())!;
+    const placeholder = (await page.getByTestId('ad-placeholder').boundingBox())!;
+    expect([Math.round(placeholder.width), Math.round(placeholder.height)]).toEqual([300, 250]);
+    expect(ad.x).toBeGreaterThanOrEqual(board.x + board.width); // to the right of the puzzle
+    expect(ad.x + ad.width).toBeLessThanOrEqual(1280);
+    expect(ad.y).toBeGreaterThan(board.y + board.height * 0.4); // in the lower half
+    expect(ad.y + ad.height).toBeLessThanOrEqual(720 + 1); // visible without scrolling
+    expect(board.height).toBeGreaterThan(720 * 0.82); // the puzzle takes (almost) the whole height
+    expect(board.y + board.height).toBeLessThanOrEqual(720);
+    expect(await page.evaluate(() => document.documentElement.scrollHeight <= window.innerHeight + 1)).toBe(true);
+    // nothing in the column overlaps the ad
+    for (const id of ['preview', 'shuffle', 'restart', 'numbers-toggle'].filter((i) => name === 'ART SLIDE' || i === 'restart')) {
+      if (name === 'BIG SLIDE') break;
+      const b = (await page.getByTestId(id).boundingBox())!;
+      expect(b.y + b.height).toBeLessThanOrEqual(ad.y + 1);
+    }
+  });
+}
+
 test('the slot switches size when the window is resized, and stays a single slot', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto('/big-slide/daily');
+  await page.goto('/word-slide/daily');
   await expect(page.getByTestId('ad-box')).toHaveAttribute('data-unit', 'desktop');
   await page.setViewportSize({ width: 500, height: 900 });
   await expect(page.getByTestId('ad-box')).toHaveAttribute('data-unit', 'mobile');
@@ -128,8 +154,11 @@ test.describe('live ads (dev-only ?ads=live with a stand-in script)', () => {
     await page.goto('/art-slide/play/van-gogh-bedroom?ads=live');
     await expect(page.frameLocator('[data-testid=ad-iframe]').locator('#fake')).toHaveText('AD 300x250 7ce6 iframe');
     await page.setViewportSize({ width: 1280, height: 900 });
-    await expect(page.frameLocator('[data-testid=ad-iframe]').locator('#fake')).toHaveText('AD 728x90 d1f4 iframe');
+    // a puzzle page on a wide screen keeps its ad in the side column: the 300x250 unit
+    await expect(page.frameLocator('[data-testid=ad-iframe]').locator('#fake')).toHaveText('AD 300x250 7ce6 iframe');
     await expect(page.getByTestId('ad-iframe')).toHaveCount(1);
+    await page.goto('/word-slide/daily?ads=live'); // a single-column page uses the wide 728x90 on a wide screen
+    await expect(page.frameLocator('[data-testid=ad-iframe]').locator('#fake')).toHaveText('AD 728x90 d1f4 iframe');
   });
 
   test('a blocked or failing ad (ad blocker, network error) never affects the game', async ({ page }) => {
