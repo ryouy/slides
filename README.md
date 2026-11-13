@@ -4,7 +4,7 @@
 
 | URL | 内容 |
 |---|---|
-| `/` | ゲーム選択 |
+| `/` | ゲーム選択（ゲームの切り替えはここだけ。各ゲームのホームに「ALL GAMES」と「MORE GAMES」の導線あり） |
 | `/word-slide`, `/word-slide/{daily,endless,how,stats}` | WORD SLIDE |
 | `/big-slide`, `/big-slide/{daily,endless,how,stats}` | BIG SLIDE |
 | `/art-slide`, `/art-slide/{daily,gallery,play/<id>,how,stats,credits}` | ART SLIDE |

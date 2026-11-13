@@ -4,6 +4,7 @@ import { go } from '../../../router';
 import { dailyNumber, jstDateKey } from '../../../utils/date';
 import { currentDailyStreak, formatTime, maxDailyStreak } from '../../../storage/stats';
 import { Footer } from '../../../ui/Home';
+import { AllGamesLink, MoreGames } from '../../../components/GameNav';
 import { Page } from '../../../ui/Pages';
 import { BigGameView } from '../components/BigGameView';
 import { generateBigDaily, generateBigEndless } from '../logic/generator';
@@ -18,6 +19,7 @@ export function BigHome() {
   const streak = currentDailyStreak(data.dailyHistory, today);
   return (
     <div className="screen home">
+      <AllGamesLink />
       <div className="logo" aria-label="BIG SLIDE">
         <span className="logo-tile big-logo">BIG</span>
         {'SLIDE'.split('').map((c, i) => <span key={i} className={`logo-tile ${i % 2 ? 'y' : 'x'}`}>{c}</span>)}
@@ -33,6 +35,7 @@ export function BigHome() {
         <button className="btn big" onClick={() => go('stats')}>Statistics</button>
         <button className="btn big" onClick={() => go('settings')}>Settings</button>
       </nav>
+      <MoreGames current="big-slide" />
       <Footer />
     </div>
   );

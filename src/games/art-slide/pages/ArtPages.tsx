@@ -5,11 +5,13 @@ import { go } from '../../../router';
 import { currentDailyStreak, formatTime, maxDailyStreak } from '../../../storage/stats';
 import { dailyNumber, jstDateKey } from '../../../utils/date';
 import { Footer } from '../../../ui/Home';
+import { AllGamesLink, MoreGames } from '../../../components/GameNav';
+import { ArtHero } from '../components/ArtHero';
 import { Page } from '../../../ui/Pages';
 import { ArtGameView } from '../components/ArtGameView';
 import { ARTWORKS, getArtwork, nextArtwork } from '../data';
 import { ART_SIZES, type ArtSize } from '../logic/board';
-import { generateArtDaily, generateArtFree } from '../logic/generator';
+import { dailyArtworkId, generateArtDaily, generateArtFree } from '../logic/generator';
 import { newArtGame, type ArtState } from '../logic/game';
 import { recordArtClear, useArtSave } from '../storage';
 
@@ -17,29 +19,53 @@ export function ArtHome() {
   const { data } = useArtSave();
   const today = jstDateKey();
   const streak = currentDailyStreak(data.dailyHistory, today);
+  const exhibit = getArtwork(dailyArtworkId(today)) ?? ARTWORKS[0];
+  const resumable = data.inProgress.free && data.inProgress.free.status === 'playing';
   return (
-    <div className="screen home">
-      <div className="logo art-logo" aria-label="ART SLIDE">
-        {'ART'.split('').map((c, i) => <span key={i} className="logo-tile g">{c}</span>)}
-        <br />
-        {'SLIDE'.split('').map((c, i) => <span key={i} className={`logo-tile ${i % 2 ? 'y' : 'x'}`}>{c}</span>)}
+    <div className="art-wall">
+      <div className="screen art-home">
+        <AllGamesLink />
+        <section className="exhibit" aria-label="Today's exhibit">
+          <div className="gold-frame">
+            <div className="mat">
+              <ArtHero artwork={exhibit} />
+            </div>
+          </div>
+          <p className="plaque" data-testid="plaque">
+            <span className="plaque-kicker">TODAY'S EXHIBIT</span>
+            <b>{exhibit.title}</b>
+            <span>{exhibit.artist}, {exhibit.year}</span>
+          </p>
+        </section>
+        <h1 className="art-wordmark" aria-label="ART SLIDE">ART <i>SLIDE</i></h1>
+        <p className="art-tagline">Reassemble a masterpiece.</p>
+        <nav className="art-menu">
+          <button className="art-cta" data-testid="art-daily" onClick={() => go('daily')}>
+            <span className="cta-kicker">TODAY'S PUZZLE · #{dailyNumber(today)}</span>
+            <span className="cta-main">Daily Puzzle</span>
+            <small>{data.dailyHistory[today] ? '✓ Completed today' : '4×4 · a new painting every day at 0:00 JST'}{streak > 0 ? ` · 🔥 ${streak}` : ''}</small>
+          </button>
+          <button className="art-cta alt" data-testid="art-gallery" onClick={() => go('gallery')}>
+            <span className="cta-kicker">{ARTWORKS.length} PAINTINGS</span>
+            <span className="cta-main">Visit the Gallery</span>
+            <small>Pick any artwork and a size: 3×3, 4×4 or 5×5</small>
+          </button>
+          {resumable && (
+            <button className="art-cta alt" data-testid="art-resume" onClick={() => go('play')}>
+              <span className="cta-kicker">IN PROGRESS</span>
+              <span className="cta-main">Resume Puzzle</span>
+            </button>
+          )}
+          <div className="art-links">
+            <button onClick={() => go('how')}>How to Play</button>
+            <button onClick={() => go('stats')}>Statistics</button>
+            <button onClick={() => go('credits')}>Credits</button>
+            <button onClick={() => go('settings')}>Settings</button>
+          </div>
+        </nav>
+        <MoreGames current="art-slide" />
+        <Footer />
       </div>
-      <p className="tagline">Reassemble a masterpiece.</p>
-      <nav className="menu">
-        <button className="btn primary big" data-testid="art-daily" onClick={() => go('daily')}>
-          Daily Puzzle #{dailyNumber(today)}
-          <small>{data.dailyHistory[today] ? '✓ Completed today' : '4×4 · new painting every day at 0:00 JST'}{streak > 0 ? ` · 🔥 ${streak}` : ''}</small>
-        </button>
-        <button className="btn big" data-testid="art-gallery" onClick={() => go('gallery')}>Choose Artwork</button>
-        {data.inProgress.free && data.inProgress.free.status === 'playing' && (
-          <button className="btn big" data-testid="art-resume" onClick={() => go('play')}>Resume puzzle</button>
-        )}
-        <button className="btn big" onClick={() => go('how')}>How to Play</button>
-        <button className="btn big" onClick={() => go('stats')}>Statistics</button>
-        <button className="btn big" onClick={() => go('credits')}>Artwork Credits</button>
-        <button className="btn big" onClick={() => go('settings')}>Settings</button>
-      </nav>
-      <Footer />
     </div>
   );
 }

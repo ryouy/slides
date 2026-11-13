@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { ConsentBanner } from './ads/AdSlot';
 import { Landing } from './components/Landing';
-import { SiteHeader } from './components/SiteHeader';
 import { BigDaily, BigEndless, BigHome, BigHowPage, BigStatsPage } from './games/big-slide/pages/BigPages';
 import { BigSaveProvider } from './games/big-slide/storage';
 import { ArtCreditsPage, ArtDaily, ArtGallery, ArtHome, ArtHowPage, ArtPlay, ArtStatsPage } from './games/art-slide/pages/ArtPages';
@@ -74,7 +73,6 @@ function Shell() {
     }
   return (
     <>
-      <SiteHeader />
       {page}
       <ConsentBanner />
     </>
