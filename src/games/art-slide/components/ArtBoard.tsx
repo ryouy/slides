@@ -11,13 +11,15 @@ interface Props {
   disabled: boolean;
   /** Puzzle solved: the gaps close and the missing piece fades in. */
   complete: boolean;
+  /** A SHUFFLE is sliding the tiles (slightly quicker slides). */
+  shuffling?: boolean;
   onTap: (cell: number) => void;
   onSwipe: (cell: number, dir: ArtDirection) => void;
 }
 
 const SWIPE_PX = 22;
 
-export function ArtBoard({ board, n, artwork, showNumbers, disabled, complete, onTap, onSwipe }: Props) {
+export function ArtBoard({ board, n, artwork, showNumbers, disabled, complete, shuffling, onTap, onSwipe }: Props) {
   const start = useRef<{ cell: number; x: number; y: number } | null>(null);
   const swiped = useRef(false);
 
@@ -28,7 +30,7 @@ export function ArtBoard({ board, n, artwork, showNumbers, disabled, complete, o
 
   return (
     <div
-      className={`aboard${complete ? ' complete' : ''}`}
+      className={`aboard${complete ? ' complete' : ''}${shuffling ? ' shuffling' : ''}`}
       style={{ ['--n' as string]: n }}
       role="group"
       aria-label={`Puzzle board ${n} by ${n}`}

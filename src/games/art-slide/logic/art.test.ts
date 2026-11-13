@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { ART_SIZES, blankIndex, canMove, isSolved, isValidBoard, moveTile, neighbors, solvedBoard, tileForDirection } from './board';
 import { DAILY_POOL_V1, DAILY_POOL_V2_FROM, dailyArtworkId, generateArtDaily, generateArtFree, shuffleBoard, validateArtPuzzle } from './generator';
 import { artReducer, newArtGame } from './game';
+import { planReshuffle, reduceBlankPath } from './reshuffle';
 import { tileBackground, tileRegion } from './tiles';
 import { ARTWORKS, getArtwork, nextArtwork } from '../data';
 import { DAILY_POOL_V2 } from '../data/daily-pools';
@@ -314,5 +315,82 @@ describe('gallery: search, sort and grouping', () => {
   it('grouping respects the search filter', () => {
     const groups = groupArtworks(filterArtworks(ARTWORKS, 'van gogh'), 'theme', 'year-asc');
     expect(groups.flatMap((g) => g.items).every((a) => /van gogh/i.test(a.artist))).toBe(true);
+  });
+});
+
+describe('SHUFFLE (a real sequence of slides)', () => {
+  const stepThrough = (s0: ReturnType<typeof newArtGame>, clicks: number[]) => clicks.reduce((s, cell) => artReducer(s, { type: 'slideStep', cell }), s0);
+  it('every planned slide is legal and ends exactly on the new puzzle\'s initial board', () => {
+    for (const n of ART_SIZES) {
+      for (let i = 0; i < 20; i++) {
+        const s0 = newArtGame(generateArtFree('van-gogh-bedroom', n, `sh-${n}-${i}`));
+        const plan = planReshuffle(s0, `seed-${i}`);
+        expect(plan.clicks.length).toBeGreaterThanOrEqual(22);
+        let b = s0.board;
+        for (const c of plan.clicks) {
+          expect(canMove(b, n, c)).toBe(true);
+          b = moveTile(b, n, c)!;
+        }
+        expect(b).toEqual(plan.puzzle.initial);
+        expect(isSolved(plan.puzzle.initial)).toBe(false);
+        expect(isValidBoard(plan.puzzle.initial, n)).toBe(true);
+        expect(stepThrough(s0, plan.clicks).board).toEqual(plan.puzzle.initial);
+      }
+    }
+  });
+  it('the new puzzle is solvable and its stored solution works, even after moves were played and repeated shuffles', () => {
+    for (const n of ART_SIZES) {
+      let s = newArtGame(generateArtFree('monet-water-lilies', n, `rep-${n}`));
+      for (let round = 0; round < 3; round++) {
+        // play a few moves
+        for (const c of s.puzzle.solution.slice(0, 3)) s = artReducer(s, { type: 'move', cell: c });
+        const plan = planReshuffle(s, `r${round}`);
+        s = artReducer(stepThrough(s, plan.clicks), { type: 'reshuffled', puzzle: plan.puzzle });
+        expect(validateArtPuzzle(plan.puzzle)).toBe(true);
+        expect([s.moves, s.elapsedMs, s.started, s.status]).toEqual([0, 0, false, 'playing']);
+        expect(s.board).toEqual(plan.puzzle.initial);
+      }
+      for (const c of s.puzzle.solution) s = artReducer(s, { type: 'move', cell: c });
+      expect(s.status).toBe('cleared');
+    }
+  });
+  it('works from a finished board (PLAY AGAIN) and does not count moves', () => {
+    const p = generateArtFree('x', 3, 'fin');
+    let s = newArtGame(p);
+    for (const c of p.solution) s = artReducer(s, { type: 'move', cell: c });
+    expect(s.status).toBe('cleared');
+    const plan = planReshuffle(s, 'again');
+    const mid = artReducer(s, { type: 'slideStep', cell: plan.clicks[0] });
+    expect(mid.status).toBe('playing');
+    expect(mid.moves).toBe(s.moves); // slides of a shuffle are not player moves
+    const end = artReducer(stepThrough(s, plan.clicks), { type: 'reshuffled', puzzle: plan.puzzle });
+    expect(validateArtPuzzle(end.puzzle)).toBe(true);
+  });
+  it('is deterministic for a seed', () => {
+    const s0 = newArtGame(generateArtFree('x', 4, 'det'));
+    expect(planReshuffle(s0, 'a')).toEqual(planReshuffle(s0, 'a'));
+    expect(planReshuffle(s0, 'a').clicks).not.toEqual(planReshuffle(s0, 'b').clicks);
+  });
+  it('an illegal slide changes nothing', () => {
+    const s0 = newArtGame(generateArtFree('x', 3, 'ill'));
+    const blank = s0.board.indexOf(null);
+    const far = [0, 1, 2, 3, 4, 5, 6, 7, 8].find((c) => c !== blank && !canMove(s0.board, 3, c))!;
+    expect(artReducer(s0, { type: 'slideStep', cell: far })).toBe(s0);
+  });
+});
+
+describe('shuffle solution stays short', () => {
+  it('cancels back-and-forth so repeated shuffles do not grow the stored solution without bound', () => {
+    expect(reduceBlankPath([8, 7, 8, 5, 4, 5, 2])).toEqual([8, 5, 2]);
+    expect(reduceBlankPath([1, 2, 3])).toEqual([1, 2, 3]);
+    let s = newArtGame(generateArtFree('x', 4, 'len'));
+    const start = s.puzzle.solution.length;
+    for (let r = 0; r < 6; r++) {
+      const plan = planReshuffle(s, `len${r}`);
+      s = artReducer(plan.clicks.reduce((st, cell) => artReducer(st, { type: 'slideStep', cell }), s), { type: 'reshuffled', puzzle: plan.puzzle });
+      expect(validateArtPuzzle(s.puzzle)).toBe(true);
+    }
+    expect(s.puzzle.solution.length).toBeLessThan(start + 6 * 30); // never longer than the naive undo-everything path
+    expect(s.puzzle.solution.length).toBeLessThan(400);
   });
 });

@@ -95,9 +95,9 @@ export function ArtGallery() {
         {groups.map((g) => (
           <section key={g.key} className="gal-group" data-testid={`group-${slugId(g.key)}`}>
             {g.label && <h2 className="gal-h">{g.label} <small>{g.items.length}</small></h2>}
-            <ul className="gallery">
-              {g.items.map((a) => (
-                <li key={a.id}>
+            <ul className="gallery" key={`${groupBy}-${sortBy}`}>
+              {g.items.map((a, i) => (
+                <li key={a.id} style={{ ['--i' as string]: Math.min(i, 12) }}>
                   <Link to={`/art-slide/play/${a.id}`} className="gcard" data-testid={`art-${a.id}`}>
                     <img src={a.thumbnailUrl} alt={`${a.title} by ${a.artist}`} loading="lazy" decoding="async" width={Math.round(a.width / 4)} height={Math.round(a.height / 4)} />
                     <span className="g-title">{a.title}</span>
@@ -195,8 +195,6 @@ export function ArtPlay({ artworkId }: { artworkId?: string }) {
       onProgress={(s) => setProgress('free', s)}
       onCleared={(s) => update((d) => recordArtClear(d, { state: s, dateKey: jstDateKey() }))}
       onSize={(s) => start(art.id, s)}
-      onNewPuzzle={() => start(art.id, size)}
-      onPlayAgain={() => start(art.id, size)}
       onChangeArtwork={() => go('gallery')}
       onNextArtwork={() => start(nextArtwork(art.id).id, size)}
     />
