@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { AD_UNITS, DEFAULT_SCRIPT_BASE, DESKTOP_MIN_WIDTH, adFrameUrl, adScale, adFrameHtml, chooseAdUnit } from './adsterra';
+import { AD_UNITS, DEFAULT_SCRIPT_BASE, DESKTOP_MIN_WIDTH, adFits, adFrameUrl, adFrameHtml, chooseAdUnit } from './adsterra';
 import { adsAllowed, consentRequired } from './consent';
 
 describe('ad units', () => {
@@ -15,16 +15,12 @@ describe('ad units', () => {
     expect(chooseAdUnit(412).id).toBe('mobile');
     expect(chooseAdUnit(280).id).toBe('mobile');
   });
-  it('never overflows: scales the unit down only on screens narrower than unit + gutter', () => {
-    expect(adScale(AD_UNITS.mobile, 412)).toBe(1);
-    expect(adScale(AD_UNITS.mobile, 316)).toBe(1);
-    expect(adScale(AD_UNITS.desktop, 1280)).toBe(1);
-    expect(adScale(AD_UNITS.desktop, 728)).toBe(1); // chosen from 728px up, where it fits exactly
-    for (const vw of [315, 300, 280, 240, 200]) {
-      const s = adScale(AD_UNITS.mobile, vw);
-      expect(s).toBeLessThan(1);
-      expect(300 * s).toBeLessThanOrEqual(vw - 16 + 0.5);
-    }
+  it('shows no ad (and shrinks nothing) on screens narrower than the smallest unit', () => {
+    expect(adFits(299)).toBe(false);
+    expect(adFits(280)).toBe(false);
+    expect(adFits(300)).toBe(true);
+    expect(adFits(375)).toBe(true);
+    expect(adFits(1280)).toBe(true);
   });
 });
 

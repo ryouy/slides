@@ -151,7 +151,6 @@ export function ArtGameView(p: Props) {
           {ART_LEVELS.map((l) => (
             <button key={l} className={`seg-btn${state.puzzle.size === l ? ' on' : ''}`} aria-pressed={state.puzzle.size === l} data-testid={`asize-${l}`} onClick={() => chooseLevel(l)}>
               <b>{gridLabel(l)}</b>
-              <small>{t(`level.${l}` as const)}</small>
             </button>
           ))}
         </div>

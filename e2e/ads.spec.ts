@@ -59,9 +59,8 @@ test('size follows the screen: 728x90 from 728px, 300x250 below, scaled to fit v
   }
   await page.setViewportSize({ width: 280, height: 800 });
   await page.goto('/word-slide/daily');
-  const narrow = await boxOf(page);
-  expect(narrow.width).toBeLessThan(300);
-  expect(narrow.x + narrow.width).toBeLessThanOrEqual(280 + 0.5);
+  await page.waitForTimeout(500);
+  await expect(page.getByTestId('ad-box')).toHaveCount(0); // too narrow: no ad at all, nothing shrunk
   expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
 });
 

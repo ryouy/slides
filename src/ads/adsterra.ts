@@ -31,14 +31,9 @@ export const adsEnabled = (): boolean => import.meta.env?.VITE_ADS_ENABLED !== '
 export const DESKTOP_MIN_WIDTH = 728;
 export const chooseAdUnit = (viewportWidth: number): AdUnit => (viewportWidth >= DESKTOP_MIN_WIDTH ? AD_UNITS.desktop : AD_UNITS.mobile);
 
-/**
- * Shrinks a unit that is wider than the screen (very narrow phones) so it never overflows. The 300px
- * unit keeps a 16px page margin; the 728px unit is only chosen from 728px up, where it simply fits.
- */
-export function adScale(unit: AdUnit, viewportWidth: number, gutter = unit.id === 'desktop' ? 0 : 16): number {
-  const room = viewportWidth - gutter;
-  return room >= unit.width ? 1 : Math.max(0.3, Math.round((room / unit.width) * 1000) / 1000);
-}
+/** Narrower screens than the smallest unit get no ad at all (nothing is shrunk or cropped). */
+export const AD_MIN_WIDTH = 300;
+export const adFits = (viewportWidth: number): boolean => viewportWidth >= AD_MIN_WIDTH;
 
 const KEY = /^[0-9a-f]{32}$/;
 
