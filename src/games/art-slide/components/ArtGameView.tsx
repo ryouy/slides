@@ -40,7 +40,7 @@ export function ArtGameView(p: Props) {
   const [state, dispatch] = useReducer(artReducer, initial);
   const [preview, setPreview] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
-  const [pending, setPending] = useState<{ kind: 'level'; level: ArtLevel } | { kind: 'shuffle' } | null>(null);
+  const [pending, setPending] = useState<ArtLevel | null>(null);
   const [showResult, setShowResult] = useState(initial.status === 'cleared');
   const [shuffling, setShuffling] = useState(false);
   const shufflingRef = useRef(false);
@@ -99,7 +99,7 @@ export function ArtGameView(p: Props) {
   const chooseLevel = (level: ArtLevel) => {
     if (level === state.puzzle.size) return setPending(null);
     if (state.moves === 0 || cleared) return p.onLevel?.(level);
-    setPending({ kind: 'level', level });
+    setPending(level);
   };
 
   /**
@@ -129,12 +129,6 @@ export function ArtGameView(p: Props) {
       }, 60 + plan.clicks.length * SHUFFLE_STEP_MS + 260),
     );
   };
-  /** Ask first when it would throw away progress. */
-  const shuffle = () => {
-    if (shufflingRef.current) return;
-    if (state.moves === 0 || cleared) return runShuffle();
-    setPending({ kind: 'shuffle' });
-  };
 
   const shareText = daily
     ? t('share.artDaily', { title: artwork.title, artist: artwork.artist, time: formatTime(state.elapsedMs), moves: state.moves, n: state.puzzle.number ?? '' })
@@ -161,21 +155,10 @@ export function ArtGameView(p: Props) {
           ))}
         </div>
       )}
-      {pending && (
+      {pending !== null && (
         <div className="confirm-bar" role="alert">
-          <span>{pending.kind === 'level' ? t('art.confirmLevel', { grid: gridLabel(pending.level) }) : t('art.confirmShuffle')}</span>
-          <button
-            className="btn primary"
-            data-testid={pending.kind === 'level' ? 'confirm-size' : 'confirm-shuffle'}
-            onClick={() => {
-              const cur = pending;
-              setPending(null);
-              if (cur.kind === 'level') p.onLevel?.(cur.level);
-              else runShuffle();
-            }}
-          >
-            {pending.kind === 'level' ? t('art.start') : t('art.doShuffle')}
-          </button>
+          <span>{t('art.confirmLevel', { grid: gridLabel(pending) })}</span>
+          <button className="btn primary" data-testid="confirm-size" onClick={() => { const l = pending; setPending(null); p.onLevel?.(l); }}>{t('art.start')}</button>
           <button className="btn" onClick={() => setPending(null)}>{t('common.cancel')}</button>
         </div>
       )}
@@ -210,22 +193,26 @@ export function ArtGameView(p: Props) {
             if (r) setPreview({ left: r.left, top: r.top, width: r.width, height: r.height });
           }}
         >{t('art.preview')}</button>
-        {!daily && <button className="btn" data-testid="shuffle" disabled={shuffling} onClick={shuffle}>{t('art.shuffle')}</button>}
+        {!daily && <button className="btn" data-testid="shuffle" disabled={shuffling} onClick={runShuffle}>{t('art.shuffle')}</button>}
         <button className="btn" data-testid="restart" disabled={shuffling} onClick={() => dispatch({ type: 'restart' })}>{t('art.restart')}</button>
       </div>
+
+      <button className="num-toggle" data-testid="numbers-toggle" aria-pressed={p.showNumbers} onClick={() => p.onToggleNumbers(!p.showNumbers)}>
+        <span className="num-glyph" aria-hidden="true">#</span>
+        {t('art.numbers')}
+        <span className="num-state" aria-hidden="true">{p.showNumbers ? 'ON' : 'OFF'}</span>
+      </button>
 
       <div className="art-extra">
         <p className="ap-desc" data-testid="art-desc">{artwork.description}</p>
         <p className="ap-credit">
           {artwork.museum} · <a href={artwork.licenseUrl} target="_blank" rel="noopener noreferrer">CC0</a> · <a href={artwork.sourceUrl} target="_blank" rel="noopener noreferrer">{t('art.source')}</a>
         </p>
-        <div className="art-quiet">
-          <label className="quiet-check">
-            <input type="checkbox" data-testid="numbers-toggle" checked={p.showNumbers} onChange={(e) => p.onToggleNumbers(e.target.checked)} />
-            <span>{t('art.numbers')}</span>
-          </label>
-          {!daily && <button className="quiet-link" data-testid="change-artwork" onClick={p.onChangeArtwork}>{t('art.change')} →</button>}
-        </div>
+        {!daily && (
+          <div className="art-quiet">
+            <button className="quiet-link" data-testid="change-artwork" onClick={p.onChangeArtwork}>{t('art.change')} →</button>
+          </div>
+        )}
       </div>
       <AdSlot />
 

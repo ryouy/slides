@@ -189,7 +189,7 @@ test('changing level after moves asks first; SHUFFLE and RESTART behave', async 
   await expect.poll(async () => (await savedPuzzle(page, 'free')).size).toBe(5);
 });
 
-test('SHUFFLE really slides the tiles one by one, asks first once you have moved, and always stays solvable', async ({ page }) => {
+test('SHUFFLE really slides the tiles one by one, never asks for confirmation, and always stays solvable', async ({ page }) => {
   await page.goto('/art-slide/play/monet-water-lilies');
   const first = await snap(page);
   const dur = await page.locator('.apiece').first().evaluate((e) => getComputedStyle(e).transitionDuration);
@@ -217,13 +217,11 @@ test('SHUFFLE really slides the tiles one by one, asks first once you have moved
   await page.locator(`.atile[data-cell="${sol[0]}"]`).click();
   await expect(page.getByTestId('moves')).toHaveText('1');
   const mid = await snap(page);
-  await page.getByTestId('shuffle').click();
-  await expect(page.getByRole('alert')).toContainText(/Shuffle again/);
-  await page.getByRole('button', { name: 'Cancel' }).click();
-  expect(await snap(page)).toBe(mid);
-  await page.getByTestId('shuffle').click();
-  await page.getByTestId('confirm-shuffle').click();
+  await page.getByTestId('shuffle').click(); // even mid-game: no question, it just shuffles
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await expect(page.locator('.aboard')).toHaveClass(/shuffling/);
   await shuffleDone(page);
+  await expect(page.getByTestId('moves')).toHaveText('0');
   expect(await snap(page)).not.toBe(mid);
   await solve(page, 'free');
   await expect(page.getByRole('dialog', { name: CLEARED })).toBeVisible();
@@ -533,6 +531,7 @@ test('puzzle first: the board is large; on desktop all controls sit in a tidy co
     for (const b of parts) expect(b.x).toBeGreaterThanOrEqual(board.x + board.width); // everything beside the board
     const desc = (await page.getByTestId('art-desc').boundingBox())!;
     expect(desc.x).toBeGreaterThanOrEqual(board.x + board.width);
+    expect((await page.getByTestId('numbers-toggle').boundingBox())!.x).toBeGreaterThanOrEqual(board.x + board.width);
     expect(board.y + board.height).toBeLessThanOrEqual(vp.height); // the whole board is visible without scrolling
     expect(board.height).toBeGreaterThan(vp.height * 0.7); // and large
     // the side column is aligned: the controls share one left edge
@@ -543,16 +542,25 @@ test('puzzle first: the board is large; on desktop all controls sit in a tidy co
   }
 });
 
-test('tile numbers and change artwork are quiet options', async ({ page }) => {
+test('tile numbers: an easy-to-find switch right under the buttons; change artwork stays quiet', async ({ page }, info) => {
   await page.goto('/art-slide/play/degas-dance-class');
+  await page.waitForTimeout(450);
   await expect(page.locator('.anum')).toHaveCount(0);
   const toggle = page.getByTestId('numbers-toggle');
-  const box = (await toggle.boundingBox())!;
-  expect(box.width).toBeLessThanOrEqual(16); // a small checkbox, not a big control
-  await toggle.check();
+  await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+  const restart = (await page.getByTestId('restart').boundingBox())!;
+  const tb = (await toggle.boundingBox())!;
+  const vp = page.viewportSize()!;
+  expect(tb.y).toBeGreaterThanOrEqual(restart.y + restart.height - 1); // directly below the three buttons
+  expect(tb.y - (restart.y + restart.height)).toBeLessThan(30);
+  expect(tb.height).toBeGreaterThanOrEqual(40); // a proper tap target
+  expect(tb.y + tb.height).toBeLessThanOrEqual(vp.height + (info.project.name === 'desktop' ? 0 : 200)); // on screen, not buried
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+  await expect(toggle).toContainText('ON');
   expect(await page.locator('.anum').count()).toBeGreaterThan(3);
   await page.reload();
-  await expect(page.getByTestId('numbers-toggle')).toBeChecked(); // remembered
+  await expect(page.getByTestId('numbers-toggle')).toHaveAttribute('aria-pressed', 'true'); // remembered
   const size = await page.getByTestId('change-artwork').evaluate((e) => parseFloat(getComputedStyle(e).fontSize));
   expect(size).toBeLessThanOrEqual(13);
   await page.getByTestId('change-artwork').click();

@@ -22,10 +22,10 @@ export const AD_UNITS: Record<AdUnitId, AdUnit> = {
 };
 
 export const DEFAULT_SCRIPT_BASE = 'https://bauval.org/22';
-export const scriptBase = (): string => ((import.meta.env.VITE_ADSTERRA_SCRIPT_BASE as string | undefined) || DEFAULT_SCRIPT_BASE).replace(/\/+$/, '');
+export const scriptBase = (): string => ((import.meta.env?.VITE_ADSTERRA_SCRIPT_BASE as string | undefined) || DEFAULT_SCRIPT_BASE).replace(/\/+$/, '');
 
 /** Real ads are requested in production builds; VITE_ADS_ENABLED=false switches them off (e.g. for a preview deploy). */
-export const adsEnabled = (): boolean => import.meta.env.VITE_ADS_ENABLED !== 'false';
+export const adsEnabled = (): boolean => import.meta.env?.VITE_ADS_ENABLED !== 'false';
 
 /** 728x90 from 728px of viewport width up, 300x250 below. */
 export const DESKTOP_MIN_WIDTH = 728;
@@ -42,12 +42,20 @@ export function adScale(unit: AdUnit, viewportWidth: number, gutter = unit.id ==
 
 const KEY = /^[0-9a-f]{32}$/;
 
-/** The page that runs in the ad's own iframe: its own `atOptions`, one invoke script, nothing else. */
-export function adSrcDoc(unit: AdUnit, base: string = scriptBase()): string {
+/** Where the frame page of a unit lives on our own domain (served by the dev server, emitted at build). */
+export const adFrameUrl = (unit: AdUnit) => `/ads/${unit.id}.html`;
+
+/**
+ * The page that runs in the ad's own iframe: its own `atOptions`, one invoke script, nothing else.
+ * It is a real page on this site (not `srcdoc`), so the ad script sees our domain and referrer, which
+ * ad networks use to recognise the publisher.
+ */
+export function adFrameHtml(unit: AdUnit, base: string = scriptBase()): string {
   if (!KEY.test(unit.key)) throw new Error('invalid ad key');
   const src = `${base}/${unit.key}`;
   return (
-    '<!doctype html><html><head><meta charset="utf-8">' +
+    '<!doctype html><html lang="en"><head><meta charset="utf-8">' +
+    '<meta name="robots" content="noindex"><title>Advertisement</title>' +
     '<style>html,body{margin:0;padding:0;overflow:hidden;background:transparent}</style></head><body>' +
     `<script>atOptions={'key':'${unit.key}','format':'iframe','height':${unit.height},'width':${unit.width},'params':{}};</script>` +
     `<script src="${src}"></script>` +

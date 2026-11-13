@@ -464,9 +464,13 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .art-extra { display: grid; gap: 6px; margin-top: 12px; }
 .ap-desc { margin: 0; font-size: 15px; line-height: 1.6; }
 .ap-credit { margin: 0; font-size: 12px; color: var(--muted); }
-.art-quiet { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--line); }
-.quiet-check { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); cursor: pointer; min-height: 32px; }
-.quiet-check input { width: 14px; height: 14px; accent-color: var(--muted); }
+.art-quiet { display: flex; justify-content: flex-end; margin-top: 6px; }
+.num-toggle { display: flex; align-items: center; gap: 10px; width: 100%; margin: 0 0 4px; padding: 11px 14px; min-height: 46px; background: none; border: 1px solid var(--line); border-radius: 2px; color: var(--fg); font-size: 13px; letter-spacing: .06em; cursor: pointer; transition: background-color .18s ease, border-color .18s ease; }
+.num-toggle:hover { border-color: var(--fg); }
+.num-glyph { display: grid; place-items: center; width: 22px; height: 22px; border: 1px solid currentColor; border-radius: 2px; font-weight: 700; font-size: 13px; }
+.num-state { margin-left: auto; font-size: 11px; font-weight: 700; letter-spacing: .14em; color: var(--muted); }
+.num-toggle[aria-pressed='true'] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.num-toggle[aria-pressed='true'] .num-state { color: inherit; opacity: .8; }
 .quiet-link { background: none; border: 0; padding: 6px 0; font-size: 12px; color: var(--muted); cursor: pointer; min-height: 32px; transition: color .18s ease; }
 .quiet-link:hover { color: var(--fg); }
 .share-panel { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); text-align: left; animation: dropIn .28s var(--ease) backwards; }
@@ -497,3 +501,9 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .gal-controls { grid-template-columns: 1fr 1fr; }
 .gal-random { grid-column: 1 / -1; }
 @media (min-width: 700px) { .gal-controls { grid-template-columns: 1fr auto 200px 200px; } .gal-random { grid-column: auto; padding: 0 18px; } }
+
+/* phones: the ad sits right under the buttons and the tile-numbers switch, above the description, so it is seen without hunting */
+@media (max-width: 899px) {
+  .artgame > .ad-box { order: 1; margin-top: 18px; }
+  .artgame > .art-extra { order: 2; }
+}

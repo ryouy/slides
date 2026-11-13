@@ -222,6 +222,15 @@ describe('SHUFFLE (a real sequence of slides)', () => {
     const end = artReducer(stepThrough(s, plan.clicks), { type: 'reshuffled', puzzle: plan.puzzle });
     expect(validateArtPuzzle(end.puzzle)).toBe(true);
   });
+  it('a shuffle never lands back on the arrangement it started from (even on tiny boards)', () => {
+    for (const id of ['hokusai-great-wave', 'sargent-madame-x', 'van-gogh-bedroom']) {
+      for (let i = 0; i < 60; i++) {
+        const s0 = newArtGame(generateArtFree(id, 3, `same-${i}`));
+        const plan = planReshuffle(s0, `p${i}`);
+        expect(plan.puzzle.initial).not.toEqual(s0.board);
+      }
+    }
+  });
   it('is deterministic for a seed; an illegal slide changes nothing', () => {
     const s0 = newArtGame(generateArtFree('x', 4, 'det'));
     expect(planReshuffle(s0, 'a')).toEqual(planReshuffle(s0, 'a'));

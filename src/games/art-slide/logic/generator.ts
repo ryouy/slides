@@ -84,10 +84,11 @@ export function shuffleFromBoard(rng: Rng, d: Dims, start: ArtBoard, steps: numb
   let board = start;
   let blank = start.indexOf(null);
   let prev = -1;
-  const visited = new Set([board.join(',')]);
+  const startKey = board.join(',');
+  const visited = new Set([startKey]);
   const clicks: number[] = [];
   for (let i = 0; i < steps + 300; i++) {
-    if (i >= steps && misplacedCount(board) >= minMisplaced && !isSolved(board)) break;
+    if (i >= steps && misplacedCount(board) >= minMisplaced && !isSolved(board) && board.join(',') !== startKey) break;
     const options = neighbors(blank, d).filter((c) => c !== prev);
     const fresh = options.filter((c) => {
       const b = board.slice();

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { AD_UNITS, DEFAULT_SCRIPT_BASE, DESKTOP_MIN_WIDTH, adScale, adSrcDoc, chooseAdUnit } from './adsterra';
+import { AD_UNITS, DEFAULT_SCRIPT_BASE, DESKTOP_MIN_WIDTH, adFrameUrl, adScale, adFrameHtml, chooseAdUnit } from './adsterra';
 import { adsAllowed, consentRequired } from './consent';
 
 describe('ad units', () => {
@@ -28,10 +28,10 @@ describe('ad units', () => {
   });
 });
 
-describe('ad document (runs inside its own iframe)', () => {
+describe('ad frame page (runs inside its own iframe)', () => {
   for (const unit of Object.values(AD_UNITS)) {
     it(`${unit.id}: own atOptions, exactly one invoke script, nothing else`, () => {
-      const doc = adSrcDoc(unit);
+      const doc = adFrameHtml(unit);
       expect(doc).toContain(`atOptions={'key':'${unit.key}','format':'iframe','height':${unit.height},'width':${unit.width},'params':{}};`);
       expect(doc).toContain(`<script src="${DEFAULT_SCRIPT_BASE}/${unit.key}"></script>`);
       expect(doc.match(/<script/g)).toHaveLength(2); // the options and the ad: no extra formats
@@ -39,9 +39,13 @@ describe('ad document (runs inside its own iframe)', () => {
       expect(doc).not.toContain(unit.id === 'mobile' ? AD_UNITS.desktop.key : AD_UNITS.mobile.key); // no cross-talk between units
     });
   }
+  it('each unit has its own page on our domain', () => {
+    expect(adFrameUrl(AD_UNITS.mobile)).toBe('/ads/mobile.html');
+    expect(adFrameUrl(AD_UNITS.desktop)).toBe('/ads/desktop.html');
+  });
   it('uses a custom script host and refuses malformed keys', () => {
-    expect(adSrcDoc(AD_UNITS.mobile, 'https://ads.example.net/x')).toContain('<script src="https://ads.example.net/x/7ce68b5c8c3484d811e70436814e1b1c"></script>');
-    expect(() => adSrcDoc({ ...AD_UNITS.mobile, key: "x'};alert(1);//" })).toThrow();
+    expect(adFrameHtml(AD_UNITS.mobile, 'https://ads.example.net/x')).toContain('<script src="https://ads.example.net/x/7ce68b5c8c3484d811e70436814e1b1c"></script>');
+    expect(() => adFrameHtml({ ...AD_UNITS.mobile, key: "x'};alert(1);//" })).toThrow();
   });
 });
 
