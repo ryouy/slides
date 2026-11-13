@@ -1,5 +1,5 @@
-import { memo, useEffect, useMemo, useState } from 'react';
-import { adScale, adSrcDoc, adsEnabled, chooseAdUnit } from '../ads/adsterra';
+import { memo, useEffect, useState } from 'react';
+import { adFrameUrl, adScale, adsEnabled, chooseAdUnit } from '../ads/adsterra';
 import { useAdConsent } from '../ads/consent';
 import { useT } from '../i18n';
 
@@ -44,8 +44,8 @@ function useSlot(): boolean {
 /**
  * The ad area shared by all games, placed below the board and controls.
  *  - 728x90 on screens >= 728px wide, 300x250 below (scaled down on screens narrower than 316px)
- *  - the ad runs in its own sandboxed iframe: it cannot touch the page, navigate it, or clash with the
- *    other unit's global `atOptions`; if it fails or is blocked the game is unaffected
+ *  - the ad runs in its own iframe (a page of this site per unit): it cannot navigate the page away or
+ *    clash with the other unit's global `atOptions`; if it fails or is blocked the game is unaffected
  *  - dev server: a placeholder. Production: the live ad, only when the visitor's consent status allows it
  *    (and VITE_ADS_ENABLED is not "false")
  */
@@ -57,7 +57,6 @@ export const AdBanner = memo(function AdBanner() {
   const unit = chooseAdUnit(width);
   const scale = adScale(unit, width);
   const live = adsEnabled() || adsForcedLive();
-  const srcDoc = useMemo(() => adSrcDoc(unit), [unit]);
 
   if (!owns) return null;
   const placeholder = import.meta.env.DEV && !adsForcedLive();
@@ -76,12 +75,13 @@ export const AdBanner = memo(function AdBanner() {
             key={unit.id}
             title={t('ad.label')}
             data-testid="ad-iframe"
-            srcDoc={srcDoc}
+            src={adFrameUrl(unit)}
             width={unit.width}
             height={unit.height}
             loading="lazy"
-            // scripts and click-through popups only: no same-origin access to the page, no top navigation
-            sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"
+            // the ad page lives on this site (so the ad network sees our domain). Sandboxed so an ad cannot
+            // navigate the page away; popups are allowed for the click-through
+            sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
             style={{ width: unit.width, height: unit.height, transform: `scale(${scale})` }}
           />
         )}

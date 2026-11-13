@@ -65,6 +65,18 @@ test('size follows the screen: 728x90 from 728px, 300x250 below, scaled to fit v
   expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
 });
 
+test('on phones the ad sits right under the controls and above the description', async ({ page }) => {
+  await page.setViewportSize({ width: 412, height: 915 });
+  await page.goto('/art-slide/play/van-gogh-bedroom');
+  await page.waitForTimeout(450);
+  const toggle = (await page.getByTestId('numbers-toggle').boundingBox())!;
+  const ad = (await page.getByTestId('ad-box').boundingBox())!;
+  const desc = (await page.getByTestId('art-desc').boundingBox())!;
+  expect(ad.y).toBeGreaterThanOrEqual(toggle.y + toggle.height - 1);
+  expect(desc.y).toBeGreaterThanOrEqual(ad.y + ad.height - 1);
+  expect(ad.y + 20).toBeLessThan(915); // on the first screen
+});
+
 test('the slot switches size when the window is resized, and stays a single slot', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto('/big-slide/daily');
@@ -94,7 +106,8 @@ test.describe('live ads (dev-only ?ads=live with a stand-in script)', () => {
     await expect(frame.locator('#fake')).toHaveText("AD 728x90 d1f4 iframe");
     const sandbox = await page.getByTestId('ad-iframe').getAttribute('sandbox');
     expect(sandbox).toContain('allow-scripts');
-    expect(sandbox).not.toContain('allow-same-origin'); // cannot reach into the page
+    expect(sandbox).toContain('allow-same-origin'); // the frame is a page of this site, so the ad sees our domain
+    expect(await page.getByTestId('ad-iframe').getAttribute('src')).toBe('/ads/desktop.html');
     expect(sandbox).not.toContain('allow-top-navigation');
     expect(await page.evaluate(() => 'atOptions' in window)).toBe(false); // nothing leaks into the app's window
     expect(await page.locator('script[src*="bauval"]').count()).toBe(0); // no ad script in the app document itself
@@ -182,6 +195,16 @@ test.describe('live ads (dev-only ?ads=live with a stand-in script)', () => {
     await expect(page.getByTestId('ad-box')).toHaveCount(0);
     await ctx.close();
   });
+});
+
+test('each unit is served as its own page on this site, with its own options', async ({ request }) => {
+  const m = await (await request.get('/ads/mobile.html')).text();
+  const d = await (await request.get('/ads/desktop.html')).text();
+  expect(m).toContain("'key':'7ce68b5c8c3484d811e70436814e1b1c','format':'iframe','height':250,'width':300");
+  expect(d).toContain("'key':'d1f4ebc3ac6f4fa67d18ad875ecc8e1f','format':'iframe','height':90,'width':728");
+  expect(m).toContain('https://bauval.org/22/7ce68b5c8c3484d811e70436814e1b1c');
+  expect(d).toContain('https://bauval.org/22/d1f4ebc3ac6f4fa67d18ad875ecc8e1f');
+  expect(m).not.toContain('d1f4ebc3'); // no cross-talk
 });
 
 test('privacy policy covers the ad network and the opt-out', async ({ page }) => {
