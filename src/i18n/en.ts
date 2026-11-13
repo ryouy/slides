@@ -65,7 +65,6 @@ const en = {
   'art.shuffle': 'Shuffle',
   'art.restart': 'Restart',
   'art.numbers': 'Tile numbers',
-  'art.aboutPainting': 'About this painting',
   'art.change': 'Change artwork',
   'art.source': 'Source',
   'art.loading': 'Loading artwork…',
@@ -120,6 +119,9 @@ const en = {
   'consent.text': 'We use cookies for ads. You can play without them.',
   'consent.accept': 'Accept',
   'consent.decline': 'Decline',
+
+  // ads
+  'ad.label': 'Advertisement',
 
   // share
   'share.share': 'Share',
