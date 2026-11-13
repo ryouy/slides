@@ -1,6 +1,7 @@
 import { go } from '../nav';
 import { Link } from '../components/Link';
-import { AllGamesLink, MoreGames } from '../components/GameNav';
+import { AllGamesLink } from '../components/GameNav';
+import { HomeLinks } from '../components/HomeLinks';
 import { dailyNumber, jstDateKey } from '../core/generator';
 import { useSave } from '../storage/SaveContext';
 import { currentDailyStreak } from '../storage/stats';
@@ -25,11 +26,8 @@ export function Home() {
           <small>{doneToday ? '✓ Cleared today' : 'New every day at 0:00 JST'}{streak > 0 ? ` · 🔥 ${streak}` : ''}</small>
         </button>
         <button className="btn big" data-testid="endless" onClick={() => go('endless')}>Endless Mode</button>
-        <button className="btn big" onClick={() => go('how')}>How to Play</button>
-        <button className="btn big" onClick={() => go('stats')}>Statistics</button>
-        <button className="btn big" onClick={() => go('settings')}>Settings</button>
       </nav>
-      <MoreGames current="word-slide" />
+      <HomeLinks items={[{ label: 'How to Play', to: 'how' }, { label: 'Statistics', to: 'stats' }, { label: 'Settings', to: 'settings' }]} />
       <Footer />
     </div>
   );

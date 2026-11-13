@@ -1,0 +1,116 @@
+[
+ {
+  "id": "vermeer-water-pitcher",
+  "title": "Young Woman with a Water Pitcher",
+  "artist": "Johannes Vermeer",
+  "year": "ca. 1662",
+  "museum": "The Metropolitan Museum of Art",
+  "sourceUrl": "https://www.metmuseum.org/art/collection/search/437881",
+  "license": "CC0 1.0 (The Met Open Access)",
+  "licenseUrl": "https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+  "licenseBasis": "The Metropolitan Museum of Art Open Access: API field isPublicDomain = true (CC0)",
+  "sourceImageUrl": "https://images.metmuseum.org/CRDImages/ep/original/DP353257.jpg",
+  "verifiedAt": "2026-11-13",
+  "focus": {
+   "x": 0.5,
+   "y": 0.5
+  },
+  "width": 1244,
+  "height": 1400
+ },
+ {
+  "id": "van-gogh-wheat-field-cypresses",
+  "title": "Wheat Field with Cypresses",
+  "artist": "Vincent van Gogh",
+  "year": "1889",
+  "museum": "The Metropolitan Museum of Art",
+  "sourceUrl": "https://www.metmuseum.org/art/collection/search/436535",
+  "license": "CC0 1.0 (The Met Open Access)",
+  "licenseUrl": "https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+  "licenseBasis": "The Metropolitan Museum of Art Open Access: API field isPublicDomain = true (CC0)",
+  "sourceImageUrl": "https://images.metmuseum.org/CRDImages/ep/original/DP-42549-001.jpg",
+  "verifiedAt": "2026-11-13",
+  "focus": {
+   "x": 0.5,
+   "y": 0.5
+  },
+  "width": 1400,
+  "height": 1099
+ },
+ {
+  "id": "sargent-madame-x",
+  "title": "Madame X (Madame Pierre Gautreau)",
+  "artist": "John Singer Sargent",
+  "year": "1883–84",
+  "museum": "The Metropolitan Museum of Art",
+  "sourceUrl": "https://www.metmuseum.org/art/collection/search/12127",
+  "license": "CC0 1.0 (The Met Open Access)",
+  "licenseUrl": "https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+  "licenseBasis": "The Metropolitan Museum of Art Open Access: API field isPublicDomain = true (CC0)",
+  "sourceImageUrl": "https://images.metmuseum.org/CRDImages/ad/original/DP-29006-001.jpg",
+  "verifiedAt": "2026-11-13",
+  "focus": {
+   "x": 0.5,
+   "y": 0.08
+  },
+  "width": 737,
+  "height": 1400
+ },
+ {
+  "id": "rembrandt-aristotle-homer",
+  "title": "Aristotle with a Bust of Homer",
+  "artist": "Rembrandt van Rijn",
+  "year": "1653",
+  "museum": "The Metropolitan Museum of Art",
+  "sourceUrl": "https://www.metmuseum.org/art/collection/search/437394",
+  "license": "CC0 1.0 (The Met Open Access)",
+  "licenseUrl": "https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+  "licenseBasis": "The Metropolitan Museum of Art Open Access: API field isPublicDomain = true (CC0)",
+  "sourceImageUrl": "https://images.metmuseum.org/CRDImages/ep/original/DP-30758-001.jpg",
+  "verifiedAt": "2026-11-13",
+  "focus": {
+   "x": 0.5,
+   "y": 0.5
+  },
+  "width": 1310,
+  "height": 1400
+ },
+ {
+  "id": "hokusai-great-wave",
+  "title": "The Great Wave off Kanagawa",
+  "artist": "Katsushika Hokusai",
+  "year": "ca. 1830–32",
+  "museum": "The Metropolitan Museum of Art",
+  "sourceUrl": "https://www.metmuseum.org/art/collection/search/45434",
+  "license": "CC0 1.0 (The Met Open Access)",
+  "licenseUrl": "https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+  "licenseBasis": "The Metropolitan Museum of Art Open Access: API field isPublicDomain = true (CC0)",
+  "sourceImageUrl": "https://images.metmuseum.org/CRDImages/as/original/DP130155.jpg",
+  "verifiedAt": "2026-11-13",
+  "focus": {
+   "x": 0.45,
+   "y": 0.5
+  },
+  "width": 1400,
+  "height": 941
+ },
+ {
+  "id": "degas-dance-class",
+  "title": "The Dance Class",
+  "artist": "Edgar Degas",
+  "year": "1874",
+  "museum": "The Metropolitan Museum of Art",
+  "sourceUrl": "https://www.metmuseum.org/art/collection/search/438817",
+  "license": "CC0 1.0 (The Met Open Access)",
+  "licenseUrl": "https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+  "licenseBasis": "The Metropolitan Museum of Art Open Access: API field isPublicDomain = true (CC0)",
+  "sourceImageUrl": "https://images.metmuseum.org/CRDImages/ep/original/DP-20101-001.jpg",
+  "verifiedAt": "2026-11-13",
+  "focus": {
+   "x": 0.5,
+   "y": 0.5
+  },
+  "width": 1291,
+  "height": 1400
+ }
+]

@@ -51,12 +51,12 @@ test('landing offers all games; each game links back; back/forward work', async 
   await page.getByTestId('landing-word').click();
   await expect(page).toHaveURL(/\/word-slide$/);
   await expect(page.getByTestId('daily')).toBeVisible();
-  await page.getByTestId('more-big-slide').click(); // "more games" row at the bottom of a game's home
-  await expect(page).toHaveURL(/\/big-slide$/);
   await page.goBack();
-  await expect(page).toHaveURL(/\/word-slide$/);
+  await expect(page).toHaveURL(/\/$/);
+  await page.goBack();
+  await expect(page).toHaveURL(/\/big-slide$/);
   await page.goForward();
-  await expect(page.getByTestId('big-daily')).toBeVisible();
+  await expect(page).toHaveURL(/\/$/);
 });
 
 test('direct URLs and legacy hash URLs work', async ({ page }) => {

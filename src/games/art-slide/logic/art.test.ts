@@ -1,10 +1,12 @@
 import fs from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { ART_SIZES, blankIndex, canMove, isSolved, isValidBoard, moveTile, neighbors, solvedBoard, tileForDirection } from './board';
-import { DAILY_POOL_V1, dailyArtworkId, generateArtDaily, generateArtFree, shuffleBoard, validateArtPuzzle } from './generator';
+import { DAILY_POOL_V1, DAILY_POOL_V2_FROM, dailyArtworkId, generateArtDaily, generateArtFree, shuffleBoard, validateArtPuzzle } from './generator';
 import { artReducer, newArtGame } from './game';
 import { tileBackground, tileRegion } from './tiles';
 import { ARTWORKS, getArtwork, nextArtwork } from '../data';
+import { DAILY_POOL_V2 } from '../data/daily-pools';
+import { ERA_ORDER, THEME_ORDER, filterArtworks, groupArtworks, sortArtworks } from './gallery';
 import { rngFromString } from '../../../utils/rng';
 import { dailyNumber } from '../../../utils/date';
 
@@ -84,14 +86,39 @@ describe('puzzle generation', () => {
     expect(getArtwork(a.artworkId)).toBeDefined();
     expect(new Set(DAILY_POOL_V1).size).toBe(DAILY_POOL_V1.length);
     for (const id of DAILY_POOL_V1) expect(getArtwork(id), id).toBeDefined();
-    // one full cycle shows every artwork exactly once
-    const cycle = Array.from({ length: DAILY_POOL_V1.length }, (_, i) => dailyArtworkId(new Date(Date.parse('2026-11-01T00:00:00Z') + i * 86400000).toISOString().slice(0, 10)));
-    expect(new Set(cycle).size).toBe(DAILY_POOL_V1.length);
+    // the 13 days served from pool V1 (2026-11-01 .. 11-13) are all different works from that pool
+    const v1days = Array.from({ length: 13 }, (_, i) => dailyArtworkId(new Date(Date.parse('2026-11-01T00:00:00Z') + i * 86400000).toISOString().slice(0, 10)));
+    expect(new Set(v1days).size).toBe(13);
+    v1days.forEach((id) => expect(DAILY_POOL_V1).toContain(id));
     expect(dailyNumber('2026-11-01')).toBe(1);
   });
   it('daily outputs are frozen (regression guard for published puzzles)', () => {
     expect(dailyArtworkId('2026-11-13')).toMatchInlineSnapshot(`"hokusai-shower-below-the-summit"`);
     expect(generateArtDaily('2026-11-13').initial.join(',')).toMatchInlineSnapshot(`"13,8,0,10,6,9,7,4,14,5,12,2,11,1,3,"`);
+  });
+});
+
+describe('daily pool V2 (from 2026-11-14)', () => {
+  const addDays = (d: string, n: number) => new Date(Date.parse(`${d}T00:00:00Z`) + n * 86400000).toISOString().slice(0, 10);
+  it('is frozen, valid and unique', () => {
+    expect(DAILY_POOL_V2.length).toBeGreaterThanOrEqual(100);
+    expect(new Set(DAILY_POOL_V2).size).toBe(DAILY_POOL_V2.length);
+    for (const id of DAILY_POOL_V2) expect(getArtwork(id), id).toBeDefined();
+  });
+  it('switches pools at the activation date and keeps older days unchanged', () => {
+    expect(DAILY_POOL_V2_FROM).toBe('2026-11-14');
+    expect(DAILY_POOL_V1).toContain(dailyArtworkId('2026-11-13'));
+    expect(DAILY_POOL_V2).toContain(dailyArtworkId('2026-11-14'));
+    expect(dailyArtworkId('2026-11-13')).toBe('hokusai-shower-below-the-summit'); // published before V2: never changes
+    expect(dailyArtworkId('2026-11-14')).toMatchInlineSnapshot(`"hokusai-hara"`);
+    expect(dailyArtworkId('2027-01-05')).toMatchInlineSnapshot(`"church-view-of-cotopaxi"`);
+  });
+  it('shows every painting once per cycle and is deterministic', () => {
+    const n = DAILY_POOL_V2.length;
+    const ids = Array.from({ length: n }, (_, i) => dailyArtworkId(addDays(DAILY_POOL_V2_FROM, i)));
+    expect(new Set(ids).size).toBe(n);
+    expect(dailyArtworkId('2026-12-25')).toBe(dailyArtworkId('2026-12-25'));
+    expect(generateArtDaily('2026-12-25')).toEqual(generateArtDaily('2026-12-25'));
   });
 });
 
@@ -182,14 +209,14 @@ describe('image slicing', () => {
 });
 
 describe('artwork data & rights', () => {
-  it('has 15-20 works with unique ids', () => {
-    expect(ARTWORKS.length).toBeGreaterThanOrEqual(15);
-    expect(ARTWORKS.length).toBeLessThanOrEqual(20);
+  it('has about 100 works with unique ids', () => {
+    expect(ARTWORKS.length).toBeGreaterThanOrEqual(100);
+    expect(ARTWORKS.length).toBeLessThanOrEqual(110);
     expect(new Set(ARTWORKS.map((a) => a.id)).size).toBe(ARTWORKS.length);
   });
   it('records source, licence and verification for every work, and only open licences', () => {
     for (const a of ARTWORKS) {
-      for (const k of ['title', 'artist', 'year', 'museum', 'sourceUrl', 'license', 'licenseUrl', 'licenseBasis', 'sourceImageUrl', 'verifiedAt', 'description'] as const) expect(a[k], `${a.id}.${k}`).toBeTruthy();
+      for (const k of ['title', 'artist', 'artistSort', 'year', 'era', 'theme', 'medium', 'museum', 'sourceUrl', 'license', 'licenseUrl', 'licenseBasis', 'sourceImageUrl', 'verifiedAt', 'description'] as const) expect(a[k], `${a.id}.${k}`).toBeTruthy();
       expect(a.license).toMatch(/CC0/);
       expect(a.licenseBasis).toMatch(/is_public_domain = true|isPublicDomain = true/);
       expect(a.licenseUrl).toMatch(/^https:\/\//);
@@ -206,15 +233,17 @@ describe('artwork data & rights', () => {
   });
   it('has original short descriptions, no copied museum text markers', () => {
     for (const a of ARTWORKS) {
-      expect(a.description.length).toBeGreaterThan(60);
+      expect(a.description.length).toBeGreaterThan(40);
       expect(a.description.length).toBeLessThan(260);
       expect(a.description).not.toMatch(/https?:|©|\bcopyright\b/i);
+      expect(a.description).not.toMatch(/undefined|null|NaN/);
     }
   });
   it('ships every image and thumbnail, with dimensions and a valid crop focus', () => {
     for (const a of ARTWORKS) {
       expect(fs.statSync(`public${a.imageUrl}`).size, a.imageUrl).toBeGreaterThan(5000);
       expect(fs.statSync(`public${a.thumbnailUrl}`).size, a.thumbnailUrl).toBeGreaterThan(1000);
+      expect(fs.statSync(`public${a.imageUrl}`).size, a.imageUrl).toBeLessThan(2_000_000); // keeps pages light
       expect(a.width).toBeGreaterThan(300);
       expect(a.height).toBeGreaterThan(300);
       expect(a.focus.x).toBeGreaterThanOrEqual(0);
@@ -227,5 +256,63 @@ describe('artwork data & rights', () => {
     expect(ARTWORKS.some((a) => a.width > a.height * 1.2)).toBe(true);
     expect(ARTWORKS.some((a) => a.height > a.width * 1.2)).toBe(true);
     expect(nextArtwork(ARTWORKS[ARTWORKS.length - 1].id).id).toBe(ARTWORKS[0].id);
+  });
+});
+
+describe('gallery: search, sort and grouping', () => {
+  it('every work has a known theme and era; every theme has works', () => {
+    for (const a of ARTWORKS) {
+      expect(THEME_ORDER, `${a.id} theme ${a.theme}`).toContain(a.theme);
+      expect(ERA_ORDER, `${a.id} era ${a.era}`).toContain(a.era);
+      expect(Number.isFinite(a.yearStart)).toBe(true);
+      expect(a.yearEnd).toBeGreaterThanOrEqual(a.yearStart);
+    }
+    for (const t of THEME_ORDER) expect(ARTWORKS.some((a) => a.theme === t), t).toBe(true);
+  });
+  it('searches title, artist, theme and era, ignoring case and accents, all words must match', () => {
+    const monet = filterArtworks(ARTWORKS, 'MONET');
+    expect(monet.length).toBeGreaterThanOrEqual(3);
+    expect(monet.every((a) => /monet/i.test(a.artist))).toBe(true);
+    expect(filterArtworks(ARTWORKS, 'cezanne').some((a) => a.artist === 'Paul Cézanne')).toBe(true);
+    expect(filterArtworks(ARTWORKS, 'monet water').every((a) => /monet/i.test(a.artist) && /water/i.test(`${a.title} ${a.theme}`))).toBe(true);
+    expect(filterArtworks(ARTWORKS, 'japanese prints').length).toBe(ARTWORKS.filter((a) => a.theme === 'Japanese Prints').length);
+    expect(filterArtworks(ARTWORKS, '')).toHaveLength(ARTWORKS.length);
+    expect(filterArtworks(ARTWORKS, 'zzzz-no-match')).toHaveLength(0);
+  });
+  it('sorts by artist, title and year', () => {
+    const asc = sortArtworks(ARTWORKS, 'year-asc').map((a) => a.yearStart);
+    expect(asc).toEqual([...asc].sort((x, y) => x - y));
+    const desc = sortArtworks(ARTWORKS, 'year-desc').map((a) => a.yearStart);
+    expect(desc).toEqual([...desc].sort((x, y) => y - x));
+    const titles = sortArtworks(ARTWORKS, 'title').map((a) => a.title);
+    expect(titles).toEqual([...titles].sort((x, y) => x.localeCompare(y, 'en', { sensitivity: 'base' })));
+    const artists = sortArtworks(ARTWORKS, 'artist').map((a) => a.artistSort);
+    expect(artists).toEqual([...artists].sort((x, y) => x.localeCompare(y, 'en', { sensitivity: 'base' })));
+  });
+  it('groups every work exactly once, in a sensible group order', () => {
+    for (const by of ['none', 'theme', 'era', 'artist'] as const) {
+      const groups = groupArtworks(ARTWORKS, by, 'year-asc');
+      const ids = groups.flatMap((g) => g.items.map((a) => a.id));
+      expect(ids.sort()).toEqual(ARTWORKS.map((a) => a.id).sort());
+      expect(groups.every((g) => g.items.length > 0)).toBe(true);
+    }
+    expect(groupArtworks(ARTWORKS, 'none', 'title')).toHaveLength(1);
+    const eras = groupArtworks(ARTWORKS, 'era', 'title').map((g) => g.label);
+    expect(eras).toEqual(ERA_ORDER.filter((e) => eras.includes(e))); // chronological
+    const themes = groupArtworks(ARTWORKS, 'theme', 'title').map((g) => g.label);
+    expect(themes).toEqual(THEME_ORDER.filter((t) => themes.includes(t)));
+    const artistGroups = groupArtworks(ARTWORKS, 'artist', 'title');
+    expect(artistGroups.length).toBeGreaterThanOrEqual(40);
+    const keys = artistGroups.map((g) => g.items[0].artistSort);
+    expect(keys).toEqual([...keys].sort((x, y) => x.localeCompare(y, 'en', { sensitivity: 'base' })));
+    // sort applies inside each group
+    for (const g of groupArtworks(ARTWORKS, 'theme', 'year-asc')) {
+      const ys = g.items.map((a) => a.yearStart);
+      expect(ys).toEqual([...ys].sort((x, y) => x - y));
+    }
+  });
+  it('grouping respects the search filter', () => {
+    const groups = groupArtworks(filterArtworks(ARTWORKS, 'van gogh'), 'theme', 'year-asc');
+    expect(groups.flatMap((g) => g.items).every((a) => /van gogh/i.test(a.artist))).toBe(true);
   });
 });

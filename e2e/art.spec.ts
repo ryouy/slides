@@ -42,31 +42,67 @@ test('landing card, home navigation and URLs', async ({ page }) => {
   await expect(page).toHaveURL(/\/art-slide\/gallery$/);
   await page.getByRole('button', { name: 'Back' }).click();
   await expect(page).toHaveURL(/\/art-slide$/);
-  await expect(page.getByTestId('more-word-slide')).toBeVisible();
   await page.goto('/art-slide/gallery'); // direct URL
   await expect(page.getByTestId('gallery')).toBeVisible();
 });
 
-test('ART SLIDE home: exhibit with today\'s painting that slides by itself', async ({ page }) => {
+test('ART SLIDE home is simple: today\'s exhibit, two main buttons, quiet links', async ({ page }) => {
   await page.goto('/art-slide');
-  await expect(page.locator('.gold-frame')).toBeVisible();
-  await expect(page.getByTestId('plaque')).toContainText("TODAY'S EXHIBIT");
-  await expect(page.locator('.hero-board .apiece:not(.ghost)')).toHaveCount(8);
-  const snap = () => page.locator('.hero-board .atile').evaluateAll((els) => els.map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).join());
-  const first = await snap();
-  await expect.poll(snap, { timeout: 8000 }).not.toBe(first); // the demo keeps moving tiles
+  await expect(page.getByTestId('exhibit')).toContainText("TODAY'S EXHIBIT");
   await expect(page.getByTestId('art-daily')).toBeVisible();
+  await expect(page.getByTestId('art-gallery')).toContainText('paintings');
+  await expect(page.locator('.home-links button')).toHaveCount(4);
+  await page.getByTestId('exhibit').click(); // the exhibit leads straight to today's puzzle
+  await expect(page).toHaveURL(/\/art-slide\/daily$/);
 });
 
-test('gallery shows 15+ paintings with title, artist, year and lazy thumbnails', async ({ page }) => {
+test('gallery shows 100+ paintings with title, artist, year and lazy thumbnails', async ({ page }) => {
   await page.goto('/art-slide/gallery');
   const cards = page.locator('.gcard');
-  expect(await cards.count()).toBeGreaterThanOrEqual(15);
+  await expect(page.getByTestId('gal-count')).toContainText(/1\d\d paintings/);
+  expect(await cards.count()).toBeGreaterThanOrEqual(100);
   await expect(cards.first().locator('img')).toHaveAttribute('loading', 'lazy');
   await expect(cards.first().locator('.g-title')).not.toBeEmpty();
   await expect(cards.first().locator('.g-meta')).toContainText('·');
   await cards.first().click();
   await expect(page).toHaveURL(/\/art-slide\/play\/[a-z0-9-]+$/);
+});
+
+test('gallery: search, group by theme/artist/era, sort, and the choice is remembered', async ({ page }) => {
+  await page.goto('/art-slide/gallery');
+  const total = await page.locator('.gcard').count();
+  // default: grouped by theme
+  await expect(page.locator('.gal-h').first()).toContainText(/landscape/i);
+  expect(await page.locator('.gal-group').count()).toBeGreaterThanOrEqual(6);
+  // search
+  await page.getByLabel('Search artworks').fill('monet');
+  const monet = await page.locator('.gcard').count();
+  expect(monet).toBeGreaterThanOrEqual(3);
+  expect(monet).toBeLessThan(total);
+  await expect(page.getByTestId('gal-count')).toContainText(`${monet} of`);
+  for (const meta of await page.locator('.g-meta').allInnerTexts()) expect(meta).toContain('Monet');
+  await page.getByLabel('Search artworks').fill('zzzz nothing');
+  await expect(page.locator('.gal-empty')).toBeVisible();
+  await page.getByLabel('Search artworks').fill('');
+  // group by artist: one heading per artist
+  await page.getByTestId('group-by').selectOption('artist');
+  expect(await page.locator('.gal-h').count()).toBeGreaterThanOrEqual(40);
+  // group by era: chronological headings
+  await page.getByTestId('group-by').selectOption('era');
+  const heads = await page.locator('.gal-h').allInnerTexts();
+  expect(heads[0]).toMatch(/before 1700/i);
+  expect(heads[heads.length - 1]).toMatch(/1900s/i);
+  // no grouping + year sort: oldest first
+  await page.getByTestId('group-by').selectOption('none');
+  await page.getByTestId('sort-by').selectOption('year-asc');
+  expect(await page.locator('.gal-h').count()).toBe(0);
+  const years = (await page.locator('.g-meta').allInnerTexts()).map((t) => Number((t.match(/(\d{4})/) ?? [])[1])).filter(Boolean);
+  expect(years[0]).toBeLessThanOrEqual(1700);
+  expect(years[years.length - 1]).toBeGreaterThanOrEqual(1893);
+  // remembered after reload
+  await page.reload();
+  await expect(page.getByTestId('group-by')).toHaveValue('none');
+  await expect(page.getByTestId('sort-by')).toHaveValue('year-asc');
 });
 
 test('3x3 default: 8 tiles, art info with credit links, solve, painting completes, result shown', async ({ page }) => {
@@ -263,7 +299,7 @@ test('dark theme keeps the art UI readable', async ({ page }) => {
   await page.locator('select').selectOption('dark');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.goto('/art-slide');
-  await expect(page.locator('.gold-frame')).toBeVisible();
+  await expect(page.getByTestId('exhibit')).toBeVisible();
   await page.goto('/art-slide/play/degas-dance-class');
   await expect(tiles(page)).toHaveCount(8);
 });

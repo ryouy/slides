@@ -9,6 +9,15 @@ export interface Artwork {
   /** Size of the game image in pixels. */
   width: number;
   height: number;
+  /** Sort key for the artist: last name first (lower-case, no accents). */
+  artistSort: string;
+  /** Start / end year (for sorting and the era group). */
+  yearStart: number;
+  yearEnd: number;
+  /** Gallery groups. */
+  era: string;
+  theme: string;
+  medium: string;
   /** Where the square board crop is centred, 0..1 (default centre). */
   focus: { x: number; y: number };
   museum: string;

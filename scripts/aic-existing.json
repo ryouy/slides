@@ -1,0 +1,134 @@
+[
+ {
+  "id": "seurat-grande-jatte",
+  "sid": 27992,
+  "focus": {
+   "x": 0.5,
+   "y": 0.5
+  },
+  "title": "A Sunday on La Grande Jatte",
+  "artist": "Georges Seurat",
+  "year": "1884–86"
+ },
+ {
+  "id": "van-gogh-bedroom",
+  "sid": 28560,
+  "focus": {
+   "x": 0.5,
+   "y": 0.5
+  },
+  "title": "The Bedroom",
+  "artist": "Vincent van Gogh",
+  "year": "1889"
+ },
+ {
+  "id": "van-gogh-self-portrait",
+  "sid": 80607,
+  "focus": {
+   "x": 0.5,
+   "y": 0.25
+  },
+  "title": "Self-Portrait",
+  "artist": "Vincent van Gogh",
+  "year": "1887"
+ },
+ {
+  "id": "monet-water-lilies",
+  "sid": 16568,
+  "focus": {
+   "x": 0.5,
+   "y": 0.5
+  },
+  "title": "Water Lilies",
+  "artist": "Claude Monet",
+  "year": "1906"
+ },
+ {
+  "id": "monet-stacks-of-wheat",
+  "sid": 14624,
+  "focus": {
+   "x": 0.5,
+   "y": 0.5
+  },
+  "title": "Stacks of Wheat (End of Day, Autumn)",
+  "artist": "Claude Monet",
+  "year": "1890–91"
+ },
+ {
+  "id": "caillebotte-paris-street",
+  "sid": 20684,
+  "focus": {
+   "x": 0.5,
+   "y": 0.5
+  },
+  "title": "Paris Street; Rainy Day",
+  "artist": "Gustave Caillebotte",
+  "year": "1877"
+ },
+ {
+  "id": "renoir-two-sisters",
+  "sid": 14655,
+  "focus": {
+   "x": 0.5,
+   "y": 0.4
+  },
+  "title": "Two Sisters (On the Terrace)",
+  "artist": "Pierre-Auguste Renoir",
+  "year": "1881"
+ },
+ {
+  "id": "cassatt-childs-bath",
+  "sid": 111442,
+  "focus": {
+   "x": 0.5,
+   "y": 0.5
+  },
+  "title": "The Child's Bath",
+  "artist": "Mary Cassatt",
+  "year": "1893"
+ },
+ {
+  "id": "toulouse-lautrec-moulin-rouge",
+  "sid": 61128,
+  "focus": {
+   "x": 0.5,
+   "y": 0.5
+  },
+  "title": "At the Moulin Rouge",
+  "artist": "Henri de Toulouse-Lautrec",
+  "year": "1892–95"
+ },
+ {
+  "id": "gauguin-day-of-the-god",
+  "sid": 27943,
+  "focus": {
+   "x": 0.5,
+   "y": 0.5
+  },
+  "title": "Day of the God (Mahana no atua)",
+  "artist": "Paul Gauguin",
+  "year": "1894"
+ },
+ {
+  "id": "cezanne-basket-of-apples",
+  "sid": 111436,
+  "focus": {
+   "x": 0.5,
+   "y": 0.5
+  },
+  "title": "The Basket of Apples",
+  "artist": "Paul Cézanne",
+  "year": "c. 1893"
+ },
+ {
+  "id": "hokusai-shower-below-the-summit",
+  "sid": 87008,
+  "focus": {
+   "x": 0.5,
+   "y": 0.5
+  },
+  "title": "Shower Below the Summit",
+  "artist": "Katsushika Hokusai",
+  "year": "c. 1830/33"
+ }
+]

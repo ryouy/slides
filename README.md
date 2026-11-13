@@ -73,14 +73,19 @@ npm run e2e        # Playwright (desktop + mobile)
 
 ### 収録作品と権利
 
-18作品すべてを **美術館の公式APIでパブリックドメインと確認** し、CC0 として公開されている画像のみ使用しています（Art Institute of Chicago 12点: `is_public_domain = true`、The Met 6点: `isPublicDomain = true`）。各作品の出典ページ・ライセンス・確認日・取得元URLは `src/games/art-slide/data/artworks.ts` に記録され、アプリ内の「Artwork Credits」ページ（`/art-slide/credits`）でも表示します。作品解説は独自に書いた短文です。
+**104作品**（Art Institute of Chicago 98点 + The Met 6点）、すべて **美術館の公式APIでパブリックドメインと確認** した CC0 画像のみです（AIC: `is_public_domain = true`、Met: `isPublicDomain = true`）。各作品の出典ページ・ライセンス・確認日・取得元URLは `src/games/art-slide/data/artworks.ts` に記録され、アプリ内の「Credits」ページ（`/art-slide/credits`）にも全作品が表示されます。
 
-画像の再生成・追加:
+- 作品解説: 最初の18作品は手書きの短文、残りは美術館の目録データ（作者・年・技法・テーマ）から組み立てた短い事実文です（美術館の解説文は転載していません）。
+- **ギャラリー**: 検索（作品名・作者・テーマ・年代）、グループ分け（テーマ / 作者 / 年代）、並べ替え（作者 / 作品名 / 年 古い順・新しい順）。選択は保存されます。ロジックは `logic/gallery.ts`。
+- デイリーの作品は固定プール（`data/daily-pools.ts`、2026-11-14 以降。それ以前は V1 の18作品）から決まり、プールは凍結されているので過去の日付は変わりません。
+
+画像の選定・取得（再実行可能）:
 
 ```bash
-node scripts/fetch-artworks.mjs   # manifest の作品をAPIで再確認 → public/artworks/*.webp と data/artworks.ts を生成
+node scripts/select-artworks.mjs   # AIC APIからPD作品を検索 → scripts/selection.json（コミット済み。通常は再実行不要）
+node scripts/fetch-artworks.mjs    # 各作品のPDフラグをAPIで再確認 → public/artworks/*.webp と data/artworks.ts を生成
 ```
-スクリプトは PD フラグが立っていない作品は取得を拒否します。Art Institute の画像サーバーは `AIC-User-Agent` ヘッダーが必要です。Met の写真は黒背景ごと撮影されているため自動トリミングしています。Met の検索 API は現在 410 を返すため、作品IDを直接指定しています。
+PDフラグが立っていない作品は取得を拒否します。AIC の画像サーバーは `AIC-User-Agent` ヘッダーが必要で、APIにはレート制限（429）があるため、スクリプトは間隔を空けて再試行します。**Met のAPIは一括アクセスで一時ブロック（403）されたため、Met の6作品は確認済みデータ（`scripts/met-cache.json`）を使っています。** テーマ分類は作品ごとに手で確認したテーブル（`THEME_BY_ID`）です。
 
 ## 構成
 
