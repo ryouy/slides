@@ -6,6 +6,7 @@ interface Props {
   board: BoardT;
   marks: (Mark | null)[] | null;
   foundRows: boolean[];
+  selRow: number | null;
   disabled: boolean;
   onTile: (cell: number) => void;
   onSwipe: (dir: Direction) => void;
@@ -13,7 +14,7 @@ interface Props {
 
 const SWIPE_PX = 24;
 
-export function Board({ board, marks, foundRows, disabled, onTile, onSwipe }: Props) {
+export function Board({ board, marks, foundRows, selRow, disabled, onTile, onSwipe }: Props) {
   const start = useRef<{ x: number; y: number } | null>(null);
   const swiped = useRef(false);
 
@@ -43,6 +44,9 @@ export function Board({ board, marks, foundRows, disabled, onTile, onSwipe }: Pr
       }}
       onPointerCancel={() => (start.current = null)}
     >
+      {selRow !== null && (
+        <div className="row-sel" data-row={selRow} style={{ ['--r' as string]: selRow, ['--w' as string]: selRow === 3 ? 0.75 : 1 }} />
+      )}
       {tiles.map(({ t, cell }) => {
         const mark = marks?.[cell] ?? null;
         const found = foundRows[row(cell)] && cell < 15 && !mark;

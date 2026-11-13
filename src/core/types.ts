@@ -14,6 +14,15 @@ export type Mode = 'daily' | 'endless';
 export type Mark = 'green' | 'yellow' | 'gray';
 export type Direction = 'up' | 'down' | 'left' | 'right';
 
+export interface WordEntry {
+  id: string;
+  word: string;
+  category: string;
+  /** Plain-English description that never contains the word itself. */
+  definition: string;
+  difficulty: Difficulty;
+}
+
 export interface WordSet {
   /** Three 4-letter words; the order on the board is free. */
   top: [string, string, string];
@@ -28,6 +37,8 @@ export interface Puzzle {
   /** Daily puzzle number (1-based) */
   number?: number;
   words: WordSet;
+  /** Clue data in card order: clues[0..2] = words.top[0..2], clues[3] = words.bottom. */
+  clues: WordEntry[];
   /** Initial letters by cell index (null = blank). */
   letters: (string | null)[];
   /** Cell indices to click, in order, that solve the puzzle (generator guarantee). */

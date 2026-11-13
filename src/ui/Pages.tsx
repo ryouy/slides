@@ -37,19 +37,28 @@ export function HowToPage() {
         <li>The bottom row holds a <b>3-letter word</b> in its left three cells, with the blank at the bottom right.</li>
       </ul>
       <pre className="goal">{'B I R D\nF I S H\nT R E E\nC A T □'}</pre>
-      <p>You don't know the words in advance. Press <b>CHECK</b> any time to colour the tiles:</p>
+      <p>You don't know the words in advance, but the <b>WORD CLUES</b> cards under the board describe them. Each card shows the word length, a category, a meaning and letter slots. Tap the buttons on a card to reveal more (they are recorded as hints):</p>
+      <ul>
+        <li><b>Category</b> → <b>Meaning</b> → <b>1st letter</b> → <b>+ Letter</b> (one more letter each time).</li>
+        <li>Easy shows category and meaning from the start; Normal shows the category; Hard shows nothing.</li>
+        <li>The card numbers are <b>not</b> row numbers: the three 4-letter words can be built in any row order. Only the 3-letter word (WORD 4) belongs in the bottom row.</li>
+      </ul>
+      <h3>CHECK</h3>
+      <p>Pick a <b>row</b> (1-4) and a <b>word card</b>, then press CHECK. The row is compared with that word, Wordle style:</p>
       <Ex cells={[['B', 'green'], ['R', 'yellow'], ['A', 'gray'], ['D', 'green']]} />
       <ul>
-        <li><b className="t-green">Green</b>: right letter, right position.</li>
+        <li><b className="t-green">Green</b>: the word has this letter in this position.</li>
         <li><b className="t-yellow">Yellow</b>: the word has this letter, but elsewhere.</li>
-        <li><b className="t-gray">Gray</b>: not in the word (or you have more than it needs).</li>
+        <li><b className="t-gray">Gray</b>: not in the word (or you have more of it than the word needs).</li>
+        <li>Green is about <i>that word</i>, not about where the row must finally be placed.</li>
+        <li>Rows 1-3 pair with the 4-letter cards; row 4 (left 3 cells) pairs with the 3-letter card.</li>
+        <li>Colours disappear when you move a tile; your CHECKs stay in the hint history.</li>
       </ul>
       <h3>Good to know</h3>
       <ul>
-        <li>Because row order is free, CHECK compares each row with the hidden word it matches best (most greens, then most yellows). <b>That match can change between CHECKs</b>, so a letter that was green before may not be green next time.</li>
-        <li>Colours disappear when you move a tile. Your past CHECKs stay in the hint history.</li>
-        <li><b>WORDS FOUND</b> shows how many words are on the board <i>right now</i>. Break one and the count drops. It needs no CHECK.</li>
-        <li>The puzzle clears automatically at 4/4 with the blank at the bottom right. There is no CHECK limit.</li>
+        <li><b>WORDS FOUND</b> shows how many words are on the board <i>right now</i> (completed rows get a green outline and their card is ticked). Break one and the count drops. No CHECK needed.</li>
+        <li>The puzzle clears automatically at 4/4 with the blank at the bottom right.</li>
+        <li>Clear without any CHECK or hint to earn <b>NO HINT CLEAR</b>.</li>
       </ul>
       <h3>Controls</h3>
       <ul>
@@ -76,6 +85,7 @@ export function StatsPage() {
         <Big n={currentDailyStreak(data.dailyHistory, today)} l="DAILY STREAK" />
         <Big n={maxDailyStreak(data.dailyHistory)} l="BEST DAILY STREAK" />
         <Big n={data.endlessStreak} l="ENDLESS STREAK" />
+        <Big n={data.noHintClears} l="NO HINT CLEARS" />
       </div>
       <h3>Endless personal bests (time / fewest moves)</h3>
       <table className="table">
@@ -92,7 +102,7 @@ export function StatsPage() {
             {data.history.slice(-8).reverse().map((h, i) => (
               <tr key={i}>
                 <th>{h.date.slice(5)} {h.mode === 'daily' ? 'Daily' : h.difficulty}</th>
-                <td>{formatTime(h.timeMs)} · {h.moves}m · {h.checks}c</td>
+                <td>{formatTime(h.timeMs)} · {h.moves}m · {h.checks}c · {h.hints ?? 0}h{h.noHint ? ' ✨' : ''}</td>
               </tr>
             ))}
           </tbody>

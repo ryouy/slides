@@ -36,16 +36,17 @@ export function updateBest(b: Best, timeMs: number, moves: number): Best {
 
 export function recordClear(
   data: SaveData,
-  r: { mode: 'daily' | 'endless'; difficulty: Difficulty; dateKey: string; number?: number; timeMs: number; moves: number; checks: number },
+  r: { mode: 'daily' | 'endless'; difficulty: Difficulty; dateKey: string; number?: number; timeMs: number; moves: number; checks: number; hints?: number; noHint?: boolean },
 ): SaveData {
   const next: SaveData = {
     ...data,
     completed: data.completed + 1,
-    history: [...data.history, { date: r.dateKey, mode: r.mode, difficulty: r.difficulty, timeMs: r.timeMs, moves: r.moves, checks: r.checks }].slice(-200),
+    noHintClears: data.noHintClears + (r.noHint ? 1 : 0),
+    history: [...data.history, { date: r.dateKey, mode: r.mode, difficulty: r.difficulty, timeMs: r.timeMs, moves: r.moves, checks: r.checks, hints: r.hints ?? 0, noHint: !!r.noHint }].slice(-200),
   };
   if (r.mode === 'daily') {
     if (!data.dailyHistory[r.dateKey]) {
-      next.dailyHistory = { ...data.dailyHistory, [r.dateKey]: { number: r.number ?? 0, timeMs: r.timeMs, moves: r.moves, checks: r.checks } };
+      next.dailyHistory = { ...data.dailyHistory, [r.dateKey]: { number: r.number ?? 0, timeMs: r.timeMs, moves: r.moves, checks: r.checks, hints: r.hints ?? 0 } };
     }
   } else {
     next.endlessStreak = data.endlessStreak + 1;

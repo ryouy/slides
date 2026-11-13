@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { go } from '../nav';
 import { dailyNumber, generateDaily, generateEndless, jstDateKey } from '../core/generator';
-import { newGame, type GameState } from '../core/game';
+import { isNoHintClear, newGame, type GameState } from '../core/game';
+import { totalHintUse } from '../core/hints';
 import type { Difficulty } from '../core/types';
 import { useSave } from '../storage/SaveContext';
 import { formatTime, recordClear } from '../storage/stats';
@@ -23,7 +24,7 @@ export function DailyScreen() {
       onBack={() => go('')}
       onProgress={(s) => setProgress('daily', s)}
       onCleared={(s) =>
-        update((d) => recordClear(d, { mode: 'daily', difficulty: 'normal', dateKey, number: s.puzzle.number, timeMs: s.elapsedMs, moves: s.moves, checks: s.checks }))
+        update((d) => recordClear(d, { mode: 'daily', difficulty: 'normal', dateKey, number: s.puzzle.number, timeMs: s.elapsedMs, moves: s.moves, checks: s.checks, hints: totalHintUse(s.hintUse), noHint: isNoHintClear(s) }))
       }
       onNext={() => go('endless')}
       nextLabel="TRY ENDLESS"
@@ -94,7 +95,7 @@ export function EndlessScreen() {
       onBack={() => go('')}
       onProgress={(s) => setProgress('endless', s)}
       onCleared={(s) =>
-        update((d) => recordClear(d, { mode: 'endless', difficulty: s.puzzle.difficulty, dateKey: jstDateKey(), timeMs: s.elapsedMs, moves: s.moves, checks: s.checks }))
+        update((d) => recordClear(d, { mode: 'endless', difficulty: s.puzzle.difficulty, dateKey: jstDateKey(), timeMs: s.elapsedMs, moves: s.moves, checks: s.checks, hints: totalHintUse(s.hintUse), noHint: isNoHintClear(s) }))
       }
       onNext={() => start(diff)}
       nextLabel="NEXT PUZZLE"

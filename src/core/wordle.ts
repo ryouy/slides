@@ -1,4 +1,4 @@
-import { SIZE, type Mark, type WordSet } from './types';
+import { SIZE, type Mark } from './types';
 
 /**
  * Wordle-style evaluation of one row against one target word.
@@ -29,43 +29,12 @@ export function evaluateRow(cells: readonly (string | null)[], target: string): 
   return marks;
 }
 
-/** All 6 assignments of the 3 top words to the 3 top rows, in fixed lexicographic order. */
-export const ASSIGNMENTS: readonly (readonly [number, number, number])[] = [
-  [0, 1, 2],
-  [0, 2, 1],
-  [1, 0, 2],
-  [1, 2, 0],
-  [2, 0, 1],
-  [2, 1, 0],
-];
-
-export interface BoardEvaluation {
-  marks: (Mark | null)[];
-  /** Chosen assignment: assignment[r] = index of the top word compared with row r. */
-  assignment: readonly [number, number, number];
-  greens: number;
-  yellows: number;
-}
-
-const count = (marks: (Mark | null)[], m: Mark) => marks.filter((x) => x === m).length;
-
 /**
- * Evaluate the full board. The best assignment of rows to words is chosen by
- * (1) most greens, (2) most yellows, (3) first in fixed order -> fully deterministic.
+ * Compare one board row with one chosen word (the CHECK action).
+ * Row 3 only compares its left 3 cells with the 3-letter word; cell 15 is never evaluated.
  */
-export function evaluateBoard(letters: readonly (string | null)[], words: WordSet): BoardEvaluation {
-  const rowCells = (r: number) => letters.slice(r * SIZE, r * SIZE + SIZE);
-  const bottom = evaluateRow(rowCells(3), words.bottom);
-  let best: BoardEvaluation | null = null;
-  for (const assignment of ASSIGNMENTS) {
-    const marks: (Mark | null)[] = [];
-    for (let r = 0; r < 3; r++) marks.push(...evaluateRow(rowCells(r), words.top[assignment[r]]));
-    marks.push(...bottom);
-    const greens = count(marks, 'green');
-    const yellows = count(marks, 'yellow');
-    if (!best || greens > best.greens || (greens === best.greens && yellows > best.yellows)) {
-      best = { marks, assignment, greens, yellows };
-    }
-  }
-  return best as BoardEvaluation;
+export function checkRow(letters: readonly (string | null)[], row: number, word: string): { cells: (string | null)[]; marks: (Mark | null)[] } {
+  const width = row === 3 ? 3 : SIZE;
+  const cells = letters.slice(row * SIZE, row * SIZE + width);
+  return { cells, marks: evaluateRow(cells, word) };
 }
