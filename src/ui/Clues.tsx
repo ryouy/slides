@@ -1,5 +1,6 @@
 import { canApply, isFullyRevealed, maskedWord, nextExtraPosition, type CardHint, type HintKind } from '../core/hints';
 import type { WordEntry } from '../core/types';
+import { useT } from '../i18n';
 
 interface Props {
   clues: WordEntry[];
@@ -20,9 +21,10 @@ const BTN: { kind: HintKind; label: string; title: string }[] = [
 ];
 
 export function Clues({ clues, cards, found, selCard, selRow, disabled, onSelect, onHint }: Props) {
+  const t = useT();
   return (
     <section className="clues" aria-label="Word clues">
-      <h2>WORD CLUES</h2>
+      <h2>{t('word.clues')}</h2>
       <div className="clue-grid">
         {clues.map((clue, i) => {
           const card = cards[i];

@@ -93,7 +93,7 @@ test('CHECK compares the chosen row with the chosen card only', async ({ page })
   await page.getByTestId('row-1').click();
   await expect(check).toBeDisabled(); // no card yet
   await page.getByTestId('select-card-2').click();
-  await expect(page.getByTestId('check-msg')).toHaveText('Compare ROW 2 with WORD 3');
+  await expect(page.getByTestId('check-msg')).toHaveText('ROW 2 → WORD 3');
   await expect(page.locator('.row-sel')).toHaveAttribute('data-row', '1');
   await check.click();
   await expect(page.getByTestId('checks')).toHaveText('1');
@@ -111,7 +111,7 @@ test('CHECK compares the chosen row with the chosen card only', async ({ page })
 test('bottom row pairs with the 3-letter card and checks 3 cells', async ({ page }) => {
   await page.getByTestId('daily').click();
   await page.getByTestId('row-3').click();
-  await expect(page.getByTestId('check-msg')).toHaveText('Compare ROW 4 with WORD 4');
+  await expect(page.getByTestId('check-msg')).toHaveText('ROW 4 → WORD 4');
   await page.getByRole('button', { name: 'CHECK' }).click();
   await expect(page.locator('.history .mini').first().locator('.mc')).toHaveCount(3);
   // a 4-letter card is dimmed while ROW 4 is selected
@@ -144,14 +144,14 @@ test('hard/easy starting hints and daily fairness', async ({ page, browser }) =>
 test('solving the daily clears it, saves, restores after reload', async ({ page }) => {
   await page.getByTestId('daily').click();
   await solve(page, 'daily');
-  await expect(page.getByRole('dialog', { name: 'Puzzle cleared' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: /CLEARED!|COMPLETE!/ })).toBeVisible();
   await expect(page.getByTestId('found')).toContainText('4');
   await expect(page.getByTestId('no-hint')).toHaveText('NO HINT CLEAR');
   await page.getByRole('button', { name: 'Close' }).click();
   // tiles locked after clearing
   await expect(page.locator('.tile').first()).toBeDisabled();
   await page.reload();
-  await expect(page.getByRole('dialog', { name: 'Puzzle cleared' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: /CLEARED!|COMPLETE!/ })).toBeVisible();
   const s = await readSave(page);
   expect(s.completed).toBe(1);
   expect(Object.keys(s.dailyHistory)).toHaveLength(1);
@@ -161,9 +161,9 @@ test('using a hint removes NO HINT CLEAR', async ({ page }) => {
   await page.getByTestId('daily').click();
   await page.getByTestId('hint-first-3').click();
   await solve(page, 'daily');
-  await expect(page.getByRole('dialog', { name: 'Puzzle cleared' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: /CLEARED!|COMPLETE!/ })).toBeVisible();
   await expect(page.getByTestId('no-hint')).toHaveCount(0);
-  await expect(page.getByTestId('hint-sum')).toContainText('1 first letter');
+  await expect(page.getByTestId('hint-sum')).toHaveText('1');
 });
 
 test('completed words are outlined and their cards ticked', async ({ page }) => {
@@ -193,7 +193,7 @@ test('endless: pick difficulty, solve, next puzzle', async ({ page }) => {
   await page.getByTestId('diff-easy').click();
   await expect(page.locator('.tile')).toHaveCount(15);
   await solve(page, 'endless');
-  await expect(page.getByRole('dialog', { name: 'Puzzle cleared' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: /CLEARED!|COMPLETE!/ })).toBeVisible();
   await page.getByRole('button', { name: 'NEXT PUZZLE' }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await expect(page.getByTestId('moves')).toHaveText('0');
@@ -208,7 +208,7 @@ test('pages render and dark theme applies', async ({ page }) => {
     await expect(page.locator('.topbar h1')).toBeVisible();
   }
   await page.goto('/settings');
-  await page.locator('select').selectOption('dark');
+  await page.getByTestId('theme-select').selectOption('dark');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 });
 

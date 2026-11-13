@@ -1,37 +1,19 @@
-import type { ArtSize } from './board';
-
-export interface Focus {
-  x: number;
-  y: number;
-}
+import type { Dims } from './board';
 
 /**
- * The board is a square showing a centre-crop (cover, never stretched) of the artwork.
- * Region of the SOURCE image (fractions 0..1) that belongs to the tile at (row, col):
+ * Region of the WHOLE image (fractions 0..1) that belongs to the tile whose home is (row, col).
+ * The board has the painting's own proportions, so the tiles together cover it exactly: no cropping.
  */
-export function tileRegion(w: number, h: number, n: number, row: number, col: number, focus: Focus = { x: 0.5, y: 0.5 }) {
-  const s = Math.min(w, h); // side of the square crop in source pixels
-  const ox = (w - s) * clamp01(focus.x);
-  const oy = (h - s) * clamp01(focus.y);
-  const t = s / n;
-  return { x0: (ox + col * t) / w, x1: (ox + (col + 1) * t) / w, y0: (oy + row * t) / h, y1: (oy + (row + 1) * t) / h };
+export function tileRegion(d: Dims, row: number, col: number) {
+  return { x0: col / d.cols, x1: (col + 1) / d.cols, y0: row / d.rows, y1: (row + 1) / d.rows };
 }
-
-const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
 /**
  * CSS background settings that show exactly that region inside a tile-sized box.
  * One image is shared by all tiles; only `position` differs, so tiles join up seamlessly.
  */
-export function tileBackground(w: number, h: number, n: ArtSize | number, row: number, col: number, focus: Focus = { x: 0.5, y: 0.5 }) {
-  const s = Math.min(w, h);
-  const k = n / s; // source px -> tile units (1 tile = 1 unit)
-  const W = w * k; // scaled image size in tile units
-  const H = h * k;
-  const ox = (w - s) * clamp01(focus.x) * k;
-  const oy = (h - s) * clamp01(focus.y) * k;
-  // CSS: offset = (box - image) * p/100  =>  p = (ox + col) / (W - 1)
-  const px = ((ox + col) / (W - 1)) * 100;
-  const py = ((oy + row) / (H - 1)) * 100;
-  return { size: `${W * 100}% ${H * 100}%`, position: `${px}% ${py}%`, px, py, W, H };
+export function tileBackground(d: Dims, row: number, col: number) {
+  const px = d.cols > 1 ? (col / (d.cols - 1)) * 100 : 0;
+  const py = d.rows > 1 ? (row / (d.rows - 1)) * 100 : 0;
+  return { size: `${d.cols * 100}% ${d.rows * 100}%`, position: `${px}% ${py}%`, px, py, W: d.cols, H: d.rows };
 }

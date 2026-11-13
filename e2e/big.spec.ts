@@ -40,7 +40,7 @@ async function solve(page: Page, mode: 'daily' | 'endless') {
 test('the main page is ART SLIDE; BIG and WORD are reached from it and lead back', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('.art-home-title')).toHaveText('ART SLIDE');
-  await expect(page.getByTestId('art-daily')).toBeVisible();
+  await expect(page.getByTestId('exhibit')).toBeVisible();
   await expect(page).toHaveTitle(/ART SLIDE/);
   await expect(page.getByTestId('to-main')).toHaveCount(0); // nothing "above" the main page
   await page.getByTestId('more-big').click();
@@ -109,7 +109,7 @@ test('illegal taps change nothing; solving clears, locks, saves under its own ke
   await page.locator(`[data-piece="${stuck}"] .bt`).click();
   await expect(page.getByTestId('moves')).toHaveText('0');
   await solve(page, 'daily');
-  await expect(page.getByRole('dialog', { name: 'Puzzle cleared' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: /CLEARED!|COMPLETE!/ })).toBeVisible();
   await expect(page.getByTestId('bigmoves')).not.toHaveText('0');
   await page.getByRole('button', { name: 'Close' }).click();
   await expect(page.locator('.bboard .bpiece .bt').first()).toBeDisabled(); // locked after clearing
@@ -121,7 +121,7 @@ test('illegal taps change nothing; solving clears, locks, saves under its own ke
   const word = await page.evaluate(() => localStorage.getItem('wordslide:save'));
   expect(word === null || !word.includes('bigslide')).toBe(true);
   await page.reload();
-  await expect(page.getByRole('dialog', { name: 'Puzzle cleared' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: /CLEARED!|COMPLETE!/ })).toBeVisible();
 });
 
 test('progress is restored after reload', async ({ page }) => {
@@ -138,7 +138,7 @@ test('endless 5x5: pick size and difficulty, solve, next puzzle', async ({ page 
   await page.getByTestId('bdiff-easy').click();
   await expect(page.locator('.bboard .bpiece')).toHaveCount(20); // 1 big + 19 numbers
   await solve(page, 'endless');
-  await expect(page.getByRole('dialog', { name: 'Puzzle cleared' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: /CLEARED!|COMPLETE!/ })).toBeVisible();
   await page.getByRole('button', { name: 'NEXT PUZZLE' }).click();
   await expect(page.getByTestId('moves')).toHaveText('0');
   await expect(page.locator('.bboard .bpiece')).toHaveCount(20);
@@ -159,7 +159,7 @@ test('WORD SLIDE progress is untouched by visiting BIG SLIDE; theme applies to b
   await expect(page.locator('.tile')).toHaveCount(15);
   await page.getByTestId('hint-first-0').click();
   await page.goto('/settings');
-  await page.locator('select').selectOption('dark');
+  await page.getByTestId('theme-select').selectOption('dark');
   await page.getByRole('button', { name: 'Back' }).click(); // a fresh load of Settings leads back to the main page (ART SLIDE)
   await expect(page).toHaveURL(/\/art-slide$/);
   await page.getByTestId('more-big').click();
@@ -204,7 +204,7 @@ for (const v of ['duo', 'shapes', 'mega'] as const) {
       await expect(page.locator('.bboard .bt.shaped .cell')).toHaveCount(4);
     }
     await solve(page, 'endless');
-    await expect(page.getByRole('dialog', { name: 'Puzzle cleared' })).toBeVisible();
+    await expect(page.getByRole('dialog', { name: /CLEARED!|COMPLETE!/ })).toBeVisible();
     const save = await readBig(page);
     expect(Object.keys(save.bests).some((k: string) => k.startsWith(`${v}-4-`))).toBe(true);
   });

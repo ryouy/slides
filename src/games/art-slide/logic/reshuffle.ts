@@ -1,6 +1,6 @@
 import { rngFromString } from '../../../utils/rng';
-import { ART_GENERATOR_VERSION, SHUFFLE_STEPS, shuffleFromBoard, type ArtPuzzle } from './generator';
-import type { ArtState } from './game';
+import { ART_GENERATOR_VERSION, shuffleFromBoard, visibleShuffleSteps, type ArtPuzzle } from './generator';
+import { dimsOf, type ArtState } from './game';
 
 export interface ReshufflePlan {
   /** Tiles to slide, in order (cell of the tile at the moment it moves). */
@@ -25,10 +25,10 @@ export function reduceBlankPath(path: number[]): number[] {
  * moves played so far, the shuffle) with back-and-forth removed, run backwards.
  */
 export function planReshuffle(state: ArtState, seed: string): ReshufflePlan {
-  const n = state.puzzle.size;
-  const { steps, minMisplaced } = SHUFFLE_STEPS[n];
-  const rng = rngFromString(`${ART_GENERATOR_VERSION}|shuffle|${seed}|${n}`);
-  const { board, clicks } = shuffleFromBoard(rng, n, state.board, steps, minMisplaced);
+  const d = dimsOf(state.puzzle);
+  const { steps, minMisplaced } = visibleShuffleSteps(state.puzzle.size, d);
+  const rng = rngFromString(`${ART_GENERATOR_VERSION}|shuffle|${seed}|${d.cols}x${d.rows}`);
+  const { board, clicks } = shuffleFromBoard(rng, d, state.board, steps, minMisplaced);
   const initialBlank = state.puzzle.initial.indexOf(null);
   // blank path from the SOLVED board to the old initial board (puzzle.solution is its reverse) ...
   const scramble = [...state.puzzle.solution.slice().reverse(), initialBlank];
@@ -36,9 +36,11 @@ export function planReshuffle(state: ArtState, seed: string): ReshufflePlan {
   const played = (state.blankPath ?? [initialBlank]).slice(1);
   const full = reduceBlankPath([...scramble, ...played, ...clicks]);
   const puzzle: ArtPuzzle = {
-    id: `art-${state.puzzle.artworkId}-${n}-${seed}`,
+    id: `art-${state.puzzle.artworkId}-${state.puzzle.size}-${seed}`,
     mode: 'endless',
-    size: n,
+    size: state.puzzle.size,
+    cols: d.cols,
+    rows: d.rows,
     artworkId: state.puzzle.artworkId,
     initial: board,
     solution: full.slice(0, -1).reverse(),

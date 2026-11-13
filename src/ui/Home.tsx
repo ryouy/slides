@@ -3,10 +3,12 @@ import { Link } from '../components/Link';
 import { BackToMain } from '../components/GameNav';
 import { HomeLinks } from '../components/HomeLinks';
 import { dailyNumber, jstDateKey } from '../core/generator';
+import { useT } from '../i18n';
 import { useSave } from '../storage/SaveContext';
 import { currentDailyStreak } from '../storage/stats';
 
 export function Home() {
+  const t = useT();
   const { data } = useSave();
   const today = jstDateKey();
   const doneToday = !!data.dailyHistory[today];
@@ -19,27 +21,26 @@ export function Home() {
         <br />
         {'SLIDE'.split('').map((c, i) => <span key={i} className={`logo-tile ${i % 2 ? 'y' : 'x'}`}>{c}</span>)}
       </div>
-      <p className="tagline">Slide the tiles. Read the hints. Find four hidden words.</p>
       <nav className="menu">
         <button className="btn primary big" data-testid="daily" onClick={() => go('daily')}>
-          Daily Puzzle #{dailyNumber(today)}
-          <small>{doneToday ? '✓ Cleared today' : 'New every day at 0:00 JST'}{streak > 0 ? ` · 🔥 ${streak}` : ''}</small>
+          {t('home.dailyN', { n: dailyNumber(today) })}{doneToday ? ' ✓' : ''}{streak > 0 ? ` · 🔥 ${streak}` : ''}
         </button>
-        <button className="btn big" data-testid="endless" onClick={() => go('endless')}>Endless Mode</button>
+        <button className="btn big" data-testid="endless" onClick={() => go('endless')}>{t('home.endless')}</button>
       </nav>
-      <HomeLinks items={[{ label: 'How to Play', to: 'how' }, { label: 'Statistics', to: 'stats' }, { label: 'Settings', to: 'settings' }]} />
+      <HomeLinks items={[{ label: t('home.howTo'), to: 'how' }, { label: t('home.stats'), to: 'stats' }, { label: t('home.settings'), to: 'settings' }]} />
       <Footer />
     </div>
   );
 }
 
 export function Footer() {
+  const t = useT();
   return (
     <footer className="footer">
-      <Link to="/about">About</Link>
-      <Link to="/privacy">Privacy</Link>
-      <Link to="/terms">Terms</Link>
-      <Link to="/contact">Contact</Link>
+      <Link to="/about">{t('common.about')}</Link>
+      <Link to="/privacy">{t('common.privacy')}</Link>
+      <Link to="/terms">{t('common.terms')}</Link>
+      <Link to="/contact">{t('common.contact')}</Link>
     </footer>
   );
 }

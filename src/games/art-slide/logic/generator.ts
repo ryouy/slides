@@ -1,10 +1,12 @@
 import { rngFromString, pick, shuffled, type Rng } from '../../../utils/rng';
 import { dailyNumber } from '../../../utils/date';
 import { DAILY_POOL_V2 } from '../data/daily-pools';
-import { isSolved, misplacedCount, moveTile, neighbors, solvedBoard, type ArtBoard, type ArtSize } from './board';
+import { getArtwork } from '../data';
+import { cellCount, isSolved, misplacedCount, moveTile, neighbors, solvedBoard, type ArtBoard, type ArtLevel, type Dims } from './board';
+import { aspectOf, gridFor } from './grid';
 
-/** Bump when the shuffling algorithm changes (it changes which board a seed yields). */
-export const ART_GENERATOR_VERSION = 'a1';
+/** Bump when the shuffling algorithm changes (it changes which board a seed yields). Artwork choice for the daily puzzle does NOT depend on it. */
+export const ART_GENERATOR_VERSION = 'a2';
 
 /**
  * Frozen pool for the daily puzzle. NEVER reorder or remove entries; to add artworks create a new
@@ -21,7 +23,11 @@ export const DAILY_POOL_V1 = [
 export interface ArtPuzzle {
   id: string;
   mode: 'daily' | 'endless';
-  size: ArtSize;
+  /** Difficulty level (3 easy, 4 normal, 5 hard). */
+  size: ArtLevel;
+  /** Grid of this puzzle (follows the painting's proportions). */
+  cols: number;
+  rows: number;
   artworkId: string;
   number?: number;
   initial: ArtBoard;
@@ -30,26 +36,28 @@ export interface ArtPuzzle {
   generatorVersion: string;
 }
 
-const STEPS: Record<ArtSize, { steps: number; minMisplaced: number }> = {
-  3: { steps: 40, minMisplaced: 5 },
-  4: { steps: 110, minMisplaced: 11 },
-  5: { steps: 240, minMisplaced: 20 },
-};
+const BASE: Record<ArtLevel, { steps: number }> = { 3: { steps: 40 }, 4: { steps: 110 }, 5: { steps: 240 } };
+
+/** How long a scramble is for a level and grid (scaled by the piece count). */
+export function scrambleSteps(level: ArtLevel, d: Dims) {
+  const count = cellCount(d);
+  return { steps: Math.round(BASE[level].steps * Math.pow(count / (level * level), 1.5)), minMisplaced: Math.max(4, Math.round(count * 0.6)) };
+}
 
 /**
  * Random walk from the solved board with legal moves only, so the result is always solvable.
  * Avoids undoing the previous move and revisiting boards.
  */
-export function shuffleBoard(rng: Rng, n: ArtSize) {
-  const { steps, minMisplaced } = STEPS[n];
-  let board = solvedBoard(n);
-  let blank = n * n - 1;
+export function shuffleBoard(rng: Rng, level: ArtLevel, d: Dims) {
+  const { steps, minMisplaced } = scrambleSteps(level, d);
+  let board = solvedBoard(d);
+  let blank = cellCount(d) - 1;
   let prev = -1;
   const visited = new Set([board.join(',')]);
   const path = [blank];
   for (let i = 0; i < steps + 400; i++) {
     if (i >= steps && misplacedCount(board) >= minMisplaced && !isSolved(board)) break;
-    const options = neighbors(blank, n).filter((c) => c !== prev);
+    const options = neighbors(blank, d).filter((c) => c !== prev);
     const fresh = options.filter((c) => {
       const b = board.slice();
       b[blank] = b[c];
@@ -57,7 +65,7 @@ export function shuffleBoard(rng: Rng, n: ArtSize) {
       return !visited.has(b.join(','));
     });
     const next = pick(rng, fresh.length ? fresh : options);
-    board = moveTile(board, n, next)!;
+    board = moveTile(board, d, next)!;
     visited.add(board.join(','));
     prev = blank;
     blank = next;
@@ -72,7 +80,7 @@ export function shuffleBoard(rng: Rng, n: ArtSize) {
  * Used by SHUFFLE: the returned `clicks` are the tiles to slide, in order, so the shuffle can be shown
  * as real sliding. Any board reachable by play is solvable, so the result always is too.
  */
-export function shuffleFromBoard(rng: Rng, n: ArtSize, start: ArtBoard, steps: number, minMisplaced: number) {
+export function shuffleFromBoard(rng: Rng, d: Dims, start: ArtBoard, steps: number, minMisplaced: number) {
   let board = start;
   let blank = start.indexOf(null);
   let prev = -1;
@@ -80,7 +88,7 @@ export function shuffleFromBoard(rng: Rng, n: ArtSize, start: ArtBoard, steps: n
   const clicks: number[] = [];
   for (let i = 0; i < steps + 300; i++) {
     if (i >= steps && misplacedCount(board) >= minMisplaced && !isSolved(board)) break;
-    const options = neighbors(blank, n).filter((c) => c !== prev);
+    const options = neighbors(blank, d).filter((c) => c !== prev);
     const fresh = options.filter((c) => {
       const b = board.slice();
       b[blank] = b[c];
@@ -88,7 +96,7 @@ export function shuffleFromBoard(rng: Rng, n: ArtSize, start: ArtBoard, steps: n
       return !visited.has(b.join(','));
     });
     const next = pick(rng, fresh.length ? fresh : options);
-    board = moveTile(board, n, next)!;
+    board = moveTile(board, d, next)!;
     visited.add(board.join(','));
     prev = blank;
     blank = next;
@@ -98,19 +106,18 @@ export function shuffleFromBoard(rng: Rng, n: ArtSize, start: ArtBoard, steps: n
 }
 
 /** Steps of a visible shuffle (shorter than the initial scramble: it is meant to be watched). */
-export const SHUFFLE_STEPS: Record<ArtSize, { steps: number; minMisplaced: number }> = {
-  3: { steps: 22, minMisplaced: 5 },
-  4: { steps: 30, minMisplaced: 10 },
-  5: { steps: 38, minMisplaced: 17 },
-};
+export function visibleShuffleSteps(level: ArtLevel, d: Dims) {
+  const count = cellCount(d);
+  return { steps: Math.round(({ 3: 22, 4: 30, 5: 38 } as const)[level] * Math.sqrt(count / (level * level))), minMisplaced: Math.max(4, Math.round(count * 0.55)) };
+}
 
 export function validateArtPuzzle(p: ArtPuzzle): boolean {
-  const n = p.size;
-  if (p.initial.length !== n * n || p.initial.filter((t) => t === null).length !== 1) return false;
+  const d: Dims = { cols: p.cols, rows: p.rows };
+  if (p.initial.length !== cellCount(d) || p.initial.filter((t) => t === null).length !== 1) return false;
   if (isSolved(p.initial)) return false;
   let b: ArtBoard = p.initial;
   for (const c of p.solution) {
-    const next = moveTile(b, n, c);
+    const next = moveTile(b, d, c);
     if (!next) return false;
     b = next;
   }
@@ -121,16 +128,23 @@ export interface ArtGenerateOptions {
   seed: string;
   id: string;
   mode: 'daily' | 'endless';
-  size: ArtSize;
+  size: ArtLevel;
   artworkId: string;
   number?: number;
 }
 
+/** Grid of a painting at a level (a square grid for an unknown id, which only tests use). */
+export function dimsForArtwork(artworkId: string, level: ArtLevel): Dims {
+  const art = getArtwork(artworkId);
+  return gridFor(art ? aspectOf(art) : 1, level);
+}
+
 export function generateArtPuzzle(o: ArtGenerateOptions): ArtPuzzle {
+  const d = dimsForArtwork(o.artworkId, o.size);
   for (let attempt = 0; attempt < 20; attempt++) {
     const rng = rngFromString(`${ART_GENERATOR_VERSION}|${o.seed}|${o.size}|${attempt}`);
-    const { board, solution } = shuffleBoard(rng, o.size);
-    const p: ArtPuzzle = { id: o.id, mode: o.mode, size: o.size, artworkId: o.artworkId, number: o.number, initial: board, solution, generatorVersion: ART_GENERATOR_VERSION };
+    const { board, solution } = shuffleBoard(rng, o.size, d);
+    const p: ArtPuzzle = { id: o.id, mode: o.mode, size: o.size, cols: d.cols, rows: d.rows, artworkId: o.artworkId, number: o.number, initial: board, solution, generatorVersion: ART_GENERATOR_VERSION };
     if (validateArtPuzzle(p)) return p;
   }
   throw new Error('ART SLIDE puzzle generation failed');
@@ -148,16 +162,16 @@ export function dailyArtworkId(dateKey: string): string {
   const pool: readonly string[] = v2 ? DAILY_POOL_V2 : DAILY_POOL_V1;
   const idx = v2 ? dailyNumber(dateKey) - dailyNumber(DAILY_POOL_V2_FROM) : dailyNumber(dateKey) - 1;
   const cycle = Math.floor(idx / pool.length);
-  const order = shuffled(rngFromString(`art-daily|${ART_GENERATOR_VERSION}|${v2 ? 'v2|' : ''}cycle${cycle}`), pool);
+  const order = shuffled(rngFromString(`art-daily|a1|${v2 ? 'v2|' : ''}cycle${cycle}`), pool);
   return order[((idx % pool.length) + pool.length) % pool.length];
 }
 
-export const DAILY_SIZE: ArtSize = 4;
+export const DAILY_SIZE: ArtLevel = 4;
 
 export function generateArtDaily(dateKey: string): ArtPuzzle {
   return generateArtPuzzle({ seed: `daily|${dateKey}`, id: `artdaily-${dateKey}`, mode: 'daily', size: DAILY_SIZE, artworkId: dailyArtworkId(dateKey), number: dailyNumber(dateKey) });
 }
 
-export function generateArtFree(artworkId: string, size: ArtSize, seed = `${Date.now()}-${Math.random()}`): ArtPuzzle {
+export function generateArtFree(artworkId: string, size: ArtLevel, seed = `${Date.now()}-${Math.random()}`): ArtPuzzle {
   return generateArtPuzzle({ seed: `free|${seed}`, id: `art-${artworkId}-${size}-${seed}`, mode: 'endless', size, artworkId });
 }
