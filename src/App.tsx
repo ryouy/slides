@@ -72,9 +72,13 @@ function Shell() {
       case 'contact': page = <ContactPage />; break;
       default: page = <ArtRoutes sub="" />; // the main page is ART SLIDE
     }
+  // pages glide in (from the right going forward, from the left going back); the key is the page, not the artwork id
+  const pageKey = `${game ?? ''}/${sub.split('/')[0]}`;
   return (
     <>
-      {page}
+      <div key={pageKey} className="page-enter">
+        {page}
+      </div>
       <ConsentBanner />
     </>
   );

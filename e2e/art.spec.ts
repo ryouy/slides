@@ -27,6 +27,17 @@ async function solve(page: Page, mode: 'daily' | 'free') {
     await expect(page.getByTestId('moves')).toHaveText(String(before + 1));
   }
 }
+/** SHUFFLE glides the tiles one by one (about 3 s); wait until it has finished and been saved. */
+async function shuffleDone(page: Page) {
+  await expect(page.locator('.aboard')).not.toHaveClass(/shuffling/, { timeout: 12000 });
+  await page.waitForFunction(() => {
+    const st = JSON.parse(localStorage.getItem('artslide:save') ?? '{}').inProgress?.free;
+    if (!st) return false;
+    const dom = [...document.querySelectorAll('.atile')].filter((e) => e.getAttribute('data-cell') !== '').map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).sort().join();
+    const saved = st.board.map((t: number | null, c: number) => (t === null ? '' : `${t}@${c}`)).filter(Boolean).sort().join();
+    return dom === saved && st.status === 'playing' && st.moves === 0;
+  });
+}
 const tiles = (page: Page) => page.locator('.aboard .apiece:not(.ghost)');
 
 test('ART SLIDE is the main page (/ and /art-slide), with plain non-Wordle styling', async ({ page }) => {
@@ -151,20 +162,40 @@ test('changing size after moves asks first; SHUFFLE and RESTART behave', async (
   const after = await page.locator('.atile').evaluateAll((els) => els.map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).join());
   expect(after).toBe(before); // same arrangement as the start
   await page.getByRole('button', { name: 'SHUFFLE' }).click();
+  await shuffleDone(page);
   const fresh = await page.locator('.atile').evaluateAll((els) => els.map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).join());
   expect(fresh).not.toBe(before);
   await page.getByTestId('asize-5').click(); // no moves yet: switches immediately
   await expect(tiles(page)).toHaveCount(24);
 });
 
-test('SHUFFLE re-places the pieces randomly, asks first once you have moved, and always stays solvable', async ({ page }) => {
+test('SHUFFLE really slides the tiles one by one, asks first once you have moved, and always stays solvable', async ({ page }) => {
   await page.goto('/art-slide/play/monet-water-lilies');
   const snap = () => page.locator('.atile').evaluateAll((els) => els.map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).join());
   const first = await snap();
-  await page.getByTestId('shuffle').click(); // nothing played yet: happens at once
+  // tiles are positioned with a CSS transition (they glide, they do not jump)
+  const dur = await page.locator('.apiece').first().evaluate((e) => getComputedStyle(e).transitionDuration);
+  expect(parseFloat(dur)).toBeGreaterThan(0.1);
+  await page.getByTestId('shuffle').click(); // nothing played yet: starts at once, no question
   await expect(page.getByRole('alert')).toHaveCount(0);
-  await expect.poll(snap).not.toBe(first);
-  await expect(page.getByTestId('moves')).toHaveText('0');
+  await expect(page.locator('.aboard')).toHaveClass(/shuffling/);
+  // while it runs: the board passes through many different arrangements, one slide at a time
+  const seen = new Set<string>();
+  const t0 = Date.now();
+  let sawDisabled = false;
+  while (Date.now() - t0 < 12000) {
+    const st = await page.evaluate(() => ({ s: !!document.querySelector('.aboard.shuffling'), d: (document.querySelector('[data-testid=shuffle]') as HTMLButtonElement).disabled, b: [...document.querySelectorAll('.atile')].map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).join() }));
+    if (!st.s) break;
+    seen.add(st.b);
+    expect(st.d).toBe(true); // SHUFFLE is locked while sliding
+    sawDisabled = true;
+    await page.waitForTimeout(40);
+  }
+  expect(sawDisabled).toBe(true);
+  expect(seen.size).toBeGreaterThanOrEqual(8);
+  await shuffleDone(page);
+  await expect(page.getByTestId('moves')).toHaveText('0'); // the slides of a shuffle are not your moves
+  expect(await snap()).not.toBe(first);
   // after a move it asks, and Cancel changes nothing
   const sol = await solution(page, 'free');
   await page.locator(`.atile[data-cell="${sol[0]}"]`).click();
@@ -176,11 +207,57 @@ test('SHUFFLE re-places the pieces randomly, asks first once you have moved, and
   expect(await snap()).toBe(mid);
   await page.getByTestId('shuffle').click();
   await page.getByTestId('confirm-shuffle').click();
-  await expect(page.getByTestId('moves')).toHaveText('0');
+  await shuffleDone(page);
   expect(await snap()).not.toBe(mid);
   // the new arrangement is solvable by construction: its stored solution clears it
   await solve(page, 'free');
   await expect(page.getByRole('dialog', { name: 'Puzzle cleared' })).toBeVisible();
+});
+
+test('tiles cannot be moved while shuffling; PLAY AGAIN after finishing slides the painting apart again', async ({ page }) => {
+  await page.goto('/art-slide/play/van-gogh-bedroom');
+  await solve(page, 'free');
+  await expect(page.getByRole('dialog', { name: 'Puzzle cleared' })).toBeVisible();
+  await page.getByRole('button', { name: 'PLAY AGAIN' }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(page.locator('.aboard')).toHaveClass(/shuffling/);
+  await expect(page.locator('.atile').first()).toBeDisabled(); // locked during the slide
+  await shuffleDone(page);
+  await expect(page.locator('.aboard.complete')).toHaveCount(0); // no longer assembled
+  await expect(page.getByTestId('moves')).toHaveText('0');
+  await solve(page, 'free'); // and it can be finished again (and counts again)
+  await expect(page.getByRole('dialog', { name: 'Puzzle cleared' })).toBeVisible();
+  expect((await readArt(page)).completed).toBe(2);
+});
+
+test('with reduced motion the shuffle is applied at once (no sliding sequence)', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/art-slide/play/degas-dance-class');
+  const snap = () => page.locator('.atile').evaluateAll((els) => els.map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).join());
+  const first = await snap();
+  await page.getByTestId('shuffle').click();
+  await expect.poll(snap).not.toBe(first);
+  await expect(page.locator('.aboard.shuffling')).toHaveCount(0);
+});
+
+test('pages glide in: forward from the right, back from the left', async ({ page }) => {
+  await page.goto('/art-slide');
+  await page.getByTestId('art-gallery').click();
+  await expect(page).toHaveURL(/\/art-slide\/gallery$/);
+  expect(await page.evaluate(() => document.documentElement.getAttribute('data-nav'))).toBe('forward');
+  expect(await page.locator('.page-enter').evaluate((e) => getComputedStyle(e).animationName)).toBe('pageIn');
+  await page.goBack();
+  await expect(page).toHaveURL(/\/art-slide$/);
+  expect(await page.evaluate(() => document.documentElement.getAttribute('data-nav'))).toBe('back');
+  expect(await page.locator('.page-enter').evaluate((e) => getComputedStyle(e).animationName)).toBe('pageInBack');
+  // the page wrapper does not trap fixed-position dialogs once its animation is over
+  await page.getByTestId('art-gallery').click();
+  await page.locator('.gcard').first().click();
+  await page.waitForTimeout(500);
+  await page.getByTestId('preview').click();
+  const box = await page.getByRole('dialog', { name: 'Artwork preview' }).boundingBox();
+  const vp = page.viewportSize()!;
+  expect(box!.width).toBeGreaterThan(vp.width - 2); // the overlay covers the viewport
 });
 
 test('preview shows the whole painting and pauses the board', async ({ page }) => {

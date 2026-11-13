@@ -6,11 +6,14 @@ import { useImageStatus } from '../../../hooks/useImageStatus';
 import { formatTime } from '../../../storage/stats';
 import { ART_SIZES, canMove, neighbors, type ArtDirection, type ArtSize } from '../logic/board';
 import { artReducer, type ArtState } from '../logic/game';
+import { planReshuffle } from '../logic/reshuffle';
 import type { Artwork } from '../types';
 import { ArtBoard } from './ArtBoard';
 import { ArtworkInfo } from './ArtworkInfo';
 
 const KEY_DIR: Record<string, ArtDirection> = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' };
+/** Time between two slides of a shuffle (each slide itself takes a little less than this to glide). */
+const SHUFFLE_STEP_MS = 95;
 const DELTA: Record<ArtDirection, number> = { up: -1, down: 1, left: -1, right: 1 }; // sign only; rows use n
 
 export function artShareText(s: ArtState, artwork: Artwork): string {
@@ -33,10 +36,8 @@ interface Props {
   onBack: () => void;
   /** Free play only */
   onSize?: (size: ArtSize) => void;
-  onNewPuzzle?: () => void;
   onChangeArtwork: () => void;
   onNextArtwork: () => void;
-  onPlayAgain?: () => void;
 }
 
 export function ArtGameView(p: Props) {
@@ -45,11 +46,16 @@ export function ArtGameView(p: Props) {
   const [preview, setPreview] = useState(false);
   const [pending, setPending] = useState<{ kind: 'size'; size: ArtSize } | { kind: 'shuffle' } | null>(null);
   const [showResult, setShowResult] = useState(initial.status === 'cleared');
+  const [shuffling, setShuffling] = useState(false);
+  const shufflingRef = useRef(false);
+  const timers = useRef<number[]>([]);
+  const stateRef = useRef(initial);
   const recorded = useRef(initial.status === 'cleared');
   const n = state.puzzle.size;
   const cleared = state.status === 'cleared';
   const img = useImageStatus(artwork.imageUrl);
-  const locked = preview || cleared || img.status !== 'ready';
+  stateRef.current = state;
+  const locked = preview || cleared || shuffling || img.status !== 'ready';
 
   useGameTimer((ms) => dispatch({ type: 'tick', ms }));
 
@@ -67,8 +73,11 @@ export function ArtGameView(p: Props) {
   }, [locked]);
 
   useEffect(() => {
+    if (shufflingRef.current) return; // do not save the half-shuffled board; the finished shuffle is saved
     p.onProgress(state);
   }, [state]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => () => timers.current.forEach(clearTimeout), []);
 
   useEffect(() => {
     if (cleared && !recorded.current) {
@@ -92,9 +101,37 @@ export function ArtGameView(p: Props) {
     if (state.moves === 0 || cleared) return p.onSize?.(s);
     setPending({ kind: 'size', size: s });
   };
-  /** Put the pieces in a new random (always solvable) arrangement. */
+  /**
+   * Re-place the pieces randomly by actually sliding them, one legal move after another, starting from
+   * what is on screen (also from a finished painting). The result is always solvable.
+   */
+  const runShuffle = () => {
+    if (shufflingRef.current) return;
+    const plan = planReshuffle(stateRef.current, `${Date.now()}-${Math.random()}`);
+    setPending(null);
+    setShowResult(false);
+    setPreview(false);
+    recorded.current = false; // a finished painting can be finished again
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      dispatch({ type: 'reshuffled', puzzle: plan.puzzle });
+      return;
+    }
+    shufflingRef.current = true;
+    setShuffling(true);
+    plan.clicks.forEach((cell, i) => timers.current.push(window.setTimeout(() => dispatch({ type: 'slideStep', cell }), 60 + i * SHUFFLE_STEP_MS)));
+    timers.current.push(
+      window.setTimeout(() => {
+        shufflingRef.current = false;
+        dispatch({ type: 'reshuffled', puzzle: plan.puzzle });
+        setShuffling(false);
+      }, 60 + plan.clicks.length * SHUFFLE_STEP_MS + 260),
+    );
+  };
+  /** Ask first when it would throw away progress. */
   const shuffle = () => {
-    if (state.moves === 0 || cleared) return p.onNewPuzzle?.();
+    if (shufflingRef.current) return;
+    if (state.moves === 0 || cleared) return runShuffle();
     setPending({ kind: 'shuffle' });
   };
 
@@ -125,7 +162,7 @@ export function ArtGameView(p: Props) {
               const cur = pending;
               setPending(null);
               if (cur.kind === 'size') p.onSize?.(cur.size);
-              else p.onNewPuzzle?.();
+              else runShuffle();
             }}
           >
             {pending.kind === 'size' ? 'Start' : 'Shuffle'}
@@ -149,15 +186,15 @@ export function ArtGameView(p: Props) {
         </div>
       ) : (
         <div className="aboard-wrap">
-          <ArtBoard board={state.board} n={n} artwork={artwork} showNumbers={p.showNumbers} disabled={locked} complete={cleared} onTap={(cell) => dispatch({ type: 'move', cell })} onSwipe={swipe} />
+          <ArtBoard board={state.board} n={n} artwork={artwork} showNumbers={p.showNumbers} disabled={locked} complete={cleared} shuffling={shuffling} onTap={(cell) => dispatch({ type: 'move', cell })} onSwipe={swipe} />
           {img.status === 'loading' && <div className="art-loading" role="status">Loading artwork…</div>}
         </div>
       )}
 
       <div className="actions">
-        <button className="btn" data-testid="preview" onClick={() => setPreview(true)}>PREVIEW</button>
-        {!daily && <button className="btn" data-testid="shuffle" onClick={shuffle}>SHUFFLE</button>}
-        <button className="btn" onClick={() => dispatch({ type: 'restart' })}>RESTART</button>
+        <button className="btn" data-testid="preview" disabled={shuffling} onClick={() => setPreview(true)}>PREVIEW</button>
+        {!daily && <button className="btn" data-testid="shuffle" disabled={shuffling} onClick={shuffle}>SHUFFLE</button>}
+        <button className="btn" disabled={shuffling} onClick={() => dispatch({ type: 'restart' })}>RESTART</button>
       </div>
       <label className="field check numbers-toggle">
         <input type="checkbox" checked={p.showNumbers} onChange={(e) => p.onToggleNumbers(e.target.checked)} />
@@ -190,7 +227,7 @@ export function ArtGameView(p: Props) {
           onNext={daily ? p.onChangeArtwork : p.onNextArtwork}
           onHome={p.onBack}
           nextLabel={daily ? 'MORE ARTWORKS' : 'NEXT ARTWORK'}
-          secondary={daily ? undefined : { label: 'PLAY AGAIN', onClick: () => p.onPlayAgain?.() }}
+          secondary={daily ? undefined : { label: 'PLAY AGAIN', onClick: runShuffle }}
         >
           <ResultArt artwork={artwork} />
         </ResultModal>

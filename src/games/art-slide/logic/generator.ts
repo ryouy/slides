@@ -67,6 +67,43 @@ export function shuffleBoard(rng: Rng, n: ArtSize) {
   return { board, solution: path.slice(0, -1).reverse() };
 }
 
+/**
+ * Random walk from ANY board (legal moves only, no undo of the previous move, no revisits).
+ * Used by SHUFFLE: the returned `clicks` are the tiles to slide, in order, so the shuffle can be shown
+ * as real sliding. Any board reachable by play is solvable, so the result always is too.
+ */
+export function shuffleFromBoard(rng: Rng, n: ArtSize, start: ArtBoard, steps: number, minMisplaced: number) {
+  let board = start;
+  let blank = start.indexOf(null);
+  let prev = -1;
+  const visited = new Set([board.join(',')]);
+  const clicks: number[] = [];
+  for (let i = 0; i < steps + 300; i++) {
+    if (i >= steps && misplacedCount(board) >= minMisplaced && !isSolved(board)) break;
+    const options = neighbors(blank, n).filter((c) => c !== prev);
+    const fresh = options.filter((c) => {
+      const b = board.slice();
+      b[blank] = b[c];
+      b[c] = null;
+      return !visited.has(b.join(','));
+    });
+    const next = pick(rng, fresh.length ? fresh : options);
+    board = moveTile(board, n, next)!;
+    visited.add(board.join(','));
+    prev = blank;
+    blank = next;
+    clicks.push(next);
+  }
+  return { board, clicks };
+}
+
+/** Steps of a visible shuffle (shorter than the initial scramble: it is meant to be watched). */
+export const SHUFFLE_STEPS: Record<ArtSize, { steps: number; minMisplaced: number }> = {
+  3: { steps: 22, minMisplaced: 5 },
+  4: { steps: 30, minMisplaced: 10 },
+  5: { steps: 38, minMisplaced: 17 },
+};
+
 export function validateArtPuzzle(p: ArtPuzzle): boolean {
   const n = p.size;
   if (p.initial.length !== n * n || p.initial.filter((t) => t === null).length !== 1) return false;

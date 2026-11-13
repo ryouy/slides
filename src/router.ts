@@ -3,10 +3,26 @@ import { useSyncExternalStore } from 'react';
 /** Tiny History-API router: paths like /word-slide/daily, /big-slide, /settings. */
 const EVENT = 'app:navigate';
 
+/**
+ * Position in the session history, so pages can slide in from the right when going forward and from
+ * the left when going back. It is exposed as <html data-nav="forward|back"> for CSS.
+ */
+let navIndex: number = (history.state && typeof history.state.i === 'number' ? history.state.i : 0);
+const setDir = (d: 'forward' | 'back') => document.documentElement.setAttribute('data-nav', d);
+window.addEventListener('popstate', () => {
+  const i = history.state && typeof history.state.i === 'number' ? history.state.i : 0;
+  setDir(i < navIndex ? 'back' : 'forward');
+  navIndex = i;
+});
+
 export function navigate(path: string, replace = false) {
   if (path === location.pathname) return;
-  if (replace) history.replaceState(null, '', path);
-  else history.pushState(null, '', path);
+  if (replace) history.replaceState({ i: navIndex }, '', path);
+  else {
+    navIndex += 1;
+    history.pushState({ i: navIndex }, '', path);
+    setDir('forward');
+  }
   window.dispatchEvent(new Event(EVENT));
 }
 
