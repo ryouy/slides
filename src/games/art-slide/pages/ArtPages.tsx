@@ -5,7 +5,6 @@ import { go } from '../../../router';
 import { currentDailyStreak, formatTime, maxDailyStreak } from '../../../storage/stats';
 import { dailyNumber, jstDateKey } from '../../../utils/date';
 import { Footer } from '../../../ui/Home';
-import { AllGamesLink } from '../../../components/GameNav';
 import { HomeLinks } from '../../../components/HomeLinks';
 import { GROUP_OPTIONS, SORT_OPTIONS, filterArtworks, groupArtworks, type GroupBy, type SortBy } from '../logic/gallery';
 import { Page } from '../../../ui/Pages';
@@ -23,16 +22,11 @@ export function ArtHome() {
   const exhibit = getArtwork(dailyArtworkId(today)) ?? ARTWORKS[0];
   const resumable = data.inProgress.free && data.inProgress.free.status === 'playing';
   return (
-    <div className="screen home">
-      <AllGamesLink />
-      <div className="logo" aria-label="ART SLIDE">
-        {'ART'.split('').map((c, i) => <span key={i} className="logo-tile g">{c}</span>)}
-        <br />
-        {'SLIDE'.split('').map((c, i) => <span key={i} className={`logo-tile ${i % 2 ? 'y' : 'x'}`}>{c}</span>)}
-      </div>
-      <p className="tagline">Reassemble a masterpiece.</p>
+    <div className="screen home art-home">
+      <h1 className="art-home-title">ART SLIDE</h1>
+      <p className="art-sub">Reassemble a masterpiece.</p>
       <Link to="/art-slide/daily" className="exhibit-card" data-testid="exhibit">
-        <img src={exhibit.thumbnailUrl} alt="" width={84} height={84} />
+        <img src={exhibit.thumbnailUrl} alt="" width={96} height={96} />
         <span className="ex-text">
           <small>TODAY'S EXHIBIT</small>
           <b>{exhibit.title}</b>
@@ -48,6 +42,17 @@ export function ArtHome() {
         {resumable && <button className="btn big" data-testid="art-resume" onClick={() => go('play')}>Resume Puzzle</button>}
       </nav>
       <HomeLinks items={[{ label: 'How to Play', to: 'how' }, { label: 'Statistics', to: 'stats' }, { label: 'Credits', to: 'credits' }, { label: 'Settings', to: 'settings' }]} />
+      <section className="other-games" aria-label="More puzzles">
+        <h2>MORE PUZZLES</h2>
+        <Link to="/big-slide" className="og-row" data-testid="more-big">
+          <b>BIG SLIDE</b>
+          <span>Numbers and giant blocks</span>
+        </Link>
+        <Link to="/word-slide" className="og-row" data-testid="more-word">
+          <b>WORD SLIDE</b>
+          <span>Slide letters into hidden words</span>
+        </Link>
+      </section>
       <Footer />
     </div>
   );
@@ -215,7 +220,7 @@ export function ArtHowPage() {
         <li>Turn on <b>Show tile numbers</b> under the board if you want a little help.</li>
       </ul>
       <h3>Modes</h3>
-      <p><b>Daily</b>: the same painting and the same 4×4 shuffle for everyone, new every day at 0:00 Japan time. <b>Choose Artwork</b>: pick any painting and any size; <b>NEW PUZZLE</b> reshuffles it, <b>RESTART</b> goes back to the same arrangement.</p>
+      <p><b>Daily</b>: the same painting and the same 4×4 shuffle for everyone, new every day at 0:00 Japan time. <b>Choose Artwork</b>: pick any painting and any size; <b>SHUFFLE</b> puts the pieces in a new random arrangement, <b>RESTART</b> goes back to the one you started with.</p>
       <p className="muted">The timer starts with your first move. All paintings are in the public domain; see Artwork Credits for the source of every image.</p>
     </Page>
   );

@@ -29,19 +29,20 @@ async function solve(page: Page, mode: 'daily' | 'free') {
 }
 const tiles = (page: Page) => page.locator('.aboard .apiece:not(.ghost)');
 
-test('landing card, home navigation and URLs', async ({ page }) => {
+test('ART SLIDE is the main page (/ and /art-slide), with plain non-Wordle styling', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByTestId('landing-art')).toBeVisible();
-  await page.getByTestId('landing-art').click();
-  await expect(page).toHaveURL(/\/art-slide$/);
-  await page.getByTestId('all-games').click();
-  await expect(page).toHaveURL(/\/$/);
-  await page.goBack();
-  await expect(page).toHaveURL(/\/art-slide$/);
+  await expect(page.locator('.art-home-title')).toHaveText('ART SLIDE');
+  await expect(page.locator('.art-theme')).toBeVisible();
+  await expect(page.locator('.logo-tile')).toHaveCount(0); // no green/yellow/gray letter tiles
+  // primary button is plain black/white, not the Wordle green
+  const [bg, fg] = await page.getByTestId('art-daily').evaluate((e) => [getComputedStyle(e).backgroundColor, getComputedStyle(document.body).color]);
+  expect(bg).toBe(fg);
   await page.getByTestId('art-gallery').click();
   await expect(page).toHaveURL(/\/art-slide\/gallery$/);
   await page.getByRole('button', { name: 'Back' }).click();
   await expect(page).toHaveURL(/\/art-slide$/);
+  await expect(page.getByTestId('more-big')).toBeVisible();
+  await expect(page.getByTestId('more-word')).toBeVisible();
   await page.goto('/art-slide/gallery'); // direct URL
   await expect(page.getByTestId('gallery')).toBeVisible();
 });
@@ -135,7 +136,7 @@ for (const [n, count] of [[4, 15], [5, 24]] as const) {
   });
 }
 
-test('changing size after moves asks first; NEW PUZZLE and RESTART behave', async ({ page }) => {
+test('changing size after moves asks first; SHUFFLE and RESTART behave', async ({ page }) => {
   await page.goto('/art-slide/play/seurat-grande-jatte');
   const sol = await solution(page, 'free');
   const before = await page.locator('.atile').evaluateAll((els) => els.map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).join());
@@ -149,11 +150,37 @@ test('changing size after moves asks first; NEW PUZZLE and RESTART behave', asyn
   await expect(page.getByTestId('moves')).toHaveText('0');
   const after = await page.locator('.atile').evaluateAll((els) => els.map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).join());
   expect(after).toBe(before); // same arrangement as the start
-  await page.getByRole('button', { name: 'NEW PUZZLE' }).click();
+  await page.getByRole('button', { name: 'SHUFFLE' }).click();
   const fresh = await page.locator('.atile').evaluateAll((els) => els.map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).join());
   expect(fresh).not.toBe(before);
   await page.getByTestId('asize-5').click(); // no moves yet: switches immediately
   await expect(tiles(page)).toHaveCount(24);
+});
+
+test('SHUFFLE re-places the pieces randomly, asks first once you have moved, and always stays solvable', async ({ page }) => {
+  await page.goto('/art-slide/play/monet-water-lilies');
+  const snap = () => page.locator('.atile').evaluateAll((els) => els.map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).join());
+  const first = await snap();
+  await page.getByTestId('shuffle').click(); // nothing played yet: happens at once
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await expect.poll(snap).not.toBe(first);
+  await expect(page.getByTestId('moves')).toHaveText('0');
+  // after a move it asks, and Cancel changes nothing
+  const sol = await solution(page, 'free');
+  await page.locator(`.atile[data-cell="${sol[0]}"]`).click();
+  await expect(page.getByTestId('moves')).toHaveText('1');
+  const mid = await snap();
+  await page.getByTestId('shuffle').click();
+  await expect(page.getByRole('alert')).toContainText('Shuffle the pieces again');
+  await page.getByRole('button', { name: 'Cancel' }).click();
+  expect(await snap()).toBe(mid);
+  await page.getByTestId('shuffle').click();
+  await page.getByTestId('confirm-shuffle').click();
+  await expect(page.getByTestId('moves')).toHaveText('0');
+  expect(await snap()).not.toBe(mid);
+  // the new arrangement is solvable by construction: its stored solution clears it
+  await solve(page, 'free');
+  await expect(page.getByRole('dialog', { name: 'Puzzle cleared' })).toBeVisible();
 });
 
 test('preview shows the whole painting and pauses the board', async ({ page }) => {
@@ -248,7 +275,7 @@ test('daily: 4x4, one painting for everyone, no size switch, records the clear',
   await page.goto('/art-slide/daily');
   await expect(tiles(page)).toHaveCount(15);
   await expect(page.getByTestId('asize-3')).toHaveCount(0);
-  await expect(page.getByRole('button', { name: 'NEW PUZZLE' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'SHUFFLE' })).toHaveCount(0);
   const title = await page.getByTestId('art-title').innerText();
   const ctx = await browser.newContext();
   const p2 = await ctx.newPage();

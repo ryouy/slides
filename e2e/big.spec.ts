@@ -37,18 +37,18 @@ async function solve(page: Page, mode: 'daily' | 'endless') {
   for (const m of await readSolution(page, mode)) await playMove(page, m);
 }
 
-test('landing offers all games; each game links back; back/forward work', async ({ page }) => {
+test('the main page is ART SLIDE; BIG and WORD are reached from it and lead back', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByTestId('landing-word')).toBeVisible();
-  await expect(page.getByTestId('landing-big')).toBeVisible();
-  await expect(page.getByTestId('landing-art')).toBeVisible();
-  await expect(page.getByTestId('all-games')).toHaveCount(0); // the chooser itself has no way "back" to itself
-  await page.getByTestId('landing-big').click();
+  await expect(page.locator('.art-home-title')).toHaveText('ART SLIDE');
+  await expect(page.getByTestId('art-daily')).toBeVisible();
+  await expect(page).toHaveTitle(/ART SLIDE/);
+  await expect(page.getByTestId('to-main')).toHaveCount(0); // nothing "above" the main page
+  await page.getByTestId('more-big').click();
   await expect(page).toHaveURL(/\/big-slide$/);
   await expect(page.getByTestId('big-daily')).toBeVisible();
-  await page.getByTestId('all-games').click();
+  await page.getByTestId('to-main').click();
   await expect(page).toHaveURL(/\/$/);
-  await page.getByTestId('landing-word').click();
+  await page.getByTestId('more-word').click();
   await expect(page).toHaveURL(/\/word-slide$/);
   await expect(page.getByTestId('daily')).toBeVisible();
   await page.goBack();
@@ -160,9 +160,9 @@ test('WORD SLIDE progress is untouched by visiting BIG SLIDE; theme applies to b
   await page.getByTestId('hint-first-0').click();
   await page.goto('/settings');
   await page.locator('select').selectOption('dark');
-  await page.getByRole('button', { name: 'Back' }).click(); // settings -> the game home we came from
-  await page.getByTestId('all-games').click();
-  await page.getByTestId('landing-big').click();
+  await page.getByRole('button', { name: 'Back' }).click(); // a fresh load of Settings leads back to the main page (ART SLIDE)
+  await expect(page).toHaveURL(/\/art-slide$/);
+  await page.getByTestId('more-big').click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.getByTestId('big-daily').click();
   await expect(page.locator('.bboard .bpiece')).toHaveCount(11);

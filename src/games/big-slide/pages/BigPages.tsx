@@ -4,7 +4,7 @@ import { go } from '../../../router';
 import { dailyNumber, jstDateKey } from '../../../utils/date';
 import { currentDailyStreak, formatTime, maxDailyStreak } from '../../../storage/stats';
 import { Footer } from '../../../ui/Home';
-import { AllGamesLink } from '../../../components/GameNav';
+import { BackToMain } from '../../../components/GameNav';
 import { HomeLinks } from '../../../components/HomeLinks';
 import { Page } from '../../../ui/Pages';
 import { BigGameView } from '../components/BigGameView';
@@ -20,7 +20,7 @@ export function BigHome() {
   const streak = currentDailyStreak(data.dailyHistory, today);
   return (
     <div className="screen home">
-      <AllGamesLink />
+      <BackToMain />
       <div className="logo" aria-label="BIG SLIDE">
         <span className="logo-tile big-logo">BIG</span>
         {'SLIDE'.split('').map((c, i) => <span key={i} className={`logo-tile ${i % 2 ? 'y' : 'x'}`}>{c}</span>)}

@@ -43,7 +43,7 @@ export function ArtGameView(p: Props) {
   const { initial, artwork, daily } = p;
   const [state, dispatch] = useReducer(artReducer, initial);
   const [preview, setPreview] = useState(false);
-  const [pendingSize, setPendingSize] = useState<ArtSize | null>(null);
+  const [pending, setPending] = useState<{ kind: 'size'; size: ArtSize } | { kind: 'shuffle' } | null>(null);
   const [showResult, setShowResult] = useState(initial.status === 'cleared');
   const recorded = useRef(initial.status === 'cleared');
   const n = state.puzzle.size;
@@ -88,9 +88,14 @@ export function ArtGameView(p: Props) {
   };
 
   const chooseSize = (s: ArtSize) => {
-    if (s === n) return setPendingSize(null);
+    if (s === n) return setPending(null);
     if (state.moves === 0 || cleared) return p.onSize?.(s);
-    setPendingSize(s);
+    setPending({ kind: 'size', size: s });
+  };
+  /** Put the pieces in a new random (always solvable) arrangement. */
+  const shuffle = () => {
+    if (state.moves === 0 || cleared) return p.onNewPuzzle?.();
+    setPending({ kind: 'shuffle' });
   };
 
   return (
@@ -110,11 +115,22 @@ export function ArtGameView(p: Props) {
           ))}
         </div>
       )}
-      {pendingSize && (
+      {pending && (
         <div className="confirm-bar" role="alert">
-          <span>Start a new {pendingSize}×{pendingSize} puzzle? Your progress will be lost.</span>
-          <button className="btn primary" data-testid="confirm-size" onClick={() => { const s = pendingSize; setPendingSize(null); p.onSize?.(s); }}>Start</button>
-          <button className="btn" onClick={() => setPendingSize(null)}>Cancel</button>
+          <span>{pending.kind === 'size' ? `Start a new ${pending.size}×${pending.size} puzzle? Your progress will be lost.` : 'Shuffle the pieces again? Your progress will be lost.'}</span>
+          <button
+            className="btn primary"
+            data-testid={pending.kind === 'size' ? 'confirm-size' : 'confirm-shuffle'}
+            onClick={() => {
+              const cur = pending;
+              setPending(null);
+              if (cur.kind === 'size') p.onSize?.(cur.size);
+              else p.onNewPuzzle?.();
+            }}
+          >
+            {pending.kind === 'size' ? 'Start' : 'Shuffle'}
+          </button>
+          <button className="btn" onClick={() => setPending(null)}>Cancel</button>
         </div>
       )}
 
@@ -140,8 +156,8 @@ export function ArtGameView(p: Props) {
 
       <div className="actions">
         <button className="btn" data-testid="preview" onClick={() => setPreview(true)}>PREVIEW</button>
+        {!daily && <button className="btn" data-testid="shuffle" onClick={shuffle}>SHUFFLE</button>}
         <button className="btn" onClick={() => dispatch({ type: 'restart' })}>RESTART</button>
-        {!daily && <button className="btn" onClick={p.onNewPuzzle}>NEW PUZZLE</button>}
       </div>
       <label className="field check numbers-toggle">
         <input type="checkbox" checked={p.showNumbers} onChange={(e) => p.onToggleNumbers(e.target.checked)} />

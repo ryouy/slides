@@ -19,7 +19,15 @@ function subscribe(cb: () => void) {
   };
 }
 
-export const usePath = (): string => useSyncExternalStore(subscribe, () => location.pathname);
+/** Remember which game the player was in, so shared pages (Settings...) can lead back to it. */
+let lastGame: GameId = 'art-slide';
+function snapshot(): string {
+  const { game } = parsePath(location.pathname);
+  if (game) lastGame = game;
+  return location.pathname;
+}
+
+export const usePath = (): string => useSyncExternalStore(subscribe, snapshot);
 
 export type GameId = 'word-slide' | 'big-slide' | 'art-slide';
 export const GAMES: { id: GameId; label: string }[] = [
@@ -37,8 +45,8 @@ export function parsePath(path: string): { game: GameId | null; sub: string } {
   return { game: null, sub: first ?? '' };
 }
 
-let lastGame: GameId = 'word-slide';
 export function currentGame(): GameId {
+  if (location.pathname === '/' || location.pathname === '') return 'art-slide'; // the main page is ART SLIDE
   const { game } = parsePath(location.pathname);
   if (game) lastGame = game;
   return lastGame;
