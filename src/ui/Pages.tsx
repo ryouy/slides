@@ -1,3 +1,4 @@
+import { BackButton } from '../components/Icons';
 import type { ReactNode } from 'react';
 import { go } from '../nav';
 import { jstDateKey } from '../core/generator';
@@ -15,7 +16,7 @@ export function Page({ title, children }: { title: string; children: ReactNode }
   return (
     <div className="screen page">
       <header className="topbar">
-        <button className="icon-btn" onClick={() => go('')} aria-label={t('common.back')}>←</button>
+        <BackButton onClick={() => go('')} label={t('common.back')} />
         <h1>{title}</h1>
         <div className="top-right" />
       </header>
@@ -129,34 +130,45 @@ export function SettingsPage() {
   const ad = useAdConsent();
   const adsPossible = adsEnabled() || adsForcedLive() || import.meta.env.DEV;
   const set = (p: Partial<typeof s>) => update((d) => ({ ...d, settings: { ...d.settings, ...p } }));
+  const themes: { id: ThemePref; label: string }[] = [
+    { id: 'system', label: t('settings.system') },
+    { id: 'light', label: t('settings.light') },
+    { id: 'dark', label: t('settings.dark') },
+  ];
   return (
     <Page title={t('settings.title')}>
-      <label className="field">
-        {t('settings.language')}
-        <select value={lang} data-testid="lang-select" onChange={(e) => set({ lang: e.target.value as Lang })}>
-          {LANGS.map((l) => <option key={l.id} value={l.id}>{l.label}</option>)}
-        </select>
-      </label>
-      <label className="field">
-        {t('settings.theme')}
-        <select data-testid="theme-select" value={s.theme} onChange={(e) => set({ theme: e.target.value as ThemePref })}>
-          <option value="system">{t('settings.system')}</option>
-          <option value="light">{t('settings.light')}</option>
-          <option value="dark">{t('settings.dark')}</option>
-        </select>
-      </label>
-      <label className="field check">
-        <input type="checkbox" checked={s.colorblind} onChange={(e) => set({ colorblind: e.target.checked })} />
-        {t('settings.colorblind')}
-      </label>
-      {adsPossible && (
-        <label className="field check">
-          <input type="checkbox" data-testid="ad-cookies" checked={ad.allowed} onChange={(e) => ad.set(e.target.checked)} />
-          {t('settings.adCookies')}
+      <div className="set-list">
+        <label className="set-row">
+          <span className="set-label">{t('settings.language')}</span>
+          <span className="select-wrap">
+            <select className="select" value={lang} data-testid="lang-select" onChange={(e) => set({ lang: e.target.value as Lang })}>
+              {LANGS.map((l) => <option key={l.id} value={l.id}>{l.label}</option>)}
+            </select>
+          </span>
         </label>
-      )}
+        <div className="set-row">
+          <span className="set-label">{t('settings.theme')}</span>
+          <div className="segmented" role="radiogroup" aria-label={t('settings.theme')} data-testid="theme-select">
+            {themes.map((th) => (
+              <button key={th.id} role="radio" aria-checked={s.theme === th.id} className={`segmented-btn${s.theme === th.id ? ' on' : ''}`} data-testid={`theme-${th.id}`} onClick={() => set({ theme: th.id })}>
+                {th.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <label className="set-row">
+          <span className="set-label">{t('settings.colorblind')}</span>
+          <input className="switch-input" type="checkbox" role="switch" checked={s.colorblind} onChange={(e) => set({ colorblind: e.target.checked })} />
+        </label>
+        {adsPossible && (
+          <label className="set-row">
+            <span className="set-label">{t('settings.adCookies')}</span>
+            <input className="switch-input" type="checkbox" role="switch" data-testid="ad-cookies" checked={ad.allowed} onChange={(e) => ad.set(e.target.checked)} />
+          </label>
+        )}
+      </div>
       <button
-        className="btn"
+        className="reset-link"
         onClick={() => {
           if (confirm(t('settings.resetConfirm'))) {
             try { localStorage.clear(); } catch { /* ignore */ }

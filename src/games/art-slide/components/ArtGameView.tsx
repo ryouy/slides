@@ -1,3 +1,4 @@
+import { BackButton, ChevronRight } from '../../../components/Icons';
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { AdSlot } from '../../../ads/AdSlot';
 import { ResultModal } from '../../../components/ResultModal';
@@ -137,7 +138,7 @@ export function ArtGameView(p: Props) {
   return (
     <div className="screen game artgame">
       <header className="topbar art-top">
-        <button className="icon-btn" onClick={p.onBack} aria-label={t('common.back')}>←</button>
+        <BackButton onClick={p.onBack} label={t('common.back')} />
         <div className="top-titles">
           {daily && <small className="top-kicker">{t('art.dailyTitle', { n: state.puzzle.number ?? '' })}</small>}
           <h1 data-testid="art-title">{artwork.title}</h1>
@@ -194,14 +195,11 @@ export function ArtGameView(p: Props) {
           }}
         >{t('art.preview')}</button>
         {!daily && <button className="btn" data-testid="shuffle" disabled={shuffling} onClick={runShuffle}>{t('art.shuffle')}</button>}
-        <button className="btn" data-testid="restart" disabled={shuffling} onClick={() => dispatch({ type: 'restart' })}>{t('art.restart')}</button>
+        <button className={`btn num-btn${p.showNumbers ? ' on' : ''}`} data-testid="numbers-toggle" aria-pressed={p.showNumbers} onClick={() => p.onToggleNumbers(!p.showNumbers)}>
+          <span className="num-glyph" aria-hidden="true">#</span>
+          {t('art.numbers')}
+        </button>
       </div>
-
-      <button className="num-toggle" data-testid="numbers-toggle" aria-pressed={p.showNumbers} onClick={() => p.onToggleNumbers(!p.showNumbers)}>
-        <span className="num-glyph" aria-hidden="true">#</span>
-        {t('art.numbers')}
-        <span className="num-state" aria-hidden="true">{p.showNumbers ? 'ON' : 'OFF'}</span>
-      </button>
 
       <div className="art-extra">
         <p className="ap-desc" data-testid="art-desc">{artwork.description}</p>
@@ -210,7 +208,7 @@ export function ArtGameView(p: Props) {
         </p>
         {!daily && (
           <div className="art-quiet">
-            <button className="quiet-link" data-testid="change-artwork" onClick={p.onChangeArtwork}>{t('art.change')} →</button>
+            <button className="quiet-link" data-testid="change-artwork" onClick={p.onChangeArtwork}>{t('art.change')} <ChevronRight size={14} /></button>
           </div>
         )}
       </div>

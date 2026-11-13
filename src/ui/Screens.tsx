@@ -1,3 +1,4 @@
+import { BackButton } from '../components/Icons';
 import { useState } from 'react';
 import { go } from '../nav';
 import { useT } from '../i18n';
@@ -63,7 +64,7 @@ export function EndlessScreen() {
     return (
       <div className="screen">
         <header className="topbar">
-          <button className="icon-btn" onClick={() => go('')} aria-label={t('common.back')}>←</button>
+          <BackButton onClick={() => go('')} label={t('common.back')} />
           <h1>{t('home.endless')}</h1>
           <div className="top-right" />
         </header>

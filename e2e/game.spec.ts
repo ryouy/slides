@@ -208,7 +208,7 @@ test('pages render and dark theme applies', async ({ page }) => {
     await expect(page.locator('.topbar h1')).toBeVisible();
   }
   await page.goto('/settings');
-  await page.getByTestId('theme-select').selectOption('dark');
+  await page.getByTestId('theme-dark').click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 });
 
