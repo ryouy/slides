@@ -12,7 +12,8 @@ const KEY_DIR: Record<string, BigDirection> = { ArrowUp: 'up', ArrowDown: 'down'
 
 export function bigShareText(s: BigState): string {
   const p = s.puzzle;
-  const name = p.mode === 'daily' ? `BIG SLIDE #${p.number}` : `BIG SLIDE ${p.size}×${p.size} (${p.difficulty})`;
+  const v = p.variant && p.variant !== 'classic' ? `${p.variant} ` : '';
+  const name = p.mode === 'daily' ? `BIG SLIDE #${p.number}` : `BIG SLIDE ${v}${p.size}×${p.size} (${p.difficulty})`;
   const url = typeof location !== 'undefined' ? `${location.origin}/big-slide` : '';
   return `${name}\n⏱ ${formatTime(s.elapsedMs)}  🔀 ${s.moves} moves  ⬛ ${s.bigMoves} big moves\n${url}`;
 }
@@ -108,7 +109,7 @@ export function BigGameView({ initial, title, onProgress, onCleared, onNext, nex
       <div className="stats" aria-live="polite">
         <Stat label="TIME" value={formatTime(state.elapsedMs)} id="time" />
         <Stat label="MOVES" value={String(state.moves)} id="moves" />
-        <Stat label="BIG MOVES" value={String(state.bigMoves)} id="bigmoves" />
+        <Stat label="BLOCK MOVES" value={String(state.bigMoves)} id="bigmoves" />
       </div>
 
       <BigBoard
@@ -122,7 +123,7 @@ export function BigGameView({ initial, title, onProgress, onCleared, onNext, nex
         onTap={tap}
         onMove={move}
       />
-      <p className="big-help">Tap a tile beside a gap, or swipe it. The BIG tile needs a gap as wide as itself.</p>
+      <p className="big-help">Tap a tile beside a gap, or swipe it. Big blocks need gaps that fit their whole shape.</p>
 
       <div className="big-controls">
         <div className="goal-box">
@@ -144,7 +145,7 @@ export function BigGameView({ initial, title, onProgress, onCleared, onNext, nex
           stats={[
             { label: 'TIME', value: formatTime(state.elapsedMs) },
             { label: 'MOVES', value: state.moves },
-            { label: 'BIG MOVES', value: state.bigMoves },
+            { label: 'BLOCK MOVES', value: state.bigMoves },
           ]}
           shareText={bigShareText(state)}
           onClose={() => setShowClear(false)}

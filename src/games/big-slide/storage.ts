@@ -1,6 +1,6 @@
 import { createContext, createElement, useCallback, useContext, useMemo, useReducer, useRef, type ReactNode } from 'react';
 import { isValidBigState, type BigState } from './logic/game';
-import type { BigPuzzle, BoardSize, Difficulty } from './logic/types';
+import type { BigPuzzle, BoardSize, Difficulty, Variant } from './logic/types';
 import { updateBest } from '../../storage/stats';
 import type { Best } from '../../storage/storage';
 
@@ -18,6 +18,7 @@ export interface BigPlayRecord {
   date: string;
   mode: 'daily' | 'endless';
   size: BoardSize;
+  variant?: Variant;
   difficulty: Difficulty;
   timeMs: number;
   moves: number;
@@ -29,15 +30,17 @@ export interface BigSave {
   dailyHistory: Record<string, BigDailyRecord>;
   endlessStreak: number;
   maxEndlessStreak: number;
-  /** Keyed by `${size}-${difficulty}`. */
+  /** Keyed by `${size}-${difficulty}` (classic) or `${variant}-${size}-${difficulty}`. */
   bests: Record<string, Best>;
   history: BigPlayRecord[];
   inProgress: { daily?: BigState; endless?: BigState };
   lastSize: BoardSize;
   lastDifficulty: Difficulty;
+  lastVariant?: Variant;
 }
 
-export const bestKey = (size: BoardSize, d: Difficulty) => `${size}-${d}`;
+/** Classic keeps the original key format so existing records stay valid. */
+export const bestKey = (size: BoardSize, d: Difficulty, variant: Variant = 'classic') => (variant === 'classic' ? `${size}-${d}` : `${variant}-${size}-${d}`);
 
 export const defaultBigSave = (): BigSave => ({
   version: BIG_SAVE_VERSION,
@@ -96,14 +99,14 @@ export function recordBigClear(
   const next: BigSave = {
     ...data,
     completed: data.completed + 1,
-    history: [...data.history, { date: r.dateKey, mode: p.mode, size: p.size, difficulty: p.difficulty, timeMs: r.timeMs, moves: r.moves, bigMoves: r.bigMoves }].slice(-200),
+    history: [...data.history, { date: r.dateKey, mode: p.mode, size: p.size, variant: p.variant, difficulty: p.difficulty, timeMs: r.timeMs, moves: r.moves, bigMoves: r.bigMoves }].slice(-200),
   };
   if (p.mode === 'daily') {
     if (!data.dailyHistory[r.dateKey]) next.dailyHistory = { ...data.dailyHistory, [r.dateKey]: { number: p.number ?? 0, timeMs: r.timeMs, moves: r.moves, bigMoves: r.bigMoves } };
   } else {
     next.endlessStreak = data.endlessStreak + 1;
     next.maxEndlessStreak = Math.max(data.maxEndlessStreak, next.endlessStreak);
-    const k = bestKey(p.size, p.difficulty);
+    const k = bestKey(p.size, p.difficulty, p.variant ?? 'classic');
     next.bests = { ...data.bests, [k]: updateBest(data.bests[k] ?? {}, r.timeMs, r.moves) };
   }
   return next;
