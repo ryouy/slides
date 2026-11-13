@@ -34,7 +34,7 @@ for (const [name, url] of pages) {
     await expect(page.getByTestId('ad-iframe')).toHaveCount(0); // dev never requests real ads
     // below the board and its controls
     const ad = (await page.getByTestId('ad-box').boundingBox())!;
-    const lastControl = name === 'ART SLIDE' ? page.getByTestId('restart') : name === 'WORD SLIDE' ? page.getByRole('button', { name: 'RESTART' }) : page.getByRole('button', { name: 'RESTART' });
+    const lastControl = name === 'ART SLIDE' ? page.getByTestId('numbers-toggle') : name === 'WORD SLIDE' ? page.getByRole('button', { name: 'RESTART' }) : page.getByRole('button', { name: 'RESTART' });
     const ctl = (await lastControl.boundingBox())!;
     expect(ad.y).toBeGreaterThanOrEqual(ctl.y + ctl.height - 1);
   });
@@ -95,7 +95,7 @@ for (const [name, url] of [['ART SLIDE', '/art-slide/play/monet-water-lilies'], 
     expect(board.y + board.height).toBeLessThanOrEqual(720);
     expect(await page.evaluate(() => document.documentElement.scrollHeight <= window.innerHeight + 1)).toBe(true);
     // nothing in the column overlaps the ad
-    for (const id of ['preview', 'shuffle', 'restart', 'numbers-toggle'].filter((i) => name === 'ART SLIDE' || i === 'restart')) {
+    for (const id of ['preview', 'shuffle', 'numbers-toggle']) {
       if (name === 'BIG SLIDE') break;
       const b = (await page.getByTestId(id).boundingBox())!;
       expect(b.y + b.height).toBeLessThanOrEqual(ad.y + 1);

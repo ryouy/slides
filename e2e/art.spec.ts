@@ -170,7 +170,7 @@ test('the grid follows the painting: wide paintings get more columns, tall ones 
   }
 });
 
-test('changing level after moves asks first; SHUFFLE and RESTART behave', async ({ page }) => {
+test('changing level after moves asks first; SHUFFLE re-places the pieces', async ({ page }) => {
   await page.goto('/art-slide/play/seurat-grande-jatte');
   const sol = await solution(page, 'free');
   const before = await snap(page);
@@ -179,12 +179,11 @@ test('changing level after moves asks first; SHUFFLE and RESTART behave', async 
   await page.getByTestId('asize-4').click();
   await expect(page.getByRole('alert')).toContainText(/Switch to \d+×\d+/);
   await page.getByRole('button', { name: 'Cancel' }).click();
-  await page.getByTestId('restart').click();
-  await expect(page.getByTestId('moves')).toHaveText('0');
-  expect(await snap(page)).toBe(before); // same arrangement as the start
+  await expect(page.getByTestId('moves')).toHaveText('1'); // cancelled: nothing changed
   await page.getByTestId('shuffle').click();
   await shuffleDone(page);
   expect(await snap(page)).not.toBe(before);
+  await expect(page.getByTestId('restart')).toHaveCount(0); // there is no Restart button any more
   await page.getByTestId('asize-5').click(); // no moves yet: switches immediately
   await expect.poll(async () => (await savedPuzzle(page, 'free')).size).toBe(5);
 });
@@ -527,7 +526,7 @@ test('puzzle first: the board is large; on desktop all controls sit in a tidy co
   const vp = page.viewportSize()!;
   expect(board.x + board.width).toBeLessThanOrEqual(vp.width);
   if (info.project.name === 'desktop') {
-    const parts = await Promise.all(['asize-3', 'time', 'moves', 'preview', 'shuffle', 'restart'].map(async (id) => (await page.getByTestId(id).boundingBox())!));
+    const parts = await Promise.all(['asize-3', 'time', 'moves', 'preview', 'shuffle', 'numbers-toggle'].map(async (id) => (await page.getByTestId(id).boundingBox())!));
     for (const b of parts) expect(b.x).toBeGreaterThanOrEqual(board.x + board.width); // everything beside the board
     const desc = (await page.getByTestId('art-desc').boundingBox())!;
     expect(desc.x).toBeGreaterThanOrEqual(board.x + board.width);
@@ -542,23 +541,21 @@ test('puzzle first: the board is large; on desktop all controls sit in a tidy co
   }
 });
 
-test('tile numbers: an easy-to-find switch right under the buttons; change artwork stays quiet', async ({ page }, info) => {
+test('tile numbers sits in the button row where Restart used to be; change artwork stays quiet', async ({ page }) => {
   await page.goto('/art-slide/play/degas-dance-class');
   await page.waitForTimeout(450);
   await expect(page.locator('.anum')).toHaveCount(0);
   const toggle = page.getByTestId('numbers-toggle');
   await expect(toggle).toHaveAttribute('aria-pressed', 'false');
-  const restart = (await page.getByTestId('restart').boundingBox())!;
-  const tb = (await toggle.boundingBox())!;
-  const vp = page.viewportSize()!;
-  expect(tb.y).toBeGreaterThanOrEqual(restart.y + restart.height - 1); // directly below the three buttons
-  expect(tb.y - (restart.y + restart.height)).toBeLessThan(30);
-  expect(tb.height).toBeGreaterThanOrEqual(40); // a proper tap target
-  expect(tb.y + tb.height).toBeLessThanOrEqual(vp.height + (info.project.name === 'desktop' ? 0 : 200)); // on screen, not buried
+  const [pv, sh, tg] = await Promise.all(['preview', 'shuffle', 'numbers-toggle'].map(async (id) => (await page.getByTestId(id).boundingBox())!));
+  expect(Math.abs(tg.y - pv.y)).toBeLessThan(2); // one row: Preview, Shuffle, Numbers
+  expect(Math.abs(tg.y - sh.y)).toBeLessThan(2);
+  expect(tg.x).toBeGreaterThan(sh.x);
+  expect(tg.height).toBeGreaterThanOrEqual(40);
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-pressed', 'true');
-  await expect(toggle).toContainText('ON');
   expect(await page.locator('.anum').count()).toBeGreaterThan(3);
+  await expect.poll(() => toggle.evaluate((e) => getComputedStyle(e).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)'); // visibly "on" once the colour has eased in
   await page.reload();
   await expect(page.getByTestId('numbers-toggle')).toHaveAttribute('aria-pressed', 'true'); // remembered
   const size = await page.getByTestId('change-artwork').evaluate((e) => parseFloat(getComputedStyle(e).fontSize));
@@ -567,9 +564,41 @@ test('tile numbers: an easy-to-find switch right under the buttons; change artwo
   await expect(page).toHaveURL(/\/art-slide\/gallery$/);
 });
 
+test('navigation uses drawn chevrons, not text arrows', async ({ page }) => {
+  await page.goto('/art-slide');
+  await expect(page.locator('.og-row svg')).toHaveCount(2); // the way to BIG / WORD
+  expect(await page.locator('.og-row').first().innerText()).not.toMatch(/[→←›‹]/);
+  await page.getByTestId('more-big').click();
+  await expect(page.locator('.all-games svg')).toHaveCount(1); // back to ART SLIDE
+  expect(await page.locator('.all-games').innerText()).not.toMatch(/[→←›‹]/);
+  await page.goto('/art-slide/gallery');
+  await expect(page.locator('.back-btn svg')).toHaveCount(1);
+  expect(await page.locator('.back-btn').innerText()).toBe('');
+});
+
+test('settings: switches, a segmented theme choice and a styled language select', async ({ page }) => {
+  await page.goto('/settings');
+  await expect(page.locator('.set-row')).toHaveCount(4); // language, theme, colour-blind, ad cookies (dev)
+  const sw = page.locator('.switch-input').first();
+  const box = (await sw.boundingBox())!;
+  expect([Math.round(box.width), Math.round(box.height)]).toEqual([46, 28]); // a switch, not a tiny checkbox
+  await expect(sw).not.toBeChecked();
+  await sw.click();
+  await expect(sw).toBeChecked();
+  await expect(page.getByTestId('theme-system')).toHaveAttribute('aria-checked', 'true');
+  await page.getByTestId('theme-dark').click();
+  await expect(page.getByTestId('theme-dark')).toHaveAttribute('aria-checked', 'true');
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await page.getByTestId('theme-light').click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  expect(await page.getByTestId('lang-select').evaluate((e) => getComputedStyle(e).appearance)).toBe('none'); // custom look
+  await page.reload();
+  await expect(sw).toBeChecked(); // remembered
+});
+
 test('dark theme keeps the art UI readable', async ({ page }) => {
   await page.goto('/settings');
-  await page.getByTestId('theme-select').selectOption('dark');
+  await page.getByTestId('theme-dark').click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.goto('/art-slide');
   await expect(page.getByTestId('exhibit')).toBeVisible();

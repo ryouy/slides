@@ -159,7 +159,7 @@ test('WORD SLIDE progress is untouched by visiting BIG SLIDE; theme applies to b
   await expect(page.locator('.tile')).toHaveCount(15);
   await page.getByTestId('hint-first-0').click();
   await page.goto('/settings');
-  await page.getByTestId('theme-select').selectOption('dark');
+  await page.getByTestId('theme-dark').click();
   await page.getByRole('button', { name: 'Back' }).click(); // a fresh load of Settings leads back to the main page (ART SLIDE)
   await expect(page).toHaveURL(/\/art-slide$/);
   await page.getByTestId('more-big').click();

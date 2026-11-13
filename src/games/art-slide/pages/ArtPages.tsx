@@ -1,3 +1,4 @@
+import { BackButton, ChevronRight } from '../../../components/Icons';
 import { useMemo, useState } from 'react';
 import { AdSlot } from '../../../ads/AdSlot';
 import { HomeLinks } from '../../../components/HomeLinks';
@@ -43,8 +44,8 @@ export function ArtHome() {
       <HomeLinks items={[{ label: t('home.howTo'), to: 'how' }, { label: t('home.stats'), to: 'stats' }, { label: t('home.credits'), to: 'credits' }, { label: t('home.settings'), to: 'settings' }]} />
       <section className="other-games" aria-label={t('home.more')}>
         <h2>{t('home.more')}</h2>
-        <Link to="/big-slide" className="og-row" data-testid="more-big"><b>BIG SLIDE</b><span aria-hidden="true">→</span></Link>
-        <Link to="/word-slide" className="og-row" data-testid="more-word"><b>WORD SLIDE</b><span aria-hidden="true">→</span></Link>
+        <Link to="/big-slide" className="og-row" data-testid="more-big"><b>BIG SLIDE</b><ChevronRight size={18} className="og-chev" /></Link>
+        <Link to="/word-slide" className="og-row" data-testid="more-word"><b>WORD SLIDE</b><ChevronRight size={18} className="og-chev" /></Link>
       </section>
       <Footer />
     </div>
@@ -65,7 +66,7 @@ export function ArtGallery() {
   return (
     <div className="screen gallery-screen">
       <header className="topbar">
-        <button className="icon-btn" onClick={() => go('')} aria-label={t('common.back')}>←</button>
+        <BackButton onClick={() => go('')} label={t('common.back')} />
         <h1>{t('gal.title')}</h1>
         <div className="top-right" />
       </header>
@@ -159,7 +160,7 @@ export function ArtPlay({ artworkId }: { artworkId?: string }) {
     return (
       <div className="screen">
         <header className="topbar">
-          <button className="icon-btn" onClick={() => go('')} aria-label={t('common.back')}>←</button>
+          <BackButton onClick={() => go('')} label={t('common.back')} />
           <h1>ART SLIDE</h1>
           <div className="top-right" />
         </header>

@@ -1,3 +1,4 @@
+import { BackButton } from '../components/Icons';
 import { useEffect, useReducer, useRef, useState, type ReactNode } from 'react';
 import { foundOf, reducer, type CheckEntry, type GameState } from '../core/game';
 import type { Direction } from '../core/types';
@@ -68,7 +69,7 @@ export function GameView({ initial, title, onProgress, onCleared, onNext, nextLa
   return (
     <div className="screen game">
       <header className="topbar">
-        <button className="icon-btn" onClick={onBack} aria-label={t('common.back')}>←</button>
+        <BackButton onClick={onBack} label={t('common.back')} />
         <h1>{title}</h1>
         <div className="top-right">{headerRight}</div>
       </header>

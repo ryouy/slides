@@ -1,3 +1,4 @@
+import { BackButton } from '../../../components/Icons';
 import { useEffect, useReducer, useRef, useState, type ReactNode } from 'react';
 import { AdSlot } from '../../../ads/AdSlot';
 import { ResultModal } from '../../../components/ResultModal';
@@ -96,7 +97,7 @@ export function BigGameView({ initial, title, onProgress, onCleared, onNext, nex
   return (
     <div className="screen game bigslide">
       <header className="topbar">
-        <button className="icon-btn" onClick={onBack} aria-label={t('common.back')}>←</button>
+        <BackButton onClick={onBack} label={t('common.back')} />
         <h1>{title}</h1>
         <div className="top-right">{headerRight}</div>
       </header>
