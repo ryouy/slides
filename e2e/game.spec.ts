@@ -7,9 +7,9 @@ test.beforeEach(async ({ page }) => {
   errors.set(page, list);
   page.on('pageerror', (e) => list.push(e.message));
   page.on('console', (m) => m.type() === 'error' && list.push(m.text()));
-  await page.goto('/');
+  await page.goto('/word-slide');
   await page.evaluate(() => localStorage.clear());
-  await page.goto('/');
+  await page.goto('/word-slide');
 });
 
 test.afterEach(({ page }) => {
@@ -131,9 +131,9 @@ test('hard/easy starting hints and daily fairness', async ({ page, browser }) =>
   // daily: two independent players get identical starting card conditions
   const ctx = await browser.newContext();
   const p2 = await ctx.newPage();
-  await p2.goto('/#/daily');
+  await p2.goto('/word-slide/daily');
   await expect(p2.locator('.tile')).toHaveCount(15);
-  await page.goto('/#/daily');
+  await page.goto('/word-slide/daily');
   await expect(page.locator('.tile')).toHaveCount(15);
   const cats = (p: Page) => p.locator('[data-testid^="cat-"]').allInnerTexts();
   expect(await cats(p2)).toEqual(await cats(page));
@@ -204,10 +204,10 @@ test('endless: pick difficulty, solve, next puzzle', async ({ page }) => {
 
 test('pages render and dark theme applies', async ({ page }) => {
   for (const r of ['how', 'stats', 'settings', 'about', 'privacy', 'contact', 'terms']) {
-    await page.goto(`/#/${r}`);
+    await page.goto(r === 'settings' || r === 'about' || r === 'privacy' || r === 'contact' || r === 'terms' ? `/${r}` : `/word-slide/${r}`);
     await expect(page.locator('.topbar h1')).toBeVisible();
   }
-  await page.goto('/#/settings');
+  await page.goto('/settings');
   await page.locator('select').selectOption('dark');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 });

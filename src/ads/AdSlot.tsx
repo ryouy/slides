@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useSave } from '../storage/SaveContext';
+import { Link } from '../components/Link';
 
 const CLIENT = import.meta.env.VITE_ADSENSE_CLIENT as string | undefined;
 const SLOT = import.meta.env.VITE_ADSENSE_SLOT as string | undefined;
@@ -53,7 +54,7 @@ export function ConsentBanner() {
   const set = (v: boolean) => update((d) => ({ ...d, settings: { ...d.settings, adConsent: v } }));
   return (
     <div className="consent" role="dialog" aria-label="Cookie consent">
-      <p>We use cookies for ads. You can play without them. See the <a href="#/privacy">Privacy Policy</a>.</p>
+      <p>We use cookies for ads. You can play without them. See the <Link to="/privacy">Privacy Policy</Link>.</p>
       <div className="row">
         <button className="btn" onClick={() => set(false)}>Decline</button>
         <button className="btn primary" onClick={() => set(true)}>Accept</button>

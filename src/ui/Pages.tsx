@@ -6,7 +6,7 @@ import { currentDailyStreak, formatTime, maxDailyStreak } from '../storage/stats
 import type { ThemePref } from '../storage/storage';
 import { Footer } from './Home';
 
-function Page({ title, children }: { title: string; children: ReactNode }) {
+export function Page({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="screen page">
       <header className="topbar">

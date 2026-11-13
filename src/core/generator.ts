@@ -115,19 +115,8 @@ export function generatePuzzle(o: GenerateOptions): Puzzle {
 
 /* ---------- Daily (Japan Standard Time) ---------- */
 
-const JST_OFFSET_MS = 9 * 60 * 60 * 1000;
-/** Daily #1 is this date. */
-export const DAILY_EPOCH = '2026-11-01';
-
-export function jstDateKey(now: number = Date.now()): string {
-  return new Date(now + JST_OFFSET_MS).toISOString().slice(0, 10);
-}
-
-const dayNumber = (key: string) => Math.floor(Date.parse(`${key}T00:00:00Z`) / 86400000);
-
-export function dailyNumber(key: string): number {
-  return dayNumber(key) - dayNumber(DAILY_EPOCH) + 1;
-}
+export { DAILY_EPOCH, dailyNumber, jstDateKey } from '../utils/date';
+import { dailyNumber } from '../utils/date';
 
 export function generateDaily(dateKey: string): Puzzle {
   return generatePuzzle({

@@ -3,6 +3,7 @@ import { foundOf, reducer, type CheckEntry, type GameState } from '../core/game'
 import type { Direction } from '../core/types';
 import { formatTime } from '../storage/stats';
 import { AdSlot } from '../ads/AdSlot';
+import { useGameTimer } from '../hooks/useGameTimer';
 import { Board } from './Board';
 import { CheckPanel } from './CheckPanel';
 import { Clues } from './Clues';
@@ -32,16 +33,7 @@ export function GameView({ initial, title, onProgress, onCleared, onNext, nextLa
   const [showClear, setShowClear] = useState(initial.status === 'cleared');
   const recorded = useRef(initial.status === 'cleared');
 
-  // timer: counts real elapsed time (pauses while the tab is hidden)
-  useEffect(() => {
-    let last = Date.now();
-    const id = setInterval(() => {
-      const now = Date.now();
-      if (!document.hidden) dispatch({ type: 'tick', ms: Math.min(now - last, 1000) });
-      last = now;
-    }, 250);
-    return () => clearInterval(id);
-  }, []);
+  useGameTimer((ms) => dispatch({ type: 'tick', ms }));
 
   // keyboard: arrow = direction the tile moves
   useEffect(() => {
