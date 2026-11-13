@@ -18,10 +18,13 @@ export interface DailyRecord {
   timeMs: number;
   moves: number;
   checks: number;
+  hints?: number;
 }
 
 export interface PlayRecord {
   date: string;
+  noHint?: boolean;
+  hints?: number;
   mode: 'daily' | 'endless';
   difficulty: Difficulty;
   timeMs: number;
@@ -38,6 +41,7 @@ export interface SaveData {
   version: number;
   settings: Settings;
   completed: number;
+  noHintClears: number;
   dailyHistory: Record<string, DailyRecord>;
   endlessStreak: number;
   maxEndlessStreak: number;
@@ -51,6 +55,7 @@ export const defaultSave = (): SaveData => ({
   version: SAVE_VERSION,
   settings: { theme: 'system', colorblind: false, adConsent: null },
   completed: 0,
+  noHintClears: 0,
   dailyHistory: {},
   endlessStreak: 0,
   maxEndlessStreak: 0,

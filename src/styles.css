@@ -44,8 +44,8 @@ a { color: inherit; }
 .stat { flex: 1; text-align: center; background: var(--surface); border-radius: 8px; padding: 6px 4px; }
 .stat-label { display: block; font-size: 10px; letter-spacing: .1em; color: var(--muted); font-weight: 700; }
 .stat-value { font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; }
-.found-bar { text-align: center; font-size: 13px; letter-spacing: .08em; font-weight: 700; margin: 6px 0 10px; color: var(--muted); }
-.found-bar b { color: var(--fg); font-size: 16px; }
+.found-bar { text-align: center; font-size: 12px; letter-spacing: .1em; font-weight: 700; margin: 6px 0 10px; color: var(--muted); display: flex; flex-direction: column; align-items: center; }
+.found-bar b { color: var(--fg); font-size: 20px; letter-spacing: .05em; }
 .found-bar.all b { color: var(--green); }
 
 /* board */
@@ -55,7 +55,7 @@ a { color: inherit; }
 .tile:disabled { cursor: default; opacity: 1; }
 .tile:active:not(:disabled) { filter: brightness(.92); }
 .tile:focus-visible { outline: 3px solid var(--found-line); outline-offset: 1px; }
-.tile.found { background: var(--found); border-color: var(--found-line); }
+.tile.found { background: var(--found); border-color: var(--green); border-width: 3px; }
 .m-green { background: var(--green) !important; color: var(--mark-fg) !important; border-color: transparent !important; }
 .m-yellow { background: var(--yellow) !important; color: var(--mark-fg) !important; border-color: transparent !important; }
 .m-gray { background: var(--gray) !important; color: #fff !important; border-color: transparent !important; }
@@ -76,17 +76,49 @@ a { color: inherit; }
 .btn.wide { margin: 12px 0; }
 .link-btn { background: none; border: 0; text-decoration: underline; color: var(--muted); margin-top: 8px; }
 
+/* check panel */
+.check-panel { margin-top: 12px; text-align: center; }
+.row-pick { display: flex; justify-content: center; align-items: center; gap: 8px; }
+.rp-label { font-size: 11px; letter-spacing: .1em; font-weight: 700; color: var(--muted); margin-right: 4px; }
+.chip { width: 44px; height: 44px; border-radius: 10px; border: 2px solid var(--line); background: var(--bg); font-weight: 800; font-size: 16px; }
+.chip.on { background: var(--found-line); border-color: var(--found-line); color: #fff; }
+.chip:disabled { opacity: .45; }
+.check-msg { font-size: 13px; color: var(--muted); margin: 8px 0 0; min-height: 1.2em; }
+.row-sel { position: absolute; left: calc(var(--gap) / 2); top: calc(var(--gap) / 2); width: calc((100% - var(--gap)) * var(--w)); height: calc((100% - var(--gap)) / 4); transform: translateY(calc(var(--r) * 100%)); border: 3px solid var(--found-line); border-radius: 12px; pointer-events: none; z-index: 1; }
+
+/* word clue cards */
+.clues h2, .history h2 { font-size: 12px; letter-spacing: .12em; color: var(--muted); margin: 18px 0 8px; text-align: center; }
+.clue-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.clue { background: var(--surface); border: 2px solid var(--line); border-radius: 12px; padding: 8px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.clue.selected { border-color: var(--found-line); box-shadow: 0 0 0 2px var(--found-line) inset; }
+.clue.done { border-color: var(--green); }
+.clue.dim { opacity: .5; }
+.clue-head { background: none; border: 0; padding: 2px; display: flex; justify-content: space-between; align-items: baseline; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-align: left; min-height: 32px; }
+.clue-head .len { color: var(--muted); font-weight: 600; font-size: 11px; letter-spacing: 0; }
+.clue.done .len { color: var(--green); font-weight: 800; }
+.clue-cat { font-size: 14px; font-weight: 700; }
+.clue-slots { display: flex; gap: 4px; }
+.slot-l { width: 26px; height: 30px; border-bottom: 3px solid var(--muted); display: grid; place-items: center; font-weight: 800; font-size: 18px; }
+.slot-l.shown { border-color: var(--yellow); }
+.slot-l.ok { border-color: var(--green); color: var(--green); }
+.clue-def { margin: 0; font-size: 12px; line-height: 1.35; color: var(--muted); }
+.clue-btns { display: flex; flex-wrap: wrap; gap: 4px; margin-top: auto; }
+.hint-btn { font-size: 11px; font-weight: 700; padding: 6px 8px; border: 1px solid var(--line); background: var(--bg); border-radius: 8px; min-height: 32px; }
+.hint-btn:hover:not(:disabled) { background: var(--tile); }
+.hint-btn:disabled { opacity: .4; }
+
 /* history */
-.history h2 { font-size: 12px; letter-spacing: .12em; color: var(--muted); margin: 14px 0 8px; text-align: center; }
-.history-list { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px; justify-content: flex-start; }
-.mini-wrap { margin: 0; flex: none; }
-.mini { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; width: 84px; }
-.mc { aspect-ratio: 1; display: grid; place-items: center; font-size: 11px; font-weight: 800; background: var(--tile); border-radius: 3px; position: relative; }
+.history-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.h-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--surface); border-radius: 8px; padding: 6px 10px; }
+.h-label { font-size: 11px; font-weight: 700; letter-spacing: .04em; color: var(--muted); }
+.mini { display: flex; gap: 3px; }
+.mc { width: 26px; height: 26px; display: grid; place-items: center; font-size: 14px; font-weight: 800; background: var(--tile); border-radius: 4px; position: relative; }
 .mc.blank { background: transparent; }
 .mc.big { width: 44px; height: 44px; font-size: 22px; border-radius: 6px; }
-.mini-wrap figcaption { font-size: 10px; text-align: center; color: var(--muted); margin-top: 3px; }
-.hint-empty { text-align: center; font-size: 13px; color: var(--muted); }
+.hint-empty { text-align: center; font-size: 13px; color: var(--muted); margin: 14px 0 0; }
 .example { display: flex; gap: 4px; margin: 8px 0; }
+.no-hint { display: inline-block; background: var(--yellow); color: #111; font-weight: 900; letter-spacing: .12em; padding: 6px 14px; border-radius: 999px; margin: 0 0 12px; font-size: 13px; }
+.hint-sum { font-size: 12px; color: var(--muted); margin: 0 0 4px; }
 
 /* ads */
 .ad-slot { margin-top: 20px; min-height: 100px; border: 1px dashed var(--line); border-radius: 8px; display: grid; place-items: center; overflow: hidden; }

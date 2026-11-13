@@ -4,6 +4,8 @@ import type { Direction } from '../core/types';
 import { formatTime } from '../storage/stats';
 import { AdSlot } from '../ads/AdSlot';
 import { Board } from './Board';
+import { CheckPanel } from './CheckPanel';
+import { Clues } from './Clues';
 import { ClearModal } from './ClearModal';
 
 const KEY_DIR: Record<string, Direction> = {
@@ -83,23 +85,39 @@ export function GameView({ initial, title, onProgress, onCleared, onNext, nextLa
         <Stat label="CHECKS" value={String(state.checks)} id="checks" />
       </div>
       <div className={`found-bar${found.count === 4 ? ' all' : ''}`} data-testid="found">
-        WORDS FOUND: <b>{found.count}</b> / 4
+        <span>WORDS FOUND</span> <b>{found.count} / 4</b>
       </div>
 
       <Board
         board={state.board}
         marks={state.marks}
         foundRows={found.rows}
+        selRow={state.selRow}
         disabled={cleared}
         onTile={(cell) => dispatch({ type: 'move', cell })}
         onSwipe={(dir) => dispatch({ type: 'dir', dir })}
       />
 
-      <div className="actions">
-        <button className="btn primary" disabled={cleared} onClick={() => dispatch({ type: 'check' })}>CHECK</button>
-        <button className="btn" onClick={() => dispatch({ type: 'restart' })}>RESTART</button>
-        {footerExtra}
-      </div>
+      <CheckPanel
+        selRow={state.selRow}
+        selCard={state.selCard}
+        disabled={cleared}
+        onRow={(row) => dispatch({ type: 'selRow', row })}
+        onCheck={() => dispatch({ type: 'check' })}
+        onRestart={() => dispatch({ type: 'restart' })}
+        extra={footerExtra}
+      />
+
+      <Clues
+        clues={state.puzzle.clues}
+        cards={state.cards}
+        found={found.cards}
+        selCard={state.selCard}
+        selRow={state.selRow}
+        disabled={cleared}
+        onSelect={(card) => dispatch({ type: 'selCard', card })}
+        onHint={(card, kind) => dispatch({ type: 'hint', card, kind })}
+      />
 
       <History entries={state.history} />
       <AdSlot />
@@ -124,22 +142,22 @@ function Stat({ label, value, id }: { label: string; value: string; id: string }
 }
 
 function History({ entries }: { entries: CheckEntry[] }) {
-  if (!entries.length) return <p className="hint-empty">Press CHECK to get Wordle-style hints.</p>;
+  if (!entries.length) return <p className="hint-empty">Pick a row and a word card, then press CHECK for Wordle-style colours.</p>;
   return (
     <section className="history" aria-label="Hint history">
       <h2>HINT HISTORY</h2>
-      <div className="history-list">
+      <ul className="history-list">
         {entries.map((e, i) => ({ e, i })).reverse().map(({ e, i }) => (
-          <figure key={i} className="mini-wrap">
-            <div className="mini">
-              {e.letters.map((l, c) => (
+          <li key={i} className="h-row">
+            <span className="h-label">#{i + 1} · ROW {e.row + 1} → WORD {e.card + 1}</span>
+            <span className="mini">
+              {e.cells.map((l, c) => (
                 <span key={c} className={`mc${e.marks[c] ? ` m-${e.marks[c]}` : ''}${l === null ? ' blank' : ''}`}>{l}</span>
               ))}
-            </div>
-            <figcaption>#{i + 1} · {e.found}/4</figcaption>
-          </figure>
+            </span>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }

@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { blankIndex, boardFromLetters, canMove, isValidBoard, lettersOf, letterMultiset, moveTile, neighbors, tileForDirection } from './board';
-import { evaluateBoard, evaluateRow } from './wordle';
+import { checkRow, evaluateRow } from './wordle';
 import { matchWords } from './matcher';
 import { dailyNumber, generateDaily, generateEndless, goalLetters, jstDateKey, validatePuzzle } from './generator';
-import { newGame, reducer, foundOf } from './game';
+import { newGame, reducer, foundOf, isNoHintClear } from './game';
+import { applyHint, initialCardHint, isFullyRevealed, maskedWord, totalHintUse } from './hints';
 import { FOUR, THREE, poolFor } from '../data/words';
-import type { Difficulty, WordSet } from './types';
+import type { Difficulty, WordEntry, WordSet } from './types';
 
 const words: WordSet = { top: ['BIRD', 'FISH', 'TREE'], bottom: 'CAT' };
 const L = (s: string) => s.replace(/\s/g, '').split('').map((c) => (c === '_' ? null : c));
@@ -69,29 +70,6 @@ describe('wordle row evaluation', () => {
   });
 });
 
-describe('board evaluation with free row order', () => {
-  it('is fully green for any permutation of top rows', () => {
-    const letters = L('TREEBIRDFISHCAT_');
-    const ev = evaluateBoard(letters, words);
-    expect(ev.marks.filter((m) => m === 'green').length).toBe(15);
-    expect(ev.marks[15]).toBeNull();
-  });
-  it('picks assignment with most greens, then yellows', () => {
-    const letters = L('FISHXXXXTREEXXX_');
-    const ev = evaluateBoard(letters, words);
-    expect(ev.assignment[0]).toBe(1);
-    expect(ev.assignment[2]).toBe(2);
-    expect(ev.marks.slice(0, 4)).toEqual(['green', 'green', 'green', 'green']);
-  });
-  it('is deterministic on ties', () => {
-    const letters = L('QQQQQQQQQQQQQQQ_');
-    const a = evaluateBoard(letters, words);
-    const b = evaluateBoard(letters, words);
-    expect(a).toEqual(b);
-    expect(a.assignment).toEqual([0, 1, 2]);
-  });
-});
-
 describe('WORDS FOUND', () => {
   it('counts completed words in any order', () => {
     expect(matchWords(solvedLetters, words).count).toBe(4);
@@ -112,13 +90,34 @@ describe('WORDS FOUND', () => {
   });
 });
 
+const entry = (word: string, category = 'Test'): WordEntry => ({ id: word.toLowerCase(), word, category, definition: `about ${category}`, difficulty: 'easy' });
+const clues = [entry('BIRD', 'Animal'), entry('FISH', 'Animal'), entry('TREE', 'Plant'), entry('CAT', 'Animal')];
+const puzzle = (difficulty: Difficulty = 'normal') => ({
+  id: 't', mode: 'endless' as const, difficulty, words, clues,
+  letters: L('BIRDFISHTREECA_T'), solution: [15], generatorVersion: 'x', wordsVersion: 'x',
+});
+
+describe('checkRow (row vs chosen card)', () => {
+  const letters = L('TREEBIRDFISHCAT_');
+  it('compares only the chosen row with the chosen word', () => {
+    expect(checkRow(letters, 1, 'BIRD').marks).toEqual(['green', 'green', 'green', 'green']);
+    // row 0 is TREE: against FISH only E/R/T absent -> gray, with no regard to other rows
+    expect(checkRow(letters, 0, 'FISH').marks).toEqual(['gray', 'gray', 'gray', 'gray']);
+    expect(checkRow(letters, 0, 'BIRD').marks).toEqual(['gray', 'yellow', 'gray', 'gray']);
+  });
+  it('bottom row uses the left 3 cells only', () => {
+    expect(checkRow(letters, 3, 'CAT')).toEqual({ cells: ['C', 'A', 'T'], marks: ['green', 'green', 'green'] });
+    const odd = L('TREEBIRDFISH_CAT');
+    expect(checkRow(odd, 3, 'CAT')).toEqual({ cells: [null, 'C', 'A'], marks: [null, 'yellow', 'yellow'] });
+  });
+  it('treats duplicate letters like Wordle', () => {
+    expect(checkRow(L('EEEEXXXXXXXXXXX_'), 0, 'TREE').marks).toEqual(['gray', 'gray', 'green', 'green']);
+  });
+});
+
 describe('game reducer', () => {
-  const puzzle = {
-    id: 't', mode: 'endless' as const, difficulty: 'easy' as const, words,
-    letters: L('BIRDFISHTREECA_T'), solution: [15], generatorVersion: 'x', wordsVersion: 'x',
-  };
   it('clears on the winning move, stops the timer and blocks input', () => {
-    let s = newGame(puzzle);
+    let s = newGame(puzzle());
     expect(foundOf(s).count).toBe(3);
     s = reducer(s, { type: 'move', cell: 15 });
     expect(s.status).toBe('cleared');
@@ -126,70 +125,158 @@ describe('game reducer', () => {
     const t = s.elapsedMs;
     expect(reducer(s, { type: 'tick', ms: 500 }).elapsedMs).toBe(t);
     expect(reducer(s, { type: 'move', cell: 14 })).toBe(s);
-    expect(reducer(s, { type: 'check' })).toBe(s);
+    expect(reducer(s, { type: 'hint', card: 0, kind: 'first' })).toBe(s);
   });
-  it('check records history and colours; a move clears colours', () => {
-    let s = newGame(puzzle);
-    s = reducer(s, { type: 'check' });
-    expect(s.checks).toBe(1);
-    expect(s.history).toHaveLength(1);
-    expect(s.marks).not.toBeNull();
-    s = reducer(s, { type: 'dir', dir: 'right' }); // tile at blank-1 moves right
-    expect(s.marks).toBeNull();
-    expect(s.history).toHaveLength(1);
-  });
-  it('illegal moves change nothing; timer waits for first action', () => {
-    let s = newGame(puzzle);
+  it('illegal moves change nothing; timer waits for the first action', () => {
+    const s = newGame(puzzle());
     expect(reducer(s, { type: 'move', cell: 0 })).toBe(s);
     expect(reducer(s, { type: 'tick', ms: 100 }).elapsedMs).toBe(0);
+    expect(reducer(reducer(s, { type: 'hint', card: 0, kind: 'first' }), { type: 'tick', ms: 100 }).elapsedMs).toBe(100);
+  });
+  it('selection rules pair rows 1-3 with 4-letter cards and row 4 with the 3-letter card', () => {
+    let s = newGame(puzzle());
+    s = reducer(s, { type: 'selRow', row: 3 });
+    expect([s.selRow, s.selCard]).toEqual([3, 3]); // auto-selected
+    s = reducer(s, { type: 'selCard', card: 1 });
+    expect([s.selRow, s.selCard]).toEqual([null, 1]); // row 4 incompatible -> dropped
+    s = reducer(s, { type: 'selRow', row: 0 });
+    expect([s.selRow, s.selCard]).toEqual([0, 1]);
+    s = reducer(s, { type: 'selRow', row: 0 }); // toggle off
+    expect(s.selRow).toBeNull();
+    s = reducer(s, { type: 'selCard', card: 3 });
+    expect([s.selRow, s.selCard]).toEqual([3, 3]);
+  });
+  it('CHECK needs a valid pair, records row/card/cells/colours, colours only that row, move clears colours', () => {
+    let s = newGame(puzzle());
+    expect(reducer(s, { type: 'check' })).toBe(s); // nothing selected
+    s = reducer(reducer(s, { type: 'selRow', row: 1 }), { type: 'selCard', card: 2 }); // row 2 (FISH) vs TREE
     s = reducer(s, { type: 'check' });
-    expect(reducer(s, { type: 'tick', ms: 100 }).elapsedMs).toBe(100);
+    expect(s.checks).toBe(1);
+    expect(s.history[0]).toMatchObject({ row: 1, card: 2, cells: ['F', 'I', 'S', 'H'], marks: ['gray', 'gray', 'gray', 'gray'] });
+    expect(s.marks!.slice(0, 4).every((m) => m === null)).toBe(true);
+    expect(s.marks!.slice(4, 8)).toEqual(['gray', 'gray', 'gray', 'gray']);
+    expect(s.marks!.slice(8).every((m) => m === null)).toBe(true);
+    s = reducer(s, { type: 'move', cell: 15 });
+    expect(s.marks).toBeNull();
+    expect(s.history).toHaveLength(1);
+    expect([s.selRow, s.selCard]).toEqual([1, 2]); // selection stays
+  });
+});
+
+describe('hints', () => {
+  it('starting hints depend on difficulty and are not counted', () => {
+    expect(initialCardHint('easy')).toEqual({ category: true, definition: true, revealed: [] });
+    expect(initialCardHint('normal')).toEqual({ category: true, definition: false, revealed: [] });
+    expect(initialCardHint('hard')).toEqual({ category: false, definition: false, revealed: [] });
+    const s = newGame(puzzle('easy'));
+    expect(totalHintUse(s.hintUse)).toBe(0);
+  });
+  it('reveals in order, deterministically, without repeating', () => {
+    let c = initialCardHint('hard');
+    expect(applyHint(c, 'extra', 'BIRD')).toBeNull(); // needs the first letter
+    c = applyHint(c, 'first', 'BIRD')!;
+    expect(maskedWord('BIRD', c)).toEqual(['B', null, null, null]);
+    expect(applyHint(c, 'first', 'BIRD')).toBeNull();
+    c = applyHint(c, 'extra', 'BIRD')!;
+    expect(maskedWord('BIRD', c)).toEqual(['B', 'I', null, null]);
+    c = applyHint(c, 'extra', 'BIRD')!;
+    c = applyHint(c, 'extra', 'BIRD')!;
+    expect(isFullyRevealed(c, 'BIRD')).toBe(true);
+    expect(applyHint(c, 'extra', 'BIRD')).toBeNull();
+    expect(new Set(c.revealed).size).toBe(4);
+  });
+  it('category and meaning reveal once; repeats are not counted', () => {
+    let s = newGame(puzzle('hard'));
+    s = reducer(s, { type: 'hint', card: 0, kind: 'category' });
+    s = reducer(s, { type: 'hint', card: 0, kind: 'category' });
+    s = reducer(s, { type: 'hint', card: 1, kind: 'definition' });
+    s = reducer(s, { type: 'hint', card: 3, kind: 'first' });
+    s = reducer(s, { type: 'hint', card: 3, kind: 'first' });
+    s = reducer(s, { type: 'hint', card: 3, kind: 'extra' });
+    expect(s.hintUse).toEqual({ category: 1, definition: 1, first: 1, extra: 1 });
+    expect(s.cards[3].revealed).toEqual([0, 1]);
+    expect(s.cards[0].category && s.cards[1].definition).toBe(true);
+    // on Normal, the category is free: asking for it again is a no-op
+    const n = reducer(newGame(puzzle('normal')), { type: 'hint', card: 0, kind: 'category' });
+    expect(n.hintUse.category).toBe(0);
+  });
+  it('NO HINT CLEAR requires zero hints and zero CHECKs', () => {
+    const win = (s: ReturnType<typeof newGame>) => reducer(s, { type: 'move', cell: 15 });
+    expect(isNoHintClear(win(newGame(puzzle())))).toBe(true);
+    expect(isNoHintClear(win(reducer(newGame(puzzle()), { type: 'hint', card: 0, kind: 'first' })))).toBe(false);
+    let c = reducer(reducer(newGame(puzzle()), { type: 'selRow', row: 0 }), { type: 'selCard', card: 0 });
+    c = reducer(c, { type: 'check' });
+    expect(isNoHintClear(win(c))).toBe(false);
+    expect(isNoHintClear(newGame(puzzle()))).toBe(false); // not cleared
+  });
+  it('restart restores the starting hints', () => {
+    let s = reducer(newGame(puzzle('hard')), { type: 'hint', card: 0, kind: 'first' });
+    s = reducer(s, { type: 'restart' });
+    expect(s.cards[0].revealed).toEqual([]);
+    expect(totalHintUse(s.hintUse)).toBe(0);
   });
 });
 
 describe('word data', () => {
-  it('has correct lengths and no overlaps', () => {
-    for (const tier of [1, 2, 3] as const) {
-      FOUR[tier].forEach((w) => expect(w).toMatch(/^[A-Z]{4}$/));
-      THREE[tier].forEach((w) => expect(w).toMatch(/^[A-Z]{3}$/));
+  const diffs: Difficulty[] = ['easy', 'normal', 'hard'];
+  it('has well-formed entries; definitions never contain the word', () => {
+    const ids = new Set<string>();
+    for (const d of diffs) {
+      for (const [list, len] of [[FOUR, 4], [THREE, 3]] as const) {
+        for (const e of list[d]) {
+          expect(e.word).toMatch(new RegExp(`^[A-Z]{${len}}$`));
+          expect(e.difficulty).toBe(d);
+          expect(e.category.length).toBeGreaterThan(2);
+          expect(e.definition.length).toBeGreaterThan(8);
+          expect(e.definition).not.toMatch(new RegExp(`\\b${e.word}\\b`, 'i'));
+          expect(ids.has(e.id)).toBe(false);
+          ids.add(e.id);
+        }
+      }
     }
-    const all = [1, 2, 3].flatMap((t) => FOUR[t as 1]);
-    expect(new Set(all).size).toBe(all.length);
-    expect(FOUR[1].length).toBeGreaterThan(60);
+    expect(FOUR.easy.length).toBeGreaterThan(30);
+    expect(poolFor(FOUR, 'hard').length).toBeGreaterThan(40);
   });
 });
 
 describe('puzzle generation', () => {
   const diffs: Difficulty[] = ['easy', 'normal', 'hard'];
-  it('always yields valid, reachable, unsolved puzzles', () => {
+  it('always yields valid, reachable, unsolved puzzles with matching clues', () => {
     for (const d of diffs) {
       for (let i = 0; i < 60; i++) {
         const p = generateEndless(d, `seed-${d}-${i}`);
         expect(validatePuzzle(p)).toBe(true);
-        expect(p.letters).toHaveLength(16);
         expect(p.letters.filter((l) => l === null)).toHaveLength(1);
         expect(letterMultiset(p.letters)).toBe(letterMultiset(goalLetters(p.words)));
         expect(new Set(p.words.top).size).toBe(3);
         expect(matchWords(p.letters, p.words).solved).toBe(false);
-        // generated solution really solves it through the real game reducer
+        expect(p.clues.map((c) => c.word)).toEqual([...p.words.top, p.words.bottom]);
+        expect(p.clues.map((c) => c.word.length)).toEqual([4, 4, 4, 3]);
         let s = newGame(p);
         for (const c of p.solution) s = reducer(s, { type: 'move', cell: c });
         expect(s.status).toBe('cleared');
-        // all words are from the right pool
-        p.words.top.forEach((w) => expect(poolFor(FOUR, d)).toContain(w));
-        expect(poolFor(THREE, d)).toContain(p.words.bottom);
-        // Wordle check on the solved board is all green
-        expect(evaluateBoard(lettersOf(s.board), p.words).marks.filter((m) => m === 'green')).toHaveLength(15);
+        expect(foundOf(s).cards).toEqual([true, true, true, true]);
+        p.clues.slice(0, 3).forEach((c) => expect(poolFor(FOUR, d).map((e) => e.word)).toContain(c.word));
+        expect(poolFor(THREE, d).map((e) => e.word)).toContain(p.words.bottom);
+        // every row vs its own word is fully green on the solved board
+        const solvedLetters = lettersOf(s.board);
+        for (let r = 0; r < 4; r++) {
+          const card = p.words.top.indexOf(solvedLetters.slice(r * 4, r * 4 + 4).join(''));
+          const word = r === 3 ? p.words.bottom : p.words.top[card];
+          expect(checkRow(solvedLetters, r, word).marks.every((m) => m === 'green')).toBe(true);
+        }
       }
     }
   });
-  it('is deterministic for the same daily date and differs between dates', () => {
+  it('is deterministic for the same daily date, differs between dates, and has shared hint conditions', () => {
     const a = generateDaily('2026-11-13');
-    const b = generateDaily('2026-11-13');
-    expect(a).toEqual(b);
+    expect(a).toEqual(generateDaily('2026-11-13'));
     expect(generateDaily('2026-11-14').letters).not.toEqual(a.letters);
     expect(a.number).toBe(13);
     expect(dailyNumber('2026-11-01')).toBe(1);
+    // same puzzle -> same starting card state for every player
+    expect(newGame(a).cards).toEqual(newGame(generateDaily('2026-11-13')).cards);
+    expect(newGame(a).cards.every((c) => c.category && !c.definition && c.revealed.length === 0)).toBe(true);
   });
   it('computes the JST date key', () => {
     expect(jstDateKey(Date.parse('2026-11-12T15:00:00Z'))).toBe('2026-11-13');
@@ -197,10 +284,8 @@ describe('puzzle generation', () => {
   });
   it('scrambles start away from the finished board', () => {
     const p = generateEndless('easy', 'x');
-    const misplaced = p.letters.filter((l, i) => l !== goalLetters(p.words)[i]).length;
-    expect(misplaced).toBeGreaterThanOrEqual(6);
+    expect(p.letters.filter((l, i) => l !== goalLetters(p.words)[i]).length).toBeGreaterThanOrEqual(6);
   });
 });
 
-// keep helper used
 void boardFromLetters;

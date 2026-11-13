@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import type { GameState } from '../core/game';
+import { isNoHintClear, type GameState } from '../core/game';
+import { totalHintUse } from '../core/hints';
 import { formatTime } from '../storage/stats';
 
 export function shareText(s: GameState): string {
   const p = s.puzzle;
   const name = p.mode === 'daily' ? `WORD SLIDE #${p.number}` : `WORD SLIDE (${p.difficulty})`;
   const url = typeof location !== 'undefined' ? location.origin : '';
-  return `${name}\n⏱ ${formatTime(s.elapsedMs)}  🔀 ${s.moves} moves  🔍 ${s.checks} checks\n${url}`;
+  const tag = isNoHintClear(s) ? '\nNO HINT CLEAR ✨' : '';
+  return `${name}\n⏱ ${formatTime(s.elapsedMs)}  🔀 ${s.moves} moves  🔍 ${s.checks} checks  💡 ${totalHintUse(s.hintUse)} hints\n${url}${tag}`;
 }
 
 interface Props {
@@ -44,6 +46,7 @@ export function ClearModal({ state, onClose, onNext, onHome, nextLabel }: Props)
       <div className="modal">
         <button className="icon-btn close" onClick={onClose} aria-label="Close">✕</button>
         <h2 className="clear-title">CLEARED!</h2>
+        {isNoHintClear(state) && <div className="no-hint" data-testid="no-hint">NO HINT CLEAR</div>}
         <ul className="words">
           {[...w.top, w.bottom].map((x) => (
             <li key={x}>{x}</li>
@@ -54,6 +57,9 @@ export function ClearModal({ state, onClose, onNext, onHome, nextLabel }: Props)
           <div className="stat"><span className="stat-label">MOVES</span><span className="stat-value">{state.moves}</span></div>
           <div className="stat"><span className="stat-label">CHECKS</span><span className="stat-value">{state.checks}</span></div>
         </div>
+        <p className="hint-sum" data-testid="hint-sum">
+          Hints: {state.hintUse.category} category · {state.hintUse.definition} meaning · {state.hintUse.first} first letter · {state.hintUse.extra} extra letter
+        </p>
         <div className="actions">
           <button className="btn" onClick={share}>SHARE</button>
           <button className="btn primary" onClick={onNext}>{nextLabel}</button>

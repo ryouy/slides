@@ -1,11 +1,11 @@
 import { blankIndex, boardFromLetters, lettersOf, moveTile, neighbors } from './board';
 import { matchWords } from './matcher';
 import { pick, randInt, rngFromString, shuffled, type Rng } from './rng';
-import { CELLS, type Board, type Difficulty, type Mode, type Puzzle, type WordSet } from './types';
+import { CELLS, type Board, type Difficulty, type Mode, type Puzzle, type WordEntry, type WordSet } from './types';
 import { FOUR, THREE, WORDS_VERSION, poolFor } from '../data/words';
 
 /** Bump when the generation algorithm changes (it changes which puzzle a seed yields). */
-export const GENERATOR_VERSION = 'g1';
+export const GENERATOR_VERSION = 'g2';
 
 const SETTINGS: Record<Difficulty, { steps: number; minMisplaced: number }> = {
   easy: { steps: 30, minMisplaced: 8 },
@@ -13,10 +13,10 @@ const SETTINGS: Record<Difficulty, { steps: number; minMisplaced: number }> = {
   hard: { steps: 140, minMisplaced: 13 },
 };
 
-export function pickWords(rng: Rng, difficulty: Difficulty): WordSet {
-  const top = shuffled(rng, poolFor(FOUR, difficulty)).slice(0, 3) as [string, string, string];
+export function pickWords(rng: Rng, difficulty: Difficulty): { words: WordSet; clues: WordEntry[] } {
+  const top = shuffled(rng, poolFor(FOUR, difficulty)).slice(0, 3);
   const bottom = pick(rng, poolFor(THREE, difficulty));
-  return { top, bottom };
+  return { words: { top: top.map((e) => e.word) as [string, string, string], bottom: bottom.word }, clues: [...top, bottom] };
 }
 
 export function goalLetters(words: WordSet): (string | null)[] {
@@ -65,6 +65,8 @@ export function validatePuzzle(p: Puzzle): boolean {
   if (p.letters.length !== CELLS) return false;
   if (p.words.top.some((w) => w.length !== 4) || p.words.bottom.length !== 3) return false;
   if (new Set(p.words.top).size !== 3) return false;
+  if (p.clues?.length !== 4 || p.clues.some((c, i) => c.word !== [...p.words.top, p.words.bottom][i])) return false;
+  if (p.clues.some((c) => new RegExp(`\\b${c.word}\\b`, 'i').test(c.definition))) return false;
   if (p.letters.filter((l) => l === null).length !== 1) return false;
   const goal = goalLetters(p.words).slice().sort().join('');
   if (p.letters.slice().sort().join('') !== goal) return false;
@@ -89,7 +91,7 @@ export interface GenerateOptions {
 export function generatePuzzle(o: GenerateOptions): Puzzle {
   for (let attempt = 0; attempt < 50; attempt++) {
     const rng = rngFromString(`${GENERATOR_VERSION}|${o.seed}|${attempt}`);
-    const words = pickWords(rng, o.difficulty);
+    const { words, clues } = pickWords(rng, o.difficulty);
     const goal = goalLetters(words);
     const cfg = SETTINGS[o.difficulty];
     const { letters, solution } = scramble(rng, goal, cfg.steps + randInt(rng, 10), cfg.minMisplaced);
@@ -99,6 +101,7 @@ export function generatePuzzle(o: GenerateOptions): Puzzle {
       difficulty: o.difficulty,
       number: o.number,
       words,
+      clues,
       letters,
       solution,
       generatorVersion: GENERATOR_VERSION,
