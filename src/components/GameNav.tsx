@@ -1,10 +1,10 @@
 import { Link } from './Link';
 
-/** Top-left link back to the game chooser. Shown on each game's home page. */
-export function AllGamesLink() {
+/** Top-left link from BIG SLIDE / WORD SLIDE back to the main page (ART SLIDE). */
+export function BackToMain() {
   return (
-    <Link to="/" className="all-games" data-testid="all-games">
-      <span aria-hidden="true">‹</span> ALL GAMES
+    <Link to="/" className="all-games" data-testid="to-main">
+      <span aria-hidden="true">‹</span> ART SLIDE
     </Link>
   );
 }

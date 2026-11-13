@@ -1,16 +1,15 @@
-# SLIDE GAMES（WORD SLIDE + BIG SLIDE）
+# ART SLIDE
 
-同一サイトで2つのスライドパズルを遊べます。
+有名絵画のスライドパズル（メイン）。補助として BIG SLIDE と WORD SLIDE も同じサイトで遊べます。
 
 | URL | 内容 |
 |---|---|
-| `/` | ゲーム選択（ゲームの切り替えはここだけ。各ゲームのホームに「ALL GAMES」と「MORE GAMES」の導線あり） |
-| `/word-slide`, `/word-slide/{daily,endless,how,stats}` | WORD SLIDE |
-| `/big-slide`, `/big-slide/{daily,endless,how,stats}` | BIG SLIDE |
-| `/art-slide`, `/art-slide/{daily,gallery,play/<id>,how,stats,credits}` | ART SLIDE |
+| `/`, `/art-slide`, `/art-slide/{daily,gallery,play/<id>,how,stats,credits}` | **ART SLIDE（メイン）** |
+| `/big-slide`, `/big-slide/{daily,endless,how,stats}` | BIG SLIDE（補助） |
+| `/word-slide`, `/word-slide/{daily,endless,how,stats}` | WORD SLIDE（補助） |
 | `/settings /about /privacy /terms /contact` | 共通ページ |
 
-旧URL（`/#/daily` など）は `/word-slide/...` に自動で転送されます。Cloudflare Pages は `404.html` が無ければ SPA として未知のパスを `index.html` に返すので、リライト設定は不要です。
+ART SLIDE のホームの下部「MORE PUZZLES」から BIG / WORD へ移動でき、各ホームの左上「‹ ART SLIDE」でメインに戻ります。旧URL（`/#/daily` など）は `/word-slide/...` に自動転送されます。Cloudflare Pages は `404.html` が無ければ SPA として未知のパスを `index.html` に返すので、リライト設定は不要です。ART SLIDE は他のゲームと別の、モノクロで線の細いデザイン（`.art-theme`）です。
 
 ## WORD SLIDE
 
@@ -69,7 +68,7 @@ npm run e2e        # Playwright (desktop + mobile)
 - **画像は1枚をCSSで分割**: 全タイルが同じ画像を参照し、`background-size/position` だけが違います（`logic/tiles.ts`）。正方形盤面には中央トリミング（作品ごとに `focus` で位置調整可）で、引き伸ばしはしません。選択画面・プレビュー・結果画面では作品全体を表示します。
 - 問題は完成盤面から合法手だけで作るので必ず解けます（シード固定で再現可能）。デイリーは 4×4、日本時間 0:00 更新、作品も日付から決定的（`DAILY_POOL_V1` は凍結。追加するときは新しいプール版を作る）。
 - 保存キーは `artslide:save`（途中経過・ベスト・デイリー履歴・タイル番号表示の設定）。
-- PREVIEW / RESTART（同じ初期配置）/ NEW PUZZLE / CHANGE ARTWORK、画像読み込み失敗時のエラー表示と再試行、結果共有（デイリーは作品名を含めない）。
+- PREVIEW / **SHUFFLE**（ピースを新しいランダム配置に置き直す。必ず解ける。動かした後は確認あり）/ RESTART（同じ初期配置）/ CHANGE ARTWORK、画像読み込み失敗時のエラー表示と再試行、結果共有（デイリーは作品名を含めない）。
 
 ### 収録作品と権利
 

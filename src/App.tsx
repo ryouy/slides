@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { ConsentBanner } from './ads/AdSlot';
-import { Landing } from './components/Landing';
 import { BigDaily, BigEndless, BigHome, BigHowPage, BigStatsPage } from './games/big-slide/pages/BigPages';
 import { BigSaveProvider } from './games/big-slide/storage';
 import { ArtCreditsPage, ArtDaily, ArtGallery, ArtHome, ArtHowPage, ArtPlay, ArtStatsPage } from './games/art-slide/pages/ArtPages';
@@ -12,7 +11,7 @@ import { AboutPage, ContactPage, HowToPage, PrivacyPage, SettingsPage, StatsPage
 import { DailyScreen, EndlessScreen } from './ui/Screens';
 
 const TITLES = { 'word-slide': 'WORD SLIDE – slide puzzle meets Wordle', 'big-slide': 'BIG SLIDE – slide the giant tile', 'art-slide': 'ART SLIDE – reassemble a masterpiece' };
-const SITE_TITLE = 'SLIDE GAMES – WORD SLIDE & BIG SLIDE';
+const SITE_TITLE = 'ART SLIDE – reassemble a masterpiece';
 
 function WordRoutes({ sub }: { sub: string }) {
   switch (sub) {
@@ -36,7 +35,9 @@ function ArtRoutes({ sub }: { sub: string }) {
   const [head, id] = sub.split('/');
   return (
     <ArtSaveProvider>
+      <div className="art-theme">
       {head === 'daily' ? <ArtDaily /> : head === 'gallery' ? <ArtGallery /> : head === 'play' ? <ArtPlay key={id ?? ''} artworkId={id} /> : head === 'how' ? <ArtHowPage /> : head === 'stats' ? <ArtStatsPage /> : head === 'credits' ? <ArtCreditsPage /> : <ArtHome />}
+      </div>
     </ArtSaveProvider>
   );
 }
@@ -69,7 +70,7 @@ function Shell() {
       case 'privacy': page = <PrivacyPage />; break;
       case 'terms': page = <TermsPage />; break;
       case 'contact': page = <ContactPage />; break;
-      default: page = <Landing />;
+      default: page = <ArtRoutes sub="" />; // the main page is ART SLIDE
     }
   return (
     <>

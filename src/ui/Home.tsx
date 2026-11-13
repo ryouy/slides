@@ -1,6 +1,6 @@
 import { go } from '../nav';
 import { Link } from '../components/Link';
-import { AllGamesLink } from '../components/GameNav';
+import { BackToMain } from '../components/GameNav';
 import { HomeLinks } from '../components/HomeLinks';
 import { dailyNumber, jstDateKey } from '../core/generator';
 import { useSave } from '../storage/SaveContext';
@@ -13,7 +13,7 @@ export function Home() {
   const streak = currentDailyStreak(data.dailyHistory, today);
   return (
     <div className="screen home">
-      <AllGamesLink />
+      <BackToMain />
       <div className="logo" aria-label="WORD SLIDE">
         {'WORD'.split('').map((c, i) => <span key={i} className="logo-tile g">{c}</span>)}
         <br />
