@@ -284,7 +284,7 @@ a.card { text-decoration: none; color: inherit; }
 .result-art figcaption { display: grid; gap: 2px; margin-top: 6px; font-size: 13px; }
 .result-art figcaption span { color: var(--muted); }
 .gallery { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-@media (min-width: 640px) { .gallery { grid-template-columns: repeat(3, 1fr); } .screen:has(.gallery) { max-width: 760px; } }
+@media (min-width: 640px) { .gallery { grid-template-columns: repeat(3, 1fr); }  }
 .gcard { display: grid; gap: 2px; text-decoration: none; color: inherit; }
 .gcard img { width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; /* whole painting, never cropped or stretched */ border-radius: 6px; background: var(--surface); display: block; }
 .g-title { font-weight: 700; font-size: 13px; line-height: 1.25; margin-top: 4px; }
@@ -297,11 +297,6 @@ a.card { text-decoration: none; color: inherit; }
 /* ---------- navigation: back to the chooser, more games ---------- */
 .all-games { align-self: flex-start; display: inline-flex; gap: 6px; align-items: center; padding: 10px 4px; font-size: 12px; font-weight: 800; letter-spacing: .14em; color: var(--muted); text-decoration: none; min-height: 44px; }
 .all-games:hover { color: var(--fg); }
-.more-games { margin-top: 28px; text-align: center; }
-.more-label { font-size: 11px; letter-spacing: .2em; font-weight: 800; color: var(--muted); }
-.more-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
-.more-chip { text-decoration: none; color: var(--fg); border: 2px solid var(--line); border-radius: 999px; padding: 10px 16px; font-weight: 800; font-size: 13px; letter-spacing: .06em; min-height: 44px; display: inline-flex; align-items: center; gap: 6px; background: var(--bg); }
-.more-chip:hover { border-color: var(--fg); }
 
 /* ---------- landing (the only place to switch games) ---------- */
 .screen.landing { max-width: 1040px; padding-top: 28px; }
@@ -325,42 +320,27 @@ a.card { text-decoration: none; color: inherit; }
 .mini-frame img { display: block; width: 104px; height: 104px; object-fit: cover; border: 4px solid #f3eee3; }
 .gcard-big.art { background: linear-gradient(160deg, var(--surface), color-mix(in srgb, var(--surface) 70%, #c9a24a)); }
 
-/* ---------- ART SLIDE home: a small gallery room ---------- */
-.art-wall { min-height: 100dvh; background: radial-gradient(120% 70% at 50% 0%, #f7f2e8 0%, #e9e1d1 60%, #ddd2bd 100%); --a-ink: #2a2118; --a-mute: #7b6c58; --a-line: #c9b99b; color: var(--a-ink); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) .art-wall { background: radial-gradient(120% 70% at 50% 0%, #2b2824 0%, #1d1b18 60%, #151412 100%); --a-ink: #f1e8d6; --a-mute: #a79a85; --a-line: #4a4337; } }
-:root[data-theme='dark'] .art-wall { background: radial-gradient(120% 70% at 50% 0%, #2b2824 0%, #1d1b18 60%, #151412 100%); --a-ink: #f1e8d6; --a-mute: #a79a85; --a-line: #4a4337; }
-.art-wall .all-games { color: var(--a-mute); }
-.art-wall .all-games:hover { color: var(--a-ink); }
-.art-home { padding-top: 6px; align-items: center; text-align: center; }
-.exhibit { width: 100%; display: grid; justify-items: center; margin-top: 4px; }
-.gold-frame { padding: 14px; border-radius: 3px; background: linear-gradient(135deg, #e8c870 0%, #9a7421 22%, #f1dc9c 45%, #8a6616 70%, #dcb55a 100%); box-shadow: 0 2px 0 rgba(255, 255, 255, .35) inset, 0 18px 34px rgba(40, 25, 5, .45), 0 3px 6px rgba(40, 25, 5, .4); width: min(100%, 360px); }
-.mat { padding: 16px; background: #f4efe4; box-shadow: 0 0 0 1px rgba(0, 0, 0, .25) inset, 0 3px 10px rgba(0, 0, 0, .3) inset; }
-.hero-board { position: relative; width: 100%; aspect-ratio: 1; pointer-events: none; }
-.hero-board .aboard { min-width: 0; border-radius: 0; background: #d8d0bf; }
-.hero-board .atile { cursor: default; }
-.plaque { margin: 16px 0 0; display: grid; gap: 1px; padding: 8px 16px; border: 1px solid var(--a-line); background: color-mix(in srgb, #fff 55%, transparent); border-radius: 2px; font-family: Georgia, 'Times New Roman', serif; min-width: 240px; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) .plaque { background: rgba(255, 255, 255, .05); } }
-:root[data-theme='dark'] .plaque { background: rgba(255, 255, 255, .05); }
-.plaque-kicker { font-family: Helvetica, Arial, sans-serif; font-size: 9px; letter-spacing: .3em; font-weight: 800; color: var(--a-mute); }
-.plaque b { font-size: 15px; font-weight: 700; }
-.plaque span:last-child { font-size: 12px; font-style: italic; color: var(--a-mute); }
-.art-wordmark { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: clamp(36px, 11vw, 56px); letter-spacing: .32em; margin: 26px 0 0; padding-left: .32em; text-transform: uppercase; }
-.art-wordmark i { font-style: italic; letter-spacing: .2em; }
-.art-tagline { font-family: Georgia, serif; font-style: italic; color: var(--a-mute); margin: 6px 0 22px; font-size: 16px; }
-.art-menu { width: 100%; display: grid; gap: 10px; }
-.art-cta { display: grid; gap: 2px; text-align: left; padding: 14px 18px; border-radius: 3px; border: 1px solid var(--a-ink); background: var(--a-ink); color: #f6efe1; cursor: pointer; font-family: inherit; min-height: 64px; transition: transform .12s ease, box-shadow .12s ease; }
-.art-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(40, 25, 5, .3); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) .art-cta:not(.alt) { background: #e8c870; color: #241a06; border-color: #e8c870; } }
-:root[data-theme='dark'] .art-cta:not(.alt) { background: #e8c870; color: #241a06; border-color: #e8c870; }
-.art-cta.alt { background: transparent; color: var(--a-ink); border-color: var(--a-line); border-width: 2px; }
-.cta-kicker { font-family: Helvetica, Arial, sans-serif; font-size: 10px; letter-spacing: .24em; font-weight: 800; opacity: .75; }
-.cta-main { font-family: Georgia, serif; font-size: 22px; }
-.art-cta small { font-size: 12px; opacity: .8; }
-.art-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 18px; margin-top: 6px; }
-.art-links button { background: none; border: 0; color: var(--a-mute); font-size: 13px; text-decoration: underline; text-underline-offset: 3px; padding: 10px 2px; min-height: 44px; }
-.art-wall .more-chip { background: transparent; color: var(--a-ink); border-color: var(--a-line); }
-.art-wall .more-label, .art-wall .footer { color: var(--a-mute); }
-.art-wall .footer a { color: var(--a-mute); }
+/* ---------- ART SLIDE home & gallery controls ---------- */
+.exhibit-card { display: flex; gap: 14px; align-items: center; text-decoration: none; color: inherit; background: var(--surface); border: 2px solid var(--line); border-radius: 14px; padding: 10px; margin: 0 0 14px; text-align: left; }
+.exhibit-card:hover { border-color: var(--fg); }
+.exhibit-card img { width: 84px; height: 84px; object-fit: cover; border-radius: 8px; flex: none; background: var(--bg); }
+.ex-text { display: grid; gap: 2px; min-width: 0; }
+.ex-text small { font-size: 10px; letter-spacing: .18em; font-weight: 800; color: var(--muted); }
+.ex-text b { font-size: 16px; line-height: 1.25; }
+.ex-text span { font-size: 13px; color: var(--muted); }
+.home-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 18px; margin-top: 10px; }
+.home-links button { background: none; border: 0; color: var(--muted); font-size: 14px; text-decoration: underline; text-underline-offset: 3px; padding: 10px 2px; min-height: 44px; }
+.home-links button:hover { color: var(--fg); }
+.screen.gallery-screen { max-width: 1000px; }
+.gal-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; }
+.gal-search { grid-column: 1 / -1; font: inherit; padding: 11px 12px; border: 2px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--fg); min-height: 44px; }
+.gal-controls label { display: grid; gap: 2px; font-size: 11px; font-weight: 800; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+.gal-controls select { font: inherit; font-size: 14px; text-transform: none; letter-spacing: 0; font-weight: 600; padding: 9px 8px; border: 2px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--fg); min-height: 44px; }
+@media (min-width: 700px) { .gal-controls { grid-template-columns: 1fr 200px 200px; } .gal-search { grid-column: auto; } }
+.gal-count { margin: 4px 0 8px; font-size: 12px; color: var(--muted); }
+.gal-empty { text-align: center; color: var(--muted); padding: 30px 0; }
+.gal-h { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; margin: 22px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+.gal-h small { color: var(--muted); font-weight: 600; margin-left: 4px; }
 
 /* ---------- desktop: the puzzle on the left, everything else in a side column ---------- */
 @media (min-width: 900px) {

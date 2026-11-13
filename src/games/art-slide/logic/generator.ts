@@ -1,5 +1,6 @@
 import { rngFromString, pick, shuffled, type Rng } from '../../../utils/rng';
 import { dailyNumber } from '../../../utils/date';
+import { DAILY_POOL_V2 } from '../data/daily-pools';
 import { isSolved, misplacedCount, moveTile, neighbors, solvedBoard, type ArtBoard, type ArtSize } from './board';
 
 /** Bump when the shuffling algorithm changes (it changes which board a seed yields). */
@@ -98,12 +99,19 @@ export function generateArtPuzzle(o: ArtGenerateOptions): ArtPuzzle {
   throw new Error('ART SLIDE puzzle generation failed');
 }
 
-/** Artwork of the day: each pass through the pool uses its own seeded order, so every work appears once per cycle. */
+/** From this date on the daily artwork comes from the larger pool V2 (earlier dates keep V1 forever). */
+export const DAILY_POOL_V2_FROM = '2026-11-14';
+
+/**
+ * Artwork of the day. Each pass through a pool uses its own seeded order, so every work appears once
+ * per cycle. Pools are frozen constants, so published days never change when artworks are added.
+ */
 export function dailyArtworkId(dateKey: string): string {
-  const pool = DAILY_POOL_V1;
-  const idx = dailyNumber(dateKey) - 1;
+  const v2 = dateKey >= DAILY_POOL_V2_FROM;
+  const pool: readonly string[] = v2 ? DAILY_POOL_V2 : DAILY_POOL_V1;
+  const idx = v2 ? dailyNumber(dateKey) - dailyNumber(DAILY_POOL_V2_FROM) : dailyNumber(dateKey) - 1;
   const cycle = Math.floor(idx / pool.length);
-  const order = shuffled(rngFromString(`art-daily|${ART_GENERATOR_VERSION}|cycle${cycle}`), pool);
+  const order = shuffled(rngFromString(`art-daily|${ART_GENERATOR_VERSION}|${v2 ? 'v2|' : ''}cycle${cycle}`), pool);
   return order[((idx % pool.length) + pool.length) % pool.length];
 }
 

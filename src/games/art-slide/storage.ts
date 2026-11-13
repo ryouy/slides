@@ -1,6 +1,7 @@
 import { createContext, createElement, useCallback, useContext, useMemo, useReducer, useRef, type ReactNode } from 'react';
 import { isValidArtState, type ArtState } from './logic/game';
 import { ART_SIZES, type ArtSize } from './logic/board';
+import type { GroupBy, SortBy } from './logic/gallery';
 import { updateBest } from '../../storage/stats';
 import type { Best } from '../../storage/storage';
 
@@ -32,6 +33,8 @@ export interface ArtSave {
   inProgress: { daily?: ArtState; free?: ArtState };
   lastSize: ArtSize;
   showNumbers: boolean;
+  /** How the gallery is grouped and sorted (remembered). */
+  gallery: { groupBy: GroupBy; sortBy: SortBy };
 }
 
 export const defaultArtSave = (): ArtSave => ({
@@ -43,6 +46,7 @@ export const defaultArtSave = (): ArtSave => ({
   inProgress: {},
   lastSize: 3,
   showNumbers: false,
+  gallery: { groupBy: 'theme', sortBy: 'artist' },
 });
 
 export function migrateArt(raw: unknown): ArtSave {
@@ -58,6 +62,7 @@ export function migrateArt(raw: unknown): ArtSave {
     bests: r.bests ?? {},
     history: Array.isArray(r.history) ? r.history : [],
     lastSize: ART_SIZES.includes(r.lastSize as ArtSize) ? (r.lastSize as ArtSize) : 3,
+    gallery: { ...d.gallery, ...(r.gallery ?? {}) },
     inProgress: {},
   };
   if (r.inProgress?.daily && isValidArtState(r.inProgress.daily)) out.inProgress.daily = r.inProgress.daily;

@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { AdSlot } from '../../../ads/AdSlot';
 import { Link } from '../../../components/Link';
 import { go } from '../../../router';
 import { currentDailyStreak, formatTime, maxDailyStreak } from '../../../storage/stats';
 import { dailyNumber, jstDateKey } from '../../../utils/date';
 import { Footer } from '../../../ui/Home';
-import { AllGamesLink, MoreGames } from '../../../components/GameNav';
-import { ArtHero } from '../components/ArtHero';
+import { AllGamesLink } from '../../../components/GameNav';
+import { HomeLinks } from '../../../components/HomeLinks';
+import { GROUP_OPTIONS, SORT_OPTIONS, filterArtworks, groupArtworks, type GroupBy, type SortBy } from '../logic/gallery';
 import { Page } from '../../../ui/Pages';
 import { ArtGameView } from '../components/ArtGameView';
 import { ARTWORKS, getArtwork, nextArtwork } from '../data';
@@ -22,73 +23,87 @@ export function ArtHome() {
   const exhibit = getArtwork(dailyArtworkId(today)) ?? ARTWORKS[0];
   const resumable = data.inProgress.free && data.inProgress.free.status === 'playing';
   return (
-    <div className="art-wall">
-      <div className="screen art-home">
-        <AllGamesLink />
-        <section className="exhibit" aria-label="Today's exhibit">
-          <div className="gold-frame">
-            <div className="mat">
-              <ArtHero artwork={exhibit} />
-            </div>
-          </div>
-          <p className="plaque" data-testid="plaque">
-            <span className="plaque-kicker">TODAY'S EXHIBIT</span>
-            <b>{exhibit.title}</b>
-            <span>{exhibit.artist}, {exhibit.year}</span>
-          </p>
-        </section>
-        <h1 className="art-wordmark" aria-label="ART SLIDE">ART <i>SLIDE</i></h1>
-        <p className="art-tagline">Reassemble a masterpiece.</p>
-        <nav className="art-menu">
-          <button className="art-cta" data-testid="art-daily" onClick={() => go('daily')}>
-            <span className="cta-kicker">TODAY'S PUZZLE · #{dailyNumber(today)}</span>
-            <span className="cta-main">Daily Puzzle</span>
-            <small>{data.dailyHistory[today] ? '✓ Completed today' : '4×4 · a new painting every day at 0:00 JST'}{streak > 0 ? ` · 🔥 ${streak}` : ''}</small>
-          </button>
-          <button className="art-cta alt" data-testid="art-gallery" onClick={() => go('gallery')}>
-            <span className="cta-kicker">{ARTWORKS.length} PAINTINGS</span>
-            <span className="cta-main">Visit the Gallery</span>
-            <small>Pick any artwork and a size: 3×3, 4×4 or 5×5</small>
-          </button>
-          {resumable && (
-            <button className="art-cta alt" data-testid="art-resume" onClick={() => go('play')}>
-              <span className="cta-kicker">IN PROGRESS</span>
-              <span className="cta-main">Resume Puzzle</span>
-            </button>
-          )}
-          <div className="art-links">
-            <button onClick={() => go('how')}>How to Play</button>
-            <button onClick={() => go('stats')}>Statistics</button>
-            <button onClick={() => go('credits')}>Credits</button>
-            <button onClick={() => go('settings')}>Settings</button>
-          </div>
-        </nav>
-        <MoreGames current="art-slide" />
-        <Footer />
+    <div className="screen home">
+      <AllGamesLink />
+      <div className="logo" aria-label="ART SLIDE">
+        {'ART'.split('').map((c, i) => <span key={i} className="logo-tile g">{c}</span>)}
+        <br />
+        {'SLIDE'.split('').map((c, i) => <span key={i} className={`logo-tile ${i % 2 ? 'y' : 'x'}`}>{c}</span>)}
       </div>
+      <p className="tagline">Reassemble a masterpiece.</p>
+      <Link to="/art-slide/daily" className="exhibit-card" data-testid="exhibit">
+        <img src={exhibit.thumbnailUrl} alt="" width={84} height={84} />
+        <span className="ex-text">
+          <small>TODAY'S EXHIBIT</small>
+          <b>{exhibit.title}</b>
+          <span>{exhibit.artist}, {exhibit.year}</span>
+        </span>
+      </Link>
+      <nav className="menu">
+        <button className="btn primary big" data-testid="art-daily" onClick={() => go('daily')}>
+          Daily Puzzle #{dailyNumber(today)}
+          <small>{data.dailyHistory[today] ? '✓ Completed today' : '4×4 · new painting every day at 0:00 JST'}{streak > 0 ? ` · 🔥 ${streak}` : ''}</small>
+        </button>
+        <button className="btn big" data-testid="art-gallery" onClick={() => go('gallery')}>Choose Artwork <small>{ARTWORKS.length} paintings</small></button>
+        {resumable && <button className="btn big" data-testid="art-resume" onClick={() => go('play')}>Resume Puzzle</button>}
+      </nav>
+      <HomeLinks items={[{ label: 'How to Play', to: 'how' }, { label: 'Statistics', to: 'stats' }, { label: 'Credits', to: 'credits' }, { label: 'Settings', to: 'settings' }]} />
+      <Footer />
     </div>
   );
 }
 
+const slugId = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
 export function ArtGallery() {
+  const { data, update } = useArtSave();
+  const { groupBy, sortBy } = data.gallery;
+  const [query, setQuery] = useState('');
+  const filtered = useMemo(() => filterArtworks(ARTWORKS, query), [query]);
+  const groups = useMemo(() => groupArtworks(filtered, groupBy, sortBy), [filtered, groupBy, sortBy]);
+  const setPrefs = (p: Partial<typeof data.gallery>) => update((d) => ({ ...d, gallery: { ...d.gallery, ...p } }));
   return (
-    <div className="screen">
+    <div className="screen gallery-screen">
       <header className="topbar">
         <button className="icon-btn" onClick={() => go('')} aria-label="Back">←</button>
         <h1>CHOOSE ARTWORK</h1>
         <div className="top-right" />
       </header>
-      <ul className="gallery" data-testid="gallery">
-        {ARTWORKS.map((a) => (
-          <li key={a.id}>
-            <Link to={`/art-slide/play/${a.id}`} className="gcard" data-testid={`art-${a.id}`}>
-              <img src={a.thumbnailUrl} alt={`${a.title} by ${a.artist}`} loading="lazy" decoding="async" width={Math.round(a.width / 4)} height={Math.round(a.height / 4)} />
-              <span className="g-title">{a.title}</span>
-              <span className="g-meta">{a.artist} · {a.year}</span>
-            </Link>
-          </li>
+      <div className="gal-controls">
+        <input className="gal-search" type="search" placeholder="Search title, artist, theme…" aria-label="Search artworks" value={query} onChange={(e) => setQuery(e.target.value)} />
+        <label>
+          <span>Group by</span>
+          <select aria-label="Group by" data-testid="group-by" value={groupBy} onChange={(e) => setPrefs({ groupBy: e.target.value as GroupBy })}>
+            {GROUP_OPTIONS.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>Sort by</span>
+          <select aria-label="Sort by" data-testid="sort-by" value={sortBy} onChange={(e) => setPrefs({ sortBy: e.target.value as SortBy })}>
+            {SORT_OPTIONS.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}
+          </select>
+        </label>
+      </div>
+      <p className="gal-count" data-testid="gal-count">{filtered.length === ARTWORKS.length ? `${ARTWORKS.length} paintings` : `${filtered.length} of ${ARTWORKS.length} paintings`}</p>
+      <div data-testid="gallery">
+        {groups.length === 0 && <p className="gal-empty">No paintings match “{query}”.</p>}
+        {groups.map((g) => (
+          <section key={g.key} className="gal-group" data-testid={`group-${slugId(g.key)}`}>
+            {g.label && <h2 className="gal-h">{g.label} <small>{g.items.length}</small></h2>}
+            <ul className="gallery">
+              {g.items.map((a) => (
+                <li key={a.id}>
+                  <Link to={`/art-slide/play/${a.id}`} className="gcard" data-testid={`art-${a.id}`}>
+                    <img src={a.thumbnailUrl} alt={`${a.title} by ${a.artist}`} loading="lazy" decoding="async" width={Math.round(a.width / 4)} height={Math.round(a.height / 4)} />
+                    <span className="g-title">{a.title}</span>
+                    <span className="g-meta">{a.artist} · {a.year}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
         ))}
-      </ul>
+      </div>
       <AdSlot />
     </div>
   );
@@ -255,7 +270,7 @@ const Big = ({ n, l }: { n: number; l: string }) => (
 export function ArtCreditsPage() {
   return (
     <Page title="ARTWORK CREDITS">
-      <p>Every painting in ART SLIDE comes from a museum open-access program and is in the public domain (CC0). Images were downloaded from the museums' official APIs after checking each work's public-domain flag, then resized for this site. The short descriptions are original text written for this site.</p>
+      <p>Every painting in ART SLIDE comes from a museum open-access program and is in the public domain (CC0). Images were downloaded from the museums' official APIs after checking each work's public-domain flag, then resized for this site. The short descriptions are written for this site: hand-written notes for the first works, and facts compiled from catalogue data (artist, date, medium, theme) for the rest.</p>
       <ul className="credits" data-testid="credits">
         {ARTWORKS.map((a) => (
           <li key={a.id}>

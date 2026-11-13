@@ -4,7 +4,8 @@ import { go } from '../../../router';
 import { dailyNumber, jstDateKey } from '../../../utils/date';
 import { currentDailyStreak, formatTime, maxDailyStreak } from '../../../storage/stats';
 import { Footer } from '../../../ui/Home';
-import { AllGamesLink, MoreGames } from '../../../components/GameNav';
+import { AllGamesLink } from '../../../components/GameNav';
+import { HomeLinks } from '../../../components/HomeLinks';
 import { Page } from '../../../ui/Pages';
 import { BigGameView } from '../components/BigGameView';
 import { generateBigDaily, generateBigEndless } from '../logic/generator';
@@ -31,11 +32,8 @@ export function BigHome() {
           <small>{data.dailyHistory[today] ? '✓ Cleared today' : '4×4 Normal · new every day at 0:00 JST'}{streak > 0 ? ` · 🔥 ${streak}` : ''}</small>
         </button>
         <button className="btn big" data-testid="big-endless" onClick={() => go('endless')}>Endless Mode</button>
-        <button className="btn big" onClick={() => go('how')}>How to Play</button>
-        <button className="btn big" onClick={() => go('stats')}>Statistics</button>
-        <button className="btn big" onClick={() => go('settings')}>Settings</button>
       </nav>
-      <MoreGames current="big-slide" />
+      <HomeLinks items={[{ label: 'How to Play', to: 'how' }, { label: 'Statistics', to: 'stats' }, { label: 'Settings', to: 'settings' }]} />
       <Footer />
     </div>
   );
