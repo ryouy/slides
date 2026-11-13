@@ -1,7 +1,7 @@
 import { Link } from '../components/Link';
 import { adsForcedLive } from '../components/AdBanner';
 import { useT } from '../i18n';
-import { adsEnabled } from './adsterra';
+import { adsEnabled } from './admax';
 import { useAdConsent } from './consent';
 
 export { AdBanner as AdSlot } from '../components/AdBanner';
