@@ -214,7 +214,7 @@ export function ArtGameView(p: Props) {
           </div>
         )}
       </div>
-      <AdSlot />
+      <AdSlot side />
 
       {preview && <ArtPreview artwork={artwork} rect={preview} label={t('art.preview')} onClosed={() => setPreview(null)} />}
 

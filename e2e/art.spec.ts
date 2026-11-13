@@ -533,7 +533,7 @@ test('puzzle first: the board is large; on desktop all controls sit in a tidy co
     expect(desc.x).toBeGreaterThanOrEqual(board.x + board.width);
     expect((await page.getByTestId('numbers-toggle').boundingBox())!.x).toBeGreaterThanOrEqual(board.x + board.width);
     expect(board.y + board.height).toBeLessThanOrEqual(vp.height); // the whole board is visible without scrolling
-    expect(board.height).toBeGreaterThan(vp.height * 0.7); // and large
+    expect(board.height).toBeGreaterThan(vp.height * 0.82); // and large: nearly the whole height
     // the side column is aligned: the controls share one left edge
     const lefts = [parts[0].x, parts[3].x, desc.x].map((x) => Math.round(x));
     expect(Math.max(...lefts) - Math.min(...lefts)).toBeLessThan(4);

@@ -132,7 +132,7 @@ export function BigGameView({ initial, title, onProgress, onCleared, onNext, nex
         </div>
       </div>
 
-      <AdSlot />
+      <AdSlot side />
 
       {cleared && showClear && (
         <ResultModal

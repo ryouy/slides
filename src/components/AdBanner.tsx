@@ -1,5 +1,8 @@
 import { memo, useEffect, useState } from 'react';
-import { adFrameUrl, adScale, adsEnabled, chooseAdUnit } from '../ads/adsterra';
+import { AD_UNITS, adFrameUrl, adScale, adsEnabled, chooseAdUnit } from '../ads/adsterra';
+
+/** From this width the puzzle screens use a two-column layout (see styles.css). */
+const SIDE_MIN_WIDTH = 900;
 import { useAdConsent } from '../ads/consent';
 import { useT } from '../i18n';
 
@@ -49,12 +52,13 @@ function useSlot(): boolean {
  *  - dev server: a placeholder. Production: the live ad, only when the visitor's consent status allows it
  *    (and VITE_ADS_ENABLED is not "false")
  */
-export const AdBanner = memo(function AdBanner() {
+export const AdBanner = memo(function AdBanner({ side = false }: { side?: boolean }) {
   const t = useT();
   const owns = useSlot();
   const width = useViewportWidth();
   const { allowed } = useAdConsent();
-  const unit = chooseAdUnit(width);
+  // on wide screens a puzzle page keeps its ad in the right-hand column, where only the 300px unit fits
+  const unit = side && width >= SIDE_MIN_WIDTH ? AD_UNITS.mobile : chooseAdUnit(width);
   const scale = adScale(unit, width);
   const live = adsEnabled() || adsForcedLive();
 
@@ -63,7 +67,7 @@ export const AdBanner = memo(function AdBanner() {
   if (!placeholder && !(live && allowed)) return null;
 
   return (
-    <aside className="ad-box" data-testid="ad-box" data-unit={unit.id} aria-label={t('ad.label')}>
+    <aside className={`ad-box${side ? ' side' : ''}`} data-testid="ad-box" data-unit={unit.id} aria-label={t('ad.label')}>
       <span className="ad-label">{t('ad.label')}</span>
       <div className="ad-frame" style={{ width: unit.width * scale, height: unit.height * scale }}>
         {placeholder ? (
