@@ -7,6 +7,7 @@
 | `/` | ゲーム選択 |
 | `/word-slide`, `/word-slide/{daily,endless,how,stats}` | WORD SLIDE |
 | `/big-slide`, `/big-slide/{daily,endless,how,stats}` | BIG SLIDE |
+| `/art-slide`, `/art-slide/{daily,gallery,play/<id>,how,stats,credits}` | ART SLIDE |
 | `/settings /about /privacy /terms /contact` | 共通ページ |
 
 旧URL（`/#/daily` など）は `/word-slide/...` に自動で転送されます。Cloudflare Pages は `404.html` が無ければ SPA として未知のパスを `index.html` に返すので、リライト設定は不要です。
@@ -60,6 +61,26 @@ npm run e2e        # Playwright (desktop + mobile)
   - Easy: 最短 5〜8 手（BIG 1回以上）/ Normal: 最短 12〜16 手（BIG 1回以上）。ゴールと初期盤面の両側から幅優先探索（meet in the middle）をして **最短手数を厳密に確認**しています。
   - Duo/Shapes/Mega は同様に厳密検証（ただしジャム気味の盤面なので帯は短め。Hard は 4×4 の Duo/Mega で厳密、それ以外は参照解）。
   - Hard: 最短手数を厳密に求めるには深すぎるため、BIG を必ず複数回動かすスクランブル + 局所探索で短縮した参照解（20手以上・BIG 2回以上）を用いています（厳密な最短ではなく上限）。まれに条件を満たせない場合は一段下の難易度で出題します。
+
+## ART SLIDE
+
+名画を 3×3 / 4×4 / 5×5 に分割したクラシックなスライドパズル（空白は常に1マス）。完成すると最後の欠けたピースが現れ、継ぎ目が消えて絵画が完成します。
+
+- **画像は1枚をCSSで分割**: 全タイルが同じ画像を参照し、`background-size/position` だけが違います（`logic/tiles.ts`）。正方形盤面には中央トリミング（作品ごとに `focus` で位置調整可）で、引き伸ばしはしません。選択画面・プレビュー・結果画面では作品全体を表示します。
+- 問題は完成盤面から合法手だけで作るので必ず解けます（シード固定で再現可能）。デイリーは 4×4、日本時間 0:00 更新、作品も日付から決定的（`DAILY_POOL_V1` は凍結。追加するときは新しいプール版を作る）。
+- 保存キーは `artslide:save`（途中経過・ベスト・デイリー履歴・タイル番号表示の設定）。
+- PREVIEW / RESTART（同じ初期配置）/ NEW PUZZLE / CHANGE ARTWORK、画像読み込み失敗時のエラー表示と再試行、結果共有（デイリーは作品名を含めない）。
+
+### 収録作品と権利
+
+18作品すべてを **美術館の公式APIでパブリックドメインと確認** し、CC0 として公開されている画像のみ使用しています（Art Institute of Chicago 12点: `is_public_domain = true`、The Met 6点: `isPublicDomain = true`）。各作品の出典ページ・ライセンス・確認日・取得元URLは `src/games/art-slide/data/artworks.ts` に記録され、アプリ内の「Artwork Credits」ページ（`/art-slide/credits`）でも表示します。作品解説は独自に書いた短文です。
+
+画像の再生成・追加:
+
+```bash
+node scripts/fetch-artworks.mjs   # manifest の作品をAPIで再確認 → public/artworks/*.webp と data/artworks.ts を生成
+```
+スクリプトは PD フラグが立っていない作品は取得を拒否します。Art Institute の画像サーバーは `AIC-User-Agent` ヘッダーが必要です。Met の写真は黒背景ごと撮影されているため自動トリミングしています。Met の検索 API は現在 410 を返すため、作品IDを直接指定しています。
 
 ## 構成
 

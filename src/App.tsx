@@ -4,13 +4,15 @@ import { Landing } from './components/Landing';
 import { SiteHeader } from './components/SiteHeader';
 import { BigDaily, BigEndless, BigHome, BigHowPage, BigStatsPage } from './games/big-slide/pages/BigPages';
 import { BigSaveProvider } from './games/big-slide/storage';
+import { ArtCreditsPage, ArtDaily, ArtGallery, ArtHome, ArtHowPage, ArtPlay, ArtStatsPage } from './games/art-slide/pages/ArtPages';
+import { ArtSaveProvider } from './games/art-slide/storage';
 import { parsePath, usePath } from './router';
 import { SaveProvider, useSave } from './storage/SaveContext';
 import { Home } from './ui/Home';
 import { AboutPage, ContactPage, HowToPage, PrivacyPage, SettingsPage, StatsPage, TermsPage } from './ui/Pages';
 import { DailyScreen, EndlessScreen } from './ui/Screens';
 
-const TITLES = { 'word-slide': 'WORD SLIDE – slide puzzle meets Wordle', 'big-slide': 'BIG SLIDE – slide the giant tile' };
+const TITLES = { 'word-slide': 'WORD SLIDE – slide puzzle meets Wordle', 'big-slide': 'BIG SLIDE – slide the giant tile', 'art-slide': 'ART SLIDE – reassemble a masterpiece' };
 const SITE_TITLE = 'SLIDE GAMES – WORD SLIDE & BIG SLIDE';
 
 function WordRoutes({ sub }: { sub: string }) {
@@ -28,6 +30,15 @@ function BigRoutes({ sub }: { sub: string }) {
     <BigSaveProvider>
       {sub === 'daily' ? <BigDaily /> : sub === 'endless' ? <BigEndless /> : sub === 'how' ? <BigHowPage /> : sub === 'stats' ? <BigStatsPage /> : <BigHome />}
     </BigSaveProvider>
+  );
+}
+
+function ArtRoutes({ sub }: { sub: string }) {
+  const [head, id] = sub.split('/');
+  return (
+    <ArtSaveProvider>
+      {head === 'daily' ? <ArtDaily /> : head === 'gallery' ? <ArtGallery /> : head === 'play' ? <ArtPlay key={id ?? ''} artworkId={id} /> : head === 'how' ? <ArtHowPage /> : head === 'stats' ? <ArtStatsPage /> : head === 'credits' ? <ArtCreditsPage /> : <ArtHome />}
+    </ArtSaveProvider>
   );
 }
 
@@ -51,6 +62,7 @@ function Shell() {
   let page;
   if (game === 'word-slide') page = <WordRoutes sub={sub} />;
   else if (game === 'big-slide') page = <BigRoutes sub={sub} />;
+  else if (game === 'art-slide') page = <ArtRoutes sub={sub} />;
   else
     switch (sub) {
       case 'settings': page = <SettingsPage />; break;

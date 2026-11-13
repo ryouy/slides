@@ -21,10 +21,11 @@ function subscribe(cb: () => void) {
 
 export const usePath = (): string => useSyncExternalStore(subscribe, () => location.pathname);
 
-export type GameId = 'word-slide' | 'big-slide';
+export type GameId = 'word-slide' | 'big-slide' | 'art-slide';
 export const GAMES: { id: GameId; label: string }[] = [
   { id: 'word-slide', label: 'WORD SLIDE' },
   { id: 'big-slide', label: 'BIG SLIDE' },
+  { id: 'art-slide', label: 'ART SLIDE' },
 ];
 
 /** Pages shared by both games (not under a game prefix). */
@@ -32,7 +33,7 @@ export const SHARED = ['settings', 'about', 'privacy', 'terms', 'contact'];
 
 export function parsePath(path: string): { game: GameId | null; sub: string } {
   const [first, ...rest] = path.replace(/^\/+|\/+$/g, '').split('/');
-  if (first === 'word-slide' || first === 'big-slide') return { game: first, sub: rest.join('/') };
+  if (first === 'word-slide' || first === 'big-slide' || first === 'art-slide') return { game: first, sub: rest.join('/') };
   return { game: null, sub: first ?? '' };
 }
 
