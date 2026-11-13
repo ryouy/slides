@@ -6,6 +6,9 @@ import { currentDailyStreak, formatTime, maxDailyStreak } from '../storage/stats
 import type { ThemePref } from '../storage/storage';
 import { Footer } from './Home';
 import { LANGS, useLang, useT, type Lang } from '../i18n';
+import { adsEnabled } from '../ads/adsterra';
+import { useAdConsent } from '../ads/consent';
+import { adsForcedLive } from '../components/AdBanner';
 
 export function Page({ title, children }: { title: string; children: ReactNode }) {
   const t = useT();
@@ -123,6 +126,8 @@ export function SettingsPage() {
   const lang = useLang();
   const { data, update } = useSave();
   const s = data.settings;
+  const ad = useAdConsent();
+  const adsPossible = adsEnabled() || adsForcedLive() || import.meta.env.DEV;
   const set = (p: Partial<typeof s>) => update((d) => ({ ...d, settings: { ...d.settings, ...p } }));
   return (
     <Page title={t('settings.title')}>
@@ -144,10 +149,12 @@ export function SettingsPage() {
         <input type="checkbox" checked={s.colorblind} onChange={(e) => set({ colorblind: e.target.checked })} />
         {t('settings.colorblind')}
       </label>
-      <label className="field check">
-        <input type="checkbox" checked={s.adConsent === true} onChange={(e) => set({ adConsent: e.target.checked })} />
-        {t('settings.adCookies')}
-      </label>
+      {adsPossible && (
+        <label className="field check">
+          <input type="checkbox" data-testid="ad-cookies" checked={ad.allowed} onChange={(e) => ad.set(e.target.checked)} />
+          {t('settings.adCookies')}
+        </label>
+      )}
       <button
         className="btn"
         onClick={() => {
@@ -175,11 +182,13 @@ export function AboutPage() {
 export function PrivacyPage() {
   return (
     <Page title="PRIVACY POLICY">
-      <p><b>What we store.</b> Your settings, statistics and in-progress games are saved in your browser's localStorage. This data never leaves your device.</p>
-      <p><b>Accounts.</b> There are no accounts and we do not collect personal information.</p>
-      <p><b>Advertising.</b> This site may show ads from third-party providers such as Google AdSense. These providers may use cookies to serve and measure ads. Ads are loaded only after you accept ad cookies (Settings → Allow ad cookies), where required. You can withdraw consent at any time in Settings, and manage ad personalisation in your Google account settings.</p>
+      <p><b>What we store.</b> Your settings, language, statistics and in-progress games are saved in your browser's localStorage. This data stays on your device.</p>
+      <p><b>Accounts.</b> There are no accounts and we do not collect personal information ourselves.</p>
+      <p><b>Advertising.</b> This site shows banner ads from the third-party ad network Adsterra. Ad networks may use cookies, device identifiers and your IP address to deliver, limit and measure ads and to show ads that match your interests. We do not give them any information from your games. Each ad runs in its own isolated frame and cannot read this site's content or your saved data.</p>
+      <p><b>Your choice.</b> If you are in the EU, the EEA, the UK or Switzerland (or we cannot tell where you are), ads are shown only after you accept ad cookies. Elsewhere ads are shown until you turn them off. You can change your choice at any time in Settings → "Allow ad cookies". Turning them off stops ads from loading. You can also use your browser's cookie controls or an ad blocker; the games work the same without ads. For California residents and others with opt-out rights: turning off ad cookies in Settings is our opt-out.</p>
+      <p><b>Adsterra.</b> How Adsterra processes data is described in its own privacy policy (https://adsterra.com/privacy-policy/).</p>
       <p><b>Changes.</b> This policy may be updated; the current version is always on this page.</p>
-      <p className="muted">Template text: the site operator must review and complete this policy (operator name, contact, regional requirements) before publishing with live ads.</p>
+      <p className="muted">Operator note: add your name and contact details here before publishing, and keep this text in line with the ad network's current requirements.</p>
     </Page>
   );
 }

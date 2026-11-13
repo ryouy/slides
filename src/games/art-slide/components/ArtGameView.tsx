@@ -206,18 +206,17 @@ export function ArtGameView(p: Props) {
       </div>
 
       <div className="art-extra">
-        <label className="switch">
-          <input type="checkbox" checked={p.showNumbers} onChange={(e) => p.onToggleNumbers(e.target.checked)} />
-          <span>{t('art.numbers')}</span>
-        </label>
-        <details className="about-painting">
-          <summary>{t('art.aboutPainting')}</summary>
-          <p>{artwork.description}</p>
-          <p className="ap-credit">
-            {artwork.museum} · <a href={artwork.licenseUrl} target="_blank" rel="noopener noreferrer">CC0</a> · <a href={artwork.sourceUrl} target="_blank" rel="noopener noreferrer">{t('art.source')}</a>
-          </p>
-        </details>
-        {!daily && <button className="link-row" onClick={p.onChangeArtwork}>{t('art.change')} <span aria-hidden="true">→</span></button>}
+        <p className="ap-desc" data-testid="art-desc">{artwork.description}</p>
+        <p className="ap-credit">
+          {artwork.museum} · <a href={artwork.licenseUrl} target="_blank" rel="noopener noreferrer">CC0</a> · <a href={artwork.sourceUrl} target="_blank" rel="noopener noreferrer">{t('art.source')}</a>
+        </p>
+        <div className="art-quiet">
+          <label className="quiet-check">
+            <input type="checkbox" data-testid="numbers-toggle" checked={p.showNumbers} onChange={(e) => p.onToggleNumbers(e.target.checked)} />
+            <span>{t('art.numbers')}</span>
+          </label>
+          {!daily && <button className="quiet-link" data-testid="change-artwork" onClick={p.onChangeArtwork}>{t('art.change')} →</button>}
+        </div>
       </div>
       <AdSlot />
 

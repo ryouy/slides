@@ -118,10 +118,9 @@ test('easy level: caption bar, whole-painting board, solve, painting completes, 
   await expect(page.getByTestId('asize-3')).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByTestId('art-title')).toHaveText('The Bedroom');
   await expect(page.locator('.top-sub')).toContainText('Vincent van Gogh');
-  // the credit lines are tucked away until asked for
-  await expect(page.locator('.about-painting p').first()).toBeHidden();
-  await page.locator('.about-painting summary').click();
-  await expect(page.locator('.about-painting p').first()).toBeVisible();
+  // the description is simply shown (nothing to unfold), with a quiet credit line
+  await expect(page.getByTestId('art-desc')).toBeVisible();
+  await expect(page.getByTestId('art-desc')).not.toBeEmpty();
   await expect(page.locator('.ap-credit a').first()).toHaveAttribute('href', /creativecommons\.org/);
   await expect(page.locator('.ap-credit a').nth(1)).toHaveAttribute('href', /artic\.edu\/artworks\/28560/);
   await solve(page, 'free');
@@ -463,16 +462,32 @@ test('puzzle first: the board is large; on desktop all controls sit in a tidy co
   if (info.project.name === 'desktop') {
     const parts = await Promise.all(['asize-3', 'time', 'moves', 'preview', 'shuffle', 'restart'].map(async (id) => (await page.getByTestId(id).boundingBox())!));
     for (const b of parts) expect(b.x).toBeGreaterThanOrEqual(board.x + board.width); // everything beside the board
-    const summary = (await page.locator('.about-painting summary').boundingBox())!;
-    expect(summary.x).toBeGreaterThanOrEqual(board.x + board.width);
+    const desc = (await page.getByTestId('art-desc').boundingBox())!;
+    expect(desc.x).toBeGreaterThanOrEqual(board.x + board.width);
     expect(board.y + board.height).toBeLessThanOrEqual(vp.height); // the whole board is visible without scrolling
     expect(board.height).toBeGreaterThan(vp.height * 0.7); // and large
     // the side column is aligned: the controls share one left edge
-    const lefts = [parts[0].x, parts[3].x, summary.x].map((x) => Math.round(x));
+    const lefts = [parts[0].x, parts[3].x, desc.x].map((x) => Math.round(x));
     expect(Math.max(...lefts) - Math.min(...lefts)).toBeLessThan(4);
   } else {
     expect(board.width).toBeGreaterThan(vp.width * 0.8);
   }
+});
+
+test('tile numbers and change artwork are quiet options', async ({ page }) => {
+  await page.goto('/art-slide/play/degas-dance-class');
+  await expect(page.locator('.anum')).toHaveCount(0);
+  const toggle = page.getByTestId('numbers-toggle');
+  const box = (await toggle.boundingBox())!;
+  expect(box.width).toBeLessThanOrEqual(16); // a small checkbox, not a big control
+  await toggle.check();
+  expect(await page.locator('.anum').count()).toBeGreaterThan(3);
+  await page.reload();
+  await expect(page.getByTestId('numbers-toggle')).toBeChecked(); // remembered
+  const size = await page.getByTestId('change-artwork').evaluate((e) => parseFloat(getComputedStyle(e).fontSize));
+  expect(size).toBeLessThanOrEqual(13);
+  await page.getByTestId('change-artwork').click();
+  await expect(page).toHaveURL(/\/art-slide\/gallery$/);
 });
 
 test('dark theme keeps the art UI readable', async ({ page }) => {
