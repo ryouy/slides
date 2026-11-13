@@ -1,21 +1,21 @@
 import { describe, expect, it } from 'vitest';
-import { AD_UNITS, DEFAULT_SCRIPT_BASE, DESKTOP_MIN_WIDTH, adFits, adFrameUrl, adFrameHtml, chooseAdUnit } from './adsterra';
+import { AD_UNITS, DESKTOP_MIN_WIDTH, adFits, adFrameHtml, adFrameUrl, adScriptUrl, chooseAdUnit } from './admax';
 import { adsAllowed, consentRequired } from './consent';
 
 describe('ad units', () => {
-  it('uses the two Adsterra units exactly as configured', () => {
-    expect(AD_UNITS.mobile).toEqual({ id: 'mobile', key: '7ce68b5c8c3484d811e70436814e1b1c', width: 300, height: 250 });
-    expect(AD_UNITS.desktop).toEqual({ id: 'desktop', key: 'd1f4ebc3ac6f4fa67d18ad875ecc8e1f', width: 728, height: 90 });
+  it('uses the two AdMax tags exactly as issued, both 300x250', () => {
+    expect(AD_UNITS.desktop).toEqual({ id: 'desktop', tag: 'a1c2070f42cfa5a3fc12867425b874ed', width: 300, height: 250 });
+    expect(AD_UNITS.mobile).toEqual({ id: 'mobile', tag: 'e17c874ec991654a2894f1c609f8c486', width: 300, height: 250 });
+    expect(adScriptUrl(AD_UNITS.desktop)).toBe('https://adm.shinobi.jp/s/a1c2070f42cfa5a3fc12867425b874ed');
   });
-  it('picks 728x90 from 728px up and 300x250 below', () => {
+  it('picks the PC tag from 728px up and the phone tag below', () => {
     expect(DESKTOP_MIN_WIDTH).toBe(728);
     expect(chooseAdUnit(1920).id).toBe('desktop');
     expect(chooseAdUnit(728).id).toBe('desktop');
     expect(chooseAdUnit(727).id).toBe('mobile');
     expect(chooseAdUnit(412).id).toBe('mobile');
-    expect(chooseAdUnit(280).id).toBe('mobile');
   });
-  it('shows no ad (and shrinks nothing) on screens narrower than the smallest unit', () => {
+  it('shows no ad (and shrinks nothing) on screens narrower than the unit', () => {
     expect(adFits(299)).toBe(false);
     expect(adFits(280)).toBe(false);
     expect(adFits(300)).toBe(true);
@@ -26,22 +26,20 @@ describe('ad units', () => {
 
 describe('ad frame page (runs inside its own iframe)', () => {
   for (const unit of Object.values(AD_UNITS)) {
-    it(`${unit.id}: own atOptions, exactly one invoke script, nothing else`, () => {
+    it(`${unit.id}: exactly one AdMax script, nothing else`, () => {
       const doc = adFrameHtml(unit);
-      expect(doc).toContain(`atOptions={'key':'${unit.key}','format':'iframe','height':${unit.height},'width':${unit.width},'params':{}};`);
-      expect(doc).toContain(`<script src="${DEFAULT_SCRIPT_BASE}/${unit.key}"></script>`);
-      expect(doc.match(/<script/g)).toHaveLength(2); // the options and the ad: no extra formats
-      expect(doc).not.toMatch(/popunder|socialbar|onclick|window\.open|top\.location/i);
-      expect(doc).not.toContain(unit.id === 'mobile' ? AD_UNITS.desktop.key : AD_UNITS.mobile.key); // no cross-talk between units
+      expect(doc).toContain(`<script src="https://adm.shinobi.jp/s/${unit.tag}"></script>`);
+      expect(doc.match(/<script/g)).toHaveLength(1);
+      expect(doc).not.toMatch(/adsterra|bauval|atOptions|popunder|socialbar|window\.open|top\.location/i);
+      expect(doc).not.toContain(unit.id === 'mobile' ? AD_UNITS.desktop.tag : AD_UNITS.mobile.tag); // no cross-talk between tags
     });
   }
   it('each unit has its own page on our domain', () => {
     expect(adFrameUrl(AD_UNITS.mobile)).toBe('/ads/mobile.html');
     expect(adFrameUrl(AD_UNITS.desktop)).toBe('/ads/desktop.html');
   });
-  it('uses a custom script host and refuses malformed keys', () => {
-    expect(adFrameHtml(AD_UNITS.mobile, 'https://ads.example.net/x')).toContain('<script src="https://ads.example.net/x/7ce68b5c8c3484d811e70436814e1b1c"></script>');
-    expect(() => adFrameHtml({ ...AD_UNITS.mobile, key: "x'};alert(1);//" })).toThrow();
+  it('refuses a malformed tag', () => {
+    expect(() => adFrameHtml({ ...AD_UNITS.mobile, tag: '"></script><script>alert(1)</script>' })).toThrow();
   });
 });
 

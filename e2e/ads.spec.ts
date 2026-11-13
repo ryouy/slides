@@ -1,9 +1,9 @@
 import { expect, test, type Page } from '@playwright/test';
 
 const errors = new WeakMap<Page, string[]>();
-const AD_HOST = 'https://bauval.org/**';
-/** A stand-in for the ad script: it only reports the atOptions it was given, inside the iframe. */
-const FAKE_AD = "document.body.innerHTML = '<div id=\"fake\">AD ' + atOptions.width + 'x' + atOptions.height + ' ' + atOptions.key.slice(0, 4) + ' ' + atOptions.format + '</div>';";
+const AD_HOST = 'https://adm.shinobi.jp/**';
+/** A stand-in for the ad script: it only reports which tag it was loaded as, inside the iframe. */
+const FAKE_AD = "var s = document.currentScript.src; document.body.innerHTML = '<div id=\"fake\">AD ' + s.slice(-32, -28) + '</div>';";
 
 test.beforeEach(async ({ page }) => {
   const list: string[] = [];
@@ -40,12 +40,17 @@ for (const [name, url] of pages) {
   });
 }
 
-test('size follows the screen: 728x90 from 728px, 300x250 below, scaled to fit very narrow screens, never overflowing', async ({ page }) => {
+test('always 300x250: PC tag from 728px, phone tag below, none under 300px, never overflowing', async ({ page }) => {
   const cases: [number, string, number, number][] = [
-    [1280, 'desktop', 728, 90],
-    [728, 'desktop', 728, 90],
+    [1280, 'desktop', 300, 250],
+    [728, 'desktop', 300, 250],
     [727, 'mobile', 300, 250],
+    [430, 'mobile', 300, 250],
     [412, 'mobile', 300, 250],
+    [390, 'mobile', 300, 250],
+    [375, 'mobile', 300, 250],
+    [320, 'mobile', 300, 250],
+    [300, 'mobile', 300, 250],
   ];
   for (const [w, unit, aw, ah] of cases) {
     await page.setViewportSize({ width: w, height: 900 });
@@ -81,7 +86,7 @@ for (const [name, url] of [['ART SLIDE', '/art-slide/play/monet-water-lilies'], 
     await page.setViewportSize({ width: 1280, height: 720 });
     await page.goto(url);
     await page.waitForTimeout(500);
-    await expect(page.getByTestId('ad-box')).toHaveAttribute('data-unit', 'mobile'); // 300x250 is what fits the column
+    await expect(page.getByTestId('ad-box')).toHaveAttribute('data-unit', 'desktop'); // the PC tag
     const ad = (await page.getByTestId('ad-box').boundingBox())!;
     const board = (await (name === 'ART SLIDE' ? page.locator('.aboard') : page.locator('.bboard')).boundingBox())!;
     const placeholder = (await page.getByTestId('ad-placeholder').boundingBox())!;
@@ -128,14 +133,14 @@ test.describe('live ads (dev-only ?ads=live with a stand-in script)', () => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto('/word-slide/daily?ads=live');
     const frame = page.frameLocator('[data-testid=ad-iframe]');
-    await expect(frame.locator('#fake')).toHaveText("AD 728x90 d1f4 iframe");
+    await expect(frame.locator('#fake')).toHaveText("AD a1c2");
     const sandbox = await page.getByTestId('ad-iframe').getAttribute('sandbox');
     expect(sandbox).toContain('allow-scripts');
     expect(sandbox).toContain('allow-same-origin'); // the frame is a page of this site, so the ad sees our domain
     expect(await page.getByTestId('ad-iframe').getAttribute('src')).toBe('/ads/desktop.html');
     expect(sandbox).not.toContain('allow-top-navigation');
     expect(await page.evaluate(() => 'atOptions' in window)).toBe(false); // nothing leaks into the app's window
-    expect(await page.locator('script[src*="bauval"]').count()).toBe(0); // no ad script in the app document itself
+    expect(await page.locator('script[src*="shinobi"]').count()).toBe(0); // no ad script in the app document itself
     // playing re-renders the page; the ad is not inserted again
     const before = hits;
     await page.getByTestId('hint-first-0').click();
@@ -147,17 +152,16 @@ test.describe('live ads (dev-only ?ads=live with a stand-in script)', () => {
     await expect(page.getByTestId('slots-0').locator('.slot-l.shown')).toHaveCount(1);
   });
 
-  test('each size gets its own key and options (no clash between the two units)', async ({ page }) => {
+  test('each screen gets its own tag (PC / phone), never both', async ({ page }) => {
     await page.route(AD_HOST, (r) => r.fulfill({ contentType: 'application/javascript', body: FAKE_AD }));
     await page.setViewportSize({ width: 412, height: 900 });
     await page.goto('/art-slide/play/van-gogh-bedroom?ads=live');
-    await expect(page.frameLocator('[data-testid=ad-iframe]').locator('#fake')).toHaveText('AD 300x250 7ce6 iframe');
+    await expect(page.frameLocator('[data-testid=ad-iframe]').locator('#fake')).toHaveText('AD e17c');
     await page.setViewportSize({ width: 1280, height: 900 });
-    // a puzzle page on a wide screen keeps its ad in the side column: the 300x250 unit
-    await expect(page.frameLocator('[data-testid=ad-iframe]').locator('#fake')).toHaveText('AD 300x250 7ce6 iframe');
+    await expect(page.frameLocator('[data-testid=ad-iframe]').locator('#fake')).toHaveText('AD a1c2');
     await expect(page.getByTestId('ad-iframe')).toHaveCount(1);
-    await page.goto('/word-slide/daily?ads=live'); // a single-column page uses the wide 728x90 on a wide screen
-    await expect(page.frameLocator('[data-testid=ad-iframe]').locator('#fake')).toHaveText('AD 728x90 d1f4 iframe');
+    expect(await page.getByTestId('ad-iframe').getAttribute('width')).toBe('300');
+    expect(await page.getByTestId('ad-iframe').getAttribute('height')).toBe('250');
   });
 
   test('a blocked or failing ad (ad blocker, network error) never affects the game', async ({ page }) => {
@@ -225,20 +229,20 @@ test.describe('live ads (dev-only ?ads=live with a stand-in script)', () => {
   });
 });
 
-test('each unit is served as its own page on this site, with its own options', async ({ request }) => {
+test('each unit is served as its own page on this site with one AdMax tag and no Adsterra', async ({ request }) => {
   const m = await (await request.get('/ads/mobile.html')).text();
   const d = await (await request.get('/ads/desktop.html')).text();
-  expect(m).toContain("'key':'7ce68b5c8c3484d811e70436814e1b1c','format':'iframe','height':250,'width':300");
-  expect(d).toContain("'key':'d1f4ebc3ac6f4fa67d18ad875ecc8e1f','format':'iframe','height':90,'width':728");
-  expect(m).toContain('https://bauval.org/22/7ce68b5c8c3484d811e70436814e1b1c');
-  expect(d).toContain('https://bauval.org/22/d1f4ebc3ac6f4fa67d18ad875ecc8e1f');
-  expect(m).not.toContain('d1f4ebc3'); // no cross-talk
+  expect(m).toContain('https://adm.shinobi.jp/s/e17c874ec991654a2894f1c609f8c486');
+  expect(d).toContain('https://adm.shinobi.jp/s/a1c2070f42cfa5a3fc12867425b874ed');
+  expect(m).not.toContain('a1c2070f'); // no cross-talk
+  expect(m + d).not.toMatch(/bauval|adsterra|atOptions/i);
 });
 
 test('privacy policy covers the ad network and the opt-out', async ({ page }) => {
   await page.goto('/privacy');
   const text = await page.locator('.prose').innerText();
-  expect(text).toMatch(/Adsterra/);
+  expect(text).toMatch(/AdMax/);
+  expect(text).not.toMatch(/Adsterra/);
   expect(text).toMatch(/cookies/i);
   expect(text).toMatch(/EU|EEA|Switzerland/);
   expect(text).toMatch(/Settings/);

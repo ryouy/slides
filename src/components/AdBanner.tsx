@@ -1,8 +1,5 @@
 import { memo, useEffect, useState } from 'react';
-import { AD_UNITS, adFits, adFrameUrl, adsEnabled, chooseAdUnit } from '../ads/adsterra';
-
-/** From this width the puzzle screens use a two-column layout (see styles.css). */
-const SIDE_MIN_WIDTH = 900;
+import { adFits, adFrameUrl, adsEnabled, chooseAdUnit } from '../ads/admax';
 import { useAdConsent } from '../ads/consent';
 import { useT } from '../i18n';
 
@@ -46,9 +43,9 @@ function useSlot(): boolean {
 
 /**
  * The ad area shared by all games, placed below the board and controls.
- *  - 728x90 on screens >= 728px wide, 300x250 from 300px up; narrower screens get no ad at all
+ *  - 300x250 everywhere (PC tag from 728px wide, phone tag below); screens under 300px get no ad at all
  *  - the ad runs in its own iframe (a page of this site per unit): it cannot navigate the page away or
- *    clash with the other unit's global `atOptions`; if it fails or is blocked the game is unaffected
+ *    clash with the other tag or `document.write`; if it fails or is blocked the game is unaffected
  *  - dev server: a placeholder. Production: the live ad, only when the visitor's consent status allows it
  *    (and VITE_ADS_ENABLED is not "false")
  */
@@ -57,8 +54,7 @@ export const AdBanner = memo(function AdBanner({ side = false }: { side?: boolea
   const owns = useSlot();
   const width = useViewportWidth();
   const { allowed } = useAdConsent();
-  // on wide screens a puzzle page keeps its ad in the right-hand column, where only the 300px unit fits
-  const unit = side && width >= SIDE_MIN_WIDTH ? AD_UNITS.mobile : chooseAdUnit(width);
+  const unit = chooseAdUnit(width); // PC tag on wide screens, phone tag below; both 300x250
   const live = adsEnabled() || adsForcedLive();
 
   if (!owns || !adFits(width)) return null; // too narrow for the smallest unit: no ad, no overflow
