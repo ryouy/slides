@@ -478,7 +478,7 @@ test('language: switch in Settings, it applies everywhere and is remembered', as
   await expect(page.getByTestId('art-gallery')).toHaveText('ギャラリーを見に行く');
   await page.goto('/art-slide/play/van-gogh-bedroom');
   await expect(page.getByTestId('shuffle')).toHaveText('シャッフル');
-  await expect(page.getByTestId('asize-3')).toContainText('やさしい');
+  await expect(page.getByTestId('asize-3')).toContainText('×');
   await solve(page, 'free');
   await page.getByTestId('share-toggle').click();
   const text = await page.getByTestId('share-text').innerText();

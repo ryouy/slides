@@ -454,9 +454,8 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .art-theme .art-top h1 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: .01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .top-sub { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .top-kicker { font-size: 10px; letter-spacing: .22em; color: var(--muted); font-weight: 600; }
-.seg.levels .seg-btn { display: grid; gap: 1px; padding: 8px 4px 7px; min-height: 52px; }
-.seg.levels b { font-size: 16px; font-weight: 600; letter-spacing: .02em; }
-.seg.levels small { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; opacity: .65; font-weight: 600; }
+.seg.levels .seg-btn { display: grid; place-items: center; padding: 8px 4px; min-height: 46px; }
+.seg.levels b { font-size: 17px; font-weight: 600; letter-spacing: .04em; }
 .art-theme .stats { gap: 0; margin: 10px 0 12px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .art-theme .stats .stat { border: 0; background: none; border-radius: 0; padding: 10px 4px 8px; }
 .art-theme .stats .stat + .stat { border-left: 1px solid var(--line); }
@@ -554,3 +553,6 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .switch-input:checked::after { transform: translateX(18px); }
 .reset-link { display: block; margin: 26px auto 0; padding: 10px 14px; background: none; border: 0; color: var(--muted); font-size: 13px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .reset-link:hover { color: #c0392b; }
+
+/* very narrow phones: let the 300px ad use the page gutter, so it never forces a horizontal scroll */
+@media (max-width: 331px) { .ad-box { margin-inline: -16px; } }

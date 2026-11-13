@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from 'react';
-import { AD_UNITS, adFrameUrl, adScale, adsEnabled, chooseAdUnit } from '../ads/adsterra';
+import { AD_UNITS, adFits, adFrameUrl, adsEnabled, chooseAdUnit } from '../ads/adsterra';
 
 /** From this width the puzzle screens use a two-column layout (see styles.css). */
 const SIDE_MIN_WIDTH = 900;
@@ -46,7 +46,7 @@ function useSlot(): boolean {
 
 /**
  * The ad area shared by all games, placed below the board and controls.
- *  - 728x90 on screens >= 728px wide, 300x250 below (scaled down on screens narrower than 316px)
+ *  - 728x90 on screens >= 728px wide, 300x250 from 300px up; narrower screens get no ad at all
  *  - the ad runs in its own iframe (a page of this site per unit): it cannot navigate the page away or
  *    clash with the other unit's global `atOptions`; if it fails or is blocked the game is unaffected
  *  - dev server: a placeholder. Production: the live ad, only when the visitor's consent status allows it
@@ -59,19 +59,18 @@ export const AdBanner = memo(function AdBanner({ side = false }: { side?: boolea
   const { allowed } = useAdConsent();
   // on wide screens a puzzle page keeps its ad in the right-hand column, where only the 300px unit fits
   const unit = side && width >= SIDE_MIN_WIDTH ? AD_UNITS.mobile : chooseAdUnit(width);
-  const scale = adScale(unit, width);
   const live = adsEnabled() || adsForcedLive();
 
-  if (!owns) return null;
+  if (!owns || !adFits(width)) return null; // too narrow for the smallest unit: no ad, no overflow
   const placeholder = import.meta.env.DEV && !adsForcedLive();
   if (!placeholder && !(live && allowed)) return null;
 
   return (
     <aside className={`ad-box${side ? ' side' : ''}`} data-testid="ad-box" data-unit={unit.id} aria-label={t('ad.label')}>
       <span className="ad-label">{t('ad.label')}</span>
-      <div className="ad-frame" style={{ width: unit.width * scale, height: unit.height * scale }}>
+      <div className="ad-frame" style={{ width: unit.width, height: unit.height }}>
         {placeholder ? (
-          <div className="ad-placeholder" data-testid="ad-placeholder" style={{ width: unit.width, height: unit.height, transform: `scale(${scale})` }}>
+          <div className="ad-placeholder" data-testid="ad-placeholder" style={{ width: unit.width, height: unit.height }}>
             {unit.width}×{unit.height}
           </div>
         ) : (
@@ -86,7 +85,7 @@ export const AdBanner = memo(function AdBanner({ side = false }: { side?: boolea
             // the ad page lives on this site (so the ad network sees our domain). Sandboxed so an ad cannot
             // navigate the page away; popups are allowed for the click-through
             sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
-            style={{ width: unit.width, height: unit.height, transform: `scale(${scale})` }}
+            style={{ width: unit.width, height: unit.height }}
           />
         )}
       </div>
