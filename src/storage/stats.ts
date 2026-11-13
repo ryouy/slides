@@ -4,7 +4,7 @@ import type { Best, SaveData } from './storage';
 const prevDay = (key: string) => new Date(Date.parse(`${key}T00:00:00Z`) - 86400000).toISOString().slice(0, 10);
 
 /** Consecutive cleared daily puzzles ending today (or yesterday, if today is not cleared yet). */
-export function currentDailyStreak(history: SaveData['dailyHistory'], today: string): number {
+export function currentDailyStreak(history: Record<string, unknown>, today: string): number {
   let day = history[today] ? today : prevDay(today);
   let n = 0;
   while (history[day]) {
@@ -14,7 +14,7 @@ export function currentDailyStreak(history: SaveData['dailyHistory'], today: str
   return n;
 }
 
-export function maxDailyStreak(history: SaveData['dailyHistory']): number {
+export function maxDailyStreak(history: Record<string, unknown>): number {
   const days = Object.keys(history).sort();
   let best = 0;
   let run = 0;

@@ -1,4 +1,5 @@
 import { go } from '../nav';
+import { Link } from '../components/Link';
 import { dailyNumber, jstDateKey } from '../core/generator';
 import { useSave } from '../storage/SaveContext';
 import { currentDailyStreak } from '../storage/stats';
@@ -34,10 +35,10 @@ export function Home() {
 export function Footer() {
   return (
     <footer className="footer">
-      <a href="#/about">About</a>
-      <a href="#/privacy">Privacy</a>
-      <a href="#/terms">Terms</a>
-      <a href="#/contact">Contact</a>
+      <Link to="/about">About</Link>
+      <Link to="/privacy">Privacy</Link>
+      <Link to="/terms">Terms</Link>
+      <Link to="/contact">Contact</Link>
     </footer>
   );
 }

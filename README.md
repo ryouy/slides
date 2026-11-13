@@ -1,4 +1,17 @@
-# WORD SLIDE
+# SLIDE GAMES（WORD SLIDE + BIG SLIDE）
+
+同一サイトで2つのスライドパズルを遊べます。
+
+| URL | 内容 |
+|---|---|
+| `/` | ゲーム選択 |
+| `/word-slide`, `/word-slide/{daily,endless,how,stats}` | WORD SLIDE |
+| `/big-slide`, `/big-slide/{daily,endless,how,stats}` | BIG SLIDE |
+| `/settings /about /privacy /terms /contact` | 共通ページ |
+
+旧URL（`/#/daily` など）は `/word-slide/...` に自動で転送されます。Cloudflare Pages は `404.html` が無ければ SPA として未知のパスを `index.html` に返すので、リライト設定は不要です。
+
+## WORD SLIDE
 
 15パズル × Wordle の英単語パズル。4×4盤面の15枚の文字タイルをスライドさせ、隠された4つの英単語を完成させます。
 
@@ -26,7 +39,21 @@ npm run e2e        # Playwright (desktop + mobile)
 - ヒント・CHECK を一度も使わずクリアすると **NO HINT CLEAR**。
 - Daily: 日本時間0:00更新、全員同じ問題。Endless: Easy/Normal/Hard。
 
+## BIG SLIDE
+
+- 盤面 4×4 / 5×5 / 6×6。1×1 の数字タイル + **2×2 の BIG タイル 1枚** + 空白2マス（4×4: 10+1枚、5×5: 19+1枚、6×6: 30+1枚）。
+- 数字タイルは隣接する空白へ、BIG タイルは「移動先で新しく覆うマスがすべて空白」のときだけ上下左右に1マス移動できます（斜め・回転・重なり・盤外は不可）。
+- 全タイルが GOAL の位置に揃えばクリア（BIG タイルの位置も判定）。GOAL は盤面の下の小さな完成図（折りたたみ可）。
+- 操作: タップ（方向が複数あるときは矢印が出る）、スワイプ、矢印キー。不正な操作は盤面もカウントも変えません。
+- 記録: TIME / MOVES / BIG MOVES、自己ベスト（サイズ×難易度別）、連続クリア、デイリー履歴。保存キーは `bigslide:save`（WORD SLIDE の `wordslide:save` とは別）。
+- デイリー: 4×4 Normal 固定、日本時間 0:00 更新。
+- **問題生成**: ゴール配置（BIG の位置はシードで変化）から合法手だけで作るので必ず解けます。BIG タイルの初期位置とゴール位置は必ず異なり、最短解で BIG を必ず動かします。
+  - Easy: 最短 5〜8 手（BIG 1回以上）/ Normal: 最短 12〜16 手（BIG 1回以上）。ゴールと初期盤面の両側から幅優先探索（meet in the middle）をして **最短手数を厳密に確認**しています。
+  - Hard: 最短手数を厳密に求めるには深すぎるため、BIG を必ず複数回動かすスクランブル + 局所探索で短縮した参照解（20手以上・BIG 2回以上）を用いています（厳密な最短ではなく上限）。まれに条件を満たせない場合は一段下の難易度で出題します。
+
 ## 構成
+
+共通部品は `src/components/`（SiteHeader / Link / ResultModal / Landing）、`src/hooks/`、`src/utils/`、`src/ads/`、`src/router.ts`。BIG SLIDE は `src/games/big-slide/{logic,components,pages}` に独立しています。WORD SLIDE は従来の場所（`src/core`, `src/ui`, `src/storage`, `src/data`）のままです。
 
 | パス | 役割 |
 |---|---|
@@ -60,6 +87,6 @@ VITE_ADSENSE_SLOT=1234567890
 1. Cloudflare ダッシュボード → Workers & Pages → Create → Pages → Connect to Git → このリポジトリを選択
 2. Framework preset: Vite（または手動で）  Build command: `npm run build`  Build output directory: `dist`
 3. 環境変数: `NODE_VERSION=22`（`.node-version` でも指定済み）、広告を使う場合は `VITE_ADSENSE_CLIENT` / `VITE_ADSENSE_SLOT`
-4. ハッシュルーティングなので rewrite 設定は不要。`public/_headers` でアセットのキャッシュを設定済み。
+4. History API ルーティング（`/word-slide`, `/big-slide`）。`404.html` を置かない限り Pages が SPA フォールバックするので rewrite 設定は不要。`public/_headers` でアセットのキャッシュを設定済み。
 
 公開前に `src/ui/Pages.tsx` の Contact / Privacy / Terms を運営者情報で更新し、OGP の URL を絶対URLにしてください。

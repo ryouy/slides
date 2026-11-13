@@ -1,23 +1,39 @@
-import { useEffect, useState } from 'react';
-import { SaveProvider, useSave } from './storage/SaveContext';
+import { useEffect } from 'react';
 import { ConsentBanner } from './ads/AdSlot';
-import { DailyScreen, EndlessScreen } from './ui/Screens';
+import { Landing } from './components/Landing';
+import { SiteHeader } from './components/SiteHeader';
+import { BigDaily, BigEndless, BigHome, BigHowPage, BigStatsPage } from './games/big-slide/pages/BigPages';
+import { BigSaveProvider } from './games/big-slide/storage';
+import { parsePath, usePath } from './router';
+import { SaveProvider, useSave } from './storage/SaveContext';
 import { Home } from './ui/Home';
 import { AboutPage, ContactPage, HowToPage, PrivacyPage, SettingsPage, StatsPage, TermsPage } from './ui/Pages';
+import { DailyScreen, EndlessScreen } from './ui/Screens';
 
-function useRoute(): string {
-  const get = () => location.hash.replace(/^#\/?/, '') || '';
-  const [r, setR] = useState(get);
-  useEffect(() => {
-    const h = () => setR(get());
-    window.addEventListener('hashchange', h);
-    return () => window.removeEventListener('hashchange', h);
-  }, []);
-  return r;
+const TITLES = { 'word-slide': 'WORD SLIDE – slide puzzle meets Wordle', 'big-slide': 'BIG SLIDE – slide the giant tile' };
+const SITE_TITLE = 'SLIDE GAMES – WORD SLIDE & BIG SLIDE';
+
+function WordRoutes({ sub }: { sub: string }) {
+  switch (sub) {
+    case 'daily': return <DailyScreen />;
+    case 'endless': return <EndlessScreen />;
+    case 'how': return <HowToPage />;
+    case 'stats': return <StatsPage />;
+    default: return <Home />;
+  }
+}
+
+function BigRoutes({ sub }: { sub: string }) {
+  return (
+    <BigSaveProvider>
+      {sub === 'daily' ? <BigDaily /> : sub === 'endless' ? <BigEndless /> : sub === 'how' ? <BigHowPage /> : sub === 'stats' ? <BigStatsPage /> : <BigHome />}
+    </BigSaveProvider>
+  );
 }
 
 function Shell() {
-  const route = useRoute();
+  const path = usePath();
+  const { game, sub } = parsePath(path);
   const { data } = useSave();
 
   useEffect(() => {
@@ -29,23 +45,24 @@ function Shell() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [route]);
+    document.title = game ? TITLES[game] : SITE_TITLE;
+  }, [path, game]);
 
   let page;
-  switch (route) {
-    case 'daily': page = <DailyScreen />; break;
-    case 'endless': page = <EndlessScreen />; break;
-    case 'how': page = <HowToPage />; break;
-    case 'stats': page = <StatsPage />; break;
-    case 'settings': page = <SettingsPage />; break;
-    case 'about': page = <AboutPage />; break;
-    case 'privacy': page = <PrivacyPage />; break;
-    case 'contact': page = <ContactPage />; break;
-    case 'terms': page = <TermsPage />; break;
-    default: page = <Home />;
-  }
+  if (game === 'word-slide') page = <WordRoutes sub={sub} />;
+  else if (game === 'big-slide') page = <BigRoutes sub={sub} />;
+  else
+    switch (sub) {
+      case 'settings': page = <SettingsPage />; break;
+      case 'about': page = <AboutPage />; break;
+      case 'privacy': page = <PrivacyPage />; break;
+      case 'terms': page = <TermsPage />; break;
+      case 'contact': page = <ContactPage />; break;
+      default: page = <Landing />;
+    }
   return (
     <>
+      <SiteHeader />
       {page}
       <ConsentBanner />
     </>
