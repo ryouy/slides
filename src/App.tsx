@@ -6,6 +6,7 @@ import { ArtCreditsPage, ArtDaily, ArtGallery, ArtHome, ArtHowPage, ArtPlay, Art
 import { ArtSaveProvider } from './games/art-slide/storage';
 import { parsePath, usePath } from './router';
 import { SaveProvider, useSave } from './storage/SaveContext';
+import { useLang } from './i18n';
 import { Home } from './ui/Home';
 import { AboutPage, ContactPage, HowToPage, PrivacyPage, SettingsPage, StatsPage, TermsPage } from './ui/Pages';
 import { DailyScreen, EndlessScreen } from './ui/Screens';
@@ -46,6 +47,7 @@ function Shell() {
   const path = usePath();
   const { game, sub } = parsePath(path);
   const { data } = useSave();
+  const lang = useLang();
 
   useEffect(() => {
     const el = document.documentElement;
@@ -53,6 +55,10 @@ function Shell() {
     else el.setAttribute('data-theme', data.settings.theme);
     el.classList.toggle('cb', data.settings.colorblind);
   }, [data.settings.theme, data.settings.colorblind]);
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

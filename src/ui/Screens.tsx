@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { go } from '../nav';
+import { useT } from '../i18n';
 import { dailyNumber, generateDaily, generateEndless, jstDateKey } from '../core/generator';
 import { isNoHintClear, newGame, type GameState } from '../core/game';
 import { totalHintUse } from '../core/hints';
@@ -10,6 +11,7 @@ import { AdSlot } from '../ads/AdSlot';
 import { GameView } from './GameView';
 
 export function DailyScreen() {
+  const t = useT();
   const { getData, setProgress, update } = useSave();
   const [dateKey] = useState(() => jstDateKey());
   const [initial] = useState<GameState>(() => {
@@ -20,25 +22,22 @@ export function DailyScreen() {
   return (
     <GameView
       initial={initial}
-      title={`DAILY #${dailyNumber(dateKey)}`}
+      title={t('art.dailyTitle', { n: dailyNumber(dateKey) })}
       onBack={() => go('')}
       onProgress={(s) => setProgress('daily', s)}
       onCleared={(s) =>
         update((d) => recordClear(d, { mode: 'daily', difficulty: 'normal', dateKey, number: s.puzzle.number, timeMs: s.elapsedMs, moves: s.moves, checks: s.checks, hints: totalHintUse(s.hintUse), noHint: isNoHintClear(s) }))
       }
       onNext={() => go('endless')}
-      nextLabel="TRY ENDLESS"
+      nextLabel={t('home.endless')}
     />
   );
 }
 
-const DIFFS: { id: Difficulty; name: string; desc: string }[] = [
-  { id: 'easy', name: 'Easy', desc: 'Everyday words, gentle shuffle' },
-  { id: 'normal', name: 'Normal', desc: 'Common words, standard shuffle' },
-  { id: 'hard', name: 'Hard', desc: 'Trickier words, heavy shuffle' },
-];
+const DIFFS: Difficulty[] = ['easy', 'normal', 'hard'];
 
 export function EndlessScreen() {
+  const t = useT();
   const { data, getData, setProgress, update } = useSave();
   const [game, setGame] = useState<{ key: number; state: GameState } | null>(() => {
     const s = getData().inProgress.endless;
@@ -64,19 +63,17 @@ export function EndlessScreen() {
     return (
       <div className="screen">
         <header className="topbar">
-          <button className="icon-btn" onClick={() => go('')} aria-label="Back">←</button>
-          <h1>ENDLESS</h1>
+          <button className="icon-btn" onClick={() => go('')} aria-label={t('common.back')}>←</button>
+          <h1>{t('home.endless')}</h1>
           <div className="top-right" />
         </header>
-        <p className="lead">Pick a difficulty. Streak: <b>{data.endlessStreak}</b></p>
         <div className="cards">
           {DIFFS.map((d) => {
-            const best = data.bests[d.id];
+            const best = data.bests[d];
             return (
-              <button key={d.id} className="card" data-testid={`diff-${d.id}`} onClick={() => start(d.id)}>
-                <strong>{d.name}</strong>
-                <span>{d.desc}</span>
-                <small>{best.timeMs !== undefined ? `Best ${formatTime(best.timeMs)} · ${best.moves} moves` : 'No record yet'}</small>
+              <button key={d} className="card" data-testid={`diff-${d}`} onClick={() => start(d)}>
+                <strong>{t(`diff.${d}`)}</strong>
+                {best.timeMs !== undefined && <small>{formatTime(best.timeMs)} · {best.moves}</small>}
               </button>
             );
           })}
@@ -100,7 +97,7 @@ export function EndlessScreen() {
       onNext={() => start(diff)}
       nextLabel="NEXT PUZZLE"
       headerRight={<span className="streak" title="Streak">🔥 {data.endlessStreak}</span>}
-      footerExtra={<button className="btn" onClick={abandon}>NEW</button>}
+      footerExtra={<button className="btn" onClick={abandon}>{t('word.new')}</button>}
     />
   );
 }

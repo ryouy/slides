@@ -174,7 +174,6 @@ for (const sel of selection) {
     id, title, artist, artistSort: `${lastName(artist)} ${slug(artist)}`, year: yearText, yearStart: sel.date_start, yearEnd: sel.date_end ?? sel.date_start,
     era: eraOf(sel.date_start), theme, medium: sel.medium_display ?? '',
     imageUrl: `/artworks/${id}.webp`, thumbnailUrl: `/artworks/${id}-thumb.webp`, width, height,
-    focus: ex?.focus ? ex.focus : { x: 0.5, y: portrait && theme === 'Portrait' ? 0.3 : 0.5 },
     museum: 'Art Institute of Chicago', sourceUrl: `https://www.artic.edu/artworks/${sid}`, ...AIC_LICENSE,
     sourceImageUrl: m.imageSource, verifiedAt: today,
     description: descriptions[id] ?? autoDescription({ theme, artist, date: yearText, medium: sel.medium_display, style: sel.style_title, origin: sel.place_of_origin }),
@@ -192,7 +191,7 @@ for (const c of metCache) {
   out.push({
     id: c.id, title: c.title, artist: c.artist, artistSort: `${lastName(c.artist)} ${slug(c.artist)}`, year: c.year, yearStart: MET_START[c.id], yearEnd: MET_START[c.id],
     era: eraOf(MET_START[c.id]), theme, medium: c.id === 'hokusai-great-wave' ? 'Woodblock print' : 'Oil on canvas',
-    imageUrl: `/artworks/${c.id}.webp`, thumbnailUrl: `/artworks/${c.id}-thumb.webp`, width, height, focus: c.focus,
+    imageUrl: `/artworks/${c.id}.webp`, thumbnailUrl: `/artworks/${c.id}-thumb.webp`, width, height,
     museum: c.museum, sourceUrl: c.sourceUrl, license: c.license, licenseUrl: c.licenseUrl, licenseBasis: c.licenseBasis, sourceImageUrl: c.sourceImageUrl, verifiedAt: c.verifiedAt,
     description: descriptions[c.id],
   });

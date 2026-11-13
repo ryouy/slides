@@ -1,8 +1,9 @@
 import fs from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { ART_SIZES, blankIndex, canMove, isSolved, isValidBoard, moveTile, neighbors, solvedBoard, tileForDirection } from './board';
-import { DAILY_POOL_V1, DAILY_POOL_V2_FROM, dailyArtworkId, generateArtDaily, generateArtFree, shuffleBoard, validateArtPuzzle } from './generator';
+import { ART_LEVELS, blankIndex, canMove, isSolved, isValidBoard, moveTile, neighbors, solvedBoard, tileForDirection, type Dims } from './board';
+import { DAILY_POOL_V1, DAILY_POOL_V2_FROM, dailyArtworkId, dimsForArtwork, generateArtDaily, generateArtFree, shuffleBoard, validateArtPuzzle } from './generator';
 import { artReducer, newArtGame } from './game';
+import { gridFor } from './grid';
 import { planReshuffle, reduceBlankPath } from './reshuffle';
 import { tileBackground, tileRegion } from './tiles';
 import { ARTWORKS, getArtwork, nextArtwork } from '../data';
@@ -11,91 +12,285 @@ import { ERA_ORDER, THEME_ORDER, filterArtworks, groupArtworks, sortArtworks } f
 import { rngFromString } from '../../../utils/rng';
 import { dailyNumber } from '../../../utils/date';
 
-describe('board & movement', () => {
-  it('builds 3x3, 4x4 and 5x5 boards with exactly one blank in the corner', () => {
-    for (const n of ART_SIZES) {
-      const b = solvedBoard(n);
-      expect(b).toHaveLength(n * n);
+const sq = (n: number): Dims => ({ cols: n, rows: n });
+const grids: Dims[] = [sq(3), sq(4), sq(5), { cols: 4, rows: 3 }, { cols: 2, rows: 4 }, { cols: 6, rows: 4 }];
+
+describe('board & movement (any grid)', () => {
+  it('builds boards with exactly one blank in the bottom-right corner', () => {
+    for (const d of grids) {
+      const b = solvedBoard(d);
+      expect(b).toHaveLength(d.cols * d.rows);
       expect(b.filter((t) => t === null)).toHaveLength(1);
-      expect(blankIndex(b)).toBe(n * n - 1);
-      expect(isValidBoard(b, n)).toBe(true);
+      expect(blankIndex(b)).toBe(d.cols * d.rows - 1);
+      expect(isValidBoard(b, d)).toBe(true);
       expect(isSolved(b)).toBe(true);
     }
-    expect([3, 4, 5].map((n) => solvedBoard(n).filter((t) => t !== null).length)).toEqual([8, 15, 24]);
+    expect([3, 4, 5].map((n) => solvedBoard(sq(n)).filter((t) => t !== null).length)).toEqual([8, 15, 24]);
   });
-  it('only tiles orthogonally next to the blank move; no diagonals, no wrap-around', () => {
-    const b = solvedBoard(3); // blank at 8
-    expect(canMove(b, 3, 7)).toBe(true);
-    expect(canMove(b, 3, 5)).toBe(true);
-    expect(canMove(b, 3, 4)).toBe(false); // diagonal
-    expect(canMove(b, 3, 6)).toBe(false); // same row, not adjacent
-    expect(canMove(b, 3, 8)).toBe(false); // the blank itself
-    expect(moveTile(b, 3, 4)).toBeNull();
-    expect(neighbors(2, 3)).not.toContain(3); // end of row 0 does not wrap to start of row 1
+  it('only tiles orthogonally next to the blank move; no diagonals, no wrap-around, also on rectangular grids', () => {
+    const d: Dims = { cols: 4, rows: 3 };
+    const b = solvedBoard(d); // blank at 11
+    expect(canMove(b, d, 10)).toBe(true);
+    expect(canMove(b, d, 7)).toBe(true);
+    expect(canMove(b, d, 6)).toBe(false); // diagonal
+    expect(canMove(b, d, 8)).toBe(false); // same row, not adjacent
+    expect(canMove(b, d, 11)).toBe(false); // the blank itself
+    expect(moveTile(b, d, 6)).toBeNull();
+    expect(neighbors(3, d)).not.toContain(4); // end of row 0 does not wrap to the start of row 1
+    expect(neighbors(0, d).sort()).toEqual([1, 4]);
   });
   it('moves one tile, keeps every tile exactly once, never mutates', () => {
-    const b = solvedBoard(4);
-    const m = moveTile(b, 4, 14)!;
+    const d = sq(4);
+    const b = solvedBoard(d);
+    const m = moveTile(b, d, 14)!;
     expect(blankIndex(m)).toBe(14);
-    expect(isValidBoard(m, 4)).toBe(true);
+    expect(isValidBoard(m, d)).toBe(true);
     expect(isSolved(m)).toBe(false);
     expect(blankIndex(b)).toBe(15);
   });
   it('maps directions to tiles', () => {
-    const b = solvedBoard(3);
-    expect(tileForDirection(b, 3, 'right')).toBe(7);
-    expect(tileForDirection(b, 3, 'down')).toBe(5);
-    expect(tileForDirection(b, 3, 'left')).toBeNull();
-    expect(tileForDirection(b, 3, 'up')).toBeNull();
+    const d: Dims = { cols: 3, rows: 2 };
+    const b = solvedBoard(d); // blank at 5
+    expect(tileForDirection(b, d, 'right')).toBe(4);
+    expect(tileForDirection(b, d, 'down')).toBe(2);
+    expect(tileForDirection(b, d, 'left')).toBeNull();
+    expect(tileForDirection(b, d, 'up')).toBeNull();
   });
   it('is solved only with every tile home AND the blank bottom-right', () => {
-    const b = solvedBoard(3);
+    const d = sq(3);
+    const b = solvedBoard(d);
     expect(isSolved(b)).toBe(true);
-    expect(isSolved(moveTile(b, 3, 7)!)).toBe(false);
+    expect(isSolved(moveTile(b, d, 7)!)).toBe(false);
     const swapped = b.slice();
     [swapped[0], swapped[1]] = [swapped[1], swapped[0]];
     expect(isSolved(swapped)).toBe(false);
   });
 });
 
+describe('grid follows the painting (no cropping)', () => {
+  it('square paintings get square grids; wide ones get more columns; tall ones more rows', () => {
+    expect(gridFor(1, 3)).toEqual(sq(3));
+    expect(gridFor(1, 4)).toEqual(sq(4));
+    expect(gridFor(1, 5)).toEqual(sq(5));
+    const wide = gridFor(1.5, 4);
+    expect(wide.cols).toBeGreaterThan(wide.rows);
+    const tall = gridFor(0.6, 4);
+    expect(tall.rows).toBeGreaterThan(tall.cols);
+  });
+  it('keeps tiles nearly square and the piece count near level², for every artwork and level', () => {
+    for (const a of ARTWORKS) {
+      for (const level of ART_LEVELS) {
+        const d = gridFor(a.width / a.height, level);
+        const tileAspect = (a.width / a.height) * (d.rows / d.cols);
+        expect(tileAspect, `${a.id} L${level}`).toBeGreaterThan(0.72);
+        expect(tileAspect, `${a.id} L${level}`).toBeLessThan(1.4);
+        const count = d.cols * d.rows;
+        expect(count).toBeGreaterThanOrEqual(6);
+        expect(count / (level * level)).toBeGreaterThan(0.55);
+        expect(count / (level * level)).toBeLessThan(1.8);
+      }
+    }
+  });
+  it('harder levels always have more pieces', () => {
+    for (const a of ARTWORKS) {
+      const counts = ART_LEVELS.map((l) => { const d = gridFor(a.width / a.height, l); return d.cols * d.rows; });
+      expect(counts[0], a.id).toBeLessThan(counts[1]);
+      expect(counts[1], a.id).toBeLessThan(counts[2]);
+    }
+  });
+});
+
 describe('puzzle generation', () => {
-  it('always yields solvable, unsolved boards for every size', () => {
-    for (const n of ART_SIZES) {
-      for (let i = 0; i < 40; i++) {
-        const p = generateArtFree('van-gogh-bedroom', n, `s${n}-${i}`);
-        expect(validateArtPuzzle(p)).toBe(true);
-        expect(isValidBoard(p.initial, n)).toBe(true);
-        expect(isSolved(p.initial)).toBe(false);
-        let s = newArtGame(p);
-        for (const c of p.solution) s = artReducer(s, { type: 'move', cell: c });
-        expect(s.status).toBe('cleared');
-        expect(s.moves).toBe(p.solution.length);
+  it('always yields solvable, unsolved boards for every level and painting shape', () => {
+    for (const id of ['van-gogh-bedroom', 'sargent-madame-x', 'hokusai-great-wave', 'monet-water-lilies']) {
+      for (const level of ART_LEVELS) {
+        for (let i = 0; i < 6; i++) {
+          const p = generateArtFree(id, level, `s${level}-${i}`);
+          const d = { cols: p.cols, rows: p.rows };
+          expect(d).toEqual(dimsForArtwork(id, level));
+          expect(validateArtPuzzle(p)).toBe(true);
+          expect(isValidBoard(p.initial, d)).toBe(true);
+          expect(isSolved(p.initial)).toBe(false);
+          let s = newArtGame(p);
+          for (const c of p.solution) s = artReducer(s, { type: 'move', cell: c });
+          expect(s.status).toBe('cleared');
+          expect(s.moves).toBe(p.solution.length);
+        }
       }
     }
   });
   it('is deterministic per seed and differs between seeds', () => {
-    const rng1 = rngFromString('x');
-    const rng2 = rngFromString('x');
-    expect(shuffleBoard(rng1, 4)).toEqual(shuffleBoard(rng2, 4));
+    const d = sq(4);
+    expect(shuffleBoard(rngFromString('x'), 4, d)).toEqual(shuffleBoard(rngFromString('x'), 4, d));
     expect(generateArtFree('a', 3, 'q').initial).toEqual(generateArtFree('a', 3, 'q').initial);
     expect(generateArtFree('a', 5, 'q1').initial).not.toEqual(generateArtFree('a', 5, 'q2').initial);
   });
-  it('daily: same date = same artwork and board, 4x4, number from the epoch, frozen pool is valid', () => {
+  it('daily: same date = same artwork and board, normal level, number from the epoch, frozen pool is valid', () => {
     const a = generateArtDaily('2026-11-13');
     expect(a).toEqual(generateArtDaily('2026-11-13'));
     expect([a.size, a.number, a.mode]).toEqual([4, 13, 'daily']);
     expect(getArtwork(a.artworkId)).toBeDefined();
+    expect({ cols: a.cols, rows: a.rows }).toEqual(dimsForArtwork(a.artworkId, 4));
     expect(new Set(DAILY_POOL_V1).size).toBe(DAILY_POOL_V1.length);
     for (const id of DAILY_POOL_V1) expect(getArtwork(id), id).toBeDefined();
-    // the 13 days served from pool V1 (2026-11-01 .. 11-13) are all different works from that pool
     const v1days = Array.from({ length: 13 }, (_, i) => dailyArtworkId(new Date(Date.parse('2026-11-01T00:00:00Z') + i * 86400000).toISOString().slice(0, 10)));
     expect(new Set(v1days).size).toBe(13);
     v1days.forEach((id) => expect(DAILY_POOL_V1).toContain(id));
     expect(dailyNumber('2026-11-01')).toBe(1);
   });
   it('daily outputs are frozen (regression guard for published puzzles)', () => {
-    expect(dailyArtworkId('2026-11-13')).toMatchInlineSnapshot(`"hokusai-shower-below-the-summit"`);
-    expect(generateArtDaily('2026-11-13').initial.join(',')).toMatchInlineSnapshot(`"13,8,0,10,6,9,7,4,14,5,12,2,11,1,3,"`);
+    expect(dailyArtworkId('2026-11-13')).toBe('hokusai-shower-below-the-summit');
+    expect(generateArtDaily('2026-11-13').initial.join(',')).toMatchInlineSnapshot(`"14,0,21,18,2,8,15,7,9,,1,5,12,6,13,10,4,17,19,20,22,11,3,16"`);
+    expect(`${generateArtDaily('2026-11-13').cols}x${generateArtDaily('2026-11-13').rows}`).toMatchInlineSnapshot(`"6x4"`);
+  });
+});
+
+describe('game reducer', () => {
+  const near = () => {
+    const p = generateArtFree('x', 3, 'near');
+    return { ...p, initial: moveTile(solvedBoard(sq(3)), sq(3), 7)!, solution: [8] };
+  };
+  it('starts the timer at the first legal move only, counts moves, clears on the last, then locks', () => {
+    let s = newArtGame(near());
+    expect(artReducer(s, { type: 'tick', ms: 100 }).elapsedMs).toBe(0);
+    expect(artReducer(s, { type: 'move', cell: 0 })).toBe(s); // illegal: nothing happens
+    expect(artReducer(s, { type: 'move', cell: 0 }).started).toBe(false);
+    s = artReducer(s, { type: 'move', cell: 8 });
+    expect(s).toMatchObject({ status: 'cleared', moves: 1, started: true });
+    const t = s.elapsedMs;
+    expect(artReducer(s, { type: 'tick', ms: 500 }).elapsedMs).toBe(t);
+    expect(artReducer(s, { type: 'move', cell: 7 })).toBe(s);
+  });
+  it('restart returns to the same initial arrangement', () => {
+    const p = generateArtFree('x', 4, 'r');
+    let s = newArtGame(p);
+    s = artReducer(s, { type: 'move', cell: p.solution[0] });
+    s = artReducer(s, { type: 'restart' });
+    expect(s.board).toEqual(p.initial);
+    expect([s.moves, s.elapsedMs, s.started]).toEqual([0, 0, false]);
+  });
+});
+
+describe('SHUFFLE (a real sequence of slides)', () => {
+  const stepThrough = (s0: ReturnType<typeof newArtGame>, clicks: number[]) => clicks.reduce((s, cell) => artReducer(s, { type: 'slideStep', cell }), s0);
+  it("every planned slide is legal and ends exactly on the new puzzle's initial board", () => {
+    for (const id of ['van-gogh-bedroom', 'sargent-madame-x']) {
+      for (const level of ART_LEVELS) {
+        for (let i = 0; i < 8; i++) {
+          const s0 = newArtGame(generateArtFree(id, level, `sh-${level}-${i}`));
+          const d = { cols: s0.puzzle.cols, rows: s0.puzzle.rows };
+          const plan = planReshuffle(s0, `seed-${i}`);
+          expect(plan.clicks.length).toBeGreaterThanOrEqual(15);
+          let b = s0.board;
+          for (const c of plan.clicks) {
+            expect(canMove(b, d, c)).toBe(true);
+            b = moveTile(b, d, c)!;
+          }
+          expect(b).toEqual(plan.puzzle.initial);
+          expect(isSolved(plan.puzzle.initial)).toBe(false);
+          expect(isValidBoard(plan.puzzle.initial, d)).toBe(true);
+          expect(stepThrough(s0, plan.clicks).board).toEqual(plan.puzzle.initial);
+          expect([plan.puzzle.cols, plan.puzzle.rows]).toEqual([d.cols, d.rows]);
+        }
+      }
+    }
+  });
+  it('the new puzzle is solvable and its stored solution works, even after moves and repeated shuffles', () => {
+    for (const level of ART_LEVELS) {
+      let s = newArtGame(generateArtFree('monet-water-lilies', level, `rep-${level}`));
+      for (let round = 0; round < 3; round++) {
+        for (const c of s.puzzle.solution.slice(0, 3)) s = artReducer(s, { type: 'move', cell: c });
+        const plan = planReshuffle(s, `r${round}`);
+        s = artReducer(stepThrough(s, plan.clicks), { type: 'reshuffled', puzzle: plan.puzzle });
+        expect(validateArtPuzzle(plan.puzzle)).toBe(true);
+        expect([s.moves, s.elapsedMs, s.started, s.status]).toEqual([0, 0, false, 'playing']);
+        expect(s.board).toEqual(plan.puzzle.initial);
+      }
+      for (const c of s.puzzle.solution) s = artReducer(s, { type: 'move', cell: c });
+      expect(s.status).toBe('cleared');
+    }
+  });
+  it('works from a finished board (PLAY AGAIN) and does not count moves', () => {
+    const p = generateArtFree('x', 3, 'fin');
+    let s = newArtGame(p);
+    for (const c of p.solution) s = artReducer(s, { type: 'move', cell: c });
+    expect(s.status).toBe('cleared');
+    const plan = planReshuffle(s, 'again');
+    const mid = artReducer(s, { type: 'slideStep', cell: plan.clicks[0] });
+    expect(mid.status).toBe('playing');
+    expect(mid.moves).toBe(s.moves);
+    const end = artReducer(stepThrough(s, plan.clicks), { type: 'reshuffled', puzzle: plan.puzzle });
+    expect(validateArtPuzzle(end.puzzle)).toBe(true);
+  });
+  it('is deterministic for a seed; an illegal slide changes nothing', () => {
+    const s0 = newArtGame(generateArtFree('x', 4, 'det'));
+    expect(planReshuffle(s0, 'a')).toEqual(planReshuffle(s0, 'a'));
+    expect(planReshuffle(s0, 'a').clicks).not.toEqual(planReshuffle(s0, 'b').clicks);
+    const blank = s0.board.indexOf(null);
+    const far = s0.board.findIndex((_, c) => c !== blank && !canMove(s0.board, { cols: 4, rows: 4 }, c));
+    expect(artReducer(s0, { type: 'slideStep', cell: far })).toBe(s0);
+  });
+  it('the stored solution stays short: back-and-forth is cancelled', () => {
+    expect(reduceBlankPath([8, 7, 8, 5, 4, 5, 2])).toEqual([8, 5, 2]);
+    expect(reduceBlankPath([1, 2, 3])).toEqual([1, 2, 3]);
+    let s = newArtGame(generateArtFree('x', 4, 'len'));
+    let naive = s.puzzle.solution.length;
+    for (let r = 0; r < 6; r++) {
+      for (const c of s.puzzle.solution.slice(0, 3)) s = artReducer(s, { type: 'move', cell: c }); // moves along the way home cancel out
+      const plan = planReshuffle(s, `len${r}`);
+      naive += 3 + plan.clicks.length;
+      s = artReducer(plan.clicks.reduce((st, cell) => artReducer(st, { type: 'slideStep', cell }), s), { type: 'reshuffled', puzzle: plan.puzzle });
+      expect(validateArtPuzzle(s.puzzle)).toBe(true);
+    }
+    expect(s.puzzle.solution.length).toBeLessThan(naive);
+  });
+});
+
+describe('image slicing (the whole painting, no cropping)', () => {
+  /** What a tile box shows when CSS applies size/position, as fractions of the whole image. */
+  function cssRegion(d: Dims, row: number, col: number) {
+    const { W, H, px, py } = tileBackground(d, row, col);
+    const offX = (1 - W) * (px / 100); // CSS background-position percentage rule
+    const offY = (1 - H) * (py / 100);
+    return { x0: -offX / W, x1: (-offX + 1) / W, y0: -offY / H, y1: (-offY + 1) / H };
+  }
+  it('CSS background maths shows exactly the intended region for every tile of every grid', () => {
+    for (const d of grids) {
+      for (let r = 0; r < d.rows; r++) {
+        for (let c = 0; c < d.cols; c++) {
+          const want = tileRegion(d, r, c);
+          const got = cssRegion(d, r, c);
+          for (const k of ['x0', 'x1', 'y0', 'y1'] as const) expect(got[k]).toBeCloseTo(want[k], 9);
+        }
+      }
+    }
+  });
+  it('tiles join up and together cover the entire image exactly once', () => {
+    for (const d of grids) {
+      let area = 0;
+      for (let r = 0; r < d.rows; r++) {
+        for (let c = 0; c < d.cols; c++) {
+          const a = tileRegion(d, r, c);
+          area += (a.x1 - a.x0) * (a.y1 - a.y0);
+          if (c < d.cols - 1) expect(a.x1).toBeCloseTo(tileRegion(d, r, c + 1).x0, 12);
+          if (r < d.rows - 1) expect(a.y1).toBeCloseTo(tileRegion(d, r + 1, c).y0, 12);
+        }
+      }
+      expect(area).toBeCloseTo(1, 12);
+      expect(tileRegion(d, 0, 0).x0).toBe(0);
+      expect(tileRegion(d, d.rows - 1, d.cols - 1).y1).toBe(1);
+    }
+  });
+  it('a tile always shows the same region, wherever it sits', () => {
+    const p = generateArtFree('van-gogh-bedroom', 4, 'img');
+    const d = { cols: p.cols, rows: p.rows };
+    const home = (id: number) => tileRegion(d, Math.floor(id / d.cols), id % d.cols);
+    let s = newArtGame(p);
+    const before = s.board.map((t) => (t === null ? null : home(t)));
+    s = artReducer(s, { type: 'move', cell: p.solution[0] });
+    const after = s.board.map((t) => (t === null ? null : home(t)));
+    const ids = (b: typeof before) => b.filter(Boolean).map((r) => JSON.stringify(r)).sort();
+    expect(ids(after)).toEqual(ids(before));
   });
 });
 
@@ -120,92 +315,6 @@ describe('daily pool V2 (from 2026-11-14)', () => {
     expect(new Set(ids).size).toBe(n);
     expect(dailyArtworkId('2026-12-25')).toBe(dailyArtworkId('2026-12-25'));
     expect(generateArtDaily('2026-12-25')).toEqual(generateArtDaily('2026-12-25'));
-  });
-});
-
-describe('game reducer', () => {
-  const near = () => {
-    const p = generateArtFree('x', 3, 'near');
-    return { ...p, initial: moveTile(solvedBoard(3), 3, 7)!, solution: [8] };
-  };
-  it('starts the timer at the first legal move only, counts moves, clears on the last, then locks', () => {
-    let s = newArtGame(near());
-    expect(artReducer(s, { type: 'tick', ms: 100 }).elapsedMs).toBe(0);
-    expect(artReducer(s, { type: 'move', cell: 0 })).toBe(s); // illegal: nothing happens
-    expect(artReducer(s, { type: 'move', cell: 0 }).started).toBe(false);
-    s = artReducer(s, { type: 'move', cell: 8 });
-    expect(s).toMatchObject({ status: 'cleared', moves: 1, started: true });
-    const t = s.elapsedMs;
-    expect(artReducer(s, { type: 'tick', ms: 500 }).elapsedMs).toBe(t);
-    expect(artReducer(s, { type: 'move', cell: 7 })).toBe(s);
-  });
-  it('restart returns to the same initial arrangement', () => {
-    const p = generateArtFree('x', 4, 'r');
-    let s = newArtGame(p);
-    s = artReducer(s, { type: 'move', cell: p.solution[0] });
-    s = artReducer(s, { type: 'restart' });
-    expect(s.board).toEqual(p.initial);
-    expect([s.moves, s.elapsedMs, s.started]).toEqual([0, 0, false]);
-  });
-});
-
-describe('image slicing', () => {
-  /** What a tile box shows when CSS applies size/position, in source-image fractions. */
-  function cssRegion(w: number, h: number, n: number, row: number, col: number, focus: { x: number; y: number }) {
-    const { W, H, px, py } = tileBackground(w, h, n, row, col, focus);
-    const offX = (1 - W) * (px / 100); // CSS background-position percentage rule
-    const offY = (1 - H) * (py / 100);
-    return { x0: -offX / W, x1: (-offX + 1) / W, y0: -offY / H, y1: (-offY + 1) / H };
-  }
-  const shapes: [number, number][] = [[1200, 800], [800, 1200], [1000, 1000], [1400, 941], [818, 1400]];
-  it('CSS background maths shows exactly the intended region for every tile, sizes and aspect ratios', () => {
-    for (const [w, h] of shapes) {
-      for (const n of ART_SIZES) {
-        for (const focus of [{ x: 0.5, y: 0.5 }, { x: 0.2, y: 0.8 }, { x: 0, y: 1 }]) {
-          for (let r = 0; r < n; r++) {
-            for (let c = 0; c < n; c++) {
-              const want = tileRegion(w, h, n, r, c, focus);
-              const got = cssRegion(w, h, n, r, c, focus);
-              for (const k of ['x0', 'x1', 'y0', 'y1'] as const) expect(got[k]).toBeCloseTo(want[k], 9);
-            }
-          }
-        }
-      }
-    }
-  });
-  it('tiles join up: neighbouring regions share an edge and all tiles cover the square crop exactly once', () => {
-    for (const [w, h] of shapes) {
-      const n = 4;
-      const s = Math.min(w, h);
-      let area = 0;
-      for (let r = 0; r < n; r++) {
-        for (let c = 0; c < n; c++) {
-          const a = tileRegion(w, h, n, r, c);
-          area += (a.x1 - a.x0) * w * ((a.y1 - a.y0) * h);
-          if (c < n - 1) expect(a.x1).toBeCloseTo(tileRegion(w, h, n, r, c + 1).x0, 12);
-          if (r < n - 1) expect(a.y1).toBeCloseTo(tileRegion(w, h, n, r + 1, c).y0, 12);
-        }
-      }
-      expect(area).toBeCloseTo(s * s, 4);
-    }
-  });
-  it('never stretches: the scaled image keeps its aspect ratio and the crop is square', () => {
-    for (const [w, h] of shapes) {
-      const bg = tileBackground(w, h, 5, 2, 3);
-      expect(bg.W / bg.H).toBeCloseTo(w / h, 9);
-      const reg = tileRegion(w, h, 5, 2, 3);
-      expect((reg.x1 - reg.x0) * w).toBeCloseTo((reg.y1 - reg.y0) * h, 9); // square tile in source pixels
-    }
-  });
-  it('a tile always shows the same region, wherever it sits (the region depends only on its home cell)', () => {
-    const p = generateArtFree('x', 4, 'img');
-    const home = (id: number) => tileRegion(1200, 800, 4, Math.floor(id / 4), id % 4);
-    let s = newArtGame(p);
-    const before = s.board.map((t) => (t === null ? null : home(t)));
-    s = artReducer(s, { type: 'move', cell: p.solution[0] });
-    const after = s.board.map((t) => (t === null ? null : home(t)));
-    const ids = (b: typeof before) => b.filter(Boolean).map((r) => JSON.stringify(r)).sort();
-    expect(ids(after)).toEqual(ids(before));
   });
 });
 
@@ -240,17 +349,13 @@ describe('artwork data & rights', () => {
       expect(a.description).not.toMatch(/undefined|null|NaN/);
     }
   });
-  it('ships every image and thumbnail, with dimensions and a valid crop focus', () => {
+  it('ships every image and thumbnail, with dimensions', () => {
     for (const a of ARTWORKS) {
       expect(fs.statSync(`public${a.imageUrl}`).size, a.imageUrl).toBeGreaterThan(5000);
       expect(fs.statSync(`public${a.thumbnailUrl}`).size, a.thumbnailUrl).toBeGreaterThan(1000);
       expect(fs.statSync(`public${a.imageUrl}`).size, a.imageUrl).toBeLessThan(2_000_000); // keeps pages light
       expect(a.width).toBeGreaterThan(300);
       expect(a.height).toBeGreaterThan(300);
-      expect(a.focus.x).toBeGreaterThanOrEqual(0);
-      expect(a.focus.x).toBeLessThanOrEqual(1);
-      expect(a.focus.y).toBeGreaterThanOrEqual(0);
-      expect(a.focus.y).toBeLessThanOrEqual(1);
     }
   });
   it('includes both landscape and portrait works; nextArtwork wraps around', () => {
@@ -315,82 +420,5 @@ describe('gallery: search, sort and grouping', () => {
   it('grouping respects the search filter', () => {
     const groups = groupArtworks(filterArtworks(ARTWORKS, 'van gogh'), 'theme', 'year-asc');
     expect(groups.flatMap((g) => g.items).every((a) => /van gogh/i.test(a.artist))).toBe(true);
-  });
-});
-
-describe('SHUFFLE (a real sequence of slides)', () => {
-  const stepThrough = (s0: ReturnType<typeof newArtGame>, clicks: number[]) => clicks.reduce((s, cell) => artReducer(s, { type: 'slideStep', cell }), s0);
-  it('every planned slide is legal and ends exactly on the new puzzle\'s initial board', () => {
-    for (const n of ART_SIZES) {
-      for (let i = 0; i < 20; i++) {
-        const s0 = newArtGame(generateArtFree('van-gogh-bedroom', n, `sh-${n}-${i}`));
-        const plan = planReshuffle(s0, `seed-${i}`);
-        expect(plan.clicks.length).toBeGreaterThanOrEqual(22);
-        let b = s0.board;
-        for (const c of plan.clicks) {
-          expect(canMove(b, n, c)).toBe(true);
-          b = moveTile(b, n, c)!;
-        }
-        expect(b).toEqual(plan.puzzle.initial);
-        expect(isSolved(plan.puzzle.initial)).toBe(false);
-        expect(isValidBoard(plan.puzzle.initial, n)).toBe(true);
-        expect(stepThrough(s0, plan.clicks).board).toEqual(plan.puzzle.initial);
-      }
-    }
-  });
-  it('the new puzzle is solvable and its stored solution works, even after moves were played and repeated shuffles', () => {
-    for (const n of ART_SIZES) {
-      let s = newArtGame(generateArtFree('monet-water-lilies', n, `rep-${n}`));
-      for (let round = 0; round < 3; round++) {
-        // play a few moves
-        for (const c of s.puzzle.solution.slice(0, 3)) s = artReducer(s, { type: 'move', cell: c });
-        const plan = planReshuffle(s, `r${round}`);
-        s = artReducer(stepThrough(s, plan.clicks), { type: 'reshuffled', puzzle: plan.puzzle });
-        expect(validateArtPuzzle(plan.puzzle)).toBe(true);
-        expect([s.moves, s.elapsedMs, s.started, s.status]).toEqual([0, 0, false, 'playing']);
-        expect(s.board).toEqual(plan.puzzle.initial);
-      }
-      for (const c of s.puzzle.solution) s = artReducer(s, { type: 'move', cell: c });
-      expect(s.status).toBe('cleared');
-    }
-  });
-  it('works from a finished board (PLAY AGAIN) and does not count moves', () => {
-    const p = generateArtFree('x', 3, 'fin');
-    let s = newArtGame(p);
-    for (const c of p.solution) s = artReducer(s, { type: 'move', cell: c });
-    expect(s.status).toBe('cleared');
-    const plan = planReshuffle(s, 'again');
-    const mid = artReducer(s, { type: 'slideStep', cell: plan.clicks[0] });
-    expect(mid.status).toBe('playing');
-    expect(mid.moves).toBe(s.moves); // slides of a shuffle are not player moves
-    const end = artReducer(stepThrough(s, plan.clicks), { type: 'reshuffled', puzzle: plan.puzzle });
-    expect(validateArtPuzzle(end.puzzle)).toBe(true);
-  });
-  it('is deterministic for a seed', () => {
-    const s0 = newArtGame(generateArtFree('x', 4, 'det'));
-    expect(planReshuffle(s0, 'a')).toEqual(planReshuffle(s0, 'a'));
-    expect(planReshuffle(s0, 'a').clicks).not.toEqual(planReshuffle(s0, 'b').clicks);
-  });
-  it('an illegal slide changes nothing', () => {
-    const s0 = newArtGame(generateArtFree('x', 3, 'ill'));
-    const blank = s0.board.indexOf(null);
-    const far = [0, 1, 2, 3, 4, 5, 6, 7, 8].find((c) => c !== blank && !canMove(s0.board, 3, c))!;
-    expect(artReducer(s0, { type: 'slideStep', cell: far })).toBe(s0);
-  });
-});
-
-describe('shuffle solution stays short', () => {
-  it('cancels back-and-forth so repeated shuffles do not grow the stored solution without bound', () => {
-    expect(reduceBlankPath([8, 7, 8, 5, 4, 5, 2])).toEqual([8, 5, 2]);
-    expect(reduceBlankPath([1, 2, 3])).toEqual([1, 2, 3]);
-    let s = newArtGame(generateArtFree('x', 4, 'len'));
-    const start = s.puzzle.solution.length;
-    for (let r = 0; r < 6; r++) {
-      const plan = planReshuffle(s, `len${r}`);
-      s = artReducer(plan.clicks.reduce((st, cell) => artReducer(st, { type: 'slideStep', cell }), s), { type: 'reshuffled', puzzle: plan.puzzle });
-      expect(validateArtPuzzle(s.puzzle)).toBe(true);
-    }
-    expect(s.puzzle.solution.length).toBeLessThan(start + 6 * 30); // never longer than the naive undo-everything path
-    expect(s.puzzle.solution.length).toBeLessThan(400);
   });
 });

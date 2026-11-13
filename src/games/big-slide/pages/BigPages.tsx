@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { AdSlot } from '../../../ads/AdSlot';
+import { useT } from '../../../i18n';
 import { go } from '../../../router';
 import { dailyNumber, jstDateKey } from '../../../utils/date';
 import { currentDailyStreak, formatTime, maxDailyStreak } from '../../../storage/stats';
@@ -15,6 +16,7 @@ import { VARIANTS } from '../logic/variants';
 import { bestKey, recordBigClear, useBigSave } from '../storage';
 
 export function BigHome() {
+  const t = useT();
   const { data } = useBigSave();
   const today = jstDateKey();
   const streak = currentDailyStreak(data.dailyHistory, today);
@@ -25,15 +27,13 @@ export function BigHome() {
         <span className="logo-tile big-logo">BIG</span>
         {'SLIDE'.split('').map((c, i) => <span key={i} className={`logo-tile ${i % 2 ? 'y' : 'x'}`}>{c}</span>)}
       </div>
-      <p className="tagline">Make room, then slide the giant tile home.</p>
       <nav className="menu">
         <button className="btn primary big" data-testid="big-daily" onClick={() => go('daily')}>
-          Daily Puzzle #{dailyNumber(today)}
-          <small>{data.dailyHistory[today] ? '✓ Cleared today' : '4×4 Normal · new every day at 0:00 JST'}{streak > 0 ? ` · 🔥 ${streak}` : ''}</small>
+          {t('home.dailyN', { n: dailyNumber(today) })}{data.dailyHistory[today] ? ' ✓' : ''}{streak > 0 ? ` · 🔥 ${streak}` : ''}
         </button>
-        <button className="btn big" data-testid="big-endless" onClick={() => go('endless')}>Endless Mode</button>
+        <button className="btn big" data-testid="big-endless" onClick={() => go('endless')}>{t('home.endless')}</button>
       </nav>
-      <HomeLinks items={[{ label: 'How to Play', to: 'how' }, { label: 'Statistics', to: 'stats' }, { label: 'Settings', to: 'settings' }]} />
+      <HomeLinks items={[{ label: t('home.howTo'), to: 'how' }, { label: t('home.stats'), to: 'stats' }, { label: t('home.settings'), to: 'settings' }]} />
       <Footer />
     </div>
   );
@@ -59,13 +59,10 @@ export function BigDaily() {
   );
 }
 
-const DIFFS: { id: Difficulty; name: string; desc: string }[] = [
-  { id: 'easy', name: 'Easy', desc: 'Short solution (about 4-8 moves)' },
-  { id: 'normal', name: 'Normal', desc: 'Medium solution (about 8-16 moves)' },
-  { id: 'hard', name: 'Hard', desc: 'Long solution, every big block must travel' },
-];
+const DIFFS: Difficulty[] = ['easy', 'normal', 'hard'];
 
 export function BigEndless() {
+  const t = useT();
   const { data, getData, setProgress, update } = useBigSave();
   const [size, setSize] = useState<BoardSize>(() => data.lastSize);
   const [variant, setVariant] = useState<Variant>(() => data.lastVariant ?? 'classic');
@@ -98,21 +95,19 @@ export function BigEndless() {
     return (
       <div className="screen">
         <header className="topbar">
-          <button className="icon-btn" onClick={() => go('')} aria-label="Back">←</button>
-          <h1>ENDLESS</h1>
+          <button className="icon-btn" onClick={() => go('')} aria-label={t('common.back')}>←</button>
+          <h1>{t('home.endless')}</h1>
           <div className="top-right" />
         </header>
-        <p className="lead">Streak: <b>{data.endlessStreak}</b></p>
-        <div className="picker-label">Blocks</div>
+        <div className="picker-label">{t('big.blocks')}</div>
         <div className="variant-grid" role="group" aria-label="Block set">
           {VARIANT_IDS.map((v) => (
             <button key={v} className={`variant-btn${variant === v ? ' on' : ''}`} aria-pressed={variant === v} data-testid={`variant-${v}`} onClick={() => setVariant(v)}>
               <strong>{VARIANTS[v].label}</strong>
-              <span>{VARIANTS[v].desc}</span>
             </button>
           ))}
         </div>
-        <div className="picker-label">Board size</div>
+        <div className="picker-label">{t('big.size')}</div>
         <div className="seg" role="group" aria-label="Board size">
           {BOARD_SIZES.map((s) => (
             <button key={s} className={`seg-btn${size === s ? ' on' : ''}`} aria-pressed={size === s} data-testid={`size-${s}`} onClick={() => setSize(s)}>
@@ -120,18 +115,17 @@ export function BigEndless() {
             </button>
           ))}
         </div>
-        <div className="picker-label">Difficulty</div>
+        <div className="picker-label">{t('big.difficulty')}</div>
         {generating ? (
-          <p className="gen-note" role="status" data-testid="generating">Building puzzle…</p>
+          <p className="gen-note" role="status" data-testid="generating">{t('big.building')}</p>
         ) : (
           <div className="cards">
             {DIFFS.map((d) => {
-              const best = data.bests[bestKey(size, d.id, variant)];
+              const best = data.bests[bestKey(size, d, variant)];
               return (
-                <button key={d.id} className="card" data-testid={`bdiff-${d.id}`} onClick={() => start(variant, size, d.id)}>
-                  <strong>{d.name}</strong>
-                  <span>{d.desc}</span>
-                  <small>{best?.timeMs !== undefined ? `Best ${formatTime(best.timeMs)} · ${best.moves} moves` : 'No record yet'}</small>
+                <button key={d} className="card" data-testid={`bdiff-${d}`} onClick={() => start(variant, size, d)}>
+                  <strong>{t(`diff.${d}`)}</strong>
+                  {best?.timeMs !== undefined && <small>{formatTime(best.timeMs)} · {best.moves}</small>}
                 </button>
               );
             })}
@@ -155,7 +149,7 @@ export function BigEndless() {
       onNext={() => start(v, p.size, p.difficulty)}
       nextLabel="NEXT PUZZLE"
       headerRight={<span className="streak" title="Streak">🔥 {data.endlessStreak}</span>}
-      footerExtra={<button className="btn" onClick={abandon}>NEW</button>}
+      footerExtra={<button className="btn" onClick={abandon}>{t('big.new')}</button>}
     />
   );
 }

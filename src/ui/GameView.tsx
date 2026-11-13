@@ -4,6 +4,7 @@ import type { Direction } from '../core/types';
 import { formatTime } from '../storage/stats';
 import { AdSlot } from '../ads/AdSlot';
 import { useGameTimer } from '../hooks/useGameTimer';
+import { useT } from '../i18n';
 import { Board } from './Board';
 import { CheckPanel } from './CheckPanel';
 import { Clues } from './Clues';
@@ -29,6 +30,7 @@ interface Props {
 }
 
 export function GameView({ initial, title, onProgress, onCleared, onNext, nextLabel, headerRight, onBack, footerExtra }: Props) {
+  const t = useT();
   const [state, dispatch] = useReducer(reducer, initial);
   const [showClear, setShowClear] = useState(initial.status === 'cleared');
   const recorded = useRef(initial.status === 'cleared');
@@ -66,18 +68,18 @@ export function GameView({ initial, title, onProgress, onCleared, onNext, nextLa
   return (
     <div className="screen game">
       <header className="topbar">
-        <button className="icon-btn" onClick={onBack} aria-label="Back">←</button>
+        <button className="icon-btn" onClick={onBack} aria-label={t('common.back')}>←</button>
         <h1>{title}</h1>
         <div className="top-right">{headerRight}</div>
       </header>
 
       <div className="stats" aria-live="polite">
-        <Stat label="TIME" value={formatTime(state.elapsedMs)} id="time" />
-        <Stat label="MOVES" value={String(state.moves)} id="moves" />
-        <Stat label="CHECKS" value={String(state.checks)} id="checks" />
+        <Stat label={t('common.time')} value={formatTime(state.elapsedMs)} id="time" />
+        <Stat label={t('common.moves')} value={String(state.moves)} id="moves" />
+        <Stat label={t('word.checks')} value={String(state.checks)} id="checks" />
       </div>
       <div className={`found-bar${found.count === 4 ? ' all' : ''}`} data-testid="found">
-        <span>WORDS FOUND</span> <b>{found.count} / 4</b>
+        <span>{t('word.found')}</span> <b>{found.count} / 4</b>
       </div>
 
       <Board
@@ -134,10 +136,11 @@ function Stat({ label, value, id }: { label: string; value: string; id: string }
 }
 
 function History({ entries }: { entries: CheckEntry[] }) {
-  if (!entries.length) return <p className="hint-empty">Pick a row and a word card, then press CHECK for Wordle-style colours.</p>;
+  const t = useT();
+  if (!entries.length) return null;
   return (
     <section className="history" aria-label="Hint history">
-      <h2>HINT HISTORY</h2>
+      <h2>{t('word.history')}</h2>
       <ul className="history-list">
         {entries.map((e, i) => ({ e, i })).reverse().map(({ e, i }) => (
           <li key={i} className="h-row">

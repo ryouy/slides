@@ -4,3 +4,5 @@ test-results
 playwright-report
 .env*.local
 .vercel
+public/og/
+public/s/

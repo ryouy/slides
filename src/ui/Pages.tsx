@@ -5,12 +5,14 @@ import { useSave } from '../storage/SaveContext';
 import { currentDailyStreak, formatTime, maxDailyStreak } from '../storage/stats';
 import type { ThemePref } from '../storage/storage';
 import { Footer } from './Home';
+import { LANGS, useLang, useT, type Lang } from '../i18n';
 
 export function Page({ title, children }: { title: string; children: ReactNode }) {
+  const t = useT();
   return (
     <div className="screen page">
       <header className="topbar">
-        <button className="icon-btn" onClick={() => go('')} aria-label="Back">←</button>
+        <button className="icon-btn" onClick={() => go('')} aria-label={t('common.back')}>←</button>
         <h1>{title}</h1>
         <div className="top-right" />
       </header>
@@ -117,47 +119,55 @@ const Big = ({ n, l }: { n: number; l: string }) => (
 );
 
 export function SettingsPage() {
+  const t = useT();
+  const lang = useLang();
   const { data, update } = useSave();
   const s = data.settings;
   const set = (p: Partial<typeof s>) => update((d) => ({ ...d, settings: { ...d.settings, ...p } }));
   return (
-    <Page title="SETTINGS">
+    <Page title={t('settings.title')}>
       <label className="field">
-        Theme
-        <select value={s.theme} onChange={(e) => set({ theme: e.target.value as ThemePref })}>
-          <option value="system">System</option>
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
+        {t('settings.language')}
+        <select value={lang} data-testid="lang-select" onChange={(e) => set({ lang: e.target.value as Lang })}>
+          {LANGS.map((l) => <option key={l.id} value={l.id}>{l.label}</option>)}
+        </select>
+      </label>
+      <label className="field">
+        {t('settings.theme')}
+        <select data-testid="theme-select" value={s.theme} onChange={(e) => set({ theme: e.target.value as ThemePref })}>
+          <option value="system">{t('settings.system')}</option>
+          <option value="light">{t('settings.light')}</option>
+          <option value="dark">{t('settings.dark')}</option>
         </select>
       </label>
       <label className="field check">
         <input type="checkbox" checked={s.colorblind} onChange={(e) => set({ colorblind: e.target.checked })} />
-        Colour-blind mode (orange/blue + symbols)
+        {t('settings.colorblind')}
       </label>
       <label className="field check">
         <input type="checkbox" checked={s.adConsent === true} onChange={(e) => set({ adConsent: e.target.checked })} />
-        Allow ad cookies (only used if ads are enabled)
+        {t('settings.adCookies')}
       </label>
       <button
         className="btn"
         onClick={() => {
-          if (confirm('Delete all saved progress and statistics on this device?')) {
+          if (confirm(t('settings.resetConfirm'))) {
             try { localStorage.clear(); } catch { /* ignore */ }
             location.reload();
           }
         }}
       >
-        Reset all data
+        {t('settings.reset')}
       </button>
     </Page>
   );
 }
 
 export function AboutPage() {
+  const t = useT();
   return (
-    <Page title="ABOUT">
-      <p>SLIDE GAMES is a small collection of sliding puzzles. <b>WORD SLIDE</b> combines the classic 15-puzzle with Wordle-style deduction, <b>BIG SLIDE</b> adds giant blocks that need room to move, and <b>ART SLIDE</b> asks you to reassemble famous public-domain paintings. Everything is free to play, needs no account, and stores your progress only in your browser.</p>
-      <p>A new Daily Puzzle appears every day at 0:00 Japan Standard Time, and Endless Mode offers as many random puzzles as you like.</p>
+    <Page title={t('about.title')}>
+      <p>{t('about.text')}</p>
     </Page>
   );
 }

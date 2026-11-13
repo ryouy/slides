@@ -1,11 +1,11 @@
 import { useRef } from 'react';
-import type { ArtBoard as Board, ArtDirection } from '../logic/board';
+import type { ArtBoard as Board, ArtDirection, Dims } from '../logic/board';
 import { tileBackground } from '../logic/tiles';
 import type { Artwork } from '../types';
 
 interface Props {
   board: Board;
-  n: number;
+  dims: Dims;
   artwork: Artwork;
   showNumbers: boolean;
   disabled: boolean;
@@ -19,21 +19,24 @@ interface Props {
 
 const SWIPE_PX = 22;
 
-export function ArtBoard({ board, n, artwork, showNumbers, disabled, complete, shuffling, onTap, onSwipe }: Props) {
+/** The board has the painting's own proportions and its tiles show the whole image, uncropped. */
+export function ArtBoard({ board, dims, artwork, showNumbers, disabled, complete, shuffling, onTap, onSwipe }: Props) {
+  const { cols, rows } = dims;
   const start = useRef<{ cell: number; x: number; y: number } | null>(null);
   const swiped = useRef(false);
 
-  // one entry per tile id (the missing piece is id n*n-1), in id order so DOM nodes are stable and animate
+  // one entry per tile id (the missing piece is the last id), in id order so DOM nodes are stable and animate
   const cellOf = new Map<number, number>();
   board.forEach((t, cell) => t !== null && cellOf.set(t, cell));
-  const ids = Array.from({ length: n * n }, (_, i) => i);
+  const total = cols * rows;
+  const ids = Array.from({ length: total }, (_, i) => i);
 
   return (
     <div
       className={`aboard${complete ? ' complete' : ''}${shuffling ? ' shuffling' : ''}`}
-      style={{ ['--n' as string]: n }}
+      style={{ ['--aspect' as string]: `${artwork.width} / ${artwork.height}` }}
       role="group"
-      aria-label={`Puzzle board ${n} by ${n}`}
+      aria-label={`${cols} × ${rows}`}
       onPointerDown={(e) => {
         const el = (e.target as HTMLElement).closest('[data-cell]') as HTMLElement | null;
         start.current = el ? { cell: Number(el.dataset.cell), x: e.clientX, y: e.clientY } : null;
@@ -53,23 +56,23 @@ export function ArtBoard({ board, n, artwork, showNumbers, disabled, complete, s
     >
       {ids.map((id) => {
         const cell = cellOf.get(id);
-        const isGhost = id === n * n - 1; // the piece that is missing from the start
-        const at = cell ?? n * n - 1;
-        const row = Math.floor(at / n);
-        const col = at % n;
-        const bg = tileBackground(artwork.width, artwork.height, n, Math.floor(id / n), id % n, artwork.focus);
+        const isGhost = id === total - 1; // the piece that is missing from the start
+        const at = cell ?? total - 1;
+        const row = Math.floor(at / cols);
+        const col = at % cols;
+        const bg = tileBackground(dims, Math.floor(id / cols), id % cols);
         return (
           <div
             key={id}
             className={`apiece${isGhost ? ' ghost' : ''}`}
-            style={{ left: `${(col / n) * 100}%`, top: `${(row / n) * 100}%`, width: `${100 / n}%`, height: `${100 / n}%` }}
+            style={{ left: `${(col / cols) * 100}%`, top: `${(row / rows) * 100}%`, width: `${100 / cols}%`, height: `${100 / rows}%` }}
           >
             <button
               type="button"
               className="atile"
               data-cell={cell ?? ''}
               data-tile={id}
-              aria-label={`Tile ${id + 1}, row ${row + 1}, column ${col + 1}`}
+              aria-label={`${id + 1}`}
               disabled={disabled || cell === undefined}
               tabIndex={cell === undefined ? -1 : 0}
               aria-hidden={isGhost && !complete ? true : undefined}

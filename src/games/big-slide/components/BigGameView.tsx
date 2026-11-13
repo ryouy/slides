@@ -1,6 +1,8 @@
 import { useEffect, useReducer, useRef, useState, type ReactNode } from 'react';
 import { AdSlot } from '../../../ads/AdSlot';
 import { ResultModal } from '../../../components/ResultModal';
+import { useT } from '../../../i18n';
+import { siteOrigin } from '../../../utils/share';
 import { useGameTimer } from '../../../hooks/useGameTimer';
 import { formatTime } from '../../../storage/stats';
 import { legalDirs, legalMoves } from '../logic/board';
@@ -9,14 +11,6 @@ import { DELTA, type BigDirection } from '../logic/types';
 import { BigBoard, GoalMini } from './BigBoard';
 
 const KEY_DIR: Record<string, BigDirection> = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' };
-
-export function bigShareText(s: BigState): string {
-  const p = s.puzzle;
-  const v = p.variant && p.variant !== 'classic' ? `${p.variant} ` : '';
-  const name = p.mode === 'daily' ? `BIG SLIDE #${p.number}` : `BIG SLIDE ${v}${p.size}×${p.size} (${p.difficulty})`;
-  const url = typeof location !== 'undefined' ? `${location.origin}/big-slide` : '';
-  return `${name}\n⏱ ${formatTime(s.elapsedMs)}  🔀 ${s.moves} moves  ⬛ ${s.bigMoves} big moves\n${url}`;
-}
 
 interface Props {
   initial: BigState;
@@ -31,6 +25,7 @@ interface Props {
 }
 
 export function BigGameView({ initial, title, onProgress, onCleared, onNext, nextLabel, onBack, headerRight, footerExtra }: Props) {
+  const t = useT();
   const [state, dispatch] = useReducer(bigReducer, initial);
   const [showClear, setShowClear] = useState(initial.status === 'cleared');
   const [goalOpen, setGoalOpen] = useState(true);
@@ -101,15 +96,15 @@ export function BigGameView({ initial, title, onProgress, onCleared, onNext, nex
   return (
     <div className="screen game bigslide">
       <header className="topbar">
-        <button className="icon-btn" onClick={onBack} aria-label="Back">←</button>
+        <button className="icon-btn" onClick={onBack} aria-label={t('common.back')}>←</button>
         <h1>{title}</h1>
         <div className="top-right">{headerRight}</div>
       </header>
 
       <div className="stats" aria-live="polite">
-        <Stat label="TIME" value={formatTime(state.elapsedMs)} id="time" />
-        <Stat label="MOVES" value={String(state.moves)} id="moves" />
-        <Stat label="BLOCK MOVES" value={String(state.bigMoves)} id="bigmoves" />
+        <Stat label={t('common.time')} value={formatTime(state.elapsedMs)} id="time" />
+        <Stat label={t('common.moves')} value={String(state.moves)} id="moves" />
+        <Stat label={t('big.bigMoves')} value={String(state.bigMoves)} id="bigmoves" />
       </div>
 
       <BigBoard
@@ -123,17 +118,16 @@ export function BigGameView({ initial, title, onProgress, onCleared, onNext, nex
         onTap={tap}
         onMove={move}
       />
-      <p className="big-help">Tap a tile beside a gap, or swipe it. Big blocks need gaps that fit their whole shape.</p>
 
       <div className="big-controls">
         <div className="goal-box">
           <button className="goal-toggle" aria-expanded={goalOpen} onClick={() => setGoalOpen((o) => !o)} data-testid="goal-toggle">
-            GOAL {goalOpen ? '▾' : '▸'}
+            {t('big.goal')} {goalOpen ? '▾' : '▸'}
           </button>
           {goalOpen && <GoalMini goal={state.puzzle.goal} size={n} />}
         </div>
         <div className="actions col">
-          <button className="btn" onClick={() => dispatch({ type: 'restart' })}>RESTART</button>
+          <button className="btn" onClick={() => dispatch({ type: 'restart' })}>{t('big.restart')}</button>
           {footerExtra}
         </div>
       </div>
@@ -143,16 +137,16 @@ export function BigGameView({ initial, title, onProgress, onCleared, onNext, nex
       {cleared && showClear && (
         <ResultModal
           stats={[
-            { label: 'TIME', value: formatTime(state.elapsedMs) },
-            { label: 'MOVES', value: state.moves },
-            { label: 'BLOCK MOVES', value: state.bigMoves },
+            { label: t('common.time'), value: formatTime(state.elapsedMs) },
+            { label: t('common.moves'), value: state.moves },
+            { label: t('big.bigMoves'), value: state.bigMoves },
           ]}
-          shareText={bigShareText(state)}
+          shareText={state.puzzle.mode === 'daily' ? t('share.bigDaily', { n: state.puzzle.number ?? '', time: formatTime(state.elapsedMs), moves: state.moves }) : t('share.big', { size: state.puzzle.size, time: formatTime(state.elapsedMs), moves: state.moves })}
+          shareUrl={`${siteOrigin()}/big-slide`}
           onClose={() => setShowClear(false)}
           onNext={onNext}
           onHome={onBack}
           nextLabel={nextLabel}
-          footer={<p className="hint-sum">Reference solution: {state.puzzle.solution.length} moves</p>}
         />
       )}
       {cleared && !showClear && (

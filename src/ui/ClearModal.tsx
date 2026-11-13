@@ -2,14 +2,8 @@ import { isNoHintClear, type GameState } from '../core/game';
 import { totalHintUse } from '../core/hints';
 import { formatTime } from '../storage/stats';
 import { ResultModal } from '../components/ResultModal';
-
-export function shareText(s: GameState): string {
-  const p = s.puzzle;
-  const name = p.mode === 'daily' ? `WORD SLIDE #${p.number}` : `WORD SLIDE (${p.difficulty})`;
-  const url = typeof location !== 'undefined' ? location.origin : '';
-  const tag = isNoHintClear(s) ? '\nNO HINT CLEAR ✨' : '';
-  return `${name}\n⏱ ${formatTime(s.elapsedMs)}  🔀 ${s.moves} moves  🔍 ${s.checks} checks  💡 ${totalHintUse(s.hintUse)} hints\n${url}${tag}`;
-}
+import { useT } from '../i18n';
+import { siteOrigin } from '../utils/share';
 
 interface Props {
   state: GameState;
@@ -20,26 +14,26 @@ interface Props {
 }
 
 export function ClearModal({ state, onClose, onNext, onHome, nextLabel }: Props) {
+  const t = useT();
   const w = state.puzzle.words;
+  const p = state.puzzle;
+  const text = (p.mode === 'daily' ? t('share.wordDaily', { n: p.number ?? '', time: formatTime(state.elapsedMs), moves: state.moves, checks: state.checks }) : t('share.word', { time: formatTime(state.elapsedMs), moves: state.moves, checks: state.checks })) + (isNoHintClear(state) ? ' ✨' : '');
   return (
     <ResultModal
       stats={[
-        { label: 'TIME', value: formatTime(state.elapsedMs) },
-        { label: 'MOVES', value: state.moves },
-        { label: 'CHECKS', value: state.checks },
+        { label: t('common.time'), value: formatTime(state.elapsedMs) },
+        { label: t('common.moves'), value: state.moves },
+        { label: t('word.checks'), value: state.checks },
       ]}
-      shareText={shareText(state)}
+      shareText={text}
+      shareUrl={`${siteOrigin()}/word-slide`}
       onClose={onClose}
       onNext={onNext}
       onHome={onHome}
       nextLabel={nextLabel}
-      footer={
-        <p className="hint-sum" data-testid="hint-sum">
-          Hints: {state.hintUse.category} category · {state.hintUse.definition} meaning · {state.hintUse.first} first letter · {state.hintUse.extra} extra letter
-        </p>
-      }
+      footer={<span data-testid="hint-sum" hidden>{totalHintUse(state.hintUse)}</span>}
     >
-      {isNoHintClear(state) && <div className="no-hint" data-testid="no-hint">NO HINT CLEAR</div>}
+      {isNoHintClear(state) && <div className="no-hint" data-testid="no-hint">{t('word.noHint')}</div>}
       <ul className="words">
         {[...w.top, w.bottom].map((x) => (
           <li key={x}>{x}</li>

@@ -19,10 +19,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/monet-stacks-of-wheat-end-of-summer-thumb.webp",
     "width": 1200,
     "height": 709,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/64818",
     "license": "CC0 1.0 (Public Domain)",
@@ -47,10 +43,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/monet-water-lilies-thumb.webp",
     "width": 1200,
     "height": 1153,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/16568",
     "license": "CC0 1.0 (Public Domain)",
@@ -75,10 +67,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/monet-cliff-walk-at-pourville-thumb.webp",
     "width": 1200,
     "height": 961,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/14620",
     "license": "CC0 1.0 (Public Domain)",
@@ -103,10 +91,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/monet-the-beach-at-sainte-adresse-thumb.webp",
     "width": 1200,
     "height": 887,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/14598",
     "license": "CC0 1.0 (Public Domain)",
@@ -131,10 +115,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/monet-bordighera-thumb.webp",
     "width": 1200,
     "height": 965,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/81537",
     "license": "CC0 1.0 (Public Domain)",
@@ -159,10 +139,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/van-gogh-bedroom-thumb.webp",
     "width": 1200,
     "height": 940,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/28560",
     "license": "CC0 1.0 (Public Domain)",
@@ -187,10 +163,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/van-gogh-self-portrait-thumb.webp",
     "width": 1099,
     "height": 1400,
-    "focus": {
-      "x": 0.5,
-      "y": 0.25
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/80607",
     "license": "CC0 1.0 (Public Domain)",
@@ -215,10 +187,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/gogh-a-peasant-woman-digging-in-front-of-her-cottage-thumb.webp",
     "width": 1200,
     "height": 899,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/28862",
     "license": "CC0 1.0 (Public Domain)",
@@ -243,10 +211,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/gogh-fishing-in-spring-the-pont-de-clichy-asnieres-thumb.webp",
     "width": 1200,
     "height": 1000,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/109314",
     "license": "CC0 1.0 (Public Domain)",
@@ -271,10 +235,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/gogh-madame-roulin-rocking-the-cradle-la-berceuse-thumb.webp",
     "width": 950,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.3
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/27949",
     "license": "CC0 1.0 (Public Domain)",
@@ -299,10 +259,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/renoir-two-sisters-thumb.webp",
     "width": 1128,
     "height": 1400,
-    "focus": {
-      "x": 0.5,
-      "y": 0.4
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/14655",
     "license": "CC0 1.0 (Public Domain)",
@@ -327,10 +283,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/renoir-acrobats-at-the-cirque-fernando-thumb.webp",
     "width": 897,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/81558",
     "license": "CC0 1.0 (Public Domain)",
@@ -355,10 +307,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/renoir-woman-at-the-piano-thumb.webp",
     "width": 964,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/25825",
     "license": "CC0 1.0 (Public Domain)",
@@ -383,10 +331,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/degas-the-millinery-shop-thumb.webp",
     "width": 1200,
     "height": 1090,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/14572",
     "license": "CC0 1.0 (Public Domain)",
@@ -411,10 +355,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/degas-yellow-dancers-in-the-wings-thumb.webp",
     "width": 968,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/18951",
     "license": "CC0 1.0 (Public Domain)",
@@ -439,10 +379,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/degas-degas-and-his-niece-lucie-thumb.webp",
     "width": 1200,
     "height": 1004,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/14574",
     "license": "CC0 1.0 (Public Domain)",
@@ -467,10 +403,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/cassatt-childs-bath-thumb.webp",
     "width": 923,
     "height": 1400,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/111442",
     "license": "CC0 1.0 (Public Domain)",
@@ -495,10 +427,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/cassatt-on-a-balcony-thumb.webp",
     "width": 922,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/26650",
     "license": "CC0 1.0 (Public Domain)",
@@ -523,10 +451,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/seurat-grande-jatte-thumb.webp",
     "width": 1200,
     "height": 804,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/27992",
     "license": "CC0 1.0 (Public Domain)",
@@ -551,10 +475,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/caillebotte-paris-street-thumb.webp",
     "width": 1200,
     "height": 932,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/20684",
     "license": "CC0 1.0 (Public Domain)",
@@ -579,10 +499,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/toulouse-lautrec-moulin-rouge-thumb.webp",
     "width": 1200,
     "height": 1048,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/61128",
     "license": "CC0 1.0 (Public Domain)",
@@ -607,10 +523,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/toulouse-lautrec-moulin-de-la-galette-thumb.webp",
     "width": 1200,
     "height": 1056,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/14664",
     "license": "CC0 1.0 (Public Domain)",
@@ -635,10 +547,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/toulouse-lautrec-ballet-dancers-thumb.webp",
     "width": 1189,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/9148",
     "license": "CC0 1.0 (Public Domain)",
@@ -663,10 +571,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/gauguin-arlesiennes-mistral-thumb.webp",
     "width": 1200,
     "height": 949,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/19339",
     "license": "CC0 1.0 (Public Domain)",
@@ -691,10 +595,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/gauguin-merahi-metua-no-tehamana-tehamana-has-many-paren-thumb.webp",
     "width": 844,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.3
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/60812",
     "license": "CC0 1.0 (Public Domain)",
@@ -719,10 +619,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/cezanne-basket-of-apples-thumb.webp",
     "width": 1200,
     "height": 958,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/111436",
     "license": "CC0 1.0 (Public Domain)",
@@ -747,10 +643,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/cezanne-the-bay-of-marseille-seen-from-l-estaque-thumb.webp",
     "width": 1200,
     "height": 962,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/16487",
     "license": "CC0 1.0 (Public Domain)",
@@ -775,10 +667,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/cezanne-auvers-panoramic-view-thumb.webp",
     "width": 1200,
     "height": 952,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/14556",
     "license": "CC0 1.0 (Public Domain)",
@@ -803,10 +691,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/pissarro-the-crystal-palace-thumb.webp",
     "width": 1200,
     "height": 762,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/110541",
     "license": "CC0 1.0 (Public Domain)",
@@ -831,10 +715,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/pissarro-the-banks-of-the-marne-in-winter-thumb.webp",
     "width": 1200,
     "height": 727,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/6005",
     "license": "CC0 1.0 (Public Domain)",
@@ -859,10 +739,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/sisley-the-seine-at-port-marly-piles-of-sand-thumb.webp",
     "width": 1200,
     "height": 857,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/16633",
     "license": "CC0 1.0 (Public Domain)",
@@ -887,10 +763,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/sisley-watering-place-at-marly-thumb.webp",
     "width": 1200,
     "height": 840,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/37741",
     "license": "CC0 1.0 (Public Domain)",
@@ -915,10 +787,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/morisot-woman-at-her-toilette-thumb.webp",
     "width": 1200,
     "height": 898,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/11723",
     "license": "CC0 1.0 (Public Domain)",
@@ -943,10 +811,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/morisot-woman-in-a-garden-thumb.webp",
     "width": 897,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/153798",
     "license": "CC0 1.0 (Public Domain)",
@@ -971,10 +835,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/manet-woman-reading-thumb.webp",
     "width": 971,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/14591",
     "license": "CC0 1.0 (Public Domain)",
@@ -999,10 +859,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/manet-sea-view-calm-weather-vue-de-mer-temps-calme-thumb.webp",
     "width": 1200,
     "height": 945,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/81535",
     "license": "CC0 1.0 (Public Domain)",
@@ -1027,10 +883,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/whistler-violet-and-silver-the-deep-sea-thumb.webp",
     "width": 1200,
     "height": 816,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/84088",
     "license": "CC0 1.0 (Public Domain)",
@@ -1055,10 +907,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/whistler-trouville-grey-and-green-the-silver-sea-thumb.webp",
     "width": 1200,
     "height": 794,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/81572",
     "license": "CC0 1.0 (Public Domain)",
@@ -1083,10 +931,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/sargent-the-fountain-villa-torlonia-frascati-italy-thumb.webp",
     "width": 936,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/69780",
     "license": "CC0 1.0 (Public Domain)",
@@ -1111,10 +955,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/sargent-madame-paul-escudier-louise-lefevre-thumb.webp",
     "width": 838,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.3
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/191183",
     "license": "CC0 1.0 (Public Domain)",
@@ -1139,10 +979,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/sargent-venetian-glass-workers-thumb.webp",
     "width": 1200,
     "height": 771,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/110761",
     "license": "CC0 1.0 (Public Domain)",
@@ -1167,10 +1003,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/homer-the-herring-net-thumb.webp",
     "width": 1200,
     "height": 738,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/25865",
     "license": "CC0 1.0 (Public Domain)",
@@ -1195,10 +1027,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/homer-croquet-scene-thumb.webp",
     "width": 1200,
     "height": 732,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/44018",
     "license": "CC0 1.0 (Public Domain)",
@@ -1223,10 +1051,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/eakins-riter-fitzgerald-thumb.webp",
     "width": 1009,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/72864",
     "license": "CC0 1.0 (Public Domain)",
@@ -1251,10 +1075,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/rousseau-sawmill-outskirts-of-paris-thumb.webp",
     "width": 1200,
     "height": 645,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/68433",
     "license": "CC0 1.0 (Public Domain)",
@@ -1279,10 +1099,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/corot-interrupted-reading-thumb.webp",
     "width": 845,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.3
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/81512",
     "license": "CC0 1.0 (Public Domain)",
@@ -1307,10 +1123,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/corot-wounded-eurydice-thumb.webp",
     "width": 847,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/878",
     "license": "CC0 1.0 (Public Domain)",
@@ -1335,10 +1147,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/courbet-mere-gregoire-thumb.webp",
     "width": 897,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.3
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/4428",
     "license": "CC0 1.0 (Public Domain)",
@@ -1363,10 +1171,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/courbet-the-rock-of-hautepierre-thumb.webp",
     "width": 1200,
     "height": 963,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/27027",
     "license": "CC0 1.0 (Public Domain)",
@@ -1391,10 +1195,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/millet-peasants-bringing-home-a-calf-born-in-the-fields-thumb.webp",
     "width": 1200,
     "height": 957,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/111648",
     "license": "CC0 1.0 (Public Domain)",
@@ -1419,10 +1219,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/millet-the-keeper-of-the-flock-thumb.webp",
     "width": 1200,
     "height": 944,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/4776",
     "license": "CC0 1.0 (Public Domain)",
@@ -1447,10 +1243,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/constable-stoke-by-nayland-thumb.webp",
     "width": 1200,
     "height": 883,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/4758",
     "license": "CC0 1.0 (Public Domain)",
@@ -1475,10 +1267,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/rijn-old-man-with-a-gold-chain-thumb.webp",
     "width": 1102,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/95998",
     "license": "CC0 1.0 (Public Domain)",
@@ -1503,10 +1291,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/rubens-the-holy-family-with-saints-elizabeth-and-john-th-thumb.webp",
     "width": 957,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/27310",
     "license": "CC0 1.0 (Public Domain)",
@@ -1531,10 +1315,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/hals-portrait-of-a-lady-thumb.webp",
     "width": 970,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.3
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/105945",
     "license": "CC0 1.0 (Public Domain)",
@@ -1559,10 +1339,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/ruisdael-landscape-with-the-ruins-of-the-castle-of-egmon-thumb.webp",
     "width": 1200,
     "height": 919,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/60755",
     "license": "CC0 1.0 (Public Domain)",
@@ -1587,10 +1363,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/cole-distant-view-of-niagara-falls-thumb.webp",
     "width": 1200,
     "height": 929,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/90048",
     "license": "CC0 1.0 (Public Domain)",
@@ -1615,10 +1387,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/cole-new-england-scenery-thumb.webp",
     "width": 940,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/57163",
     "license": "CC0 1.0 (Public Domain)",
@@ -1643,10 +1411,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/church-view-of-cotopaxi-thumb.webp",
     "width": 1200,
     "height": 797,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/76571",
     "license": "CC0 1.0 (Public Domain)",
@@ -1671,10 +1435,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/bierstadt-mountain-brook-thumb.webp",
     "width": 977,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/146701",
     "license": "CC0 1.0 (Public Domain)",
@@ -1699,10 +1459,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/inness-early-morning-tarpon-springs-thumb.webp",
     "width": 917,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/64729",
     "license": "CC0 1.0 (Public Domain)",
@@ -1727,10 +1483,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/inness-the-home-of-the-heron-thumb.webp",
     "width": 1200,
     "height": 785,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/64724",
     "license": "CC0 1.0 (Public Domain)",
@@ -1755,10 +1507,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/hassam-new-england-headlands-thumb.webp",
     "width": 1200,
     "height": 1197,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/5349",
     "license": "CC0 1.0 (Public Domain)",
@@ -1783,10 +1531,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/hassam-new-york-street-thumb.webp",
     "width": 997,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/60294",
     "license": "CC0 1.0 (Public Domain)",
@@ -1811,10 +1555,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/hassam-the-little-pond-appledore-thumb.webp",
     "width": 1200,
     "height": 860,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/105462",
     "license": "CC0 1.0 (Public Domain)",
@@ -1839,10 +1579,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/chase-a-city-park-thumb.webp",
     "width": 1200,
     "height": 832,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/28849",
     "license": "CC0 1.0 (Public Domain)",
@@ -1867,10 +1603,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/chase-wind-swept-sands-thumb.webp",
     "width": 1200,
     "height": 1027,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/120296",
     "license": "CC0 1.0 (Public Domain)",
@@ -1895,10 +1627,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/munch-the-girl-by-the-window-thumb.webp",
     "width": 812,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.3
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/154235",
     "license": "CC0 1.0 (Public Domain)",
@@ -1923,10 +1651,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/signac-les-andelys-cote-d-aval-thumb.webp",
     "width": 1200,
     "height": 784,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/122130",
     "license": "CC0 1.0 (Public Domain)",
@@ -1951,10 +1675,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/gainsborough-sarah-dupont-thumb.webp",
     "width": 954,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.3
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/105600",
     "license": "CC0 1.0 (Public Domain)",
@@ -1979,10 +1699,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/fantin-latour-still-life-corner-of-a-table-thumb.webp",
     "width": 1200,
     "height": 918,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/75507",
     "license": "CC0 1.0 (Public Domain)",
@@ -2007,10 +1723,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/fantin-latour-roses-in-a-bowl-thumb.webp",
     "width": 1200,
     "height": 1001,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/20534",
     "license": "CC0 1.0 (Public Domain)",
@@ -2035,10 +1747,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/redon-still-life-with-flowers-thumb.webp",
     "width": 821,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/110982",
     "license": "CC0 1.0 (Public Domain)",
@@ -2063,10 +1771,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/redon-flowers-poppies-and-daisies-thumb.webp",
     "width": 1200,
     "height": 953,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/94240",
     "license": "CC0 1.0 (Public Domain)",
@@ -2091,10 +1795,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/lorrain-view-of-delphi-with-a-procession-thumb.webp",
     "width": 1200,
     "height": 938,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/43145",
     "license": "CC0 1.0 (Public Domain)",
@@ -2119,10 +1819,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/ingres-amedee-david-the-comte-de-pastoret-thumb.webp",
     "width": 970,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.3
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/111317",
     "license": "CC0 1.0 (Public Domain)",
@@ -2147,10 +1843,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/david-madame-de-pastoret-and-her-son-thumb.webp",
     "width": 878,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.3
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/27307",
     "license": "CC0 1.0 (Public Domain)",
@@ -2175,10 +1867,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/poussin-landscape-with-saint-john-on-patmos-thumb.webp",
     "width": 1200,
     "height": 888,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/5848",
     "license": "CC0 1.0 (Public Domain)",
@@ -2203,10 +1891,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/panini-festival-in-piazza-navona-thumb.webp",
     "width": 1200,
     "height": 698,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/111667",
     "license": "CC0 1.0 (Public Domain)",
@@ -2231,10 +1915,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/sorolla-rocks-at-the-lighthouse-biarritz-thumb.webp",
     "width": 1200,
     "height": 712,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/66144",
     "license": "CC0 1.0 (Public Domain)",
@@ -2259,10 +1939,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/zorn-portrait-study-of-a-man-thumb.webp",
     "width": 1003,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/75980",
     "license": "CC0 1.0 (Public Domain)",
@@ -2287,10 +1963,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/henri-himself-thumb.webp",
     "width": 969,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.3
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/13745",
     "license": "CC0 1.0 (Public Domain)",
@@ -2315,10 +1987,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/heade-magnolias-on-light-blue-velvet-cloth-thumb.webp",
     "width": 1200,
     "height": 737,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/100829",
     "license": "CC0 1.0 (Public Domain)",
@@ -2343,10 +2011,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/harnett-just-dessert-thumb.webp",
     "width": 1200,
     "height": 1006,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/44065",
     "license": "CC0 1.0 (Public Domain)",
@@ -2371,10 +2035,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/copley-daniel-hubbard-thumb.webp",
     "width": 939,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.3
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/59784",
     "license": "CC0 1.0 (Public Domain)",
@@ -2399,10 +2059,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/daubigny-the-marsh-thumb.webp",
     "width": 1200,
     "height": 703,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/880",
     "license": "CC0 1.0 (Public Domain)",
@@ -2427,10 +2083,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/rousseau-springtime-thumb.webp",
     "width": 1200,
     "height": 881,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/894",
     "license": "CC0 1.0 (Public Domain)",
@@ -2455,10 +2107,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/jongkind-entrance-to-the-port-of-honfleur-thumb.webp",
     "width": 1200,
     "height": 878,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/30361",
     "license": "CC0 1.0 (Public Domain)",
@@ -2483,10 +2131,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/turner-fishing-boats-with-hucksters-bargaining-for-fish-thumb.webp",
     "width": 1200,
     "height": 927,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/4796",
     "license": "CC0 1.0 (Public Domain)",
@@ -2511,10 +2155,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/guardi-the-grand-canal-venice-thumb.webp",
     "width": 1200,
     "height": 714,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/111074",
     "license": "CC0 1.0 (Public Domain)",
@@ -2539,10 +2179,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/bellotto-view-of-pirna-with-the-fortress-of-sonnenstein-thumb.webp",
     "width": 1200,
     "height": 726,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/12895",
     "license": "CC0 1.0 (Public Domain)",
@@ -2567,10 +2203,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/hokusai-shower-below-the-summit-thumb.webp",
     "width": 805,
     "height": 551,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/87008",
     "license": "CC0 1.0 (Public Domain)",
@@ -2595,10 +2227,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/hokusai-hara-thumb.webp",
     "width": 864,
     "height": 1200,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/2914",
     "license": "CC0 1.0 (Public Domain)",
@@ -2623,10 +2251,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/hiroshige-mitsuke-ferries-crossing-the-tenryu-river-thumb.webp",
     "width": 1146,
     "height": 847,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/4368",
     "license": "CC0 1.0 (Public Domain)",
@@ -2651,10 +2275,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/hiroshige-mishima-morning-mist-thumb.webp",
     "width": 1146,
     "height": 727,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/10926",
     "license": "CC0 1.0 (Public Domain)",
@@ -2679,10 +2299,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/hiroshige-arai-thumb.webp",
     "width": 1146,
     "height": 827,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/4378",
     "license": "CC0 1.0 (Public Domain)",
@@ -2707,10 +2323,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/monet-stacks-of-wheat-thumb.webp",
     "width": 1200,
     "height": 781,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/14624",
     "license": "CC0 1.0 (Public Domain)",
@@ -2735,10 +2347,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/gauguin-day-of-the-god-thumb.webp",
     "width": 1200,
     "height": 895,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "Art Institute of Chicago",
     "sourceUrl": "https://www.artic.edu/artworks/27943",
     "license": "CC0 1.0 (Public Domain)",
@@ -2763,10 +2371,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/vermeer-water-pitcher-thumb.webp",
     "width": 1244,
     "height": 1400,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "The Metropolitan Museum of Art",
     "sourceUrl": "https://www.metmuseum.org/art/collection/search/437881",
     "license": "CC0 1.0 (The Met Open Access)",
@@ -2791,10 +2395,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/van-gogh-wheat-field-cypresses-thumb.webp",
     "width": 1400,
     "height": 1099,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "The Metropolitan Museum of Art",
     "sourceUrl": "https://www.metmuseum.org/art/collection/search/436535",
     "license": "CC0 1.0 (The Met Open Access)",
@@ -2819,10 +2419,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/sargent-madame-x-thumb.webp",
     "width": 737,
     "height": 1400,
-    "focus": {
-      "x": 0.5,
-      "y": 0.08
-    },
     "museum": "The Metropolitan Museum of Art",
     "sourceUrl": "https://www.metmuseum.org/art/collection/search/12127",
     "license": "CC0 1.0 (The Met Open Access)",
@@ -2847,10 +2443,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/rembrandt-aristotle-homer-thumb.webp",
     "width": 1310,
     "height": 1400,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "The Metropolitan Museum of Art",
     "sourceUrl": "https://www.metmuseum.org/art/collection/search/437394",
     "license": "CC0 1.0 (The Met Open Access)",
@@ -2875,10 +2467,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/hokusai-great-wave-thumb.webp",
     "width": 1400,
     "height": 941,
-    "focus": {
-      "x": 0.45,
-      "y": 0.5
-    },
     "museum": "The Metropolitan Museum of Art",
     "sourceUrl": "https://www.metmuseum.org/art/collection/search/45434",
     "license": "CC0 1.0 (The Met Open Access)",
@@ -2903,10 +2491,6 @@ export const ARTWORKS: Artwork[] = [
     "thumbnailUrl": "/artworks/degas-dance-class-thumb.webp",
     "width": 1291,
     "height": 1400,
-    "focus": {
-      "x": 0.5,
-      "y": 0.5
-    },
     "museum": "The Metropolitan Museum of Art",
     "sourceUrl": "https://www.metmuseum.org/art/collection/search/438817",
     "license": "CC0 1.0 (The Met Open Access)",

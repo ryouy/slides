@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useSave } from '../storage/SaveContext';
 import { Link } from '../components/Link';
+import { useT } from '../i18n';
 
 const CLIENT = import.meta.env.VITE_ADSENSE_CLIENT as string | undefined;
 const SLOT = import.meta.env.VITE_ADSENSE_SLOT as string | undefined;
@@ -49,15 +50,16 @@ export function AdSlot({ label = 'Advertisement' }: { label?: string }) {
 
 /** Cookie / ad consent banner; only shown when ads are configured. */
 export function ConsentBanner() {
+  const t = useT();
   const { data, update } = useSave();
   if (!CLIENT || data.settings.adConsent !== null) return null;
   const set = (v: boolean) => update((d) => ({ ...d, settings: { ...d.settings, adConsent: v } }));
   return (
     <div className="consent" role="dialog" aria-label="Cookie consent">
-      <p>We use cookies for ads. You can play without them. See the <Link to="/privacy">Privacy Policy</Link>.</p>
+      <p>{t('consent.text')} <Link to="/privacy">{t('common.privacy')}</Link></p>
       <div className="row">
-        <button className="btn" onClick={() => set(false)}>Decline</button>
-        <button className="btn primary" onClick={() => set(true)}>Accept</button>
+        <button className="btn" onClick={() => set(false)}>{t('consent.decline')}</button>
+        <button className="btn primary" onClick={() => set(true)}>{t('consent.accept')}</button>
       </div>
     </div>
   );

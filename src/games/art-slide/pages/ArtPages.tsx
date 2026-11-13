@@ -1,57 +1,49 @@
 import { useMemo, useState } from 'react';
 import { AdSlot } from '../../../ads/AdSlot';
+import { HomeLinks } from '../../../components/HomeLinks';
 import { Link } from '../../../components/Link';
+import { useT, type Key } from '../../../i18n';
 import { go } from '../../../router';
 import { currentDailyStreak, formatTime, maxDailyStreak } from '../../../storage/stats';
 import { dailyNumber, jstDateKey } from '../../../utils/date';
 import { Footer } from '../../../ui/Home';
-import { HomeLinks } from '../../../components/HomeLinks';
-import { GROUP_OPTIONS, SORT_OPTIONS, filterArtworks, groupArtworks, type GroupBy, type SortBy } from '../logic/gallery';
 import { Page } from '../../../ui/Pages';
 import { ArtGameView } from '../components/ArtGameView';
 import { ARTWORKS, getArtwork, nextArtwork } from '../data';
-import { ART_SIZES, type ArtSize } from '../logic/board';
+import { ART_LEVELS, type ArtLevel } from '../logic/board';
+import { GROUP_OPTIONS, SORT_OPTIONS, filterArtworks, groupArtworks, type GroupBy, type SortBy } from '../logic/gallery';
 import { dailyArtworkId, generateArtDaily, generateArtFree } from '../logic/generator';
 import { newArtGame, type ArtState } from '../logic/game';
 import { recordArtClear, useArtSave } from '../storage';
 
 export function ArtHome() {
+  const t = useT();
   const { data } = useArtSave();
   const today = jstDateKey();
   const streak = currentDailyStreak(data.dailyHistory, today);
   const exhibit = getArtwork(dailyArtworkId(today)) ?? ARTWORKS[0];
   const resumable = data.inProgress.free && data.inProgress.free.status === 'playing';
+  const done = !!data.dailyHistory[today];
   return (
     <div className="screen home art-home">
       <h1 className="art-home-title">ART SLIDE</h1>
-      <p className="art-sub">Reassemble a masterpiece.</p>
       <Link to="/art-slide/daily" className="exhibit-card" data-testid="exhibit">
         <img src={exhibit.thumbnailUrl} alt="" width={96} height={96} />
         <span className="ex-text">
-          <small>TODAY'S EXHIBIT</small>
+          <small>{t('art.exhibitN', { n: dailyNumber(today) })}{done ? ' ✓' : ''}{streak > 0 ? ` · 🔥 ${streak}` : ''}</small>
           <b>{exhibit.title}</b>
           <span>{exhibit.artist}, {exhibit.year}</span>
         </span>
       </Link>
       <nav className="menu">
-        <button className="btn primary big" data-testid="art-daily" onClick={() => go('daily')}>
-          Daily Puzzle #{dailyNumber(today)}
-          <small>{data.dailyHistory[today] ? '✓ Completed today' : '4×4 · new painting every day at 0:00 JST'}{streak > 0 ? ` · 🔥 ${streak}` : ''}</small>
-        </button>
-        <button className="btn big" data-testid="art-gallery" onClick={() => go('gallery')}>Choose Artwork <small>{ARTWORKS.length} paintings</small></button>
-        {resumable && <button className="btn big" data-testid="art-resume" onClick={() => go('play')}>Resume Puzzle</button>}
+        <button className="btn big" data-testid="art-gallery" onClick={() => go('gallery')}>{t('art.gallery')}</button>
+        {resumable && <button className="btn big" data-testid="art-resume" onClick={() => go('play')}>{t('art.resume')}</button>}
       </nav>
-      <HomeLinks items={[{ label: 'How to Play', to: 'how' }, { label: 'Statistics', to: 'stats' }, { label: 'Credits', to: 'credits' }, { label: 'Settings', to: 'settings' }]} />
-      <section className="other-games" aria-label="More puzzles">
-        <h2>MORE PUZZLES</h2>
-        <Link to="/big-slide" className="og-row" data-testid="more-big">
-          <b>BIG SLIDE</b>
-          <span>Numbers and giant blocks</span>
-        </Link>
-        <Link to="/word-slide" className="og-row" data-testid="more-word">
-          <b>WORD SLIDE</b>
-          <span>Slide letters into hidden words</span>
-        </Link>
+      <HomeLinks items={[{ label: t('home.howTo'), to: 'how' }, { label: t('home.stats'), to: 'stats' }, { label: t('home.credits'), to: 'credits' }, { label: t('home.settings'), to: 'settings' }]} />
+      <section className="other-games" aria-label={t('home.more')}>
+        <h2>{t('home.more')}</h2>
+        <Link to="/big-slide" className="og-row" data-testid="more-big"><b>BIG SLIDE</b><span aria-hidden="true">→</span></Link>
+        <Link to="/word-slide" className="og-row" data-testid="more-word"><b>WORD SLIDE</b><span aria-hidden="true">→</span></Link>
       </section>
       <Footer />
     </div>
@@ -61,45 +53,47 @@ export function ArtHome() {
 const slugId = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
 export function ArtGallery() {
+  const t = useT();
   const { data, update } = useArtSave();
   const { groupBy, sortBy } = data.gallery;
   const [query, setQuery] = useState('');
   const filtered = useMemo(() => filterArtworks(ARTWORKS, query), [query]);
   const groups = useMemo(() => groupArtworks(filtered, groupBy, sortBy), [filtered, groupBy, sortBy]);
   const setPrefs = (p: Partial<typeof data.gallery>) => update((d) => ({ ...d, gallery: { ...d.gallery, ...p } }));
+  const groupLabel = (label: string) => (groupBy === 'theme' ? t(`theme.${label}` as Key) : groupBy === 'era' ? t(`era.${label}` as Key) : label);
   return (
     <div className="screen gallery-screen">
       <header className="topbar">
-        <button className="icon-btn" onClick={() => go('')} aria-label="Back">←</button>
-        <h1>CHOOSE ARTWORK</h1>
+        <button className="icon-btn" onClick={() => go('')} aria-label={t('common.back')}>←</button>
+        <h1>{t('gal.title')}</h1>
         <div className="top-right" />
       </header>
       <div className="gal-controls">
-        <input className="gal-search" type="search" placeholder="Search title, artist, theme…" aria-label="Search artworks" value={query} onChange={(e) => setQuery(e.target.value)} />
+        <input className="gal-search" data-testid="gal-search" type="search" placeholder={t('gal.search')} aria-label={t('gal.search')} value={query} onChange={(e) => setQuery(e.target.value)} />
         <label>
-          <span>Group by</span>
-          <select aria-label="Group by" data-testid="group-by" value={groupBy} onChange={(e) => setPrefs({ groupBy: e.target.value as GroupBy })}>
-            {GROUP_OPTIONS.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}
+          <span>{t('gal.groupBy')}</span>
+          <select aria-label={t('gal.groupBy')} data-testid="group-by" value={groupBy} onChange={(e) => setPrefs({ groupBy: e.target.value as GroupBy })}>
+            {GROUP_OPTIONS.map((o) => <option key={o.id} value={o.id}>{t(`group.${o.id}` as Key)}</option>)}
           </select>
         </label>
         <label>
-          <span>Sort by</span>
-          <select aria-label="Sort by" data-testid="sort-by" value={sortBy} onChange={(e) => setPrefs({ sortBy: e.target.value as SortBy })}>
-            {SORT_OPTIONS.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}
+          <span>{t('gal.sortBy')}</span>
+          <select aria-label={t('gal.sortBy')} data-testid="sort-by" value={sortBy} onChange={(e) => setPrefs({ sortBy: e.target.value as SortBy })}>
+            {SORT_OPTIONS.map((o) => <option key={o.id} value={o.id}>{t(`sort.${o.id}` as Key)}</option>)}
           </select>
         </label>
       </div>
-      <p className="gal-count" data-testid="gal-count">{filtered.length === ARTWORKS.length ? `${ARTWORKS.length} paintings` : `${filtered.length} of ${ARTWORKS.length} paintings`}</p>
+      {filtered.length !== ARTWORKS.length && <p className="gal-count" data-testid="gal-count">{t('gal.filtered', { n: filtered.length, total: ARTWORKS.length })}</p>}
       <div data-testid="gallery">
-        {groups.length === 0 && <p className="gal-empty">No paintings match “{query}”.</p>}
+        {groups.length === 0 && <p className="gal-empty">{t('gal.empty', { q: query })}</p>}
         {groups.map((g) => (
           <section key={g.key} className="gal-group" data-testid={`group-${slugId(g.key)}`}>
-            {g.label && <h2 className="gal-h">{g.label} <small>{g.items.length}</small></h2>}
+            {g.label && <h2 className="gal-h">{groupLabel(g.label)} <small>{g.items.length}</small></h2>}
             <ul className="gallery" key={`${groupBy}-${sortBy}`}>
               {g.items.map((a, i) => (
                 <li key={a.id} style={{ ['--i' as string]: Math.min(i, 12) }}>
                   <Link to={`/art-slide/play/${a.id}`} className="gcard" data-testid={`art-${a.id}`}>
-                    <img src={a.thumbnailUrl} alt={`${a.title} by ${a.artist}`} loading="lazy" decoding="async" width={Math.round(a.width / 4)} height={Math.round(a.height / 4)} />
+                    <img src={a.thumbnailUrl} alt={`${a.title} – ${a.artist}`} loading="lazy" decoding="async" width={Math.round(a.width / 4)} height={Math.round(a.height / 4)} />
                     <span className="g-title">{a.title}</span>
                     <span className="g-meta">{a.artist} · {a.year}</span>
                   </Link>
@@ -133,7 +127,6 @@ export function ArtDaily() {
       initial={initial}
       artwork={artwork}
       daily
-      title={`DAILY #${dailyNumber(dateKey)}`}
       showNumbers={numbers}
       onToggleNumbers={setNumbers}
       onBack={() => go('')}
@@ -147,7 +140,8 @@ export function ArtDaily() {
 
 /** Free play: `/art-slide/play/<artwork id>` starts (or resumes) a puzzle; `/art-slide/play` resumes the saved one. */
 export function ArtPlay({ artworkId }: { artworkId?: string }) {
-  const { data, getData, setProgress, update } = useArtSave();
+  const t = useT();
+  const { getData, setProgress, update } = useArtSave();
   const [numbers, setNumbers] = useNumbers();
   const [game, setGame] = useState<{ key: number; state: ArtState } | null>(() => {
     const saved = getData().inProgress.free;
@@ -163,100 +157,90 @@ export function ArtPlay({ artworkId }: { artworkId?: string }) {
     return (
       <div className="screen">
         <header className="topbar">
-          <button className="icon-btn" onClick={() => go('')} aria-label="Back">←</button>
+          <button className="icon-btn" onClick={() => go('')} aria-label={t('common.back')}>←</button>
           <h1>ART SLIDE</h1>
           <div className="top-right" />
         </header>
-        <p className="lead">Pick an artwork to start.</p>
-        <button className="btn primary wide" onClick={() => go('gallery')}>CHOOSE ARTWORK</button>
+        <button className="btn primary wide" onClick={() => go('gallery')}>{t('art.gallery')}</button>
       </div>
     );
   }
 
   const art = getArtwork(game.state.puzzle.artworkId)!;
-  const start = (artId: string, size: ArtSize) => {
-    update((d) => ({ ...d, lastSize: size }));
-    const state = newArtGame(generateArtFree(artId, size));
+  const start = (artId: string, level: ArtLevel) => {
+    update((d) => ({ ...d, lastSize: level }));
+    const state = newArtGame(generateArtFree(artId, level));
     setProgress('free', state);
     setGame((g) => ({ key: (g?.key ?? 0) + 1, state }));
-    if (artId !== art.id) history.replaceState(null, '', `/art-slide/play/${artId}`);
+    if (artId !== art.id) history.replaceState(history.state, '', `/art-slide/play/${artId}`);
   };
-  const size = game.state.puzzle.size;
+  const level = game.state.puzzle.size;
   return (
     <ArtGameView
       key={game.key}
       initial={game.state}
       artwork={art}
       daily={false}
-      title={`ART SLIDE · ${size}×${size}`}
       showNumbers={numbers}
       onToggleNumbers={setNumbers}
       onBack={() => go('')}
       onProgress={(s) => setProgress('free', s)}
       onCleared={(s) => update((d) => recordArtClear(d, { state: s, dateKey: jstDateKey() }))}
-      onSize={(s) => start(art.id, s)}
+      onLevel={(l) => start(art.id, l)}
       onChangeArtwork={() => go('gallery')}
-      onNextArtwork={() => start(nextArtwork(art.id).id, size)}
+      onNextArtwork={() => start(nextArtwork(art.id).id, level)}
     />
   );
-  void data;
 }
 
 export function ArtHowPage() {
+  const t = useT();
   return (
-    <Page title="HOW TO PLAY">
-      <p>A famous painting has been cut into square tiles and shuffled, with one tile missing. Slide the tiles back into place to rebuild the painting.</p>
+    <Page title={t('how.title')}>
       <ul>
-        <li>Tap a tile next to the empty space to slide it in. Only up, down, left and right: no diagonals, no swapping.</li>
-        <li>The puzzle is solved when every tile is back in its place and the empty space is at the bottom right. The missing piece then appears and the painting is complete.</li>
-        <li>Press <b>PREVIEW</b> whenever you want to see the finished painting. It is free, and the clock keeps running.</li>
-        <li>Choose 3×3 (Easy), 4×4 (Normal) or 5×5 (Hard). Every shuffle is built from legal moves, so every puzzle can be solved.</li>
+        <li>{t('how.art1')}</li>
+        <li>{t('how.art2')}</li>
+        <li>{t('how.art3')}</li>
+        <li>{t('how.art4')}</li>
       </ul>
-      <h3>Controls</h3>
-      <ul>
-        <li>Tap or click a tile, or swipe it towards the empty space. Arrow keys move the tile in that direction.</li>
-        <li>Turn on <b>Show tile numbers</b> under the board if you want a little help.</li>
-      </ul>
-      <h3>Modes</h3>
-      <p><b>Daily</b>: the same painting and the same 4×4 shuffle for everyone, new every day at 0:00 Japan time. <b>Choose Artwork</b>: pick any painting and any size; <b>SHUFFLE</b> puts the pieces in a new random arrangement, <b>RESTART</b> goes back to the one you started with.</p>
-      <p className="muted">The timer starts with your first move. All paintings are in the public domain; see Artwork Credits for the source of every image.</p>
     </Page>
   );
 }
 
 export function ArtStatsPage() {
+  const t = useT();
   const { data } = useArtSave();
   const today = jstDateKey();
   return (
-    <Page title="STATISTICS">
+    <Page title={t('stats.title')}>
       <div className="stat-grid">
-        <Big n={data.completed} l="COMPLETED" />
-        <Big n={currentDailyStreak(data.dailyHistory, today)} l="DAILY STREAK" />
-        <Big n={maxDailyStreak(data.dailyHistory)} l="BEST DAILY STREAK" />
-        <Big n={Object.keys(data.dailyHistory).length} l="DAILIES DONE" />
+        <Big n={data.completed} l={t('stats.completed')} />
+        <Big n={currentDailyStreak(data.dailyHistory, today)} l={t('stats.streak')} />
+        <Big n={maxDailyStreak(data.dailyHistory)} l={t('stats.bestStreak')} />
+        <Big n={Object.keys(data.dailyHistory).length} l={t('stats.dailies')} />
       </div>
-      <h3>Personal bests (time / fewest moves)</h3>
+      <h3>{t('stats.bests')}</h3>
       <table className="table">
         <tbody>
-          {ART_SIZES.map((s) => {
-            const b = data.bests[s];
+          {ART_LEVELS.map((l) => {
+            const b = data.bests[l];
             return (
-              <tr key={s}>
-                <th>{s}×{s}</th>
-                <td>{b?.timeMs === undefined ? '–' : `${formatTime(b.timeMs)} / ${b.moves} moves`}</td>
+              <tr key={l}>
+                <th>{t(`level.${l}` as Key)}</th>
+                <td>{b?.timeMs === undefined ? t('stats.none') : `${formatTime(b.timeMs)} · ${t('stats.moves', { n: b.moves ?? 0 })}`}</td>
               </tr>
             );
           })}
         </tbody>
       </table>
-      <h3>Recent games</h3>
-      {data.history.length === 0 ? <p>No games yet.</p> : (
+      <h3>{t('stats.recent')}</h3>
+      {data.history.length === 0 ? <p>{t('stats.noGames')}</p> : (
         <table className="table">
           <tbody>
             {data.history.slice(-8).reverse().map((h, i) => (
               <tr key={i}>
-                <th>{h.date.slice(5)} {h.mode === 'daily' ? 'Daily' : `${h.size}×${h.size}`}</th>
-                <td>{getArtwork(h.artworkId)?.title ?? h.artworkId} · {formatTime(h.timeMs)} · {h.moves}m</td>
+                <th>{h.date.slice(5)}</th>
+                <td>{getArtwork(h.artworkId)?.title ?? h.artworkId} · {formatTime(h.timeMs)} · {t('stats.moves', { n: h.moves })}</td>
               </tr>
             ))}
           </tbody>
@@ -271,14 +255,15 @@ const Big = ({ n, l }: { n: number; l: string }) => (
 );
 
 export function ArtCreditsPage() {
+  const t = useT();
   return (
-    <Page title="ARTWORK CREDITS">
-      <p>Every painting in ART SLIDE comes from a museum open-access program and is in the public domain (CC0). Images were downloaded from the museums' official APIs after checking each work's public-domain flag, then resized for this site. The short descriptions are written for this site: hand-written notes for the first works, and facts compiled from catalogue data (artist, date, medium, theme) for the rest.</p>
+    <Page title={t('credits.title')}>
+      <p>{t('credits.intro')}</p>
       <ul className="credits" data-testid="credits">
         {ARTWORKS.map((a) => (
           <li key={a.id}>
             <b>{a.title}</b>, {a.artist}, {a.year}.<br />
-            {a.museum} · <a href={a.licenseUrl} target="_blank" rel="noopener noreferrer">{a.license}</a> · <a href={a.sourceUrl} target="_blank" rel="noopener noreferrer">Source page</a> · checked {a.verifiedAt}
+            {a.museum} · <a href={a.licenseUrl} target="_blank" rel="noopener noreferrer">{a.license}</a> · <a href={a.sourceUrl} target="_blank" rel="noopener noreferrer">{t('credits.source')}</a> · {t('credits.checked', { date: a.verifiedAt })}
           </li>
         ))}
       </ul>

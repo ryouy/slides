@@ -7,6 +7,8 @@ const KEY = 'wordslide:save';
 export type ThemePref = 'system' | 'light' | 'dark';
 
 export interface Settings {
+  /** Chosen language; null = follow the browser. */
+  lang: string | null;
   theme: ThemePref;
   colorblind: boolean;
   /** Ad personalisation / cookie consent: null = not asked yet. */
@@ -53,7 +55,7 @@ export interface SaveData {
 
 export const defaultSave = (): SaveData => ({
   version: SAVE_VERSION,
-  settings: { theme: 'system', colorblind: false, adConsent: null },
+  settings: { lang: null, theme: 'system', colorblind: false, adConsent: null },
   completed: 0,
   noHintClears: 0,
   dailyHistory: {},

@@ -1,6 +1,6 @@
 import { createContext, createElement, useCallback, useContext, useMemo, useReducer, useRef, type ReactNode } from 'react';
 import { isValidArtState, type ArtState } from './logic/game';
-import { ART_SIZES, type ArtSize } from './logic/board';
+import { ART_LEVELS, type ArtLevel } from './logic/board';
 import type { GroupBy, SortBy } from './logic/gallery';
 import { updateBest } from '../../storage/stats';
 import type { Best } from '../../storage/storage';
@@ -18,7 +18,7 @@ export interface ArtDailyRecord {
 export interface ArtPlayRecord {
   date: string;
   mode: 'daily' | 'endless';
-  size: ArtSize;
+  size: ArtLevel;
   artworkId: string;
   timeMs: number;
   moves: number;
@@ -31,7 +31,7 @@ export interface ArtSave {
   bests: Record<string, Best>;
   history: ArtPlayRecord[];
   inProgress: { daily?: ArtState; free?: ArtState };
-  lastSize: ArtSize;
+  lastSize: ArtLevel;
   showNumbers: boolean;
   /** How the gallery is grouped and sorted (remembered). */
   gallery: { groupBy: GroupBy; sortBy: SortBy };
@@ -61,7 +61,7 @@ export function migrateArt(raw: unknown): ArtSave {
     dailyHistory: r.dailyHistory ?? {},
     bests: r.bests ?? {},
     history: Array.isArray(r.history) ? r.history : [],
-    lastSize: ART_SIZES.includes(r.lastSize as ArtSize) ? (r.lastSize as ArtSize) : 3,
+    lastSize: ART_LEVELS.includes(r.lastSize as ArtLevel) ? (r.lastSize as ArtLevel) : 3,
     gallery: { ...d.gallery, ...(r.gallery ?? {}) },
     inProgress: {},
   };

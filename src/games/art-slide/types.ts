@@ -18,8 +18,6 @@ export interface Artwork {
   era: string;
   theme: string;
   medium: string;
-  /** Where the square board crop is centred, 0..1 (default centre). */
-  focus: { x: number; y: number };
   museum: string;
   sourceUrl: string;
   license: string;
