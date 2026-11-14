@@ -166,14 +166,15 @@ export function ArtGameView(p: Props) {
         <button
           className="btn"
           data-testid="preview"
+          aria-label={t('art.preview')}
           disabled={shuffling}
           onClick={() => {
             const r = boardRef.current?.getBoundingClientRect();
             if (r) setPreview({ left: r.left, top: r.top, width: r.width, height: r.height });
           }}
  ><svg className="art-action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.8"/></svg><span className="art-action-label">{t('art.preview')}</span></button>
-        {!daily && <button className="btn" data-testid="shuffle" disabled={shuffling} onClick={runShuffle}><svg className="art-action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h4c5 0 5 10 10 10h4m-4-4 4 4-4 4M3 17h4c2 0 3-1 4-3m2-4c1-2 2-3 4-3h4m-4-4 4 4-4 4"/></svg><span className="art-action-label">{t('art.shuffle')}</span></button>}
-        <button className={`btn num-btn${p.showNumbers ? ' on' : ''}`} data-testid="numbers-toggle" aria-pressed={p.showNumbers} onClick={() => p.onToggleNumbers(!p.showNumbers)}>
+        {!daily && <button className="btn" data-testid="shuffle" aria-label={t('art.shuffle')} disabled={shuffling} onClick={runShuffle}><svg className="art-action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h4c5 0 5 10 10 10h4m-4-4 4 4-4 4M3 17h4c2 0 3-1 4-3m2-4c1-2 2-3 4-3h4m-4-4 4 4-4 4"/></svg><span className="art-action-label">{t('art.shuffle')}</span></button>}
+        <button className={`btn num-btn${p.showNumbers ? ' on' : ''}`} data-testid="numbers-toggle" aria-label={t('art.numbers')} aria-pressed={p.showNumbers} onClick={() => p.onToggleNumbers(!p.showNumbers)}>
           <span className="num-glyph art-action-icon" aria-hidden="true">#</span>
           <span className="art-action-label">{t('art.numbers')}</span>
         </button>
@@ -254,7 +255,7 @@ export function ArtGameView(p: Props) {
 function Stat({ label, value, id }: { label: string; value: string; id: string }) {
   return (
     <div className="stat">
-      <span className="stat-label">{label}</span>
+      <span className="stat-label"><svg className="art-stat-icon" viewBox="0 0 24 24" aria-hidden="true">{id.startsWith('time') ? <><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></> : <><path d="M5 5h14v14H5zM5 12h14M12 5v14"/></>}</svg><span className="art-stat-text">{label}</span></span>
       <span className="stat-value" data-testid={id}>{value}</span>
     </div>
   );
