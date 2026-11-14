@@ -1,7 +1,9 @@
 import type { Artwork } from '../types';
 
 export type GroupBy = 'none' | 'artist' | 'era' | 'theme';
-export type SortBy = 'artist' | 'title' | 'year-asc' | 'year-desc';
+export type SortBy = 'artist' | 'title' | 'year-asc' | 'year-desc' | 'random';
+export type GalleryColumns = 'auto' | 1 | 2 | 3 | 4 | 5 | 6;
+export const GALLERY_COLUMN_OPTIONS: readonly GalleryColumns[] = ['auto', 1, 2, 3, 4, 5, 6];
 
 export const GROUP_OPTIONS: { id: GroupBy; label: string }[] = [
   { id: 'none', label: 'No grouping' },
@@ -14,6 +16,7 @@ export const SORT_OPTIONS: { id: SortBy; label: string }[] = [
   { id: 'title', label: 'Title A–Z' },
   { id: 'year-asc', label: 'Year: oldest first' },
   { id: 'year-desc', label: 'Year: newest first' },
+  { id: 'random', label: 'Random' },
 ];
 
 /** Fixed display order of the groups that have a natural order. */
@@ -34,13 +37,27 @@ export function filterArtworks(list: readonly Artwork[], query: string): Artwork
 
 const byText = (x: string, y: string) => x.localeCompare(y, 'en', { sensitivity: 'base' });
 
-export function sortArtworks(list: readonly Artwork[], sortBy: SortBy): Artwork[] {
+/** Stable per-seed pseudo-random order, so changing filters never unexpectedly reshuffles. */
+function randomRank(id: string, seed: number): number {
+  let h = (2166136261 ^ seed) >>> 0;
+  for (let i = 0; i < id.length; i++) {
+    h = Math.imul(h ^ id.charCodeAt(i), 16777619) >>> 0;
+  }
+  h ^= h >>> 16;
+  h = Math.imul(h, 0x7feb352d) >>> 0;
+  h ^= h >>> 15;
+  h = Math.imul(h, 0x846ca68b) >>> 0;
+  return (h ^ (h >>> 16)) >>> 0;
+}
+
+export function sortArtworks(list: readonly Artwork[], sortBy: SortBy, randomSeed = 0): Artwork[] {
   const arr = [...list];
   const cmp: Record<SortBy, (a: Artwork, b: Artwork) => number> = {
     artist: (a, b) => byText(a.artistSort, b.artistSort) || a.yearStart - b.yearStart || byText(a.title, b.title),
     title: (a, b) => byText(a.title, b.title) || byText(a.artistSort, b.artistSort),
     'year-asc': (a, b) => a.yearStart - b.yearStart || byText(a.artistSort, b.artistSort) || byText(a.title, b.title),
     'year-desc': (a, b) => b.yearStart - a.yearStart || byText(a.artistSort, b.artistSort) || byText(a.title, b.title),
+    random: (a, b) => randomRank(a.id, randomSeed) - randomRank(b.id, randomSeed) || byText(a.id, b.id),
   };
   return arr.sort(cmp[sortBy]);
 }
@@ -52,8 +69,8 @@ export interface ArtGroup {
 }
 
 /** Groups (already filtered) artworks; items inside each group follow `sortBy`. Empty groups are omitted. */
-export function groupArtworks(list: readonly Artwork[], groupBy: GroupBy, sortBy: SortBy): ArtGroup[] {
-  const sorted = sortArtworks(list, sortBy);
+export function groupArtworks(list: readonly Artwork[], groupBy: GroupBy, sortBy: SortBy, randomSeed = 0): ArtGroup[] {
+  const sorted = sortArtworks(list, sortBy, randomSeed);
   if (groupBy === 'none') return sorted.length ? [{ key: 'all', label: '', items: sorted }] : [];
   const keyOf = (a: Artwork) => (groupBy === 'artist' ? a.artist : groupBy === 'era' ? a.era : a.theme);
   const map = new Map<string, Artwork[]>();
