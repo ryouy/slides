@@ -147,5 +147,8 @@ const zh: Partial<Dict> = {
   "wordCat.Vehicle": "交通工具",
   "wordCat.Fantasy": "幻想",
   "wordCat.Person": "人物",
+  "art.textSource": "作品说明",
+  "art.textAdjusted": "HTML 已整理为纯文本",
+  "art.englishDetail": "美术馆详细说明（英语）",
 };
 export default zh;
