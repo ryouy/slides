@@ -239,7 +239,6 @@ export function ArtGameView(p: Props) {
           </figure>
         </ResultModal>
       )}
-      {cleared && !showResult && <button className="btn primary wide" onClick={() => setShowResult(true)}>{t('art.showResult')}</button>}
     </div>
   );
 }
