@@ -471,22 +471,30 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "whistler-violet-and-silver-the-deep-sea": {
-    "description": "After years of painting seascapes on a significantly smaller scale, James McNeill Whistler returned briefly to a large-format canvas to capture a hot summer day on the water near Brittany, France. The artist likely painted this seascape while boating off the coast as a crewman steadied their vessel. This could account for the unusually broad handling of paint and thick touches of pigment apparent throughout the composition, particularly in the clouds and gently cresting waves. Here, Whistler demonstrated his enduring passion for the myriad relationships of color offered by the ever-changing sea.\n\nCatalogue information\nRecorded artist or maker: James McNeill Whistler (American, 1834–1903). Date: 1893. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: Brittany. Classification: painting. Physical dimensions: 50.2 × 73.3 cm (19 3/4 × 28 7/8 in.). Museum catalogue subjects: landscapes. Museum credit line: Gift of Clara Margaret Lynch in memory of John A. Lynch. Recorded ownership history (excerpt): James McNeill Whistler, London and Paris, 1893; sold to John A. Lynch (1853–1938), Chicago, 1894 [inscribed on verso of painting: “Exhibited in salon of the / Champ de Mars. 1894 / & / bought in my Studio, Paris / in October of that year by / John A. Lynch, of Chicago. / J. McNeill Whistler.”]; bequeathed to his wife, Clara Margaret Lynch (1872–1954), Chicago, 1938; Estate of…. Exhibition record (excerpt): London, Tate Gallery, James McNeill Whistler , Nov. 12, 1994–Jan. 8, 1995; Paris, Musee d'Orsay, Feb. 6–Apr. 30, 1995, Washington DC, National Gallery of Art, May 29–Aug. 20, 1995..",
+    "description": "In this large-format seascape, James McNeill Whistler depicts a hot summer day on the water off Brittany. He likely painted while boating, with a crewman steadying the vessel; the shifting position may have encouraged the broad brushwork and thick touches of pigment visible in the clouds and gently cresting waves. The 1893 oil painting reflects his lasting interest in the sea’s changing relations of color.",
+    "descriptionTranslations": {
+      "ja": "ジェームズ・マクニール・ホイッスラーは、ブルターニュ沖の海上で過ごす暑い夏の日を、大画面の油彩画に描いた。船上で制作し、乗組員が船を安定させていた可能性があり、雲や穏やかに波立つ水面には、幅広い筆致と厚く置かれた絵具が見られる。1893年の本作には、刻々と変わる海の色の関係に対する画家の関心が表れている。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/84088",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/84088",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "whistler-trouville-grey-and-green-the-silver-sea": {
-    "description": "In the early 1860s, James McNeill Whistler began to develop an art-for-art’s-sake aesthetic, eschewing narrative or naturalistic details to focus more intently on formal concerns. In 1865 the artist traveled to Trouville, a French resort town, where he painted with Gustave Courbet and experimented with a series of increasingly simplified seascapes. The high horizon line and broad expanses of muted color in this spare composition reveal Whistler’s interest in Japanese woodblock prints. The sweeping, horizontal brushstrokes and restrained palette, limited to pale greens and soft grays, reinforce the painting’s innovative, flattened perspective.\n\nCatalogue information\nRecorded artist or maker: James McNeill Whistler (American, 1834–1903). Date: 1865. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: Trouville. Classification: painting. Physical dimensions: 51.5 × 77.2 cm (20 1/4 × 30 3/8 in.). Museum catalogue subjects: landscapes, transportation, leisure, weather/seasons, water. Museum credit line: Gift of Honoré and Potter Palmer. Recorded ownership history (excerpt): Mrs. Charles W. Deschamps (Christina Deschamps, born Dodds, 1845–1926), London, by November 1873 [lent to London 1873]; sold back to the artist, April 1891 [ letter from Charles W. Deshamps to James McNeill Whistler, dated April 8, 1891, GUW 00803 ]; consigned to Boussod, Valadon & Cie/Goupil Gallery, Paris, by July 1892 [ letter from David Croal Thomson to James McNeill…. Exhibition record (excerpt): London, Society of French Artists, Seventh Exhibition , Nov. 3– ?, 1873, cat. 110, as The Yacht Race–A Symphony in B Sharp . Boston, Copley Hall, Memorial Exhibition of the Works of Mr. J. McNeill Whistler: Oil Paintings, Watercolors, Pastels, and Drawings , Feb. 1904, cat. 12….",
+    "description": "Painted in Trouville in 1865, this spare seascape reflects Whistler’s effort to simplify the view and emphasize formal qualities over narrative or naturalistic detail. A high horizon and broad areas of pale green and soft gray, crossed by sweeping horizontal brushstrokes, create a flattened perspective. The composition also shows his interest in Japanese woodblock prints; Whistler was experimenting with increasingly simplified seascapes during a stay in the French resort town, where he painted with Gustave Courbet.",
+    "descriptionTranslations": {
+      "ja": "1865年、フランスの海辺の町トルーヴィルで描かれた、簡潔な海景画です。物語性や自然描写の細部を抑え、画面の構成を重視するホイッスラーの姿勢が、高い水平線と淡い緑、柔らかな灰色の広がりに表れています。横に大きく引かれた筆触は、平面的な奥行きを強め、日本の木版画への関心をうかがわせます。滞在中、ギュスターヴ・クールベとともに制作しながら、海景を次第に単純化する試みを進めました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/81572",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/81572",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "sargent-the-fountain-villa-torlonia-frascati-italy": {
     "description": "In this 1907 oil painting, John Singer Sargent brings landscape and portraiture together in a scene with his friends Wilfrid and Jane Emmet de Glehn, both professional artists and frequent traveling companions. The work marks a shift from his successful portrait career toward outdoor painting, while attending to color, surface, and passing effects of light and movement. Rain interrupted Sargent’s work, so he completed the apparently spontaneous scene over several days, with the couple posing for extended periods.",
@@ -1035,8 +1043,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "zorn-portrait-study-of-a-man": {
-    "description": "Portrait Study of a Man is a work attributed in the Art Institute of Chicago catalogue to Anders Zorn.\n\nCatalogue information\nRecorded artist or maker: Anders Leonard Zorn (Swedish, 1860–1920). Date: 1901. Materials and technique: Oil on canvas. Artistic style or school: 20th Century. Place of creation: Sweden. Classification: oil on canvas. Physical dimensions: 76.2 × 63.5 cm (30 × 25 in.); Framed: 114.3 × 101.6 × 4.5 cm (45 × 40 × 1 3/4 in.). Museum catalogue subjects: portrait, portraits: male subject, portraits, man, smoking, smoke, jackets. Museum credit line: Anonymous gift. Recorded ownership history (excerpt): Charles Deering (died 1927), Evanston, Ill. and Miami, Fla., by 1924–1927 [Hedberg 1924]; by descent to his daughters, Mrs. Richard E. Danielson and Mrs. Chauncey McCormick, 1927 [R of O 6340 in curatorial file]; given anonymously to the Art Institute, 1951.. Exhibition record (excerpt): Art Institute of Chicago, John Singer Sargent and Chicago's Gilded Age, June 27-Septembet 30, 2018..",
-    "descriptionKind": "metadata_summary"
+    "description": "Attributed to Swedish artist Anders Leonard Zorn, this oil-on-canvas portrait study is dated 1901 and was made in Sweden. The Art Institute of Chicago catalogues it as a portrait of a man, with subjects that include smoking, smoke, and jackets; the record gives no further description of the figure or composition. Measuring 76.2 by 63.5 centimeters, the work entered the museum as an anonymous gift in 1951.",
+    "descriptionTranslations": {
+      "ja": "スウェーデンの画家アンデシュ・レオナード・ソーンに帰属される、1901年制作の油彩画です。シカゴ美術館の記録では、男性の肖像習作とされ、喫煙、煙、上着が関連主題として挙げられています。画面の具体的な描写については記載がありません。作品は76.2×63.5センチで、1951年に匿名寄贈によって同館に収蔵されました。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/75980",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "henri-himself": {
     "description": "In this oil portrait, Robert Henri depicts Johnnie Cummings, an Irish fisherman, during a summer trip to Ireland in 1913. Rich color and thick, fluid paint lend the work depth, while Cummings’s informal pose and elusive expression give the portrait a forthright character. Henri described such portraits as dynamic images of humanity in the process of living.",
@@ -1260,8 +1277,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "vermeer-water-pitcher": {
-    "description": "Young Woman with a Water Pitcher is recorded in the Metropolitan Museum of Art collection as a work by Johannes Vermeer.\n\nCatalogue information\nArtist: Johannes Vermeer. Artist background: Dutch, Delft 1632–1675 Delft. Date: ca. 1662. Materials and technique: Oil on canvas. Classification: Paintings. Physical dimensions: 18 x 16 in. (45.7 x 40.6 cm). Department: European Paintings. Catalogue subjects: Interiors, Women, Maps, Pitchers. Acquisition credit: Marquand Collection, Gift of Henry G. Marquand, 1889.",
-    "descriptionKind": "metadata_summary"
+    "description": "Johannes Vermeer’s *Young Woman with a Water Pitcher* is an oil painting on canvas, dated about 1662. The Metropolitan Museum of Art records the work among its European paintings and lists its subjects as an interior, a woman, maps, and pitchers. The canvas entered the collection in 1889 as a gift from Henry G. Marquand, from the Marquand Collection.",
+    "descriptionTranslations": {
+      "ja": "ヨハネス・フェルメールの《水差しを持つ若い女性》は、1662年頃の油彩・キャンバス画である。メトロポリタン美術館の目録では、室内、女性、地図、水差しが主題として記載されている。1889年、ヘンリー・G・マーカンドからマーカンド・コレクションとして寄贈された。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.metmuseum.org/art/collection/search/437881",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "van-gogh-wheat-field-cypresses": {
     "description": "Vincent van Gogh’s *Wheat Field with Cypresses* is an oil painting on canvas dated 1889. The Metropolitan Museum of Art records it among its European paintings and lists its subjects as landscape, cypresses, and summer. The canvas measures 73.2 by 93.4 centimeters; it entered the collection in 1993 through a purchase made with a gift from the Annenberg Foundation.",
