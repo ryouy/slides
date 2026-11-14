@@ -1107,3 +1107,20 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .gallery-screen .gallery[data-columns="6"] .g-meta {
   font-size: 10px; overflow-wrap: anywhere;
 }
+
+
+/* Full museum interpretation remains readable in every selected language. */
+.artgame .art-original-desc {
+  display: grid; gap: 6px; margin-top: 10px; min-width: 0;
+}
+.artgame .art-original-desc .ap-original-caption {
+  font-size: 10px; font-weight: 500; color: var(--muted);
+  line-height: 1.5; letter-spacing: .035em;
+}
+.artgame .art-original-desc .ap-desc {
+  white-space: pre-line; overflow-wrap: anywhere;
+  line-height: 1.7; font-weight: 400;
+}
+.artgame .art-extra > .ap-desc { white-space: pre-line; }
+.artgame .art-museum-text { margin-top: 5px; }
+.artgame .art-museum-text p { white-space: pre-line; line-height: 1.65; }
