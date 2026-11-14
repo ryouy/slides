@@ -17,7 +17,7 @@ import { ArtPreview } from './ArtPreview';
 
 const KEY_DIR: Record<string, ArtDirection> = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' };
 /** Time between two slides of a shuffle (each slide itself takes a little less than this to glide). */
-const SHUFFLE_STEP_MS = 95;
+const SHUFFLE_STEP_MS = 63;
 const DELTA: Record<ArtDirection, number> = { up: -1, down: 1, left: -1, right: 1 }; // sign only; rows use cols
 
 interface Props {
@@ -183,7 +183,7 @@ export function ArtGameView(p: Props) {
         </div>
       )}
 
-      <div className="actions art-actions">
+      <div className={`actions art-actions${daily ? " daily-actions" : ""}`}>
         <button
           className="btn"
           data-testid="preview"
