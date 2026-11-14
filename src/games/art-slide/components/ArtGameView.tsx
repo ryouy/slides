@@ -234,7 +234,7 @@ export function ArtGameView(p: Props) {
         </p>
         {lang !== 'en' && !translatedDescription && (
           <div className="art-original-desc">
-            <span className="ap-original-caption">{t('art.englishDetail')}</span>
+            <span className="ap-original-caption">{t('art.englishInfo')}</span>
             <p className="ap-desc" lang="en">{artwork.description}</p>
           </div>
         )}
