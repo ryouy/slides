@@ -147,5 +147,8 @@ const ko: Partial<Dict> = {
   "wordCat.Vehicle": "차량",
   "wordCat.Fantasy": "판타지",
   "wordCat.Person": "인물",
+  "art.textSource": "작품 해설",
+  "art.textAdjusted": "HTML을 일반 텍스트로 변환",
+  "art.englishDetail": "미술관 상세 해설 (영어)",
 };
 export default ko;
