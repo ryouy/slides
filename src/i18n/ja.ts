@@ -106,5 +106,16 @@ const ja: Partial<Dict> = {
   "era.1800–1849": "1800〜1849年",
   "era.1850–1879": "1850〜1879年",
   "era.1880–1899": "1880〜1899年",
+  "word.card": "単語",
+  "word.letterCount": "{n}文字",
+  "word.known": "判明済み",
+  "word.hintCategory": "カテゴリー",
+  "word.hintMeaning": "意味",
+  "word.hintFirst": "最初の文字",
+  "word.hintExtra": "+ 文字",
+  "word.hintCategoryTitle": "カテゴリーを表示",
+  "word.hintMeaningTitle": "意味を表示",
+  "word.hintFirstTitle": "最初の文字を表示",
+  "word.hintExtraTitle": "もう1文字表示（最初の文字が必要）",
 };
 export default ja;
