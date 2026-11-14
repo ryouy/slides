@@ -1,12 +1,12 @@
 {
   "model": "gpt-6-luna",
   "recipeVersion": "openai-bilingual-v1",
-  "generatedAt": "2026-11-14T09:34:13.451001+00:00",
+  "generatedAt": "2026-11-14T09:36:14.474765+00:00",
   "totalArtworks": 404,
-  "processed": 25,
-  "remaining": 379,
-  "medianEnglishCharacters": 459,
-  "medianJapaneseCharacters": 175,
+  "processed": 50,
+  "remaining": 354,
+  "medianEnglishCharacters": 482.0,
+  "medianJapaneseCharacters": 191.5,
   "records": {
     "aic-102131": {
       "id": "aic-102131",
@@ -231,6 +231,231 @@
       "rawSourceCharacters": 1838,
       "englishCharacters": 514,
       "japaneseCharacters": 224,
+      "apiWarning": null
+    },
+    "aic-110881": {
+      "id": "aic-110881",
+      "title": "The Road to Calvary",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2005,
+      "englishCharacters": 514,
+      "japaneseCharacters": 198,
+      "apiWarning": null
+    },
+    "aic-111": {
+      "id": "aic-111",
+      "title": "Martin Vanden Bogaert Desjardins",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 563,
+      "englishCharacters": 243,
+      "japaneseCharacters": 145,
+      "apiWarning": null
+    },
+    "aic-111059": {
+      "id": "aic-111059",
+      "title": "Flowers and Fruit in a Porcelain Bowl",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1748,
+      "englishCharacters": 440,
+      "japaneseCharacters": 170,
+      "apiWarning": null
+    },
+    "aic-111062": {
+      "id": "aic-111062",
+      "title": "Te raau rahi (The Big Tree)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1160,
+      "englishCharacters": 421,
+      "japaneseCharacters": 139,
+      "apiWarning": null
+    },
+    "aic-111164": {
+      "id": "aic-111164",
+      "title": "Green and Blue: The Dancer",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2182,
+      "englishCharacters": 480,
+      "japaneseCharacters": 172,
+      "apiWarning": null
+    },
+    "aic-111295": {
+      "id": "aic-111295",
+      "title": "Conflagration of the Masonic Hall, Chestnut Street, Philadelphia, Pennsylvania",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1767,
+      "englishCharacters": 503,
+      "japaneseCharacters": 232,
+      "apiWarning": null
+    },
+    "aic-111377": {
+      "id": "aic-111377",
+      "title": "For Sunday's Dinner",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1549,
+      "englishCharacters": 424,
+      "japaneseCharacters": 194,
+      "apiWarning": null
+    },
+    "aic-111478": {
+      "id": "aic-111478",
+      "title": "Portrait of Dr. William McNeill Whistler",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1819,
+      "englishCharacters": 426,
+      "japaneseCharacters": 163,
+      "apiWarning": null
+    },
+    "aic-111559": {
+      "id": "aic-111559",
+      "title": "Boy on a Ram",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1852,
+      "englishCharacters": 474,
+      "japaneseCharacters": 172,
+      "apiWarning": null
+    },
+    "aic-111610": {
+      "id": "aic-111610",
+      "title": "The Garden of Palazzo Contarini dal Zaffo",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2716,
+      "englishCharacters": 531,
+      "japaneseCharacters": 223,
+      "apiWarning": null
+    },
+    "aic-111647": {
+      "id": "aic-111647",
+      "title": "The Abduction of Europa",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1902,
+      "englishCharacters": 455,
+      "japaneseCharacters": 196,
+      "apiWarning": null
+    },
+    "aic-112023": {
+      "id": "aic-112023",
+      "title": "The Mildmay Sea-Piece, plate 40 from Liber Studiorum",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1122,
+      "englishCharacters": 500,
+      "japaneseCharacters": 228,
+      "apiWarning": null
+    },
+    "aic-113064": {
+      "id": "aic-113064",
+      "title": "The Return, Tynemouth (recto) Study (verso)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2090,
+      "englishCharacters": 525,
+      "japaneseCharacters": 189,
+      "apiWarning": null
+    },
+    "aic-11390": {
+      "id": "aic-11390",
+      "title": "Portrait of a Noblewoman Dressed in Mourning",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1883,
+      "englishCharacters": 484,
+      "japaneseCharacters": 196,
+      "apiWarning": null
+    },
+    "aic-11434": {
+      "id": "aic-11434",
+      "title": "Salome with the Head of Saint John the Baptist",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1931,
+      "englishCharacters": 458,
+      "japaneseCharacters": 176,
+      "apiWarning": null
+    },
+    "aic-120154": {
+      "id": "aic-120154",
+      "title": "Still Life—Strawberries, Nuts, &c.",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1873,
+      "englishCharacters": 525,
+      "japaneseCharacters": 214,
+      "apiWarning": null
+    },
+    "aic-120163": {
+      "id": "aic-120163",
+      "title": "Capture of the Tripoli by the Enterprise",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1667,
+      "englishCharacters": 594,
+      "japaneseCharacters": 231,
+      "apiWarning": null
+    },
+    "aic-121377": {
+      "id": "aic-121377",
+      "title": "Boats at Rest",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1705,
+      "englishCharacters": 486,
+      "japaneseCharacters": 196,
+      "apiWarning": null
+    },
+    "aic-126485": {
+      "id": "aic-126485",
+      "title": "Cloudy Sky, Mediterranean Sea",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1747,
+      "englishCharacters": 484,
+      "japaneseCharacters": 235,
+      "apiWarning": null
+    },
+    "aic-12764": {
+      "id": "aic-12764",
+      "title": "The Actor Otani Hiroji III as Kawazu no Saburo in the Play Myoto-giku Izu no Kisewata, Performed at the Ichimura Theater in the Eleventh Month, 1770",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 857,
+      "englishCharacters": 377,
+      "japaneseCharacters": 130,
+      "apiWarning": null
+    },
+    "aic-127644": {
+      "id": "aic-127644",
+      "title": "Autumn Maples with Poem Slips",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1789,
+      "englishCharacters": 556,
+      "japaneseCharacters": 184,
+      "apiWarning": null
+    },
+    "aic-12888": {
+      "id": "aic-12888",
+      "title": "Portrait of the Artist's Sister",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1492,
+      "englishCharacters": 445,
+      "japaneseCharacters": 200,
+      "apiWarning": null
+    },
+    "aic-129639": {
+      "id": "aic-129639",
+      "title": "Blasted Tree",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1240,
+      "englishCharacters": 512,
+      "japaneseCharacters": 207,
+      "apiWarning": null
+    },
+    "aic-131407": {
+      "id": "aic-131407",
+      "title": "Wine, Cheese, and Fruit",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1415,
+      "englishCharacters": 490,
+      "japaneseCharacters": 212,
+      "apiWarning": null
+    },
+    "aic-13405": {
+      "id": "aic-13405",
+      "title": "Goldfish, from the series \"Elegant Comparison of Little Treasures (Furyu kodakara awase)\"",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 678,
+      "englishCharacters": 315,
+      "japaneseCharacters": 104,
       "apiWarning": null
     }
   },
