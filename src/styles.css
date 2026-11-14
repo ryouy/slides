@@ -695,3 +695,43 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .art-home .art-home-menu .btn:hover { padding-left: 9px; border-color: var(--fg); background: var(--surface); }
 .art-home .art-home-menu .btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 .art-home .art-home-menu .btn[data-testid="art-resume"] { grid-column: 1 / -1; min-height: 44px; }
+
+/* Desktop ART SLIDE: one slim toolbar for metrics, grid size and actions. */
+@media (min-width: 900px) {
+  .screen.artgame > .art-top {
+    height: auto; min-height: 48px; padding: 3px 8px 3px 2px;
+    margin-bottom: 4px; gap: 10px; align-items: center;
+  }
+  .artgame .art-top .top-titles { flex: 1 1 auto; min-width: 0; gap: 1px; }
+  .artgame .art-top .top-titles h1 { font-size: 15px; line-height: 1.2; }
+  .artgame .art-top .top-sub { font-size: 10px; line-height: 1.2; }
+  .artgame .art-header-controls {
+    width: auto; max-width: none; flex: 0 1 auto;
+    display: flex; flex-direction: row; align-items: center; gap: 10px;
+    min-width: 0;
+  }
+  .artgame .art-header-controls .art-level-select {
+    flex: 0 0 70px; align-self: center; width: 70px; height: 30px;
+    min-height: 30px; padding: 2px 4px;
+  }
+  .artgame .art-header-controls .stats {
+    display: flex; flex: 0 0 auto; gap: 8px; margin: 0;
+    align-items: center; border: 0;
+  }
+  .artgame .art-header-controls .stats .stat {
+    display: flex; flex-direction: row; align-items: baseline;
+    gap: 5px; padding: 0; min-width: 0; border: 0;
+  }
+  .artgame .art-header-controls .stat-label { font-size: 9px; white-space: nowrap; }
+  .artgame .art-header-controls .stat-value { font-size: 16px; line-height: 1.2; white-space: nowrap; }
+  .artgame .art-header-controls .art-actions,
+  .artgame .art-header-controls .art-actions.daily-actions {
+    display: flex; flex: 0 0 auto; gap: 4px; margin: 0;
+  }
+  .artgame .art-header-controls .art-actions .btn {
+    flex: 0 0 auto; width: auto; min-height: 30px;
+    padding: 4px 9px; font-size: 11px; white-space: nowrap;
+    line-height: 1.2;
+  }
+  .artgame .art-header-controls .num-glyph { display: none; }
+}
