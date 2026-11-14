@@ -263,6 +263,7 @@ export function ArtGameView(p: Props) {
           japaneseLabel={t('art.descriptionJapanese')}
           englishLabel={t('art.descriptionEnglish')}
           sourceLabel={t('art.source')}
+          closeLabel={t('common.close')}
         />
       )}
 
