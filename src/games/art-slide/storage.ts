@@ -1,7 +1,7 @@
 import { createContext, createElement, useCallback, useContext, useMemo, useReducer, useRef, type ReactNode } from 'react';
 import { isValidArtState, type ArtState } from './logic/game';
 import { ART_LEVELS, type ArtLevel } from './logic/board';
-import { GALLERY_COLUMN_OPTIONS, type GalleryColumns, type GroupBy, type SortBy } from './logic/gallery';
+import { GALLERY_COLUMN_OPTIONS, GROUP_OPTIONS, type GalleryColumns, type GroupBy } from './logic/gallery';
 import { updateBest } from '../../storage/stats';
 import type { Best } from '../../storage/storage';
 
@@ -33,8 +33,8 @@ export interface ArtSave {
   inProgress: { daily?: ArtState; free?: ArtState };
   lastSize: ArtLevel;
   showNumbers: boolean;
-  /** Remember gallery filters, number of paintings per row, and random order. */
-  gallery: { groupBy: GroupBy; sortBy: SortBy; columns: GalleryColumns; randomSeed: number };
+  /** Grouping, grid density, and randomized order (legacy sort preference is discarded). */
+  gallery: { groupBy: GroupBy; columns: GalleryColumns; randomSeed: number; randomized: boolean };
 }
 
 export const defaultArtSave = (): ArtSave => ({
@@ -46,7 +46,7 @@ export const defaultArtSave = (): ArtSave => ({
   inProgress: {},
   lastSize: 3,
   showNumbers: false,
-  gallery: { groupBy: 'theme', sortBy: 'artist', columns: 'auto', randomSeed: 0 },
+  gallery: { groupBy: 'theme', columns: 'auto', randomSeed: 0, randomized: false },
 });
 
 export function migrateArt(raw: unknown): ArtSave {
@@ -54,6 +54,7 @@ export function migrateArt(raw: unknown): ArtSave {
   if (!raw || typeof raw !== 'object') return d;
   const r = raw as Partial<ArtSave>;
   if (typeof r.version !== 'number' || r.version > ART_SAVE_VERSION) return d;
+  const legacySortBy = (r.gallery as { sortBy?: unknown } | undefined)?.sortBy;
   const out: ArtSave = {
     ...d,
     ...r,
@@ -63,14 +64,14 @@ export function migrateArt(raw: unknown): ArtSave {
     history: Array.isArray(r.history) ? r.history : [],
     lastSize: ART_LEVELS.includes(r.lastSize as ArtLevel) ? (r.lastSize as ArtLevel) : 3,
     gallery: {
-      ...d.gallery,
-      ...(r.gallery ?? {}),
+      groupBy: GROUP_OPTIONS.some((o) => o.id === r.gallery?.groupBy) ? r.gallery!.groupBy : 'theme',
       columns: GALLERY_COLUMN_OPTIONS.includes(r.gallery?.columns as GalleryColumns)
         ? (r.gallery!.columns as GalleryColumns)
         : 'auto',
       randomSeed: typeof r.gallery?.randomSeed === 'number' && Number.isFinite(r.gallery.randomSeed)
         ? r.gallery.randomSeed
         : 0,
+      randomized: typeof r.gallery?.randomized === 'boolean' ? r.gallery.randomized : legacySortBy === 'random',
     },
     inProgress: {},
   };
