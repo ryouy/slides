@@ -138,49 +138,48 @@ export function ArtGameView(p: Props) {
 
   return (
     <div className="screen game artgame">
-      <header className="topbar art-top">
+      <header className={`topbar art-top${daily ? ' art-daily-top' : ''}`}>
         <BackButton onClick={p.onBack} label={t('common.back')} />
         <div className="top-titles">
-          <div className="art-desktop-meta">
-            {!daily && <select className="art-level-select select" aria-label={t('gal.sortBy')} data-testid="art-size-select" value={state.puzzle.size} onChange={(e) => { const level = Number(e.target.value); if (ART_LEVELS.some((l) => l === level)) chooseLevel(level as ArtLevel); }}>
-              {ART_LEVELS.map((l) => <option key={l} value={l}>{gridLabel(l)}</option>)}
-            </select>}
-            <div className="art-desktop-stats">
-              <Stat label={t('common.time')} value={formatTime(state.elapsedMs)} id="time-desktop" />
-              <Stat label={t('common.moves')} value={String(state.moves)} id="moves-desktop" />
-            </div>
-          </div>
           {daily && <small className="top-kicker">{t('art.dailyTitle', { n: state.puzzle.number ?? '' })}</small>}
           <h1 data-testid="art-title">{artwork.title}</h1>
           <span className="top-sub">{artwork.artist}, {artwork.year}</span>
         </div>
         <div className="art-header-controls">
-          {!daily && <div className="art-mobile-level"><select className="art-level-select select" aria-label={t('gal.sortBy')} data-testid="art-size-select" value={state.puzzle.size} onChange={(e) => { const level = Number(e.target.value); if (ART_LEVELS.some((l) => l === level)) chooseLevel(level as ArtLevel); }}>
-              {ART_LEVELS.map((l) => <option key={l} value={l}>{gridLabel(l)}</option>)}
-            </select></div>}
-      <div className="stats" aria-live="polite">
-        <Stat label={t('common.time')} value={formatTime(state.elapsedMs)} id="time" />
-        <Stat label={t('common.moves')} value={String(state.moves)} id="moves" />
-      </div>
-
-      <div className={`actions art-actions${daily ? " daily-actions" : ""}`}>
-        <button
-          className="btn"
-          data-testid="preview"
-          aria-label={t('art.preview')}
-          disabled={shuffling}
-          onClick={() => {
-            const r = boardRef.current?.getBoundingClientRect();
-            if (r) setPreview({ left: r.left, top: r.top, width: r.width, height: r.height });
-          }}
- ><svg className="art-action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.8"/></svg><span className="art-action-label">{t('art.preview')}</span></button>
-        {!daily && <button className="btn" data-testid="shuffle" aria-label={t('art.shuffle')} disabled={shuffling} onClick={runShuffle}><svg className="art-action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h4c5 0 5 10 10 10h4m-4-4 4 4-4 4M3 17h4c2 0 3-1 4-3m2-4c1-2 2-3 4-3h4m-4-4 4 4-4 4"/></svg><span className="art-action-label">{t('art.shuffle')}</span></button>}
-        <button className={`btn num-btn${p.showNumbers ? ' on' : ''}`} data-testid="numbers-toggle" aria-label={t('art.numbers')} aria-pressed={p.showNumbers} onClick={() => p.onToggleNumbers(!p.showNumbers)}>
-          <span className="num-glyph art-action-icon" aria-hidden="true">#</span>
-          <span className="art-action-label">{t('art.numbers')}</span>
-        </button>
-      </div>
-
+          {!daily && (
+            <div className="art-mobile-level">
+              <select className="art-level-select select" aria-label={t('big.size')} data-testid="art-size-select"
+                value={state.puzzle.size} onChange={(e) => {
+                  const level = Number(e.target.value);
+                  if (ART_LEVELS.some((l) => l === level)) chooseLevel(level as ArtLevel);
+                }}>
+                {ART_LEVELS.map((l) => <option key={l} value={l}>{gridLabel(l)}</option>)}
+              </select>
+            </div>
+          )}
+          <div className="stats art-mobile-stats" aria-live="polite">
+            <Stat label={t('common.time')} value={formatTime(state.elapsedMs)} id="time" />
+            <Stat label={t('common.moves')} value={String(state.moves)} id="moves" />
+          </div>
+          <div className={`actions art-actions${daily ? ' daily-actions' : ''}`}>
+            <button className="btn" data-testid="preview" aria-label={t('art.preview')} title={t('art.preview')}
+              disabled={shuffling} onClick={() => {
+                const rect = boardRef.current?.getBoundingClientRect();
+                if (rect) setPreview({ left: rect.left, top: rect.top, width: rect.width, height: rect.height });
+              }}>
+              <svg className="art-action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.8"/></svg>
+              <span className="art-action-label">{t('art.preview')}</span>
+            </button>
+            {!daily && <button className="btn" data-testid="shuffle" aria-label={t('art.shuffle')} title={t('art.shuffle')} disabled={shuffling} onClick={runShuffle}>
+              <svg className="art-action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h4c5 0 5 10 10 10h4m-4-4 4 4-4 4M3 17h4c2 0 3-1 4-3m2-4c1-2 2-3 4-3h4m-4-4 4 4-4 4"/></svg>
+              <span className="art-action-label">{t('art.shuffle')}</span>
+            </button>}
+            <button className={`btn num-btn${p.showNumbers ? ' on' : ''}`} data-testid="numbers-toggle"
+              aria-label={t('art.numbers')} title={t('art.numbers')} aria-pressed={p.showNumbers} onClick={() => p.onToggleNumbers(!p.showNumbers)}>
+              <span className="num-glyph art-action-icon" aria-hidden="true">#</span>
+              <span className="art-action-label">{t('art.numbers')}</span>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -210,6 +209,21 @@ export function ArtGameView(p: Props) {
 
 
       <div className="art-extra">
+        <div className="art-desktop-meta" aria-live="polite">
+          {!daily && (
+            <select className="art-level-select select" aria-label={t('big.size')} data-testid="art-size-select"
+              value={state.puzzle.size} onChange={(e) => {
+                const level = Number(e.target.value);
+                if (ART_LEVELS.some((l) => l === level)) chooseLevel(level as ArtLevel);
+              }}>
+              {ART_LEVELS.map((l) => <option key={l} value={l}>{gridLabel(l)}</option>)}
+            </select>
+          )}
+          <div className="art-desktop-stats">
+            <Stat label={t('common.time')} value={formatTime(state.elapsedMs)} id="time-desktop" />
+            <Stat label={t('common.moves')} value={String(state.moves)} id="moves-desktop" />
+          </div>
+        </div>
         <p className="ap-desc" data-testid="art-desc">
           {lang === 'en' ? artwork.description : t('art.summary', {
             artist: artwork.artist,
