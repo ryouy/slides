@@ -903,3 +903,128 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   .art-home .exhibit-card { grid-template-columns: minmax(140px, 38%) minmax(0, 1fr); }
   .art-home .exhibit-card .ex-text b { font-size: 23px; }
 }
+
+
+/* ART SLIDE game: a frameless museum label on desktop; two balanced rows on phones. */
+.artgame .art-extra .art-desktop-meta { display: none; }
+@media (min-width: 900px) {
+  .screen.artgame > .art-top { min-height: 43px; padding-top: 2px; padding-bottom: 3px; }
+  .artgame .art-top .top-titles { gap: 2px; }
+  .artgame .art-extra .art-desktop-meta {
+    display: flex; align-items: baseline; justify-content: flex-start;
+    gap: 18px; margin: 0 0 9px; min-width: 0; width: 100%;
+    white-space: nowrap;
+  }
+  .artgame .art-extra .art-desktop-meta .art-level-select.select {
+    align-self: center; width: 71px; min-width: 71px; height: 27px; min-height: 27px;
+    border: 0; border-radius: 0; padding: 2px 18px 2px 0;
+    background-color: transparent; background-position: right 1px center;
+    font-size: 12px; font-weight: 500;
+  }
+  .artgame .art-extra .art-desktop-stats {
+    display: inline-flex; align-items: baseline; gap: 19px; min-width: 0;
+    margin: 0; padding: 0; border: 0; background: transparent;
+  }
+  .artgame .art-extra .art-desktop-stats .stat,
+  .artgame .art-extra .art-desktop-stats .stat + .stat {
+    display: inline-flex; flex: 0 0 auto; flex-direction: row;
+    align-items: baseline; justify-content: flex-start; gap: 6px;
+    padding: 0; margin: 0; min-width: 0; width: auto; border: 0;
+    border-radius: 0; background: transparent; white-space: nowrap;
+  }
+  .artgame .art-extra .art-desktop-stats .stat-label {
+    display: inline; font-size: 10px; font-weight: 500;
+    letter-spacing: .05em; line-height: 1.3; white-space: nowrap;
+  }
+  .artgame .art-extra .art-desktop-stats .stat-value {
+    display: inline; font-size: 15px; font-weight: 500;
+    line-height: 1.2; letter-spacing: 0; white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .artgame .art-extra .art-desktop-stats .art-stat-icon { display: none; }
+  .artgame .art-extra .art-desktop-stats .art-stat-text { display: inline; }
+}
+@media (max-width: 899px) {
+  .screen.artgame > .art-top {
+    display: grid; grid-template-columns: 24px minmax(0, 1fr) max-content;
+    grid-template-rows: auto 28px; gap: 2px 7px;
+    align-items: center; width: 100%; min-width: 0; max-width: 100%;
+    min-height: 0; height: auto; margin: 0 0 5px;
+    padding: 2px 0 5px; box-sizing: border-box;
+  }
+  .artgame .art-top .back-btn {
+    grid-column: 1; grid-row: 1 / span 2;
+    width: 24px; height: 32px; padding: 0;
+    align-self: center; justify-self: center;
+  }
+  .artgame .art-top .top-titles {
+    grid-column: 2; grid-row: 1; display: grid; gap: 2px;
+    min-width: 0; max-width: 100%; overflow: visible; align-self: center;
+  }
+  .artgame .art-top .top-titles h1 {
+    display: block; font-size: 12px; font-weight: 500; line-height: 1.23;
+    letter-spacing: 0; white-space: normal; text-overflow: clip;
+    overflow: visible; overflow-wrap: anywhere; hyphens: auto;
+  }
+  .artgame .art-top .top-sub {
+    display: block; font-size: 10px; line-height: 1.2;
+    white-space: normal; text-overflow: clip; overflow-wrap: anywhere;
+  }
+  .artgame .art-top .top-kicker { font-size: 9px; letter-spacing: .08em; }
+  .artgame .art-header-controls { display: contents; }
+  .artgame .art-mobile-level {
+    grid-column: 3; grid-row: 1; justify-self: end; align-self: center;
+    min-width: 0; width: auto;
+  }
+  .artgame .art-mobile-level .art-level-select.select {
+    display: block; width: 64px; min-width: 0;
+    height: 27px; min-height: 27px; padding: 2px 18px 2px 4px;
+    border: 0; border-radius: 0; background-color: transparent;
+    background-position: right 3px center;
+    font-size: 11px; font-weight: 500; text-align: left;
+  }
+  .artgame .art-header-controls .stats.art-mobile-stats {
+    grid-column: 2; grid-row: 2; display: flex; flex-direction: row;
+    align-items: center; justify-content: flex-start; width: auto; min-width: 0;
+    flex: none; gap: 13px; margin: 0; padding: 0; border: 0;
+    background: transparent; white-space: nowrap;
+  }
+  .artgame .art-header-controls .stats.art-mobile-stats .stat,
+  .artgame .art-header-controls .stats.art-mobile-stats .stat + .stat {
+    display: inline-flex; flex-direction: row; flex: 0 0 auto;
+    align-items: center; justify-content: flex-start; gap: 4px;
+    padding: 0; margin: 0; border: 0; border-radius: 0;
+    min-width: 0; background: transparent;
+  }
+  .artgame .art-header-controls .stats.art-mobile-stats .stat-value {
+    display: inline; font-size: 12px; line-height: 1.2;
+    font-weight: 500; letter-spacing: 0; white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .artgame .art-header-controls .stats.art-mobile-stats .stat-label { font-size: 0; }
+  .artgame .art-header-controls .stats.art-mobile-stats .art-stat-icon {
+    display: block; width: 12px; height: 12px; flex: 0 0 12px;
+  }
+  .artgame .art-header-controls .art-actions,
+  .artgame .art-header-controls .art-actions.daily-actions {
+    grid-column: 3; grid-row: 2;
+    display: flex; flex-direction: row; flex-wrap: nowrap;
+    align-items: center; justify-content: flex-end;
+    gap: 4px; margin: 0; padding: 0;
+    width: max-content; max-width: 100%; min-width: 0;
+  }
+  .artgame .art-header-controls .art-actions .btn {
+    display: inline-flex; flex: 0 0 28px;
+    width: 28px; height: 28px; min-height: 28px;
+    padding: 4px; margin: 0; border: 0; border-radius: 4px;
+    align-items: center; justify-content: center; background: transparent;
+  }
+  .artgame .art-header-controls .art-actions .btn:hover,
+  .artgame .art-header-controls .art-actions .num-btn.on { background: var(--surface); }
+  .artgame .art-header-controls .art-actions .art-action-label { display: none; }
+  .artgame .art-header-controls .art-actions .art-action-icon,
+  .artgame .art-header-controls .art-actions .num-glyph { display: inline-flex; }
+  .artgame .art-header-controls .art-actions .art-action-icon { width: 17px; height: 17px; }
+  .artgame .art-header-controls .art-actions .num-glyph { font-size: 16px; }
+  .artgame .art-extra .art-desktop-meta { display: none; }
+}
