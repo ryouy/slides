@@ -100,5 +100,11 @@ const ja: Partial<Dict> = {
   "legal.termsNote": "サイト運営者向け：公開前に利用規約を確認してください。",
   "legal.contact": "ご質問、不具合の報告、ご提案などをお待ちしています。",
   "legal.contactNote": "サイト運営者向け：ここにお問い合わせ用のメールアドレスまたはフォームを掲載してください。",
+  "art.summary": "{artist}による{year}年の作品。分類：{theme}。",
+  "level.6": "とても難しい",
+  "level.7": "達人",
+  "era.1800–1849": "1800〜1849年",
+  "era.1850–1879": "1850〜1879年",
+  "era.1880–1899": "1880〜1899年",
 };
 export default ja;
