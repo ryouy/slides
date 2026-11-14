@@ -150,5 +150,9 @@ const zh: Partial<Dict> = {
   "art.textSource": "作品说明",
   "art.textAdjusted": "HTML 已整理为纯文本",
   "art.englishDetail": "美术馆详细说明（英语）",
+  "sort.random": "随机顺序",
+  "gal.columns": "每行数量",
+  "gal.columnsAuto": "自动",
+  "gal.reshuffle": "重新随机排序",
 };
 export default zh;
