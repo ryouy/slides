@@ -151,7 +151,10 @@ export function ArtGameView(p: Props) {
               aria-label={t('gal.sortBy')}
               data-testid="art-size-select"
               value={state.puzzle.size}
-              onChange={(e) => chooseLevel(e.target.value as ArtLevel)}
+              onChange={(e) => {
+                const level = Number(e.target.value);
+                if (ART_LEVELS.some((l) => l === level)) chooseLevel(level as ArtLevel);
+              }}
             >
               {ART_LEVELS.map((l) => <option key={l} value={l}>{gridLabel(l)}</option>)}
             </select>
