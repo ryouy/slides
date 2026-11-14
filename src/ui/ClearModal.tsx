@@ -26,7 +26,7 @@ export function ClearModal({ state, onClose, onNext, onHome, nextLabel }: Props)
         { label: t('word.checks'), value: state.checks },
       ]}
       shareText={text}
-      shareUrl={`${siteOrigin()}/word-slide`}
+      shareUrl={`${siteOrigin()}/s/word/`}
       onClose={onClose}
       onNext={onNext}
       onHome={onHome}
