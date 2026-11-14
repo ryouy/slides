@@ -189,7 +189,7 @@ export function ArtGameView(p: Props) {
             </div>
           )}
             <button className="btn" data-testid="preview" aria-label={t('art.preview')} title={t('art.preview')}
-              disabled={shuffling} onClick={() => {
+              onClick={() => {
                 const rect = boardRef.current?.getBoundingClientRect();
                 if (rect) setPreview({ left: rect.left, top: rect.top, width: rect.width, height: rect.height });
               }}>
