@@ -154,5 +154,6 @@ const es: Partial<Dict> = {
   "gal.columns": "Por fila",
   "gal.columnsAuto": "Auto",
   "gal.reshuffle": "Volver a mezclar",
+  "art.englishInfo": "Información detallada (inglés)",
 };
 export default es;
