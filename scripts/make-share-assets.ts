@@ -19,7 +19,7 @@ fs.writeFileSync(`${outDir}/og.png`, await sharp(await buildOgImage(ARTWORKS[0])
 for (const game of ['word', 'big'] as const) {
   const label = game === 'word' ? 'WORD SLIDE' : 'BIG SLIDE';
   const destination = game === 'word' ? '/word-slide' : '/big-slide';
-  const tileCount = game === 'word' ? 4 : 4;
+  const tileCount = 4;
   const tiles = Array.from({ length: tileCount * tileCount }, (_, i) => {
     const x = i % tileCount, y = Math.floor(i / tileCount);
     const blank = i === 10;
@@ -30,7 +30,7 @@ for (const game of ['word', 'big'] as const) {
   const image = `/og/${game}.png`;
   fs.writeFileSync(`${outDir}${image}`, await sharp(Buffer.from(svg)).png().toBuffer());
   fs.mkdirSync(`${outDir}/s/${game}`, { recursive: true });
-  const base = site.replace(/\\/+$/, '');
+  const base = site.replace(/\/+$/, '');
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${label}</title><meta property="og:type" content="website"><meta property="og:site_name" content="${label}"><meta property="og:title" content="${label}"><meta property="og:description" content="Play ${label}, a free sliding puzzle."><meta property="og:image" content="${base}${image}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="${base}${image}"><meta http-equiv="refresh" content="0;url=${destination}"></head><body><a href="${destination}">Play ${label}</a></body></html>`;
   fs.writeFileSync(`${outDir}/s/${game}/index.html`, html);
 }
