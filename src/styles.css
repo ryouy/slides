@@ -407,7 +407,7 @@ a.card { text-decoration: none; color: inherit; }
 /* ---------- motion: smooth "nurutto" slides, used sparingly ---------- */
 :root { --ease: cubic-bezier(.22, .8, .2, 1); }
 /* a SHUFFLE glides the tiles one after another: each slide is a little quicker so they flow */
-.aboard.shuffling .apiece { transition: left .18s var(--ease), top .18s var(--ease), padding .5s ease; }
+.aboard.shuffling .apiece { transition: left var(--shuffle-tile-ms, 36ms) var(--ease), top var(--shuffle-tile-ms, 36ms) var(--ease), padding .5s ease; }
 .aboard.shuffling { box-shadow: 0 0 0 1px var(--line); }
 .aboard-wrap { animation: boardIn .5s var(--ease) backwards; }
 
@@ -912,14 +912,15 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   .artgame .art-top .top-titles { gap: 2px; }
   .artgame .art-extra .art-desktop-meta {
     display: flex; align-items: baseline; justify-content: flex-start;
-    gap: 12px; margin: 0 0 9px; min-width: 0; width: 100%;
+    gap: 9px; margin: 0 0 9px; min-width: 0; width: 100%;
     white-space: nowrap;
   }
   .artgame .art-extra .art-desktop-meta .art-level-select.select {
-    align-self: center; width: 60px; min-width: 60px; height: 27px; min-height: 27px;
-    border: 0; border-radius: 0; padding: 2px 15px 2px 0;
-    background-color: transparent; background-position: right 1px center;
-    font-size: 12px; font-weight: 500;
+    align-self: center; width: 70px; min-width: 70px; height: 31px; min-height: 31px;
+    border: 0; border-radius: 0; padding: 1px 12px 1px 0;
+    background-color: transparent; background-position: right 0 center;
+    font-size: 22px; font-weight: 500; line-height: 1.1;
+    letter-spacing: -.025em; font-variant-numeric: tabular-nums;
   }
   .artgame .art-extra .art-desktop-stats {
     display: inline-flex; align-items: baseline; gap: 20px; min-width: 0;
