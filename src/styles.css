@@ -1783,3 +1783,42 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   .preview-layer { align-items: flex-start; }
   .preview-card { flex: 0 0 auto; }
 }
+
+
+/* Four compact game actions: information, shuffle, numbers, next artwork. */
+@media (max-width: 899px) {
+  .artgame .art-header-controls .art-actions:not(.daily-actions) {
+    display: flex;
+    justify-content: flex-end;
+    gap: 2px;
+  }
+  .artgame .art-header-controls .art-actions:not(.daily-actions) .btn {
+    flex: 0 0 26px;
+    width: 26px;
+    min-width: 0;
+    padding: 2px;
+  }
+}
+
+/* Keep the game description immediately after the full, reserved ad placement. */
+@media (max-width: 899px) {
+  .screen.artgame > .ad-box { margin-bottom: 0 !important; }
+  .screen.artgame > .art-extra {
+    margin-top: 0 !important;
+    row-gap: 4px;
+  }
+  .screen.artgame > .art-extra > .ap-desc {
+    margin-top: 0 !important;
+    margin-bottom: 0;
+  }
+}
+.gallery-screen .gallery .gal-ad-item {
+  grid-column: 1 / -1;
+  min-width: 0;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+.gallery-screen .gal-ad-item .ad-box { margin: 8px auto; }
