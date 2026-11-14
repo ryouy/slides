@@ -814,13 +814,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionKind": "metadata_summary"
   },
   "aic-89503": {
-    "description": "Katsushika Hokusai’s much celebrated series, Thirty-Six Views of Mount Fuji (Fugaku sanjûrokkei), was begun in 1830, when the artist was 70 years old. This tour-de-force series established the popularity of landscape prints, which continues to this day. Perhaps most striking about the series is Hokusai’s copious use of the newly affordable Berlin blue pigment, featured in many of the compositions in the color for the sky and water. Mount Fuji is the protagonist in each scene, viewed from afar or up close, during various weather conditions and seasons, and from all directions. The most famous image from the set is the \"Great Wave\" (Kanagawa oki nami ura), in which a diminutive Mount Fuji can be seen in the distance under the crest of a giant wave. The three impressions of Hokusai’s Great Wave in the Art Institute are all later impressions than the first state of the design.\n\nCatalogue information\nRecorded artist or maker: Katsushika Hokusai 葛飾 北斎 Japanese, 1760-1849. Date: 1830/33. Materials and technique: Color woodblock print; oban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 25.4 × 37.6 cm (10 × 14 3/4 in.). Museum catalogue subjects: water, waves. Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Alexander G. Mosle (1863–1945), Germany; sold to Kate Sturges Buckingham (1858–1937), Chicago, May 31, 1928; given to the Art Institute of Chicago, 1928..",
+    "description": "In this print from Thirty-Six Views of Mount Fuji, a vast wave arches over a small Mount Fuji seen in the distance. Hokusai began the series in 1830, at age seventy; its scenes show the mountain from varied distances and directions, in different seasons and weather. The series helped establish the popularity of landscape prints. Hokusai made extensive use of the newly affordable Berlin blue pigment, often coloring sky and water with it. This impression, dated 1830–33, is later than the design’s first state.",
+    "descriptionTranslations": {
+      "ja": "富士を遠景に小さく配し、その上に巨大な波が覆いかぶさるように描かれています。葛飾北斎は70歳だった1830年に「富嶽三十六景」に着手し、季節や天候、見る距離や方角を変えて富士を表しました。同シリーズは風景版画の人気を高め、新たに手頃になったベルリン藍は、空や水の色にしばしば用いられています。本作は1830～33年頃の摺りで、初期の版とは異なる後摺りです。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/89503",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/89503",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-87479": {
     "description": "Painted in 1577–79 for the convent church of Santo Domingo el Antiguo in Toledo, this large altarpiece was the central image of El Greco’s first major commission. Its subject—the Virgin Mary’s ascent into heaven—accorded with the church’s role as the funerary monument of Doña Maria de Silva and the commission’s focus on death and salvation. In a tall, narrow composition, agitated apostles fill the earthly realm below calm angels and the rising Virgin. El Greco’s free brushwork, vivid color harmonies, and forceful arrangement of figures heighten the scene’s devotional intensity.",
@@ -875,13 +879,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-8991": {
-    "description": "In his 1912 book Concerning the Spiritual in Art , Vasily Kandinsky made an analogy between music and painting as two means of abstraction, a radical mode of artmaking that freed color and line from their traditionally representational functions. Between 1910 and 1914 he produced “improvisations,” works he described as unconscious, spontaneous expressions. Kandinsky commented on Improvisation No. 30 (Cannons) in a letter to Arthur Jerome Eddy, a friend and collector from Chicago: “The cannons . . . could probably be explained by the constant war talk going on through the year [but] the true contents are what the spectator experiences while under the effect of the forms and color combinations of the picture.”\n\nCatalogue information\nRecorded artist or maker: Vasily Kandinsky Born Moscow (formerly Russian Empire, now Russia), 1866; died Neuilly-sur-Seine, France, 1944. Date: 1913. Materials and technique: Oil on canvas. Artistic style or school: Modernism. Place of creation: Germany. Classification: oil on canvas. Physical dimensions: 111 × 111.3 cm (43 11/16 × 43 13/16 in.). Museum catalogue subjects: Century of Progress, world's fairs, Chicago World's Fairs, blue (color), purple (color), yellow (color), red (color). Museum credit line: Arthur Jerome Eddy Memorial Collection. Recorded ownership history (excerpt): Arthur Jerome Eddy (1859-1920), Chicago, probably purchased from the artist, by 1920; by descent to his wife Lucy O. Eddy (1863-1931) and son Jerome O. Eddy (1891-1951), Chicago, 1920; given to the Art Institute of Chicago, 1931.. Exhibition record (excerpt): London, Royal Albert Hall, The London Salon of the Allied Artists’ Association, Ltd., July 1913, p. 15, cat. 286. Chicago, Art Institute, Exhibition of Paintings from the Collection of the Late Arthur Jerome Eddy, September 19-October 22, 1922, cat. 36 (color ill.). Chicago, Art….",
+    "description": "In 1912, Vasily Kandinsky argued that painting, like music, could achieve abstraction by freeing color and line from their customary representational roles. Between 1910 and 1914, he made “improvisations,” which he described as spontaneous, unconscious expressions. In a letter about this 1913 oil painting, he linked its cannons to the year’s persistent talk of war, while emphasizing that its deeper content lay in the viewer’s experience of its forms and color combinations.",
+    "descriptionTranslations": {
+      "ja": "カンディンスキーは1912年、絵画と音楽を、色や線を従来の再現的な役割から解き放つ抽象表現の手段として論じました。1910年から14年にかけて制作した「即興」作品を、彼は無意識的で自発的な表現と説明しています。1913年の油彩画である本作について、画中の大砲は当時続いていた戦争の話題に結びつく可能性を認めつつ、作品の真の内容は形と色の組み合わせが鑑賞者にもたらす経験にあると述べました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/8991",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/8991",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-59847": {
     "description": "In this oil painting of 1613, Mars lashes Cupid for drawing him into an affair with Venus, while she tries unsuccessfully to stop the punishment. The three figures emerge from darkness under strong light from the left: Venus crouches wide-eyed, Mars appears muscular and furious, and the naked, reclining Cupid seems especially exposed. Their physical struggle gives a mythological story of personal discord a broader meaning as a conflict between love and war. Working in Rome, Manfredi adapted Caravaggio’s naturalistic figures and dramatic chiaroscuro, bringing mythological roles close to ordinary human experience.",
@@ -1157,13 +1165,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-97910": {
-    "description": "Frederic Remington crafted this scene of bloody confrontation for white audiences east of the Mississippi River, who imagined the West as a place of both danger and opportunity. An unseen Sioux warrior has shot a cavalry scout, who slumps over his horse while the troops behind him flee the ambush. A sculptor and illustrator as well as a painter, Remington was famous for his dynamic compositions of frontier life, which presented mythologized views of encounters between Native and settler-colonial communities in tantalizing color and detail. Although he traveled to western locations to sketch or gather material on assignment, he executed most of his work in his New York studio, including The Advance-Guard , which was later reproduced in Harper’s Weekly alongside an article by the artist.\n\nCatalogue information\nRecorded artist or maker: Frederic Remington (American, 1861–1909). Date: 1890. Materials and technique: Oil on canvas. Place of creation: New York. Classification: painting. Physical dimensions: 87.3 × 123.1 cm (34 3/8 × 48 1/2 in.). Museum catalogue subjects: fashion, animals, people, portraits. Museum credit line: George F. Harding Collection. Recorded ownership history (excerpt): Frederic Remington, 1890; E.H. Wales, 1893. George F. Harding, Jr. (1868–1939), Chicago, by 1939 [Harding Collection no. 405]; bequeathed to the George F. Harding Museum, Chicago, 1939 [the museum closed in 1964 and the collection was placed in storage in Chicago and New York]; transferred to the Art Institute of Chicago, July 30, 1982 [incoming receipt, RX13605, July 30…. Exhibition record (excerpt): St. Louis, 1892. New York, American Art Galleries, 1893. Art Institute of Chicago, Paintings and Bronzes by Frederic Remington Lent by the George F. Harding Museum , June 21–Oct. 10, 1969. Mt. Vernon, Ill., Mitchell Museum, Harding Foundation, Medieval and Renaissance Armor and….",
+    "description": "In this oil painting, an unseen Sioux warrior’s shot strikes a cavalry scout, who slumps across his horse as the troops behind him flee an ambush. Frederic Remington made the scene for eastern white audiences who imagined the West as a place of danger and opportunity. Known as a sculptor and illustrator as well as a painter, he created most of his work in his New York studio, including this 1890 canvas, later reproduced in Harper’s Weekly with an article by the artist. His frontier scenes offered mythologized accounts of encounters between Native and settler-colonial communities.",
+    "descriptionTranslations": {
+      "ja": "見えないスー族の戦士の銃弾を受けた騎兵の斥候が馬上に崩れ、その背後では兵士たちが待ち伏せから逃げていく。フレデリック・レミントンは、西部を危険と機会の地と見なしたミシシッピ川以東の白人観客に向けて、この油彩画を制作した。彫刻家、挿絵画家としても知られたレミントンは、多くの作品をニューヨークのアトリエで制作しており、本作もその一つである。1890年作の本作は、のちに作家自身の記事とともに『ハーパーズ・ウィークリー』誌に掲載された。彼の西部表現は、先住民と入植者の遭遇を神話化して描いている。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/97910",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/97910",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-105466": {
     "description": "Joachim Wtewael depicts the Olympian gods’ victory over the giants in a small painting on copper. Against clouds, Jupiter hurls thunderbolts, Neptune raises his trident, Mercury turns his caduceus into a spear, and the helmeted Minerva stands at the right. Exaggerated athletic poses and sharp contrasts of space and light showcase the artist’s skill. The copper support lends the work a gemlike effect; such self-conscious virtuosity was characteristic of Mannerism, fashionable in Holland around 1600.",
@@ -1556,13 +1568,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-88977": {
-    "description": "The famous series Eight Views of the Parlor was produced in 1766, around the time of the emergence of full-color prints in Japan. The series contains eight prints that were housed together in a fanciful wrapper, all of which are now in the Art Institute’s collection. These scenes present visual puns based on well-known themes of the Xiao and Xiang Rivers in China, each of which has its own poetic title. For Evening Snow , Suzuki Harunobu depicted silk floss as snow and the floss shaper as the mountain rather than showing snow-covered hills. Such witty visual riddles would have been appreciated by the audience of these prints—wealthy, well-educated townsmen who participated in poetry circles. One such figure was Ōkubo Jinshirō Tadanobu, whose pseudonym was Kyosen. It is thought that he produced this set, engaging Harunobu’s services as well as those of the printer. In fact, this image contains Kyosen’s handwritten signature, leading scholars to believe that the Art Institute’s set is the first edition. Sets with Harunobu’s signature exist in other collections.\n\nCatalogue information\nRecorded artist or maker: Suzuki Harunobu 鈴木 春信 Japanese, 1725 (?)-1770. Date: c. 1766. Materials and technique: Color woodblock print; chuban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 28.7 × 21.6 cm (11 1/4 × 8 1/2 in.); Mat: 63.5 × 40.7 cm (25 × 16 in.). Museum catalogue subjects: women, puns, wordplay, language, rivers, hairstyles, pipes. Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Alexander G. Mosle (1863–1945), Germany; sold to Kate Sturges Buckingham (1858–1937), Chicago, May 31, 1928; given to the Art Institute of Chicago, 1928.. Exhibition record (excerpt): Designed for Pleasure: The World of Edo Japan in Prints and Paintings, 1680–1860, Asia Society, February 27 – May 4, 2008. Chiba, Japan, Chiba City Museum of Art, \"Suzuki Harunobu\" 14 September-20 October 2002; traveled to Hagi Uragami Museum, Yamaguchi 2 November-8 December….",
+    "description": "One of eight prints in Suzuki Harunobu’s 1766 series Eight Views of the Parlor, this scene recasts a poetic theme known as Evening Snow as a visual pun: silk floss becomes snow, and the tool used to shape it stands in for a mountain. The series translates celebrated Chinese river views into witty domestic riddles for educated, affluent townsmen, including participants in poetry circles. The Art Institute’s color woodblock print bears the handwritten signature of Kyosen, the pseudonym of the man thought to have commissioned the set, and is believed to be an early edition.",
+    "descriptionTranslations": {
+      "ja": "鈴木春信が1766年頃に制作した「座敷八景」の一図。中国の名勝を詠む「瀟湘八景」の題を室内の情景に置き換え、この「ぬり桶の暮雪」では、真綿を雪に、綿打ちの道具を山に見立てています。詩歌の会に参加する富裕で教養ある町人たちに向けた、言葉と視覚の洒落です。シカゴ美術館所蔵の彩色木版画には、制作を依頼したと考えられる大久保甚四郎忠信（狂仙）の自筆署名があり、初摺とみられています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/88977",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/88977",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-76816": {
     "description": "This page from the Akbarnama, commissioned by Emperor Akbar, depicts the ruler at thirteen, three days after his accession, as his father’s favored courtier Shah Abu’l-Ma’ali is arrested for insolence. Akbar watches from a gold throne on a carpeted platform in a garden encampment, reflecting his reign on the move. Designed by Basawan, who signed the page in red, the painting was completed by Shankar; their collaboration exemplifies the shared work of Akbar’s atelier. Made around 1590–95 in opaque watercolor and gold on paper, it belongs to a manuscript illustrated by a workshop of about fifty artists.",
@@ -1604,13 +1620,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-8958": {
-    "description": "James McNeill Whistler created thinly painted compositions with flat, nearly abstract passages, purposefully subtle in character. He called works such as this one an “arrangement,” emphasizing formal elements rather than subject matter. The painting still serves as a portrait—it was commissioned by Chicago attorney Arthur Jerome Eddy, a collector and advocate of modern art. After seeing Whistler’s work at the 1893 World’s Columbian Exposition in the city, Eddy traveled to the artist’s studio in Paris expressly to sit for this portrait. The two became lasting friends, and Eddy published a book on Whistler after the artist’s death in 1903.\n\nCatalogue information\nRecorded artist or maker: James McNeill Whistler (American, 1834–1903). Date: 1894. Materials and technique: Oil on canvas. Artistic style or school: Modernism. Place of creation: Paris. Classification: painting. Physical dimensions: 210.7 × 93.3 cm (82 15/16 × 36 3/4 in.). Museum catalogue subjects: fashion, portraits, men, Chicago, people. Museum credit line: Arthur Jerome Eddy Memorial Collection. Recorded ownership history (excerpt): Commissioned by Arthur Jerome Eddy (1859–1920), Chicago, 1894; by descent to his wife, Lucy “Lulu” Crapo Orrell Eddy (1863–1931), and son, Jerome Orrell Eddy (1891–1951), Chicago, 1920; given to the Art Institute of Chicago, 1931.. Exhibition record (excerpt): Philadelphia, Pennsylvania Academy of the Fine Arts, Seventy-Third Annual Exhibition, Jan. 25–Mar. 5, 1904, cat. 31, as An Arrangement in Flesh Color and Brown. Boston, Copley Hall, Memorial Exhibition of the Works of Mr. J. McNeill Whistler: Oil Paintings, Watercolors, Pastels….",
+    "description": "In this 1894 oil portrait, James McNeill Whistler used thin paint and flat, nearly abstract passages, calling the work an “arrangement” to foreground formal elements. The sitter, Chicago attorney and modern-art advocate Arthur Jerome Eddy, commissioned it after seeing Whistler’s work at the 1893 World’s Columbian Exposition. Eddy traveled to Paris to sit for the portrait; the two became lasting friends, and Eddy later published a book on Whistler.",
+    "descriptionTranslations": {
+      "ja": "ジェームズ・マクニール・ホイッスラーは、薄塗りと平坦で抽象性を帯びた色面を用いたこの1894年の肖像を「アレンジメント」と呼び、主題だけでなく造形要素を重視しました。モデルはシカゴの弁護士で近代美術の擁護者、アーサー・ジェローム・エディです。1893年のシカゴ万国博覧会でホイッスラーの作品を見たエディが依頼し、パリの画家のアトリエで肖像のためにポーズをとりました。二人は長く親交を結び、エディは画家の没後、その著書を刊行しました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/8958",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/8958",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-16231": {
     "description": "Lorenzo Monaco’s early tempera panel, made in 1392–95, was designed as a processional cross: a hole at its base allowed it to be fixed to a pole, probably for use at the Camaldolese monastery of Santa Maria degli Angeli, where the artist lived and worked. Beneath Christ, the kneeling Mary Magdalene and a hermit suggest a penitential theme; the hermit’s halo-like rays identify him as a blessed figure, perhaps a particular member of the order. Delicate colors and simplified forms remain exceptionally well preserved.",
@@ -1665,13 +1685,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-93900": {
-    "description": "One of the most proliﬁc artists of the eighteenth century, Jean-Honoré Fragonard excelled at painting amorous subjects, lush landscapes, and lighthearted scenes of everyday life, only rarely turning his hand to the antique subjects most esteemed by the art academies. His paintings also eschewed the high ﬁnish then deemed appropriate for a carefully executed work; instead, he applied paint directly and impetuously, and his compositions often have the character of quick sketches. Portrait of a Man in Costume is closely related to a series of paintings traditionally known as “fantasy portraits,” although they actually depict members of the artist’s circle of friends and patrons. The precise identity of this ﬁgure is unknown, and the painting may have been intended as an imaginative type. The half-length format allowed Fragonard to use details of expression, pose, and dress to endow the subjects with extraordinary vitality. Ruff s, padded shoulders, and jaunty hats evoke historical costumes and reﬂect the artist’s appropriation of the styles and subjects of his predecessors, notably Peter Paul Rubens . The style of beard and mustache and the striped garment with extended shoulders suggest the fashions of the early Baroque period. The restricted color range of earthy green and brown emphasizes the man’s face, which appears luminous against a soft background. His large, heavy-lidded eyes dominate the image, their penetrating stillness contrasting with the active, undulating contours of his rumpled costume.\n\nCatalogue information\nRecorded artist or maker: Jean-Honoré Fragonard (French, 1732–1806). Date: c. 1767–68. Materials and technique: Oil on canvas. Artistic style or school: Flemish. Place of creation: France. Classification: oil on canvas. Physical dimensions: 80.3 × 64.7 cm (31 5/8 × 25 1/2 in.); Framed: 105.5 × 89.6 × 12.7 cm (41 1/2 × 35 1/4 × 5 in.). Museum catalogue subjects: portraits, France, French, hat, man, beards, costumes. Museum credit line: Gift of Mary and Leigh Block in honor of John Maxon. Recorded ownership history (excerpt): Possibly Mauperin, Paris; sold A. Paillet, Hôtel de Bullion, Paris, December 4, 1780, no. 38, for 100 livres [“Un Portrait d’homme ajusté selon le costume espagnol. Ce morceau Etude & d’une touche savante est d’un grand effect. Hauteur 30 pouces, Largeur 24. T.” (A portrait of a man dressed in a Spanish costume. This work, sketched and of a sure touch, is of great effect.…. Exhibition record (excerpt): Minneapolis, Institute of Arts, French Eighteenth-Century Painters, 1954 (not in cat.). Chicago, Art Institute, Great French Paintings: An Exhibition in Memory of Chauncey McCormick, 1955, no. 16, as An Actor in the Role of Don Quixote. Kansas City, The Nelson Gallery and Atkins….",
+    "description": "In this half-length portrait, a bearded man in a ruffled collar, padded shoulders, striped garment, and jaunty hat wears a costume recalling the early Baroque. His identity is uncertain; he may be an imaginative type rather than a known member of Fragonard’s circle. Earthy greens and browns set off the luminous face and heavy-lidded eyes, while restless contours animate the rumpled clothing. Fragonard’s direct, energetic handling favors a sketchlike effect over the polished finish prized in his day.",
+    "descriptionTranslations": {
+      "ja": "フリルの襟や張り出した肩、縞模様の衣服、斜めにかぶった帽子を身につけた男性を、フラゴナールは半身像で描いています。ひげや衣装は初期バロック風を思わせますが、人物の正体は不明で、画家の友人や patron ではなく想像上の人物である可能性もあります。土色がかった緑と褐色のなかで顔と重いまぶたの眼差しが明るく浮かび、乱れた衣服のうねる輪郭が画面に動きを添えます。絵具を直接勢いよく置く筆致は、当時重んじられた入念な仕上げよりも、素描のような印象を生み出しています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/93900",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/93900",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-234781": {
     "description": "In this oil painting on panel, Christ bears the cross as Simon of Cyrene tries to help him lift it, while a Roman soldier watches menacingly. The cross’s forceful diagonals, the figures’ poignant expressions, and a luminous landscape heighten the scene’s drama. Sebastiano del Piombo made this work around 1515–17, when devotional images of Christ carrying the cross were much sought after. A follower of Michelangelo and rival of Raphael, he was among the leading artists of the High Renaissance in Rome.",
@@ -1791,13 +1815,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-90536": {
-    "description": "For Rembrandt van Rijn, simple honesty of vision and sureness of line were far more important than the classical glorification of the nude. He focused on this subject only during certain phases of his career, and very few of the resulting studies, which he used to prepare biblical or mythological representations, survive today. This strong form is a late work, and one of only four extant drawings of the female nude attributed to Rembrandt with certainty. Unlike the almost scientific realism of his earlier nudes, his late studies are less detailed and more painterly. He attained a maximum of expression with a minimum of means. Rendered with a swift treatment by brush and the blunt reed pen favored by the artist in his late years, this ample figure projects a forceful presence. Her face is generalized, and her feelings are suggested through her contemplative pose. Her simple shape and external immobility seem to increase the viewer’s sense of her inner vitality. In Seated Female Nude , Rembrandt’s penstrokes and brushwork are integrated with the utmost lightness and perfection; the pen stresses structural features, while the brush provides a transparent, atmospheric tone linking figure and space.\n\nCatalogue information\nRecorded artist or maker: Rembrandt van Rijn Dutch, 1606-1669. Date: 1660/62. Materials and technique: Pen and brown ink and brush and brown wash, with subtractive highlights (scraping) and touches of opaque white watercolor corrections, on ivory laid paper, laid down on cream laid card. Place of creation: Holland. Classification: pen and ink drawings. Physical dimensions: Primary/secondary supports: 21.2 × 17.5 cm (8 3/8 × 6 15/16 in.). Museum catalogue subjects: interiors, nudes, women. Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Louis Corot (c. 1840–c. 1930), Nimes [stamp (Lugt 1718), recto, lower left, in black]; sold to Richard (an art dealer), Paris, in 1924 [Lugt 1718]. Alfred Strölin (1871–1954) and/or his son Alfred Strölin (1912–1974), Paris and Lausanne, by 1935 [Benesch 1935]; sold to the Art Institute of Chicago, 1953.. Exhibition record (excerpt): Bern, Switzerland, Kunstmuseum Bern, Rembrandt, Apr. 18–May 30, 1937, p. 45, cat. 198. Rotterdam, Museum Boymans, Rembrandt, May 18–Aug. 5, 1956, pp. 171–172, cat. 237, pl. 64; also Amsterdam, Rijksmuseum, Aug. 8–Oct. 21, 1956. New York, Pierpont Morgan Library, Rembrandt….",
+    "description": "In this late study, Rembrandt presents a seated nude whose ample form and contemplative pose give her a forceful presence, while her face remains generalized. Swift strokes of brush and blunt reed pen build the figure: the pen defines its structure, and transparent brown wash joins it to the surrounding space. Scraped highlights and touches of opaque white correct the image on ivory laid paper. Dated 1660–62, the drawing is one of only four surviving female-nude studies attributed to Rembrandt with certainty.",
+    "descriptionTranslations": {
+      "ja": "晩年の本作でレンブラントは、ゆったりとした量感をもつ女性裸体を座らせ、思索に沈む姿勢によって力強い存在感を生み出している。顔立ちはあえて描き込みを抑え、葦ペンの素早い線で形の骨格を示し、透明感のある褐色の洗いで人物と空間を結びつけた。紙を削って明部をつくり、不透明な白も部分的に加えている。1660～62年頃の制作で、確実にレンブラント作とされる女性裸体習作の現存例は、本作を含めて四点のみである。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/90536",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/90536",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-111164": {
     "description": "In this watercolor of about 1893, James McNeill Whistler depicts a young dancer in diaphanous drapery, distilling her graceful movement through thin washes of color. The brown paper beneath the watercolor lends opacity to the washes, giving subtle weight to the veils of fabric. The work belongs to Whistler’s 1890s exploration of the female figure in translucent garments, a theme he pursued across several media and shaped by his interest in Greek sculpture and Japanese prints.",
@@ -1852,13 +1880,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-89856": {
-    "description": "Almost nothing is known of the life of Tōshūsai Sharaku, whose entire oeuvre of bold portraits of Kabuki actors was produced during a ten-month period in 1794–95. Sharaku’s prints are frank and piercing, combining satire with decorative power. His aggressive style is made all the more dramatic by his use of a dark mica background, which throws the silhouette of the posturing actor into strong relief. Depicted here is the actor Bandō Mitsugorō portraying the character Ishii Genzō at the peak dramatic moment of the play The Iris Sōga of the Bunroku Era (Hanaayame Bunroku Sōga) . With a look of intense fury, Genzō draws his sword to aid his two brothers-in-law in avenging their father’s murder. The play is based on an event that occurred in 1701 that disrupted the civil order of the Tokugawa shogunate and scandalized the population of Edo. Commentary on contemporary issues was discouraged by the Japanese government, however, so the play was disguised as a literary recounting of a famous twelfth-century act of filial revenge that occurred in the Sōga family. Unlike the elite and highly stylized Noh theater, Kabuki was a popular form of drama that reflected and catered to the tastes and pleasures of the emerging merchant class.\n\nCatalogue information\nRecorded artist or maker: Toshusai Sharaku 東洲斎 写楽 Japanese, active 1794-95. Date: 1794. Materials and technique: Color woodblock print; oban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 37.5 × 24.7 cm (14 3/4 × 9 3/4 in.). Museum catalogue subjects: swords, vengeance, murder, kabuki, Japanese, actors (performing artists), men. Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Yamanaka & Company; sold to the Art Institute of Chicago, July 11, 1940..",
+    "description": "In this color woodblock print, Sharaku portrays the actor Bandō Mitsugorō as Ishii Genzō at a moment of fury, drawing his sword to help avenge his father-in-law’s murder. The scene comes from *The Iris Sōga of the Bunroku Era*, a Kabuki play that recast a politically sensitive event of 1701 as a tale of twelfth-century family vengeance. Sharaku’s portraits of Kabuki actors were made during a brief ten-month period in 1794–95; here, a dark mica background heightens the actor’s silhouette and the force of his pose.",
+    "descriptionTranslations": {
+      "ja": "東洲斎写楽は、怒りに燃え、義父の仇討ちに加わろうと剣を抜く坂東三津五郎を、石井源蔵役で描く。場面は歌舞伎『花菖蒲文禄曽我』から取られた。1701年の政治的に敏感な事件を、十二世紀の曽我兄弟の仇討ちとして語り直した作品である。写楽が歌舞伎役者の肖像を制作したのは1794〜95年の約十か月間。本作では暗い雲母摺りの背景が役者の姿を際立たせ、構えの迫力を強めている。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/89856",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/89856",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-160144": {
     "description": "In this 1896 lithograph, Sophie, Edvard Munch’s sister, is shown shortly before her death from tuberculosis: her head is silhouetted against a pillow. Munch had made three prints from the motif in 1894–96, following five painted versions, and described painting them as a personal and technical catharsis. Made in Paris as his first color lithograph, this impression was printed from two stones in pale blue and black ink on ivory paper; Munch also produced versions in other color combinations.",
@@ -2004,13 +2036,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-92975": {
-    "description": "Writing in the late twelfth and early thirteenth centuries, the Persian poet Nizami achieved fame with five epic poems known collectively as the Khamsa (Quintet). The most popular works in the quintet are the three romantic epics. The least popular and most difficult is the opening book, the Makhzan al-Asrar (Treasury of Mysteries). This particular text, an enigmatic pseudomystical poem, deals with issues of governance and universal justice presented as a series of moralizing discourses. The story of the great Sasanian king Anushirwan and the owls, shown here, is one of the most frequently illustrated episodes in the Makhzan al-Asrar. The monarch (reigned 531–79) and his advisor, on horseback, have become separated from their hunting party and approach a deserted village that is falling into ruin. Working in the painting style of the imperial Sasanian court, the artist provided details including crumbling candy-colored tile work, melting corncob-shaped walls, a snake emerging from a crack in a wall, and a pair of lizards scrambling on the rocks. The king hears two owls hooting— they sit on a disintegrating wall just to the left of center—and wonders what they are saying. The advisor explains that one of the birds is giving his daughter away to the other and asked for an appropriate bride-price—for example, the ruined village and one or two others. The other owl replies that if the present king’s policies didn’t change, he could give his father-in-law a hundred thousand abandoned villages. Anushirwan was an accomplished warrior, but according to this anecdote, he was not just a ruler, and his people were suffering.\n\nCatalogue information\nRecorded artist or maker: Iran Tabriz. Date: Safavid dynasty (1501–1722), c.1535. Materials and technique: Ink, opaque watercolor, and gold on paper. Artistic style or school: saffarid. Place of creation: Iran. Classification: miniature painting. Physical dimensions: Image: 18 × 11 cm (7 1/8 × 4 3/8 in.); Paper: 27.9 × 15.7 cm (11 × 6 3/16 in.). Museum catalogue subjects: kings, snakes, lizards, horses, castles, birds, ruins. Museum credit line: Samuel L. Nickerson Fund.",
+    "description": "This Safavid miniature, made in Iran around 1535, illustrates a moral tale from Nizami’s Makhzan al-Asrar, part of his Khamsa. King Anushirwan and his advisor ride toward a village in ruins after becoming separated from their hunting party. As two owls discuss a bride-price in abandoned villages, the advisor explains that their exchange condemns the suffering caused by the ruler’s policies. Ink, opaque watercolor, and gold bring out details of decay, including crumbling tiles, a snake in a wall crack, and lizards among the rocks.",
+    "descriptionTranslations": {
+      "ja": "1535年頃のサファヴィー朝イランで制作された細密画で、ニザーミーの『五部作』の一篇『神秘の宝庫』に収められた寓話を描く。狩りの一行から離れたアヌーシールワーン王と助言者は、荒廃した村へ馬で向かう。崩れた壁の上の二羽のフクロウが、花嫁の持参金として廃村を求める会話を交わし、助言者はそれを王の施政下で人々が苦しんでいることへの批判と説く。紙に墨、透明でない水彩絵具、金を用い、崩れたタイルや壁の割れ目から出る蛇、岩場を這うトカゲも細やかに描かれている。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/92975",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/92975",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-11": {
     "description": "Walter Shirlaw’s *Self-Portrait* is an oil painting on canvas dated 1878. The Art Institute of Chicago catalogue records Shirlaw as an American artist and identifies the work’s subject as a self-portrait. Made in the United States, the painting measures 70.2 by 53.4 centimeters and entered the museum as a gift from Joseph M. Rogers.",
@@ -2065,8 +2101,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-9": {
-    "description": "Interior of St. Mark's, Venice is a work attributed in the Art Institute of Chicago catalogue to David Dalhoff Neal.\n\nCatalogue information\nRecorded artist or maker: David Dalhoff Neal (American, 1838–1915). Date: 1869. Materials and technique: Oil on canvas. Place of creation: Venice. Classification: painting. Physical dimensions: 184.2 × 148.9 cm (72 1/2 × 58 1/2 in.). Museum catalogue subjects: interiors, architecture, religion, Venice, Italy, churches, cathedrals. Museum credit line: Nickerson Collection. Recorded ownership history (excerpt): Samuel M. Nickerson (1830–1914), Chicago; given to the Art Institute of Chicago, 1887..",
-    "descriptionKind": "metadata_summary"
+    "description": "Attributed in the Art Institute of Chicago catalogue to American artist David Dalhoff Neal, *Interior of St. Mark’s, Venice* is an oil painting on canvas dated 1869 and made in Venice. The catalogue identifies its subject through the categories of church interiors, architecture, and religion, but provides no further description of its appearance. Measuring 184.2 by 148.9 centimeters, it entered the museum as a gift from Samuel M. Nickerson in 1887.",
+    "descriptionTranslations": {
+      "ja": "シカゴ美術館の記録でデイヴィッド・ダルホフ・ニールの作とされる本作は、1869年にヴェネツィアで制作された油彩画です。主題はサン・マルコ寺院の内部で、館の分類では教会、建築、宗教に関わる作品とされています。画面の具体的な描写については記録に説明がありません。寸法は184.2×148.9センチで、1887年にサミュエル・M・ニッカーソンから寄贈されました。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/9",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-64476": {
     "description": "George Gardner Symons, born in Chicago, developed an Impressionist practice at the artists’ colony in St. Ives, Cornwall, and painted outdoors. He relished the challenge of winter landscapes, often working in the elements; the forceful breadth of his mature manner was regarded by critics as distinctly American. Likely made at his studio in Colrain, Massachusetts, this oil on canvas dates to about 1909. The Art Institute of Chicago acquired it from the artist in 1910.",
@@ -2082,13 +2127,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-90333": {
-    "description": "Charles Courtney Curran documented the atmosphere and activity of the Art Students’ League in New York, where he studied and later taught. Here male and female students practice rendering the idealized human form. Students worked from casts of Greek and Roman sculptures, as well as from reproductions of classically inspired Renaissance objects, such as Michelangelo’s allegorical sculpture Night from the tomb of Giuliano de’Medici, which occupies the lower left corner of this painting. In the 19th century Night would not only have served as an effective demonstration of the art of antiquity but would also have represented one of the more difficult poses to illustrate. Once students mastered drawing antique and antique-inspired sculptures, they would have advanced to a class with live models.\n\nCatalogue information\nRecorded artist or maker: Charles Courtney Curran (American, 1861–1942). Date: 1888. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: New York City. Classification: painting. Physical dimensions: 21.6 × 29.2 cm (8 1/2 × 11 1/2 in.). Museum credit line: Bequest of Kate L. Brewster. Recorded ownership history (excerpt): The artist; sold to James William Ellsworth (1849–1925), Chicago, 1888, for $135; possibly bequeathed to his daughter Clare Ellsworth Prentice (born 1885), 1925; possibly traded to John Levy or Henry Reinhardt Galleries, New York; Chester H. Johnson Galleries, Chicago; sold to Kate L. Brewster, Nov. 9, 1927, for $250 [as Julian Academy]; bequeathed to the Art Institute of…. Exhibition record (excerpt): Art Institute of Chicago, First Annual Exhibition of American Painters, May 1888, cat. 105. Art Institute of Chicago, Two Centuries of American Art, 1750-1950 , Oct. 1, 1959–Jan. 10, 1960, no cat. [downloadable checklist available]. Chicago, Terra Museum of American Art, On….",
+    "description": "Charles Courtney Curran portrays the working atmosphere of the Art Students’ League in New York, where he studied and later taught. Male and female students practice drawing idealized human forms from casts of Greek and Roman sculpture and reproductions of Renaissance works. In the lower left, Michelangelo’s Night, made for the tomb of Giuliano de’ Medici, offers a particularly challenging pose. Students progressed from antique sculpture to drawing from live models.",
+    "descriptionTranslations": {
+      "ja": "ニューヨークのアート・スチューデンツ・リーグで学び、のちに教えたチャールズ・コートニー・カランは、この作品に教室の制作風景を描いています。男女の学生たちは、ギリシャ・ローマ彫刻の石膏像やルネサンス作品の複製を手本に、理想化された人体を描いています。左下には、ジュリアーノ・デ・メディチの墓所のためにミケランジェロが制作した寓意像《夜》が置かれています。当時、古代彫刻を描く課程を終えた学生は、次に生身のモデルを描きました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/90333",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/90333",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-65709": {
     "description": "Painted in London in 1865–66, this self-portrait shows Whistler facing the viewer with palette and brush in hand. Three Japanese scrolls hang behind him, while Chinese porcelain sits on shelves to the left, reflecting his growing interest in Asian art. Thin layers of muted oil paint evoke the flattened appearance of Japanese woodblock prints; the self-portrait at the easel also recalls Velázquez’s *Las Meninas*.",
@@ -2182,13 +2231,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-97292": {
-    "description": "Robert Vonnoh was among the first American painters to explore Impressionism. He received his formative artistic training in Boston and headed to Paris in the early 1880s for further instruction. By the late 1880s, Vonnoh had settled in Grez-sur-Loing, a rural area outside of Paris that attracted a growing colony of artists who worked outdoors. Here, using a brilliant palette, broken brushstrokes, and unblended colors, Vonnoh captured the budding vegetation and warming sunlight of a spring day. Intense greens, peaches, and lavenders convey the dappled light and shadows of a winding road at right. The fence posts marking the edge of the yard and white linens hanging from a nearby tree highlight the scene’s domestic setting.\n\nCatalogue information\nRecorded artist or maker: Robert William Vonnoh American, 1858–1933. Date: 1890. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: painting. Physical dimensions: 38.7 × 55.9 cm (15 1/4 × 22 in.). Museum catalogue subjects: landscapes. Museum credit line: Wirt D. Walker Fund. Recorded ownership history (excerpt): Samuel Menat, New York, unknown dates; sold to Alexander Fisher, New York,, unknown dates; with Berry-Hill Galleries, New York, by 1982; sold to the Art Institute of Chicago, 1982.. Exhibition record (excerpt): New York, Berry–Hill Galleries, Grez Days: Robert Vonnoh in France, May 6–June 19, 1987, cat. 13..",
+    "description": "In 1890, Robert William Vonnoh painted this spring scene in Grez-sur-Loing, a rural community outside Paris where a growing colony of artists worked outdoors. Among the first American painters to explore Impressionism, he used a brilliant palette, broken brushstrokes, and unblended colors to capture budding vegetation and warming sunlight. Intense greens, peaches, and lavenders convey dappled light and shadow along the winding road at right; fence posts and white linens hanging from a nearby tree establish the scene’s domestic setting.",
+    "descriptionTranslations": {
+      "ja": "1890年、ロバート・ウィリアム・ヴォノーは、パリ郊外のグレ＝シュル＝ロワンで春の風景を描きました。当時この地には、屋外制作に取り組む画家たちが集まっていました。アメリカで早くから印象派を探究した画家の一人であるヴォノーは、鮮やかな色彩と、色を混ぜずに置く筆触によって、芽吹く草木と春の陽光を表現しています。右手の曲がり道に差す光と影は、濃い緑、桃色、藤色の色調で描かれ、柵の杭や木に掛けられた白い洗濯物が、暮らしの気配を伝えます。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/97292",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/97292",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-13506": {
     "description": "In this color print, a woman stands over a washbasin as a mirror catches part of her reflection. Stripes on her gown and leaf patterns on the blue carpet and jug enliven the quiet interior, alongside a blue-green wall and the curve of her bare back. Made in 1890–91 using aquatint and drypoint, the work belongs to a series Cassatt began in 1890, shaped by her close study of Japanese color woodblock prints, including the work of Utagawa Hiroshige.",
@@ -2789,13 +2842,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-8983": {
-    "description": "Vasily Kandinsky, along with Franz Marc , Gabriele Münter , and Alexei Jawlensky , was a founding member of Blaue Reiter (Blue Rider), a loose alliance of artists based in Munich. Often working in a common palette using expressive brushwork, they shared a belief in the symbolic and spiritual importance of forms and colors, including their effect on emotions and memories. Blaue Reiter also promoted a spontaneous, intuitive approach to painting, looking to non-Western, European medieval, and folk art for inspiration. Here the troika, a traditional carriage drawn by three horses, and the hand-painted frame, which Kandinsky made especially for this work, speak to the powerful influence these sources had on the artist.\n\nCatalogue information\nRecorded artist or maker: Vasily Kandinsky Born Moscow (formerly Russian Empire, now Russia), 1866; died Neuilly-sur-Seine, France, 1944. Date: January 18, 1911. Materials and technique: Oil on cardboard; in artist's painted frame. Place of creation: Germany. Classification: oil on cardboard. Physical dimensions: 69.7 × 97.3 cm (27 3/8 × 38 5/16 in.). Museum catalogue subjects: troikas, people, landscapes, animals, oxen, carts. Museum credit line: Arthur Jerome Eddy Memorial Collection. Recorded ownership history (excerpt): Arthur Jerome Eddy (1859–1920), Chicago, by 1920; by descent to his wife Lucy O. Eddy (1863-1931) and son Jerome O. Eddy (1891-1951), Chicago, 1920; given to the Art Institute of Chicago, 1931.. Exhibition record (excerpt): Zurich, Kunsthaus, Moderner Bund, July 1912, hors cat. Frankfurt, Galerie Goldschmidt, 1912. Chicago, Art Institute, Exhibition of Paintings from the Collection of the Late Arthur Jerome Eddy, September 19-October 22, 1922, cat. 39. Chicago, Art Institute, The Arthur Jerome Eddy….",
+    "description": "In this oil painting on cardboard, Kandinsky depicts a troika, a traditional carriage drawn by three horses. The work’s hand-painted frame was made by the artist especially for the painting. Kandinsky was a founding member of the Blaue Reiter, a Munich-based artists’ alliance that valued expressive brushwork and the symbolic, spiritual effects of color and form. Its members drew inspiration from non-Western, medieval European, and folk art—sources whose influence the troika and frame make evident here.",
+    "descriptionTranslations": {
+      "ja": "カンディンスキーは、三頭立ての伝統的な馬車「トロイカ」を、厚紙に油彩で描いた。手描きの額も、この作品のために画家自身が制作したものである。ミュンヘンを拠点とする芸術家グループ「青騎士」の創設メンバーだった彼らは、表現豊かな筆致と、色や形がもつ象徴的・精神的な力を重視した。非西洋美術、中世ヨーロッパ美術、民俗芸術への関心が、この作品の主題と額に反映されている。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/8983",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/8983",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-68388": {
     "description": "George Inness’s 1870 landscape presents the Catskills as a cultivated place: a church, tended fields, and a hayrick on the right are rendered with the precise detail associated with his early style. His reverent treatment of color and light has been connected to Swedenborgian spirituality, but also reflects his admiration for this American landscape. In the mid-nineteenth century, the Catskills drew visitors seeking spectacular views and respite from urban life.",
@@ -2824,13 +2881,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-97291": {
-    "description": "The Catskill Mountains were a favored subject of Sanford Robinson Gifford, an important landscape painter of the mid-nineteenth century who grew up nearby in Hudson, New York. In Kauterskill Clove, Catskill Mountains , Gifford bathes the forested gorge in golden light. The scene’s thick, rich atmosphere transforms a topographical view into a romantic vista. A miniscule daub of blue paint on the rocks in the foreground suggests the presence of a figure and, in turn, signals the immensity of nature, visualized here as a place of spiritual transcendence. Gifford painted numerous versions of Kauterskill Clove throughout his career, with this small sketch completed during the last year of his life.\n\nCatalogue information\nRecorded artist or maker: Sanford Robinson Gifford (American, 1823–1880). Date: 1880. Materials and technique: Oil on canvas. Place of creation: United States. Classification: painting. Physical dimensions: 33.7 × 27 cm (13 1/4 × 10 5/8 in.). Museum catalogue subjects: landscapes. Museum credit line: The Goodman and Wirt D. Walker funds. Recorded ownership history (excerpt): Charles Othniel Marsh, Connecticut, until 1899; with his estate. Peter Davidson, New York, by 1982; sold to the Art Institute of Chicago, 1982.. Exhibition record (excerpt): New York, Metropolitan Museum of Art, The Memorial Collection of the Works of the Late Sanford R. Gifford, Oct. 20, 1880–Apr. 1, 1881, cat. 36..",
+    "description": "Sanford Robinson Gifford returned often to the Catskill Mountains, a landscape he knew from growing up nearby in Hudson, New York. In this small oil sketch, completed in 1880, golden light suffuses the forested gorge, while a tiny blue mark on the foreground rocks suggests a human figure. Gifford’s richly atmospheric treatment turns the view into a romantic landscape; it was painted in the last year of his life.",
+    "descriptionTranslations": {
+      "ja": "サンフォード・ロビンソン・ギフォードは、故郷ハドソンの近くに広がるキャッツキル山地を生涯にわたり描きました。最晩年の1880年に制作したこの小さな油彩画では、森に覆われた峡谷が黄金色の光に包まれ、手前の岩に置かれたごく小さな青い絵具の点が人物の存在をほのめかします。豊かな大気感によって、地形の描写はロマン主義的な風景へと変わっています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/97291",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/97291",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-71971": {
     "description": "Sanford Robinson Gifford, a leading Hudson River School painter, often explored the Catskills through drawings and oil sketches that could provide material for later studio compositions. In this small, swiftly painted canvas, mist drifts above a pond as the low sun lights the clouds; two men tending a boat on the shore lend scale to the mountainous setting. Painted around 1861 in oil on canvas, the work captures a fleeting effect of light and atmosphere.",
@@ -2963,13 +3024,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-8969": {
-    "description": "Along with Beggar with a Duffle Coat , Beggar with Oysters formed part of a series of four paintings collectively called The Philosophers . The title refers to traditional representations of the ancient stoic philosophers, whose poverty was associated with wisdom. The anonymous men in these paintings would have been recognizable to Édouard Manet’s contemporary audience as urban types—social outcasts populating the streets of Paris. By depicting them at such a large scale and set against empty, dark backgrounds, Manet subverted expectations for paint-ing at the time, granting his figures a portrait-like, even heroic presence typically reserved for noble, historical, or religious subjects. Through his format and series title, the artist encouraged viewers to see these often-disregarded people as possessing rare insight.\n\nCatalogue information\nRecorded artist or maker: Édouard Manet (French, 1832–1883). Date: 1865–67. Materials and technique: Oil on canvas. Artistic style or school: Realism. Place of creation: France. Classification: oil on canvas. Physical dimensions: 188 × 111 cm (74 × 43 5/16 in.); Framed: 223.3 × 145.5 × 17.5 cm (87 7/8 × 57 1/4 × 6 7/8 in.). Museum catalogue subjects: portraits: male subject, peasants, portrait, men, portraits, Century of Progress, world's fairs. Museum credit line: Arthur Jerome Eddy Memorial Collection. Recorded ownership history (excerpt): The artist, until 1872; sold to Durand-Ruel, Paris, January 1872, for 1,000 or 1,500 francs [per Durand-Ruel and Durand-Ruel, 2011, 284–85]; sold to Jean-Baptiste Faure (d. 1914), Paris, November 13, 1882, along with two other paintings for 5,750 francs (known as “Philosophies”) [per the Durand-Ruel, Paris, stock book for 1877 (as no. 1189) and in the stock book for 1880–84…. Exhibition record (excerpt): Paris, Avenue de l’Alma, Exposition particulière Manet, 1867, no. 31 or 32, as Philosophe. Paris, Cercle de L’Union Artistique, 1870, no cat. Paris, École Nationale des Beaux-Arts, Exposition posthume Manet, January 1884, cat. 29 or 30. New York, National Academy of Design….",
+    "description": "One of four paintings known collectively as The Philosophers, this work presents an anonymous Parisian street outcast as a beggar with oysters. Manet set the figure on a large scale against a dark, empty background, giving him the portrait-like, even heroic presence usually reserved for noble, historical, or religious subjects. The title invokes ancient Stoic philosophers, whose poverty was linked with wisdom, and invites viewers to regard people often overlooked in the city as possessing insight. Painted in oil on canvas in 1865–67, the work belongs to Manet’s series of urban types.",
+    "descriptionTranslations": {
+      "ja": "本作は、総称して《哲学者たち》と呼ばれる4点のうちの一作で、牡蠣を手にした物乞いを描く。匿名の人物は、当時のパリの街路にいた社会の周縁に生きる人々の一人として認識されただろう。マネは人物を大きく、暗く何もない背景の前に配し、貴族や歴史・宗教主題に通常与えられる、肖像画のような、時に英雄的な存在感をもたらした。題名は、貧しさが知恵と結びつけられた古代ストア派の哲学者を想起させ、見過ごされがちな人々にも洞察があると示す。1865–67年、油彩・カンヴァス。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/8969",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/8969",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-864": {
     "description": "Quentin Massys painted this half-length portrait in oil on panel around 1500–10, early in his career, for a period when Antwerp’s growing body of patrons favored established portrait conventions. The sitter’s pose is deliberately stiff, and his left hand rests against the lower edge, creating a spatial effect associated with earlier Netherlandish portraits. Yet subtle modeling gives the face a distinct individuality rather than idealizing it. The carnation he holds may signify marriage or the Incarnation of Jesus Christ.",
@@ -3024,13 +3089,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-97873": {
-    "description": "One of the most original literary painters of the mid-19th century, John Quidor frequently drew on the popular tales of the American author Washington Irving, interpreting them with great imagination and a genuine flair for drama. Quidor’s Rip Van Winkle depicts the moment that Rip, awake after his 20-year sleep in the Catskill Mountains, confronts the suspicious townsfolk who do not recognize their long-lost neighbor. Unlike many portrayals of Rip Van Winkle that emphasize his age and confusion, Quidor’s version casts Rip as strong and defiant. Gesturing forcefully at his son (who is slumped against a tree), Rip acts to regain his sense of belonging in a now-unfamiliar world.\n\nCatalogue information\nRecorded artist or maker: John Quidor American, 1801–1881. Date: 1829. Materials and technique: Oil on canvas. Place of creation: United States. Classification: painting. Physical dimensions: 69.9 × 87.3 cm (27 1/2 × 34 3/8 in.). Museum catalogue subjects: people, portraits. Museum credit line: George F. Harding Collection. Recorded ownership history (excerpt): With Macbeth Gallery, New York, 1939; consigned to the Downtown Gallery, New York, 1940. George F. Harding Museum, Chicago, by 1966; transferred to the Art Institute of Chicago, 1982.. Exhibition record (excerpt): New York, National Academy of Design, Annual Exhibition, 1829, cat. 8..",
+    "description": "In this 1829 oil painting, John Quidor depicts a scene from Washington Irving’s tale: Rip Van Winkle awakens after twenty years in the Catskill Mountains and faces townspeople who no longer recognize him. Rather than appearing aged and bewildered, Rip is shown as strong and defiant, gesturing forcefully toward his son, who slumps against a tree. Quidor, known for his imaginative and dramatic interpretations of Irving’s stories, presents Rip struggling to reclaim a place in a world that has changed.",
+    "descriptionTranslations": {
+      "ja": "ジョン・クィダーは、ワシントン・アーヴィングの物語から、キャッツキル山地で二十年の眠りから目覚めたリップ・ヴァン・ウィンクルが、彼を覚えていない町の人々と向き合う場面を描いています。年老いて戸惑う人物としてではなく、力強く反抗的な姿で表され、木にもたれる息子を強く指し示します。アーヴィング作品を想像力豊かに劇的に描いた画家による、変わり果てた世界で居場所を取り戻そうとするリップの姿です。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/97873",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/97873",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-110776": {
     "description": "A man lies dead, swathed in white sheets: long mistaken for a self-portrait by Théodore Géricault, this canvas was identified as the work of his friend and follower Charles Emile Champmartin when cleaning revealed the signature. Later research established that it depicts Géricault on his deathbed in 1824, after chronic tuberculosis claimed his life at 32. His bold challenge to classical ideals of beauty and untimely death made him an emblem of the tragic Romantic artist; images of his passing circulated widely in the nineteenth century.",
@@ -3072,13 +3141,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-97907": {
-    "description": "A trip to Mexico in 1889 provided Frederic Remington with a wealth of firsthand material for paintings and illustrations created later in his New York studio. Here Remington depicted a vaquero, a Mexican horseman similar to the cowboys of the American frontier. The figure sits astride his horse at an elevated position, his head and torso above the horizon, outlined by the pale blue sky behind him. Portraying the man with a direct gaze and his hand on the reins, Remington suggested that the vaquero was a fixture of the local terrain. The artist created a version of A Mexican Vaquero as a wood engraving, which appeared in Harper’s Monthly in 1891.\n\nCatalogue information\nRecorded artist or maker: Frederic Remington (American, 1861–1909). Date: 1890. Materials and technique: Oil on canvas. Place of creation: New York. Classification: painting. Physical dimensions: 82.6 × 58.4 cm (32 1/2 × 23 in.). Museum catalogue subjects: fashion, animals, people, portraits. Museum credit line: George F. Harding Collection. Recorded ownership history (excerpt): George F. Harding, Jr. (1868–1939), Chicago, by 1939 [Harding Collection no. 400]; bequeathed to the George F. Harding Museum, Chicago, 1939 [the museum closed in 1964 and the collection was placed in storage in Chicago and New York]; transferred to the Art Institute of Chicago, July 30, 1982 [incoming receipt, RX13605, July 30, 1982; copy in curatorial object file]…. Exhibition record (excerpt): Art Institute of Chicago, Paintings and Bronzes by Frederic Remington Lent by the George F. Harding Museum , June 21–Oct. 10, 1969. Mt. Vernon, Ill., Mitchell Museum, Harding Foundation, Medieval and Renaissance Armor and Weapons, Remington Paintings, Bronzes and Drawings , Dec.….",
+    "description": "After visiting Mexico in 1889, Frederic Remington drew on firsthand material for works made later in his New York studio. In this 1890 oil painting, a vaquero—a Mexican horseman akin to an American frontier cowboy—sits astride his horse, raised against a pale blue sky, with his head and torso above the horizon. His direct gaze and hand on the reins present him as part of the local landscape. Remington also made a wood engraving of the subject, published in Harper’s Monthly in 1891.",
+    "descriptionTranslations": {
+      "ja": "フレデリック・レミントンは1889年のメキシコ旅行で得た実見の資料をもとに、帰国後ニューヨークのスタジオで作品を制作しました。1890年の本作は、アメリカ西部のカウボーイに似たメキシコの騎馬牧童、バケーロを描く油彩画です。馬上の人物は淡い青空を背に、頭部と胴体が地平線より高く現れ、手綱に手を添えて正面を見つめます。主題を木版画にも起こし、1891年刊の『ハーパーズ・マンスリー』に掲載しました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/97907",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/97907",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-87760": {
     "description": "Lucas Cranach the Elder painted this portrait of Magdalena of Saxony, wife of Elector Joachim II of Brandenburg, around 1529, using oil on panel. As court painter to the electors of Saxony, Cranach fashioned portraits that underscored princely status through carefully rendered clothing and jewelry. A signet ring in a companion portrait of Joachim identifies the sitter; a watercolor showing Magdalena in the same patterned dress supports the proposed date and connection to Cranach’s visit to Berlin.",
@@ -3133,13 +3206,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-89043": {
-    "description": "The early 19th century was a troubled time in Spain. After Napoleon placed his brother, Joseph Bonaparte, on the Spanish throne in 1808, the people rose up in rebellion, eventually driving the French out with the help of the British army. Although his own sentiments were patriotic and liberal, Francisco de Goya dutifully fulfilled his obligations as first painter to the king. This is a portrait of José Manuel Romero, a minister under Joseph Bonaparte, although the degree to which the man is overwhelmed by his splendid court uniform and decorations may suggest a certain lack of sympathy on the part of the artist.\n\nCatalogue information\nRecorded artist or maker: Francisco José de Goya y Lucientes (Spanish, 1746–1828). Date: c. 1810. Materials and technique: Oil on canvas. Artistic style or school: nineteenth century. Place of creation: Spain. Classification: painting. Physical dimensions: 105.5 × 87.7 cm (41 1/2 × 34 1/2 in.); Framed: 136.6 × 114.7 cm (53 3/4 × 45 1/8 in.). Museum catalogue subjects: portraits: Spanish subject, decoration, generals, gold (color), lace, man, medals. Museum credit line: Gift of Mr. and Mrs. Charles Deering McCormick.",
+    "description": "Painted around 1810, this oil portrait depicts José Manuel Romero, a minister serving under Joseph Bonaparte, who was placed on the Spanish throne by Napoleon in 1808. Spain’s ensuing rebellion and the French occupation formed a turbulent backdrop to Goya’s work as first painter to the king. Romero’s splendid court uniform and decorations dominate the presentation; the museum suggests that his apparent overwhelm by them may hint at Goya’s limited sympathy for the sitter.",
+    "descriptionTranslations": {
+      "ja": "ゴヤが油彩で描いた本作は、ナポレオンの兄ジョゼフ・ボナパルトがスペイン王位に就いた1808年以後、その政権で大臣を務めたホセ・マヌエル・ロメロの肖像です。反乱とフランス軍の占領が続く時代、ゴヤは国王付き首席画家として務めを果たしました。豪華な宮廷服と勲章が人物を圧倒するように見える点に、画家のモデルへの共感の薄さを読み取れる可能性があると、美術館は指摘しています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/89043",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/89043",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-14594": {
     "description": "In this oil portrait, Édouard Manet depicts an unidentified woman whose amused half-smile suggests a lively exchange with the artist. A few strokes convey her jovial presence, while short, precise marks define her face and costume. Manet first blocked in the figure with dark lines, then brushed on a thin green wash, perhaps the beginning of a patterned background; he left the work unfinished. Her blue-black coiffure with curly bangs places the painting around 1878.",
@@ -3454,13 +3531,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-94126": {
-    "description": "Jean-Baptiste Oudry received numerous commissions from Louis XV of France, who admired his skill as a painter of animals and still lifes. The artist frequently combined his two specialties, as in this work, in which a monkey, an animal celebrated in this period for its mischievous and lustful character, snatches a few grapes. The French Rococo taste for the sensual is manifest in the lush, overripe quality of the fruits and flowers, reminiscent of 17th-century Flemish works that Oudry is known to have studied. Paintings such as this typically adorned dining rooms as part of an overall decorative scheme.\n\nCatalogue information\nRecorded artist or maker: Jean Baptiste Oudry (French, 1686–1755). Date: 1724. Materials and technique: Oil on canvas. Artistic style or school: 18th Century. Place of creation: France. Classification: oil on canvas. Physical dimensions: 141.6 × 144.8 cm (55 3/4 × 57 in.); Framed: 172.8 × 175.3 × 12.7 cm (68 × 69 × 5 in.). Museum catalogue subjects: still life, animals, vase, tulips, trees, sky, pink (color). Museum credit line: Major Acquisitions Centennial Fund. Recorded ownership history (excerpt): Louis Aubert, Lyon (died c. 1886); his sale, Hôtel des Ventes, Lyons, April 12–13, 1886, lot 43, as Singe dérobant des fruits. Paris art market, c. 1970 [according to Opperman 1977 and telephone conversation of Opperman with Martha Wolff, July 12, 2005]. Heim Gallery, London by 1977; sold to the Art Institute, 1977.. Exhibition record (excerpt): Paris, Galeries Nationales du Grand Palais, J.–B. Oudry, 1686–1755, 1982–83, cat. 32 (cat. 17 in English catalogue); traveled to Kimbell Art Museum, Forth Worth, Texas, and Kansas City, Missouri..",
+    "description": "In this 1724 still life, a monkey grabs grapes amid fruit and flowers, bringing together Jean-Baptiste Oudry’s specialties in animals and still-life painting. The lush, overripe produce reflects French Rococo taste for sensuality, while recalling the seventeenth-century Flemish art Oudry studied. Works of this kind commonly formed part of decorative schemes in dining rooms; Oudry also received numerous commissions from Louis XV, who admired his paintings of animals and still lifes.",
+    "descriptionTranslations": {
+      "ja": "果実と花のあいだで猿がブドウをつかむ本作は、動物画と静物画を得意としたジャン＝バティスト・ウードリーが1724年に描いた作品です。熟しきった果物や花の豊かな表現には、官能性を好むフランス・ロココの趣味が表れ、ウードリーが学んだ17世紀フランドル絵画とのつながりもうかがえます。この種の絵画は食堂の装飾の一部として飾られました。ウードリーは動物画や静物画を評価したルイ15世から、数多くの注文を受けています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/94126",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/94126",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-16794": {
     "description": "Winslow Homer’s watercolor study shows a lone castaway aboard a broken, waterlogged boat amid churning waves, with a shark appearing to swim over the submerged side. The cropped sheet presses the shark’s belly against the picture plane; the castaway’s calm or dazed expression and relaxed pose leave his fate uncertain. Homer made the work in connection with his 1898 return from the Bahamas, probably in his Prout’s Neck studio, developing a subject he had explored in earlier watercolors and later in his oil painting The Gulf Stream. It is transparent watercolor with touches of opaque watercolor and graphite on paper.",
@@ -3515,13 +3596,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-93433": {
-    "description": "For to Be a Farmer’s Boy was painted at Prout’s Neck, Maine, and is one of several watercolors in which Homer returned to his earlier theme of rural American childhood. Although the sky has faded and appears empty, X-ray fluorescence spectroscopy and FTIR analyses have yielded evidence that the artist originally painted the sky with dilute washes of chrome yellow and pink madder (both fugitive pigments ), with a minute amount of vermilion, to create a glowing orange sunset. Thus, the watercolor originally showed a young boy pausing in his work of harvesting pumpkins to gaze off toward the setting sun, recalling the work of French Barbizon School artists, who influenced Homer in his early career. Their pictures of peasants pausing for a moment of contemplation at the end of their workday resonated with Homer, who showed a lifelong preference for depicting workers. Homer derived the title from an anonymous Old English song: “Though little, I’ll work as hard as a Turk, / If you’ll give me employ /To plow and sow, and reap and mow, / And be a farmer’s boy.” Interestingly, a longer version of the song includes the line “The sun went down behind yon hills,” thereby supporting findings that the watercolor originally depicted an orange sunset.\n\nCatalogue information\nRecorded artist or maker: Winslow Homer American, 1836-1910. Date: 1887. Materials and technique: Transparent and opaque watercolor, with rewetting, blotting, and scraping, heightened with gum glaze, over graphite, on thick, rough-textured ivory wove paper (lower edge trimmed). Place of creation: United States. Classification: watercolor. Physical dimensions: 35.5 × 50.9 cm (14 × 20 1/16 in.). Museum catalogue subjects: labor, work, children, farm life, people. Museum credit line: Gift of Mrs. George T. Langhorne in memory of Edward Carson Waller. Recorded ownership history (excerpt): Mr. and Mrs. Edward C. Waller, Sr. (née Mary Kirk; died 1963), Chicago, c. 1890; by descent to their daughter, Mrs. George T. Langhorne (née Mary Kirk Waller), Chicago; given to the Art Institute, 1963.. Exhibition record (excerpt): New York, American Watercolor Society,\" Twenty-first Annual Exhibition,\" January 30–February 25, 1888, p. 22, cat. 360, as “For to be a Farmer’s Boy” (Old Song). The Art Institute of Chicago, \"Chicago Collectors,\" September 20–October 27, 1963, pp. 5 and 26, pl. 15. The Art….",
+    "description": "Painted at Prout’s Neck, Maine, this watercolor returns to Winslow Homer’s recurring subject of rural American childhood. A boy pauses while harvesting pumpkins to look toward a sunset; although the sky now appears empty, scientific analysis found traces of pigments indicating that Homer originally rendered it as a glowing orange. The scene’s contemplative pause at the end of a working day recalls the French Barbizon artists who influenced Homer and his enduring interest in workers. Its title comes from an anonymous Old English song about a boy seeking farm work.",
+    "descriptionTranslations": {
+      "ja": "メイン州プラウツ・ネックで描かれた本作は、ホーマーが繰り返し取り上げた、農村に暮らすアメリカの子どもの主題に連なる。カボチャの収穫を中断した少年は夕日を見つめる。現在は空が色あせているが、科学的分析により、もとは顔料を用いて鮮やかな橙色の夕空が描かれていたことが示された。一日の労働の終わりに思いを巡らす人物像には、ホーマーに影響を与えたフランスのバルビゾン派との響き合いが見られる。題名は、農作業を求める少年を歌った作者不詳の古い英語の歌に由来する。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/93433",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/93433",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-16791": {
     "description": "In this 1882 drawing, Maggie Storey, one of Winslow Homer’s favorite models, stands on the high chalk cliffs of Flamborough with a large basket, her hands firmly on her hips. Seen from slightly below, the fisherwoman appears resolute and monumental. Homer combines graphite with opaque white watercolor, using broad, varied washes to evoke clouds, mist, and distance; a sharply defined horizon gives structure to the lower sky. His more solid, refined figure drawing reflects, in part, his study of Old Master drawings at the British Museum.",
@@ -3576,13 +3661,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-99603": {
-    "description": "In contrast to the free, confident brushwork of his Nassau images, Homer’s watercolors completed in Cuba (winter 1884-85) are characterized by more neutral color and finicky handling. In The Cock Fight , Homer used the simple backdrop of a plaster wall to offset his careful depiction of two decoratively feathered roosters. Although painted with atypical deliberation, the watercolor is intended to capture the fleeting moment when a battered young rooster has just vanquished an older, fully plumed male. As the fallen bird dies, feathers and dust stirred up by the battle still hover in the humid air.\n\nCatalogue information\nRecorded artist or maker: Winslow Homer American, 1836-1910. Date: 1885. Materials and technique: Transparent and opaque watercolor, with traces of scraping, over graphite, on thick, moderately textured, cream wove paper (top and lower edges trimmed). Place of creation: United States. Classification: watercolor. Physical dimensions: 26.5 × 48.4 cm (10 7/16 × 19 1/16 in.). Museum catalogue subjects: animals. Museum credit line: George F. Harding Collection. Recorded ownership history (excerpt): John La Farge (1835–1910), Boston, before 1910 [according to correspondence from Abigail Booth Gerdts to the Art Institute, May 6, 1997]. George F. Harding, Jr. (died 1939) and the George F. Harding Museum, Chicago, before 1939; ownership transferred to the Art Institute, 1982; accessioned by the Art Institute, 1990.. Exhibition record (excerpt): New York, Reichard and Company, Water-Color Views by Winslow Homer, December [c. 18–c. 31], 1885 [according to correspondence from Abigail Booth Gerdts to the Art Institute, May 6, 1997]. Boston, Doll and Richards, Winslow Homer and Walter Gay, February 19-March 3, 1886….",
+    "description": "Completed in Cuba in the winter of 1884–85, this watercolor depicts the instant a battered young rooster defeats an older, fully plumed bird. Against a plain plaster wall, Homer carefully renders their decorative feathers; dust and loose plumage still hang in the humid air as the fallen rooster dies. Unlike the freer brushwork of his Nassau scenes, the work uses more neutral color and deliberate handling. Transparent and opaque watercolor over graphite, with traces of scraping, was applied to textured cream paper.",
+    "descriptionTranslations": {
+      "ja": "1884〜85年の冬にキューバで制作された本作は、傷ついた若い雄鶏が、羽毛の豊かな年長の雄鶏を倒した瞬間を描く。簡素な漆喰壁を背景に、ホーマーは二羽の装飾的な羽を丹念に描き、倒れた鳥が息絶えるなか、闘いで舞い上がった羽毛と塵が湿った空気に漂う。ナッソーでの水彩画に見られる自由な筆致とは異なり、色調はより中性的で、描写には慎重さが際立つ。厚手のクリーム色の紙に、鉛筆の下描きの上から透明・不透明水彩を施し、削りの跡も残す。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/99603",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/99603",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-18686": {
     "description": "Delacroix’s study isolates lions’ heads and paws, drawing on his practice of recording animal forms for possible use in future paintings. Although he did not complete classical academy training, he continued to study details from three-dimensional models, including live caged animals and dissected specimens. Here, watercolor touches enliven graphite marks on tan paper, distinguishing the work from the monochrome animal-part casts used by his friend Antoine-Louis Barye.",
@@ -3975,8 +4064,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-95752": {
-    "description": "Allegory of Sea Trade is a work attributed in the Art Institute of Chicago catalogue to Raphael.\n\nCatalogue information\nRecorded artist or maker: After Raffaello Sanzio, called Raphael Italian, 1483-1520. Date: 18th century. Materials and technique: Red chalk on ivory laid paper. Place of creation: Italy. Classification: chalk. Physical dimensions: 31.5 × 18.3 cm (12 7/16 × 7 1/4 in.). Museum credit line: The Leonora Hall Gurley Memorial Collection.",
-    "descriptionKind": "metadata_summary"
+    "description": "This drawing, titled *Allegory of Sea Trade*, is catalogued as made after Raffaello Sanzio, known as Raphael, rather than as a work by the artist himself. It dates to the eighteenth century and was made in Italy using red chalk on ivory laid paper. The sheet measures 31.5 by 18.3 centimeters.",
+    "descriptionTranslations": {
+      "ja": "《海上貿易の寓意》は、ラファエロ本人の作品ではなく、その作に基づくものとして目録に記載されています。18世紀にイタリアで制作された、象牙色の簀目紙に赤チョークで描いた素描で、寸法は31.5×18.3センチです。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/95752",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-83583": {
     "description": "This drawing depicts ships at sea during a storm. Made in France and dated 1830/49, it combines pen and black ink with graphite on ivory wove paper. The Art Institute of Chicago records Jules Dupré as the artist, while noting that the work may instead be by James McNeill Whistler.",
@@ -4304,13 +4402,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-97933": {
-    "description": "During World War I, after several years of inactivity because of bad health and grief over the death of his second wife, Claude Monet embarked on a period of intense work. Building a large studio and improving his garden, he began a group of monumental paintings of water lilies that he would later offer to the French state. Alongside this project, he painted a suite of 19 smaller canvases, including the present one. There is evidence—including a few photographs of the artist working in his garden—that Monet conceived these paintings outdoors and then reworked them in his studio. By this last stage of his career, however, the distinction between observation and memory in his work is intangible, and perhaps even irrelevant.\n\nCatalogue information\nRecorded artist or maker: Claude Monet (French, 1840–1926). Date: 1917–19. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: painting. Physical dimensions: 130.2 × 201.9 cm (51 1/2 × 79 1/2 in.); Framed: 147.4 × 218.5 × 9.9 cm (58 × 86 × 3 7/8 in.). Museum catalogue subjects: landscapes, pond, water, water lilies, Nymphaea, flowers, reflections. Museum credit line: Gift of Mrs. Harvey Kaplan. Recorded ownership history (excerpt): The artist (died 1926); by descent to his son, Michel Monet, Giverny [per Wildenstein 1996, and invoice on Paul Rosenberg letterhead, dated Oct. 16, 1956, in curatorial object file, Art Institute of Chicago. An estate signature stamp was documented in the lower right corner in a 1963 photograph]. Probably Katia Granoff, Paris, by Oct. 16, 1956 [per Wildenstein 1996]. Paul…. Exhibition record (excerpt): Possibly Basel, Kunsthalle Basel, Impressionisten: Monet, Pissarro, Sisley, Vorläufer und Zeitgenossen, Sept. 3–Nov. 20, 1949, cat. 203. Art Institute of Chicago, Chicago Collectors: An Exhibition Sponsored by the Men’s Council of the Art Institute, Sept. 20–Oct. 27, 1963, no….",
+    "description": "Painted in 1917–19, this oil on canvas belongs to a suite of 19 smaller water-lily paintings Monet made alongside a group of monumental canvases intended for the French state. The work dates to a period of renewed, intense activity during World War I, after illness and the death of his second wife. Photographs suggest that Monet began these paintings outdoors and reworked them in his studio; by this late stage, the boundary between direct observation and memory had become difficult to distinguish.",
+    "descriptionTranslations": {
+      "ja": "1917–19年制作の油彩画。モネは、フランス国家に贈る構想のもとで進めた大画面の睡蓮画と並行し、19点からなる小品群を描き、本作もその一つにあたる。第一次世界大戦中、病気と二番目の妻の死による悲嘆を経て、画家は再び精力的に制作した。庭で制作する姿を捉えた写真から、屋外で描き始め、後にアトリエで手を加えたと考えられる。晩年のモネにおいて、観察と記憶の境目は判然としなくなっていた。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/97933",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/97933",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-54071": {
     "description": "Made for Ella Maria Deacon in Mount Holly, New Jersey, in 1842, this quilt brings together eighty-five individually distinctive squares of appliquéd and pieced cotton. Inked names and verses turn its surface into a record of friendship and community; one contributor wrote simply, “Remember me.” The quilt may have been given as a farewell before its recipient’s marriage and move, when travel and communication demanded considerable time and effort. Its inscriptions kept absent friends close through written words.",
@@ -4508,8 +4610,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-90326": {
-    "description": "Strange Flower (Little Sister of the Poor) is a work attributed in the Art Institute of Chicago catalogue to Odilon Redon.\n\nCatalogue information\nRecorded artist or maker: Odilon Redon French, 1840-1916. Date: 1880. Materials and technique: Various charcoals, with touches of black chalk and black Conté crayon, stumping, incising and erasing, on yellowish cream wove paper altered to a golden tone. Artistic style or school: Post-Impressionism. Place of creation: France. Classification: charcoal. Physical dimensions: 40.4 × 33.2 cm (15 15/16 × 13 1/8 in.). Museum catalogue subjects: mysteries/fantasies. Museum credit line: David Adler Collection. Recorded ownership history (excerpt): Sold by the artist to Ambroise Vollard (1867-1939), Paris, December 30, 1897. Henri Petiet (1894-1980), Paris, 1940; sold to the Art Institute, 1950.. Exhibition record (excerpt): The Art Institute of Chicago, \" Unpublished Drawings for the Temptation of St. Anthony by Odilon Redon, lent by Jean Goriany, New York,\" July 26, 1941-April 30, 1942. Paris, Salle du Journal, \"Le Gallois,\" \"Deuxième Exposition des dessins de M. Odilon Redon,\" 1882. Paris, Musée….",
-    "descriptionKind": "metadata_summary"
+    "description": "Made in France in 1880, this charcoal work by Odilon Redon is titled *Strange Flower (Little Sister of the Poor)*. Redon worked on yellowish cream woven paper, giving it a golden tone, using charcoal with touches of black chalk and Conté crayon. Stumping, incising, and erasing are also recorded among the techniques. The catalogue classifies the work under mysteries and fantasies.",
+    "descriptionTranslations": {
+      "ja": "1880年にフランスで制作された、オディロン・ルドンの木炭画です。黄みがかったクリーム色の紙を黄金色に変え、木炭に黒チョークと黒いコンテ・クレヨンをわずかに加えて描いています。ぼかし、刻み、消去の技法も用いられました。館のカタログでは「神秘・幻想」の主題に分類されています。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/90326",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-19018": {
     "description": "Attributed to Utagawa Hiroshige, this Japanese color woodblock print depicts a Japanese white-eye on a flowering branch. Made in the 1830s–1840s in the yotsugiriban format, it measures 17.5 by 12.3 centimeters. The work is part of the Clarence Buckingham Collection at the Art Institute of Chicago.",
@@ -4590,12 +4701,16 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-9021": {
-    "description": "Among the German Expressionists, artists who used strong color and exaggerated form to express emotional content, Franz Marc was especially committed to his empathic interest in the life of animals. \"Is there a more mysterious idea,\" he asked, \"than to imagine how nature is reflected in the eyes of animals?\" Beginning in 1905, he devoted himself to representing the world with a fresh and purifying vision. Marc painted The Bewitched Mill following a sojourn to the Italian town of Merano in the southern Tirol. The work's title refers to the \"magical\" harmony he sensed there between human life, represented by the houses and mill on the left, and nature, embodied by the lyrical region of trees and animals on the right.\n\nCatalogue information\nRecorded artist or maker: Franz Marc German, 1880–1916. Date: 1913. Materials and technique: Oil on canvas. Place of creation: Germany. Classification: oil on canvas. Physical dimensions: Without frame: 130.2 × 90.8 cm (51 5/16 × 35 3/4 in.); 130.2 × 91.2 cm (51 1/4 × 35 7/8 in.). Museum catalogue subjects: Century of Progress, world's fairs, Chicago World's Fairs, deers, animals, birds, trees. Museum credit line: Arthur Jerome Eddy Memorial Collection. Recorded ownership history (excerpt): The artist, Munich; sold to Arthur Jerome Eddy (1859–1920), Chicago, 1914 [Barnett 2022]; by descent to his wife, Lucy O. Eddy (1863-1931) and son, Jerome O. Eddy (1891-1951), Chicago, 1920; given to the Art Institute of Chicago, 1931.. Exhibition record (excerpt): Chicago, Art Institute, Exhibition of Paintings from the Collection of the Late Arthur Jerome Eddy, September 19-October 22, 1922, cat. 50. Chicago, Art Institute, The Arthur Jerome Eddy Collection of Modern Paintings and Sculpture, December 22, 1931-January 17, 1932, cat. 12….",
+    "description": "Franz Marc painted The Bewitched Mill in 1913, after visiting Merano in the southern Tirol. Its title evokes the harmony he sensed there between human life and nature: houses and a mill occupy the left, while trees and animals fill the lyrical region on the right. A German Expressionist, Marc used strong color and exaggerated form to convey emotion, and was especially devoted to imagining the world from the perspective of animals. The oil painting was made in Germany.",
+    "descriptionTranslations": {
+      "ja": "フランツ・マルクは、南チロルの町メラーノを訪れた後、1913年に本作を描きました。題名の「魔法にかけられた水車小屋」は、旅先で感じた人間の営みと自然の調和を指します。左側には家々と水車小屋、右側には木々や動物のいる叙情的な景観が配されています。ドイツ表現主義の画家であるマルクは、強い色彩と誇張された形態によって感情を表し、とりわけ動物の目に映る世界を思い描くことに関心を寄せました。キャンバスに油彩。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/9021",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/9021",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   }
 };
