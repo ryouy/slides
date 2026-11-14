@@ -155,5 +155,9 @@ const es: Partial<Dict> = {
   "gal.columnsAuto": "Auto",
   "gal.reshuffle": "Volver a mezclar",
   "art.englishInfo": "Información detallada (inglés)",
+  "gal.randomize": "Aleatorio",
+  "art.descriptionLanguage": "Idioma de la descripción",
+  "art.descriptionJapanese": "Descripción en japonés",
+  "art.descriptionEnglish": "Descripción en inglés",
 };
 export default es;
