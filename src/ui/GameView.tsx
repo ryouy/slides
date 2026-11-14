@@ -121,7 +121,7 @@ export function GameView({ initial, title, onProgress, onCleared, onNext, nextLa
         <ClearModal state={state} onClose={() => setShowClear(false)} onNext={onNext} nextLabel={nextLabel} onHome={onBack} />
       )}
       {cleared && !showClear && (
-        <button className="btn primary wide" onClick={() => setShowClear(true)}>Show result</button>
+        <button className="btn primary wide" onClick={() => setShowClear(true)}>{t('result.showResult')}</button>
       )}
     </div>
   );
@@ -140,12 +140,12 @@ function History({ entries }: { entries: CheckEntry[] }) {
   const t = useT();
   if (!entries.length) return null;
   return (
-    <section className="history" aria-label="Hint history">
+    <section className="history" aria-label={t('word.history')}>
       <h2>{t('word.history')}</h2>
       <ul className="history-list">
         {entries.map((e, i) => ({ e, i })).reverse().map(({ e, i }) => (
           <li key={i} className="h-row">
-            <span className="h-label">#{i + 1} · ROW {e.row + 1} → WORD {e.card + 1}</span>
+            <span className="h-label">#{i + 1} · {t('word.row')} {e.row + 1} → {t('word.card')} {e.card + 1}</span>
             <span className="mini">
               {e.cells.map((l, c) => (
                 <span key={c} className={`mc${e.marks[c] ? ` m-${e.marks[c]}` : ''}${l === null ? ' blank' : ''}`}>{l}</span>
