@@ -193,7 +193,7 @@ export function ArtGameView(p: Props) {
                 const rect = boardRef.current?.getBoundingClientRect();
                 if (rect) setPreview({ left: rect.left, top: rect.top, width: rect.width, height: rect.height });
               }}>
-              <svg className="art-action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.8"/></svg>
+              <svg className="art-action-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r=".9" fill="currentColor" stroke="none"/></svg>
               <span className="art-action-label">{t('art.preview')}</span>
             </button>
             {!daily && <button className="btn" data-testid="shuffle" aria-label={t('art.shuffle')} title={t('art.shuffle')} disabled={shuffling} onClick={runShuffle}>
