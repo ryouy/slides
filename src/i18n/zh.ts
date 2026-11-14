@@ -155,5 +155,9 @@ const zh: Partial<Dict> = {
   "gal.columnsAuto": "自动",
   "gal.reshuffle": "重新随机排序",
   "art.englishInfo": "详细信息（英文原文）",
+  "gal.randomize": "随机",
+  "art.descriptionLanguage": "解说语言",
+  "art.descriptionJapanese": "日语解说",
+  "art.descriptionEnglish": "英语解说",
 };
 export default zh;
