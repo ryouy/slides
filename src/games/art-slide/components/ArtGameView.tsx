@@ -172,6 +172,11 @@ export function ArtGameView(p: Props) {
           <span className="top-sub">{artwork.artist}, {artwork.year}</span>
         </div>
         <div className="art-header-controls">
+          <div className="stats art-mobile-stats" aria-live="polite">
+            <Stat label={t('common.time')} value={formatTime(state.elapsedMs)} id="time" />
+            <Stat label={t('common.moves')} value={String(state.moves)} id="moves" />
+          </div>
+          <div className={`actions art-actions${daily ? ' daily-actions' : ''}`}>
           {!daily && (
             <div className="art-mobile-level">
               <ArtLevelMenu
@@ -183,11 +188,6 @@ export function ArtGameView(p: Props) {
               />
             </div>
           )}
-          <div className="stats art-mobile-stats" aria-live="polite">
-            <Stat label={t('common.time')} value={formatTime(state.elapsedMs)} id="time" />
-            <Stat label={t('common.moves')} value={String(state.moves)} id="moves" />
-          </div>
-          <div className={`actions art-actions${daily ? ' daily-actions' : ''}`}>
             <button className="btn" data-testid="preview" aria-label={t('art.preview')} title={t('art.preview')}
               disabled={shuffling} onClick={() => {
                 const rect = boardRef.current?.getBoundingClientRect();
