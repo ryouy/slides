@@ -13,6 +13,7 @@ import { aspectOf, gridFor } from '../logic/grid';
 import { visibleShuffleStepMs } from '../logic/generator';
 import { planReshuffle } from '../logic/reshuffle';
 import type { Artwork } from '../types';
+import { ArtLevelMenu } from './ArtLevelMenu';
 import { ArtBoard } from './ArtBoard';
 import { ArtPreview } from './ArtPreview';
 
@@ -212,13 +213,13 @@ export function ArtGameView(p: Props) {
       <div className="art-extra">
         <div className="art-desktop-meta" aria-live="polite">
           {!daily && (
-            <select className="art-level-select select" aria-label={t('big.size')} data-testid="art-size-select"
-              value={state.puzzle.size} onChange={(e) => {
-                const level = Number(e.target.value);
-                if (ART_LEVELS.some((l) => l === level)) chooseLevel(level as ArtLevel);
-              }}>
-              {ART_LEVELS.map((l) => <option key={l} value={l}>{gridLabel(l)}</option>)}
-            </select>
+            <ArtLevelMenu
+              current={state.puzzle.size}
+              getLabel={gridLabel}
+              ariaLabel={t('big.size')}
+              onSelect={chooseLevel}
+              disabled={shuffling}
+            />
           )}
           <div className="art-desktop-stats">
             <Stat label={t('common.time')} value={formatTime(state.elapsedMs)} id="time-desktop" />
