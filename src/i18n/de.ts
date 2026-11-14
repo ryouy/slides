@@ -106,5 +106,16 @@ const de: Partial<Dict> = {
   "era.1800–1849": "1800–1849",
   "era.1850–1879": "1850–1879",
   "era.1880–1899": "1880–1899",
+  "word.card": "WORT",
+  "word.letterCount": "{n} Buchstaben",
+  "word.known": "bekannt",
+  "word.hintCategory": "Kategorie",
+  "word.hintMeaning": "Bedeutung",
+  "word.hintFirst": "1. Buchstabe",
+  "word.hintExtra": "+ Buchstabe",
+  "word.hintCategoryTitle": "Kategorie anzeigen",
+  "word.hintMeaningTitle": "Bedeutung anzeigen",
+  "word.hintFirstTitle": "Ersten Buchstaben zeigen",
+  "word.hintExtraTitle": "Weiteren Buchstaben zeigen (erster nötig)",
 };
 export default de;
