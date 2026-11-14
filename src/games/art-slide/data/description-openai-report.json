@@ -1,12 +1,12 @@
 {
   "model": "gpt-6-luna",
   "recipeVersion": "openai-bilingual-v1",
-  "generatedAt": "2026-11-14T09:36:14.474765+00:00",
+  "generatedAt": "2026-11-14T09:38:06.799977+00:00",
   "totalArtworks": 404,
-  "processed": 50,
-  "remaining": 354,
-  "medianEnglishCharacters": 482.0,
-  "medianJapaneseCharacters": 191.5,
+  "processed": 75,
+  "remaining": 329,
+  "medianEnglishCharacters": 458,
+  "medianJapaneseCharacters": 179,
   "records": {
     "aic-102131": {
       "id": "aic-102131",
@@ -456,6 +456,231 @@
       "rawSourceCharacters": 678,
       "englishCharacters": 315,
       "japaneseCharacters": 104,
+      "apiWarning": null
+    },
+    "aic-13506": {
+      "id": "aic-13506",
+      "title": "Woman Bathing",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1829,
+      "englishCharacters": 449,
+      "japaneseCharacters": 174,
+      "apiWarning": null
+    },
+    "aic-13551": {
+      "id": "aic-13551",
+      "title": "Self-Portrait",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1580,
+      "englishCharacters": 461,
+      "japaneseCharacters": 163,
+      "apiWarning": null
+    },
+    "aic-138": {
+      "id": "aic-138",
+      "title": "Flower Girl in Holland",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1593,
+      "englishCharacters": 433,
+      "japaneseCharacters": 179,
+      "apiWarning": null
+    },
+    "aic-13916": {
+      "id": "aic-13916",
+      "title": "On the Balcony",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1372,
+      "englishCharacters": 375,
+      "japaneseCharacters": 160,
+      "apiWarning": null
+    },
+    "aic-14309": {
+      "id": "aic-14309",
+      "title": "Coast Scene, Bathers",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1543,
+      "englishCharacters": 389,
+      "japaneseCharacters": 160,
+      "apiWarning": null
+    },
+    "aic-14310": {
+      "id": "aic-14310",
+      "title": "Still-Life with a Green Flower Vase",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1066,
+      "englishCharacters": 332,
+      "japaneseCharacters": 143,
+      "apiWarning": null
+    },
+    "aic-144969": {
+      "id": "aic-144969",
+      "title": "The Interior of the Palm House on the Pfaueninsel Near Potsdam",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2348,
+      "englishCharacters": 575,
+      "japaneseCharacters": 232,
+      "apiWarning": null
+    },
+    "aic-14561": {
+      "id": "aic-14561",
+      "title": "The Vase of Tulips",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1924,
+      "englishCharacters": 541,
+      "japaneseCharacters": 185,
+      "apiWarning": null
+    },
+    "aic-145807": {
+      "id": "aic-145807",
+      "title": "Thistles",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1594,
+      "englishCharacters": 452,
+      "japaneseCharacters": 149,
+      "apiWarning": null
+    },
+    "aic-14594": {
+      "id": "aic-14594",
+      "title": "Portrait of a Woman with a Black Fichu",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1159,
+      "englishCharacters": 469,
+      "japaneseCharacters": 187,
+      "apiWarning": null
+    },
+    "aic-146953": {
+      "id": "aic-146953",
+      "title": "Two Cows and a Young Bull beside a Fence in a Meadow",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1876,
+      "englishCharacters": 393,
+      "japaneseCharacters": 159,
+      "apiWarning": null
+    },
+    "aic-14721": {
+      "id": "aic-14721",
+      "title": "Two Women in Yellow Kerchiefs",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 666,
+      "englishCharacters": 342,
+      "japaneseCharacters": 125,
+      "apiWarning": null
+    },
+    "aic-14792": {
+      "id": "aic-14792",
+      "title": "Olive Trees, Corfu",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 986,
+      "englishCharacters": 401,
+      "japaneseCharacters": 153,
+      "apiWarning": null
+    },
+    "aic-14817": {
+      "id": "aic-14817",
+      "title": "Flowers",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 617,
+      "englishCharacters": 360,
+      "japaneseCharacters": 160,
+      "apiWarning": null
+    },
+    "aic-150773": {
+      "id": "aic-150773",
+      "title": "Seated Woman with a Parasol (study for La Grande Jatte)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1863,
+      "englishCharacters": 394,
+      "japaneseCharacters": 153,
+      "apiWarning": null
+    },
+    "aic-151507": {
+      "id": "aic-151507",
+      "title": "Landscape with Smokestacks",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2661,
+      "englishCharacters": 442,
+      "japaneseCharacters": 190,
+      "apiWarning": null
+    },
+    "aic-152666": {
+      "id": "aic-152666",
+      "title": "Landscape, Switzerland",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1836,
+      "englishCharacters": 487,
+      "japaneseCharacters": 205,
+      "apiWarning": null
+    },
+    "aic-152747": {
+      "id": "aic-152747",
+      "title": "York Harbor, Coast of Maine",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1713,
+      "englishCharacters": 448,
+      "japaneseCharacters": 173,
+      "apiWarning": null
+    },
+    "aic-153799": {
+      "id": "aic-153799",
+      "title": "Woman Bathing Her Feet in a Brook",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1831,
+      "englishCharacters": 439,
+      "japaneseCharacters": 168,
+      "apiWarning": null
+    },
+    "aic-153969": {
+      "id": "aic-153969",
+      "title": "The Castle by the Sea",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 540,
+      "englishCharacters": 328,
+      "japaneseCharacters": 125,
+      "apiWarning": null
+    },
+    "aic-15401": {
+      "id": "aic-15401",
+      "title": "At Mouquin's",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1576,
+      "englishCharacters": 514,
+      "japaneseCharacters": 222,
+      "apiWarning": null
+    },
+    "aic-154022": {
+      "id": "aic-154022",
+      "title": "Trees (study for La Grande Jatte)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1657,
+      "englishCharacters": 425,
+      "japaneseCharacters": 158,
+      "apiWarning": null
+    },
+    "aic-154496": {
+      "id": "aic-154496",
+      "title": "Rack Picture for Dr. Nones",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1323,
+      "englishCharacters": 508,
+      "japaneseCharacters": 202,
+      "apiWarning": null
+    },
+    "aic-15468": {
+      "id": "aic-15468",
+      "title": "Saint George and the Dragon",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2374,
+      "englishCharacters": 515,
+      "japaneseCharacters": 238,
+      "apiWarning": null
+    },
+    "aic-156442": {
+      "id": "aic-156442",
+      "title": "Coffer",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2102,
+      "englishCharacters": 564,
+      "japaneseCharacters": 229,
       "apiWarning": null
     }
   },
