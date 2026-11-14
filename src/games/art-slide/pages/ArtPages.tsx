@@ -10,7 +10,8 @@ import { Page } from '../../../ui/Pages';
 import { ArtGameView } from '../components/ArtGameView';
 import { ARTWORKS, getArtwork, nextArtwork, pickRandomArtwork } from '../data';
 import { ART_LEVELS, type ArtLevel } from '../logic/board';
-import { GALLERY_COLUMN_OPTIONS, GROUP_OPTIONS, SORT_OPTIONS, filterArtworks, groupArtworks, type GalleryColumns, type GroupBy, type SortBy } from '../logic/gallery';
+import { GALLERY_COLUMN_OPTIONS, GROUP_OPTIONS, filterArtworks, groupArtworks, type GalleryColumns, type GroupBy } from '../logic/gallery';
+import { SlideSelect } from '../components/SlideSelect';
 import { dailyArtworkId, generateArtDaily, generateArtFree } from '../logic/generator';
 import { newArtGame, type ArtState } from '../logic/game';
 import { recordArtClear, useArtSave } from '../storage';
@@ -80,18 +81,41 @@ const slugId = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 export function ArtGallery() {
   const t = useT();
   const { data, update } = useArtSave();
-  const { groupBy, sortBy, columns, randomSeed } = data.gallery;
+  const { groupBy, columns, randomSeed, randomized } = data.gallery;
   const [query, setQuery] = useState('');
+  const [selectedGroup, setSelectedGroup] = useState('');
   const filtered = useMemo(() => filterArtworks(ARTWORKS, query), [query]);
-  const groups = useMemo(() => groupArtworks(filtered, groupBy, sortBy, randomSeed), [filtered, groupBy, sortBy, randomSeed]);
-  const setPrefs = (p: Partial<typeof data.gallery>) => update((d) => ({ ...d, gallery: { ...d.gallery, ...p } }));
-  const newRandomSeed = () => Math.floor(Math.random() * 0x100000000);
-  const chooseSort = (next: SortBy) => setPrefs(
-    next === 'random'
-      ? { sortBy: next, groupBy: 'none', randomSeed: newRandomSeed() }
-      : { sortBy: next },
+  const groups = useMemo(
+    () => groupArtworks(filtered, groupBy, randomized ? 'random' : 'artist', randomSeed),
+    [filtered, groupBy, randomized, randomSeed],
   );
-  const groupLabel = (label: string) => (groupBy === 'theme' ? t(`theme.${label}` as Key) : groupBy === 'era' ? t(`era.${label}` as Key) : label);
+  const activeGroup = groups.find((g) => g.key === selectedGroup) ?? groups[0];
+  const activeIndex = activeGroup ? groups.findIndex((g) => g.key === activeGroup.key) : -1;
+  const setPrefs = (prefs: Partial<typeof data.gallery>) =>
+    update((d) => ({ ...d, gallery: { ...d.gallery, ...prefs } }));
+  const selectGrouping = (value: GroupBy) => {
+    setSelectedGroup('');
+    setPrefs({ groupBy: value });
+  };
+  const reshuffle = () => setPrefs({ randomized: true, randomSeed: Math.floor(Math.random() * 0x100000000) });
+  const groupLabel = (label: string) => groupBy === 'theme' ? t(`theme.${label}` as Key)
+    : groupBy === 'era' ? t(`era.${label}` as Key) : label;
+  const groupOptions = GROUP_OPTIONS.map((o) => ({ value: o.id, label: t(`group.${o.id}` as Key) }));
+  const columnOptions = GALLERY_COLUMN_OPTIONS.map((n) => ({
+    value: String(n), label: n === 'auto' ? t('gal.columnsAuto') : String(n),
+  }));
+  const focusTab = (event: React.KeyboardEvent<HTMLButtonElement>, i: number) => {
+    const nextIndex = event.key === 'ArrowRight' ? (i + 1) % groups.length
+      : event.key === 'ArrowLeft' ? (i + groups.length - 1) % groups.length
+      : event.key === 'Home' ? 0
+      : event.key === 'End' ? groups.length - 1 : -1;
+    if (nextIndex < 0) return;
+    event.preventDefault();
+    setSelectedGroup(groups[nextIndex].key);
+    const next = event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]')[nextIndex];
+    next?.focus();
+    next?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  };
   return (
     <div className="screen gallery-screen">
       <header className="topbar">
@@ -100,65 +124,71 @@ export function ArtGallery() {
         <div className="top-right" />
       </header>
       <div className="gal-controls">
-        <input className="gal-search" data-testid="gal-search" type="search" placeholder={t('gal.search')} aria-label={t('gal.search')} value={query} onChange={(e) => setQuery(e.target.value)} />
-        <button className="btn gal-random" data-testid="gal-random" onClick={() => go(`play/${pickRandomArtwork().id}`)}>{t('art.random')}</button>
-        <label>
+        <input className="gal-search" data-testid="gal-search" type="search" placeholder={t('gal.search')}
+          aria-label={t('gal.search')} value={query}
+          onChange={(e) => { setQuery(e.target.value); setSelectedGroup(''); }} />
+        <div className="gal-control-field gal-group-field">
           <span>{t('gal.groupBy')}</span>
-          <select aria-label={t('gal.groupBy')} data-testid="group-by" value={groupBy} onChange={(e) => setPrefs({ groupBy: e.target.value as GroupBy })}>
-            {GROUP_OPTIONS.map((o) => <option key={o.id} value={o.id}>{t(`group.${o.id}` as Key)}</option>)}
-          </select>
-        </label>
-        <div className="gal-sort-field">
-          <label>
-            <span>{t('gal.sortBy')}</span>
-            <select aria-label={t('gal.sortBy')} data-testid="sort-by" value={sortBy} onChange={(e) => chooseSort(e.target.value as SortBy)}>
-              {SORT_OPTIONS.map((o) => <option key={o.id} value={o.id}>{t(`sort.${o.id}` as Key)}</option>)}
-            </select>
-          </label>
-          {sortBy === 'random' && (
-            <button className="gal-reshuffle" data-testid="gal-reshuffle" type="button"
-              aria-label={t('gal.reshuffle')} title={t('gal.reshuffle')}
-              onClick={() => setPrefs({ randomSeed: newRandomSeed() })}>
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M20 7v5h-5M4 17v-5h5" />
-                <path d="M5.9 9A7.3 7.3 0 0 1 19.6 12M18.1 15A7.3 7.3 0 0 1 4.4 12" />
-              </svg>
-            </button>
-          )}
+          <SlideSelect value={groupBy} options={groupOptions} onChange={selectGrouping}
+            ariaLabel={t('gal.groupBy')} testId="group-by" className="gal-select" />
         </div>
-        <label className="gal-columns-field">
+        <div className="gal-control-field gal-columns-field">
           <span>{t('gal.columns')}</span>
-          <select aria-label={t('gal.columns')} data-testid="gal-columns" value={String(columns)}
-            onChange={(e) => {
-              const value = e.target.value === 'auto' ? 'auto' : Number(e.target.value);
-              if (GALLERY_COLUMN_OPTIONS.includes(value as GalleryColumns)) setPrefs({ columns: value as GalleryColumns });
-            }}>
-            {GALLERY_COLUMN_OPTIONS.map((n) => (
-              <option key={n} value={String(n)}>{n === 'auto' ? t('gal.columnsAuto') : String(n)}</option>
-            ))}
-          </select>
-        </label>
+          <SlideSelect value={String(columns)} options={columnOptions}
+            onChange={(v) => {
+              const next = v === 'auto' ? 'auto' : Number(v);
+              if (GALLERY_COLUMN_OPTIONS.includes(next as GalleryColumns)) setPrefs({ columns: next as GalleryColumns });
+            }}
+            ariaLabel={t('gal.columns')} testId="gal-columns" className="gal-select"
+            align="end" />
+        </div>
+        <button className="btn gal-random" type="button" data-testid="gal-random"
+          onClick={reshuffle}>{t('gal.randomize')}</button>
       </div>
-      {filtered.length !== ARTWORKS.length && <p className="gal-count" data-testid="gal-count">{t('gal.filtered', { n: filtered.length, total: ARTWORKS.length })}</p>}
+      {filtered.length !== ARTWORKS.length && (
+        <p className="gal-count" data-testid="gal-count">
+          {t('gal.filtered', { n: filtered.length, total: ARTWORKS.length })}
+        </p>
+      )}
+      {groupBy !== 'none' && groups.length > 0 && (
+        <div className="gal-tabs" role="tablist" aria-label={t('gal.groupBy')} data-testid="gal-tabs">
+          {groups.map((g, i) => (
+            <button key={g.key} type="button" role="tab" id={`gal-tab-${i}`}
+              aria-selected={activeIndex === i} aria-controls="gal-active-panel"
+              tabIndex={activeIndex === i ? 0 : -1}
+              className={activeIndex === i ? 'on' : ''}
+              data-testid={`group-tab-${slugId(g.key)}`}
+              onClick={() => setSelectedGroup(g.key)}
+              onKeyDown={(e) => focusTab(e, i)}>
+              <span>{groupLabel(g.label)}</span>
+              <small>{g.items.length}</small>
+            </button>
+          ))}
+        </div>
+      )}
       <div data-testid="gallery">
-        {groups.length === 0 && <p className="gal-empty">{t('gal.empty', { q: query })}</p>}
-        {groups.map((g) => (
-          <section key={g.key} className="gal-group" data-testid={`group-${slugId(g.key)}`}>
-            {g.label && <h2 className="gal-h">{groupLabel(g.label)} <small>{g.items.length}</small></h2>}
-            <ul className="gallery" data-columns={columns} key={`${groupBy}-${sortBy}-${randomSeed}`}
+        {!activeGroup && <p className="gal-empty">{t('gal.empty', { q: query })}</p>}
+        {activeGroup && (
+          <section key={activeGroup.key} className="gal-group" id="gal-active-panel"
+            role={groupBy === 'none' ? undefined : 'tabpanel'}
+            aria-labelledby={groupBy === 'none' ? undefined : `gal-tab-${activeIndex}`}
+            data-testid={`group-${slugId(activeGroup.key)}`}>
+            <ul className="gallery" data-columns={columns} key={`${activeGroup.key}-${randomSeed}-${randomized}`}
               style={columns === 'auto' ? undefined : { ['--gallery-cols' as string]: columns }}>
-              {g.items.map((a, i) => (
+              {activeGroup.items.map((a, i) => (
                 <li key={a.id} style={{ ['--i' as string]: Math.min(i, 12) }}>
                   <Link to={`/art-slide/play/${a.id}`} className="gcard" data-testid={`art-${a.id}`}>
-                    <img src={a.thumbnailUrl} alt={`${a.title} – ${a.artist}`} loading="lazy" decoding="async" width={Math.round(a.width / 4)} height={Math.round(a.height / 4)} />
-                    <span className="g-title">{a.title}</span>
+                    <img src={a.thumbnailUrl} alt={`${a.title} – ${a.artist}`}
+                      loading="lazy" decoding="async"
+                      width={Math.round(a.width / 4)} height={Math.round(a.height / 4)} />
+                    <span className="g-title" title={a.title}>{a.title}</span>
                     <span className="g-meta">{a.artist} · {a.year}</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </section>
-        ))}
+        )}
       </div>
       <AdSlot />
     </div>
