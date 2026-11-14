@@ -1030,13 +1030,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-193664": {
-    "description": "In the years leading up to the British Emancipation Act of 1833, this painting of an enslaved man constituted a timely abolitionist appeal. Set against a deeply shadowed background, the figure’s upward gaze suggests a yearning for freedom as he sits manacled to a bench. The composition echoes conventional imagery of Christian saints and martyrs; artist John Philip Simpson used familiar iconography to appeal to the sentimentality of wealthy white viewers with the requisite power to sway public policy. But the deeply moving pose also reflects the artistic contribution of the man who modeled for the figure, now identified as Ira Aldridge, a freeborn American actor famous for playing the title role in Shakespeare’s Othello. His performance in Thomas Morton’s musical drama The Slave may have been the immediate inspiration for Simpson’s painting. Aldridge was also renowned for his impassioned speeches for the abolitionist cause. In 1827, when The Captive Slave was first exhibited at the Royal Academy of Arts in London, the accompanying catalogue included the following excerpt from William Cowper’s 1782 antislavery poem, “Charity”: “But ah! what wish can prosper, or what prayer, / For merchants rich in cargoes of despair.” An engraving of this work, published by Edward Finden in 1827, is also in the Art Institute’s collection.\n\nCatalogue information\nRecorded artist or maker: John Philip Simpson (English, 1782–1847). Date: 1827. Materials and technique: Oil on canvas. Artistic style or school: nineteenth century. Place of creation: England. Classification: painting. Physical dimensions: 127 × 101.5 cm (50 × 40 in.); Framed: 167.1 × 141.7 cm (65 3/4 × 55 3/4 in.). Museum catalogue subjects: men, slavery, red (color), portraits: male subject, portraits: African subject, portraits, portrait. Museum credit line: Purchased with funds provided by Mary Winton Green, Dan and Sara Green Cohan, Howard and Lisa Green and Jonathan and Brenda Green, in memory of David Green. Recorded ownership history (excerpt): Private collection, United Kingdom, after 1827 [this and the following according to Postle 2009]. Sold James Adam and Sons, Ltd., Dublin, November 6, 1996, lot no. 164, to a private collector; private collection, Surrey, United Kingdom, 1996 [according to email correspondence of May 26, 2016, between Ben Elwes and Gloria Groom; copy in curatorial file]; sold to Ben Elwes Fine…. Exhibition record (excerpt): London, Royal Academy of Arts, 1827, no. 283. London, British Institution, 1828, no. 136. Liverpool, Liverpool Academy, 1828, no. 95. Winter Park, The Cornell Fine Arts Museum, The Black Figure in the European Imaginary, Jan. 20 - Mar. 15, 2017. New York, Wallach Art Gallery….",
+    "description": "John Philip Simpson’s oil painting presents the freeborn American actor Ira Aldridge as an enslaved man, shackled to a bench against a dark background. His upward gaze and pose recall images of Christian saints and martyrs, turning familiar religious imagery into an abolitionist appeal. First shown at London’s Royal Academy in 1827, the work appeared in the years before the British Emancipation Act of 1833; Aldridge was also known for performing Othello and speaking passionately against slavery.",
+    "descriptionTranslations": {
+      "ja": "ジョン・フィリップ・シンプソンは、自由身分で生まれたアメリカ人俳優アイラ・オルドリッジを、ベンチに鎖でつながれた奴隷の姿として描いた。暗い背景のなか、上を見つめる人物の姿勢はキリスト教の聖人や殉教者の図像を思わせ、それを奴隷制廃止の訴えに生かしている。1827年にロンドンのロイヤル・アカデミーで初公開された本作は、1833年の英国奴隷解放法に先立つ時期に制作された。オルドリッジは『オセロ』の演者として知られ、奴隷制廃止を熱心に訴えていた。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/193664",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/193664",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-44892": {
     "description": "Although still-life ensembles were an important element in many of the major paintings of the avant-garde artist Édouard Manet, his most sustained interest in the genre itself was from 1864 to 1865, when Fish was painted. Manet’s focus on still lifes coincided with the gradual reacceptance of the genre during the nineteenth century, due in part to the growth of the middle class, whose tastes ran to intimate, moderately priced works. This painting, like many of Manet’s still-life compositions, recalls seventeenth-century Dutch models. The directness of execution, bold brushwork, and immediacy of vision displayed in the canvas, however, suggest why the public found Manet’s work so unorthodox and confrontational. While Fish is indeed an image of “dead nature” ( nature morte is the French term for still life), there is nothing still about the work: the produce seems fresh and the handling of paint vigorous. Further enlivening the composition is the placement of the carp, which offsets the strong diagonal of the other elements. Manet never submitted his still lifes to the official French Salon but rather sold them through the burgeoning network of art galleries in Paris and gave them to friends.\n\nCatalogue information\nRecorded artist or maker: Édouard Manet (French, 1832–1883). Date: 1864. Materials and technique: Oil on canvas. Artistic style or school: 19th century. Place of creation: France. Classification: oil on canvas. Physical dimensions: 73.5 × 92.4 cm (28 15/16 × 36 3/8 in.); Framed: 108.6 × 127 × 12.7 cm (42 3/4 × 50 × 5 in.). Museum catalogue subjects: still life, tablecloth, table, pot, knife, kitchenware, death. Museum credit line: Mr. and Mrs. Lewis Larned Coburn Memorial Collection. Recorded ownership history (excerpt): The artist; possibly sold to Basset, Paris, 1867 [this and the following per emails from Juliet Wilson-Bareau to the Art Institute of Chicago, November 11, 2016 and April 24, 2017; copies in curatorial object file]; sold to Durand-Ruel, Paris, April 1872, for 250 francs [per Durand-Ruel, Paris, stock book for 1868–73 (no. 1228); copy of reference in curatorial object file]…. Exhibition record (excerpt): Paris, Galerie Martinet, 1865, cat. 5. Paris, Place de l’Alma, Exhibition Manet Particulière, May 1867, cat. 38. Paris, Ecole Nationale des Beaux-Arts, Exposition des oeuvres d’Édouard Manet, Jan. 1884, cat. 31. Paris, Exposition Internationale Universelle, Exposition Centennale….",
@@ -1189,13 +1193,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-184371": {
-    "description": "To develop his own intimate style, Fra Bartolommeo looked to the most lyrical and harmonious paintings of his fellow artists working in Florence in the first years of the 16th century, including Leonardo da Vinci , Michelangelo , and Raphael . When the young artist came under the spell of the ardent Dominican reformer Girolamo Savonarola in 1500, he abandoned his artistic career for several years to join the order, becoming Fra (Friar) Bartolommeo. He made this work after his return to painting in 1504, investing it with a new spirituality.\n\nCatalogue information\nRecorded artist or maker: Fra Bartolommeo (Baccio della Porta; Italian, 1472-1517). Date: 1504–7. Materials and technique: Oil on panel. Artistic style or school: Renaissance. Place of creation: Italy. Classification: painting. Physical dimensions: Framed: 52.4 × 35.6 × 7.7 cm (20 5/8 × 14 × 3 in.). Museum catalogue subjects: women, Virgin and child/Madonna and child, Virgin Mary, saints, angels, nativity scenes, religion. Museum credit line: Ethel T. Scarborough Fund; John G. Searle Family Trust, L. L. and A. S. Coburn, Mr. and Mrs. Lester King, John and Josephine Louis, Samuel A. Marx, Alexander McKay, Chester D. Tripp, and Murray Vale endowment funds; purchased with funds provided by Marilynn Alsdorf, Anne Searle…. Recorded ownership history (excerpt): Sold through the Monastery of San Marco, Florence, to Domenico Perini, April 16, 1507; sent by Domenico Perini to France and possibly sold to Louis XII, King of France, along with a Noli me tangere now in the Louvre, according to a list of all Fra Bartolommeo’s pictures compiled in 1516; Bedemeau de Buxerolles, Poitou. Tabarly collection, Blois, Pierre Landry, Paris, by 1955…. Exhibition record (excerpt): Paris, Galeries nationales, Grand Palais, France 1500: Entre Moyen Age et Renaissance, Oct. 5, 2010–Jan. 10, 2011, cat. 200. Art Institute of Chicago, Kings, Queens, and Courtiers: Art in Early Renaissance France, Feb. 26–May 30, 2011, cat. 115. Rotterdam, Museum Boijamns Van….",
+    "description": "Fra Bartolommeo painted this Nativity after returning to art in 1504, following several years away from his career as a Dominican friar. His renewed work reflects the spirituality he brought to painting and his effort to shape an intimate style, informed by the lyrical, harmonious art of Florentine contemporaries Leonardo da Vinci, Michelangelo, and Raphael. Made in Italy between 1504 and 1507, it is an oil painting on panel.",
+    "descriptionTranslations": {
+      "ja": "ドミニコ会士として数年間画業を離れていたフラ・バルトロメオは、1504年に制作へ復帰した後、本作を描きました。新たな精神性を絵画に込め、レオナルド・ダ・ヴィンチ、ミケランジェロ、ラファエロら、16世紀初頭のフィレンツェで活動した画家たちの抒情的で調和のとれた作品を手がかりに、親密な作風を築こうとしています。1504〜07年頃のイタリアで制作された、板に油彩の作品です。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/184371",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/184371",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-127644": {
     "description": "A maple ablaze with red autumn leaves bears narrow patterned slips inscribed with seasonal poems, which flutter in a breeze. Tosa Mitsuoki evokes the quiet after aristocratic festivities, when beauty has passed and the courtiers have departed. The poems draw on twelfth- and thirteenth-century anthologies. Made around 1675 in ink, colors, gold leaf, and gold powder on silk, this six-panel screen is one of a pair; its companion shows a cherry tree in spring. The screens reflect a courtly revival encouraged by Empress Tōfukumon-in and Emperor Gomizunoo.",
@@ -1657,13 +1665,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-185222": {
-    "description": "Ike Taiga was a revolutionary known for revitalizing Japanese painting traditions in the eighteenth century. He infused the Chinese-inspired ink painting ( nanga ) that was gaining favor among intellectuals in Kyoto with a purely Japanese aesthetic and humor. Group Pilgrimage to the Jizo Nun is a snapshot of contemporary life in Japan presented from Taiga’s unique perspective. The print depicts pilgrims making offerings to the Jizo nun, a holy woman believed to be able to communicate with the bodhisattva Jizo, who had the power to save souls in the afterlife. Group Pilgrimage contains an inscription relating the story of the Jizo nun. Taiga was a master calligrapher, poet, and seal carver and was well versed in all forms of writing, from ancient seal script to cursive kana. Here he rendered the inscription in a cursive, informal style very much in keeping with the spontaneity of the painting itself. Taiga was also renowned for his use of finger painting and other odd techniques. Although opinions vary as to whether or not this work is a finger painting, it is clear that Taiga did not use a traditional brush. It seems likely that this could be a “paper twist painting,” in which the artist worked with scraps of twisted paper charged with ink. Inscription: Artist’s inscription and signature The 19 columns on the right side of the hanging scroll, comprising an 18-line prose describing the scene of crowd’s pilgrimage to worship the Jizō nun with his signature mumei 無名, reads as follows: 五漱乃浦濃 久路鳥なる 古とし 里尓夏のはじ免 つらた三河に住ふ 地蔵尼と亭 よハい三十七なる 十七のとしよりかて 堂ちけるとな九 可於見神耳 万ふると船まち寸とて か能うらきとに可く 路ふを於かまん登 毛呂人佐とひよる ちかきあた里耳 ありけるふとに 打 春連曽るといとめ てた 無名 In Gosu no Ura, the village where the black birds were born, I visited this year– at the beginning of the summer–[a nun] living in Mikaw, who is called the Jizo ama [Jizo nun]. She is thirty-seven years of age. From the age of seventeen, I have traveled without fail. I come by boat to this bay in order to see the face of this kami and to worship her. To say nothing of the masses and the elite [i.e., everyone] who have come nearby to these gates to worship. If one lands [by ship] at this temple, it will truly be auspicious! Mumei [one of Taiga’s art name] The 7 columns on the left side of the hanging scroll, comprising a thirty-one-syllable Japanese verse, read as follows: 寸し尓古や 本と希曽と 毛呂人濃 いただき 万つる も とふと支 Nun of great refinement! Saying, “This is the Buddha,” The multitudes come and worship. You are truly remarkable. Artist Signature: Mumei 無名 Artist Seals: Shin’nei Ike shi; Mumei (Translated by Hans Thomsen)\n\nCatalogue information\nRecorded artist or maker: Ike Taiga Japanese, 1723-1776. Date: 1755/65. Materials and technique: Hanging scroll; ink on paper. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: hanging scroll. Physical dimensions: 54.9 × 123.2 cm (21 5/8 × 48 1/2 in.). Museum catalogue subjects: pilgrimages, samurai, people. Museum credit line: Kate S. Buckingham Endowment; Margaret Gentles Fund; Purchased with funds provided by Roger L. Weston, George and Roberta Mann, Harlow and Susan Higinbotham, Charles C. Haffner III, James M. and Carol D. Trapp.",
+    "description": "In this hanging scroll, Ike Taiga depicts pilgrims gathering to make offerings to a holy woman known as the Jizo nun, believed to communicate with the bodhisattva Jizo. An inscription recounts the pilgrimage, while a short verse praises the nun; Taiga writes in an informal, cursive hand. Though he was known for unconventional methods, whether this ink-on-paper work was made with twisted paper rather than a brush remains uncertain. Dated 1755–65, it presents contemporary Japanese life through Taiga’s distinctive blend of Chinese-inspired nanga and Japanese sensibility.",
+    "descriptionTranslations": {
+      "ja": "池大雅は、地蔵菩薩と通じると信じられた地蔵尼のもとへ人々が参詣し、供物を捧げる場面を描いています。画面の長い詞書は参詣のいきさつを記し、短歌は尼を讃えます。大雅はそれらをくだけた草書で記しました。墨を用いた紙本の掛幅で、筆ではなく、ねじった紙片を使う技法の可能性も指摘されますが、確定してはいません。1755–65年頃の作で、中国風の南画に日本的な感覚を取り入れた大雅が、同時代の暮らしを題材としています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/185222",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/185222",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-31285": {
     "description": "Thomas Eakins aimed to paint the human figure with uncompromising realism, executing likenesses that focus on introspection and psychological depth. A family friend, Mary Adeline Williams sat for this portrait in 1899, a year before she would move into the Philadelphia home of Eakins and his wife, artist Susan MacDowell Eakins. Although the composition presents Addie (as she was known) as straight-laced and severe, she was described by Susan Eakins as active and engaged—riding bicycles, going to art exhibitions, and socializing between the sittings for this work.\n\nCatalogue information\nRecorded artist or maker: Thomas Eakins (American, 1844–1916). Date: 1899. Materials and technique: Oil on canvas. Artistic style or school: Realism. Place of creation: Philadelphia. Classification: painting. Physical dimensions: 61 × 50.8 cm (24 × 20 1/16 in.). Museum catalogue subjects: fashion, people, portraits. Museum credit line: Friends of American Art Collection. Recorded ownership history (excerpt): The artist, Philadelphia; by descent to his estate and to Susan Macdowell Eakins (1851–1938), Philadelphia, 1916; sold to Babcock Galleries, New York, 1939; sold to the Art Institute of Chicago, 1939.. Exhibition record (excerpt): New York City, Kleeman Gallery, Thomas Eakins, Oct. 31–Nov. 25, 1939, cat. 6, as Lady in Black. Milwaukee Art Institute, WI, Six Centuries of Portrait Masterpieces, Oct. 2–Nov. 15, 1942, as Woman in Black, Mary Adeline Williams. IL, Durand Art Institute, Lake Forest College, A….",
@@ -2027,13 +2039,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-18667": {
-    "description": "Édouard Manet represented his close friend artist Berthe Morisot twelve times between 1868 and 1874 in etching, lithography, oil paint, and watercolor. In this watercolor Manet used a limited palette and a combination of techniques to depict Morisot against a blue-green background. He worked wet-into-wet for her dress, applying wet pigment onto an already wet surface before it had time to dry, which allowed the marks to bleed and blend into one another. Then Manet used a dry-brush technique to emphasize the texture of the fabric of her dress and the ribbon in her hair. Both these textures contrast with the relative flatness of the muted background, making the sitter stand out.\n\nCatalogue information\nRecorded artist or maker: Édouard Manet French, 1832-1883. Date: 1874. Materials and technique: Watercolor over traces of graphite on cream wove paper. Artistic style or school: Impressionism. Place of creation: France. Classification: watercolor. Physical dimensions: 20.9 × 16.8 cm (8 1/4 × 6 5/8 in.). Museum catalogue subjects: women, portraits. Museum credit line: Helen Regenstein Collection. Recorded ownership history (excerpt): Possibly Jean-Baptiste Faure (1830–1914), Paris, probably after 1902, but by Sept. 1906. Paul Cassirer (1871–1926), Berlin, by 1910 [according to New York, 1983 exh. cat.]; given to his wife Tilla Durieux-Cassirer (née Ottilie Godefroy; 1880–1971), Berlin, by 1922 [Walter Feilchenfeldt, May 30, 2001, in curatorial object file; and Édouard Manet, 1922]; returned to the Cassirer…. Exhibition record (excerpt): Berlin, Paul Cassirer, Ausstellung, Sept. 22–Oct. 22, 1906, cat. 22. Stuttgart, Manet-Monet Ausstellung: Sammlung des Französischen Opernsängers Faure, Nov. 9–Dec. 1906, cat. 18. Munich, Galerie Heinemann, Manet-Monet Ausstellung, Jan. 1907, p. 9, cat. 20. Berlin….",
+    "description": "In this 1874 watercolor, Édouard Manet portrays his close friend, the artist Berthe Morisot, one of twelve portraits he made of her between 1868 and 1874. Against a muted blue-green background, a limited palette and wet-into-wet washes give her dress blended, flowing marks. Manet added dry-brush strokes to bring out the fabric’s texture and the ribbon in her hair, setting both apart from the flatter background. The work is watercolor over traces of graphite on cream wove paper.",
+    "descriptionTranslations": {
+      "ja": "1874年、エドゥアール・マネは親しい友人で画家のベルト・モリゾを水彩で描きました。1868年から1874年にかけて制作した彼女の肖像は、版画や油彩、水彩などによる12点にのぼります。青緑色の背景に限られた色調を用い、濡れた紙に絵具を重ねる技法でドレスににじみ合う筆跡を生み出しました。さらにドライブラシでドレスの布地や髪のリボンの質感を表し、平坦な背景との対比を際立たせています。クリーム色の紙に鉛筆の痕跡を残し、その上に水彩を施した作品です。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/18667",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/18667",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-138": {
     "description": "After settling in the Netherlands in 1884, George Hitchcock developed a practice centered on women in traditional dress among abundant flowers. In this 1887 scene, he places a Dutch flower seller against a countryside view, removing nearby houses to create a more pastoral setting. Finely modeled figures reflect academic training, while brilliant color and open brushwork reveal the daring approach for which Hitchcock became known.",
@@ -2345,13 +2361,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-196282": {
-    "description": "Alvan Fisher was a pioneering American landscapist whose work offered an important precedent for the Hudson River School. This painting depicts a subject from James Fenimore Cooper’s 1827 novel The Prairie , the third of the five Leatherstocking Tales. In this scene, Natty Bumppo, the hero of the series, has created a firebreak to protect the story’s protagonists. As a Romantic-era artist, Fisher preferred such dramatic episodes, which involved striking contrasts between light and dark. Unlike contemporaneous illustrations of the scene, which give little sense of setting, in this version the figures are dwarfed by nature, and the prairie grasses are exquisitely rendered, underscoring the landscape’s beauty as well as its dangers. The work thus suggests the significance of the prairie in Cooper’s text. Perhaps for this reason, the author declared that it was “the only good illustration he had seen from his books.”\n\nCatalogue information\nRecorded artist or maker: Alvan Fisher American, 1792–1863. Date: 1827. Materials and technique: Oil on canvas. Place of creation: United States. Classification: oil on canvas. Physical dimensions: 61 × 83.8 cm (24 × 33 in.). Museum catalogue subjects: landscapes. Museum credit line: Through prior acquisition of the George F. Harding Fund; purchased with funds provided by Jamee J. and Marshall Field; Americana Endowment Fund. Recorded ownership history (excerpt): The artist; sold for $100 to Samuel G. Goodrich (1793–1860), Boston, 1828; to Private Collection, Cambridge, MA; by descent in family for three generations; to Private Collection, Kennebunkport, ME; consigned to Vose Galleries, Boston; to Private Collection, MA; sold to Menconi & Schoelkopf Fine Art, New York, N.Y.. Exhibition record (excerpt): The Boston Atheneum, Annual Exhibition, 1829, cat. 209..",
+    "description": "Alvan Fisher’s 1827 oil painting draws on a scene from James Fenimore Cooper’s novel *The Prairie*, published that year. Natty Bumppo has made a firebreak to shield the story’s protagonists from a prairie fire. Fisher sets the figures small against the natural expanse, rendering the grasses in detail and using dramatic contrasts of light and dark to convey both the landscape’s beauty and its danger. A pioneering American landscapist, Fisher helped establish a precedent for the Hudson River School; Cooper praised this work as the only good illustration he had seen of his books.",
+    "descriptionTranslations": {
+      "ja": "アルヴァン・フィッシャーが1827年に描いたこの油彩画は、同年刊行のジェイムズ・フェニモア・クーパーの小説『草原』の一場面を題材とする。主人公ナッティ・バンポーは、物語の人物たちを草原火災から守るため、防火帯を設けている。広大な自然に比して小さく描かれた人物と、細やかに表された草原の草が、景観の美しさと危険を際立たせる。光と闇の劇的な対比を好んだフィッシャーは、アメリカ風景画の先駆者で、ハドソン・リヴァー派に先立つ重要な画家である。クーパーは本作を、自著を描いた挿絵のなかで唯一よいものと評した。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/196282",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/196282",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-152666": {
     "description": "In this three-part albumen print, Adolphe Braun presents an Alpine pastoral with a winding fence, grassy meadow, and snow-capped peaks. Two figures recur in each panel, though whether the triptych was intended for tourists is unknown. Braun had turned from photographic still lifes, made as aids to his wallpaper and fabric business, to landscape photography; during the 1860s he produced commercial views and thousands of stereographs of popular destinations in Germany and Switzerland.",
@@ -2376,13 +2396,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-185185": {
-    "description": "As the first American artist to identify himself as a landscape painter, Thomas Doughty was instrumental in pushing the genre beyond mere topographical description to explore the larger idea of nature itself. Produced at the height of his career, this view of the sea at Nahant, Massachusetts, recalls 17th-century Dutch landscapes in the way that it captures changing atmospheric conditions and their effect on the surroundings without any hint of a narrative. Such paintings made Doughty one of the most popular landscapists in the United States in the 1820s and 1830s. In elevating nature as a worthy subject in its own right, Doughty, like fellow artist Thomas Cole , was particularly influential for the generation of landscape painters who came after him, namely the Hudson River School.\n\nCatalogue information\nRecorded artist or maker: Thomas Doughty American, 1793–1856. Date: 1835. Materials and technique: Oil on canvas mounted on cradled panel. Place of creation: United States. Classification: painting. Physical dimensions: 52.1 × 71.4 cm (20 1/2 × 28 1/8 in.). Museum catalogue subjects: landscapes. Museum credit line: Purchased with funds provided by Mrs. Herbert A. Vance. Recorded ownership history (excerpt): Vode Galleries, Boston, by 1940; sold to Mrs. Sanders, Maine; by descent to her nephew, Hugo Ambrosi, Takoma Park, MD; by descent to his wife, Mary Ambrosi, Takoma Park, MD, c. 1970; by descent to her nephew, Robert C. Loman, Bethesda, MD, 2000-05; with Menconi & Schoelkopf Fine Art, New York, 2005; sold to the Art Institute of Chicago, 2005.. Exhibition record (excerpt): Philadelphia, Pennsylvania Academy of the Fine Arts, Ammual Exhibition, 1836, as Nahant Beach, with a Summer Shower, cat. 7..",
+    "description": "Thomas Doughty’s view of the sea at Nahant, Massachusetts, focuses on shifting weather and its effects on the landscape, without introducing a narrative. Painted in 1835, at the height of his career, it recalls 17th-century Dutch landscapes in its attention to changing atmospheric conditions. Doughty helped establish landscape painting in the United States as a way to engage with nature beyond topographical description, influencing later painters, including the Hudson River School.",
+    "descriptionTranslations": {
+      "ja": "マサチューセッツ州ナハントの海辺を描いた本作は、物語的な場面を設けず、天候の移り変わりと、それが周囲の景観にもたらす変化に目を向けています。1835年、画家の活動の充実期に制作され、変化する大気の表現には17世紀オランダ風景画との響き合いが見られます。トマス・ドーティは、地形の記録を超えて自然そのものを主題とする風景画をアメリカで確立するうえで重要な役割を果たし、後のハドソン・リバー派にも影響を与えました。」} in Japanese source says"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/185185",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/185185",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-105101": {
     "description": "Carleton Watkins’s 1865/66 albumen print presents Yosemite Valley through a sequence of receding mountain planes, with giant Sequoias framing the view. Watkins made photographs of the region in the 1860s, when its wilderness was still untouched, carrying fragile equipment over difficult terrain by mule or carriage. His mammoth-plate camera used glass negatives as large as 18 by 22 inches, enabling prints with remarkable detail. Most of Watkins’s negatives and prints were later lost in the 1906 San Francisco earthquake and fire.",
@@ -2429,13 +2453,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-183293": {
-    "description": "Joshua Shaw was one of the earliest landscape painters to work in America, practicing in Baltimore and Philadelphia upon emigrating from England in 1817. Shaw excelled at painting Romantic scenes of imaginary Arcadian landscapes. In Solitude , a male figure reclines in the foreground, with the contemplative pose and seminude state of a poet or philosopher inspired by the beauty of nature. In addition to idealized compositions such as this one, Shaw painted landscapes in watercolor based on observations of various locales along the Eastern Seaboard. Shaw was a generation older than Thomas Cole and other artists of the country’s first school of landscape painting, the Hudson River School, which emerged in the second quarter of the 19th century.\n\nCatalogue information\nRecorded artist or maker: Joshua Shaw (American, born England, c. 1777–1860). Date: 1818. Materials and technique: Oil on canvas. Place of creation: United States. Classification: oil on canvas. Physical dimensions: 54.5 × 78.7 cm (21 1/2 × 31 in.). Museum catalogue subjects: landscapes. Museum credit line: Through prior acquisition of the Charles H. and Mary F. S. Worcester Collection; the George F. Harding Collection. Recorded ownership history (excerpt): Estate of Ms. Betty Washington Whiting, Baltimore, MD, until 2003; with Christie's New York, March 30-31, 2004, lot 34; private collection; with Menconi & Schoelkopf FIne Art, New York, 2004; sold to the Art Institute of Chicago, 2004..",
+    "description": "In this imagined Arcadian landscape, a seminude man reclines in the foreground, his contemplative pose recalling that of a poet or philosopher absorbed in nature’s beauty. Joshua Shaw, an English-born painter who emigrated to the United States in 1817 and worked in Baltimore and Philadelphia, made the oil painting in 1818. He also painted watercolor landscapes based on places along the Eastern Seaboard; he belonged to an earlier generation than the artists of the Hudson River School, which emerged in the 1820s.",
+    "descriptionTranslations": {
+      "ja": "前景では、半裸の男性が身を横たえ、自然の美に思いを寄せる詩人や哲学者を思わせる姿を見せています。理想化された古典的田園を描いたこの作品は、イギリス生まれで1817年に渡米し、ボルティモアやフィラデルフィアで活動したジョシュア・ショーが、1818年に油彩で制作しました。東海岸各地の実景をもとに水彩風景画も描いたショーは、1820年代に登場するハドソン・リバー派の画家たちより一世代前の作家です。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/183293",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/183293",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-8983": {
     "description": "Vasily Kandinsky, along with Franz Marc , Gabriele Münter , and Alexei Jawlensky , was a founding member of Blaue Reiter (Blue Rider), a loose alliance of artists based in Munich. Often working in a common palette using expressive brushwork, they shared a belief in the symbolic and spiritual importance of forms and colors, including their effect on emotions and memories. Blaue Reiter also promoted a spontaneous, intuitive approach to painting, looking to non-Western, European medieval, and folk art for inspiration. Here the troika, a traditional carriage drawn by three horses, and the hand-painted frame, which Kandinsky made especially for this work, speak to the powerful influence these sources had on the artist.\n\nCatalogue information\nRecorded artist or maker: Vasily Kandinsky Born Moscow (formerly Russian Empire, now Russia), 1866; died Neuilly-sur-Seine, France, 1944. Date: January 18, 1911. Materials and technique: Oil on cardboard; in artist's painted frame. Place of creation: Germany. Classification: oil on cardboard. Physical dimensions: 69.7 × 97.3 cm (27 3/8 × 38 5/16 in.). Museum catalogue subjects: troikas, people, landscapes, animals, oxen, carts. Museum credit line: Arthur Jerome Eddy Memorial Collection. Recorded ownership history (excerpt): Arthur Jerome Eddy (1859–1920), Chicago, by 1920; by descent to his wife Lucy O. Eddy (1863-1931) and son Jerome O. Eddy (1891-1951), Chicago, 1920; given to the Art Institute of Chicago, 1931.. Exhibition record (excerpt): Zurich, Kunsthaus, Moderner Bund, July 1912, hors cat. Frankfurt, Galerie Goldschmidt, 1912. Chicago, Art Institute, Exhibition of Paintings from the Collection of the Late Arthur Jerome Eddy, September 19-October 22, 1922, cat. 39. Chicago, Art Institute, The Arthur Jerome Eddy….",
@@ -2850,13 +2878,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-182381": {
-    "description": "This painting by Severin Roesen, who immigrated to the United States from Cologne in 1848, features a profusion of berries, grapes, peaches, figs, and other fruits piled upon a marble slab. His composition is a celebratory display of nature’s bounty— portrayed in such minute detail as to feel artificial. Roesen worked in Pennsylvania, supported by German immigrants who operated local breweries there. While still lifes in the 19th century typically adorned domestic dining rooms, Roesen’s painting may have hung in a public tavern or restaurant. For such patrons, the artist probably painted pictures in exchange for beer. Roesen and his male patrons would not have been counted among the followers of the growing temperance movement in America at midcentury.\n\nCatalogue information\nRecorded artist or maker: Severin Roesen American, born Germany, 1815/17–1872. Date: c. 1860. Materials and technique: Oil on canvas. Place of creation: Germany. Classification: oil on canvas. Physical dimensions: 63.5 × 76.2 cm (25 × 30 in.). Museum catalogue subjects: still life, dining, drinking. Museum credit line: Americana Endowment Fund.",
+    "description": "Severin Roesen’s still life gathers berries, grapes, peaches, figs, and other fruits in abundance on a marble slab. Their minute, carefully rendered detail lends the celebratory display an almost artificial quality. A German immigrant who settled in the United States in 1848, Roesen worked in Pennsylvania, where German immigrant brewery owners supported him. Such still lifes often decorated dining rooms, but this picture may instead have been made for a tavern or restaurant, perhaps in exchange for beer.",
+    "descriptionTranslations": {
+      "ja": "大理石の台に、ベリー類やブドウ、桃、イチジクなどを豊かに積み上げたセヴェリン・ローゼンの静物画。細部まで丹念に描かれた果実は、自然の恵みを祝う構図に、人工的とも感じられる印象を与えます。1848年にドイツから渡米したローゼンは、ドイツ系移民の醸造業者に支えられ、ペンシルベニアで活動しました。当時、静物画は家庭の食堂を飾ることが多かったものの、本作は酒場やレストランに掛けるため、ビールと引き換えに制作された可能性もあります。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/182381",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/182381",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-2156": {
     "description": "Lights of Other Days , like many of John F. Peto’s still lifes, is replete with nostalgia. Strewn along a shallow shelf above a doorframe is an array of old, well-worn objects: candleholders with wax candles nearly used up, rusty oil lamps, and torn books. These discarded commonplace objects allude to older ways of life and fading memories. Peto specialized in trompe l’oeil (fools the eye) pictures; yet his soft-edged style is suggestive of the artist’s hand rather than the heightened illusionism employed by other trompe l’oeil painters such as William Harnett . Trained in Philadelphia, Peto stopped exhibiting his work at professional venues by 1890, creating compositions instead for local patrons near his New Jersey home.\n\nCatalogue information\nRecorded artist or maker: John Frederick Peto (American, 1854–1907). Date: 1906. Materials and technique: Oil on canvas. Artistic style or school: Realism. Place of creation: United States. Classification: oil on canvas. Physical dimensions: 77.5 × 115 cm (30 1/2 × 45 1/4 in.). Museum catalogue subjects: still life. Museum credit line: Goodman Fund. Exhibition record (excerpt): Amsterdam, Van Gogh Museum, Light: Art, Technology, and Society in the Industrial Age, 1750–1900, Oct. 20, 2000–Feb. 11, 2001; Pittsburgh, Carnegie Museum of Art, Apr. 7–July 29, 2001..",
@@ -2868,13 +2900,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-198905": {
-    "description": "Trained in the Dutch Republic before making his career in London, Pieter van Roestraeten specialized in compositions populated with luxury goods crafted from rare, imported materials like those seen here. On the right stands a lidded agate cup with detailed silver mounts, counterbalanced to the left of the grouping by another cup, which has been overturned to reveal its mother-of-pearl lining. A piece of valuable and versatile coral, sourced from the coasts of Italy and France, dangles over the front edge of the table. The central item in this still life, the ostrich egg cup, is in the collection of the Art Institute. Known as the Whitfield Cup , it was created in 1590 by the royal jeweler John Spilman.\n\nCatalogue information\nRecorded artist or maker: Pieter Gerritsz. van Roestraeten (Dutch, 1630–1700). Date: c. 1670. Materials and technique: Oil on canvas. Artistic style or school: 17th Century. Place of creation: Netherlands. Classification: painting. Physical dimensions: 65.4 × 75.6 cm (25 3/4 × 29 3/4 in.); Framed: 77.2 × 88.3 × 4.5 cm (30 3/8 × 34 3/4 × 1 3/4 in.). Museum catalogue subjects: still life, eggs, cup, coral, watches, medallions, medals. Museum credit line: European Decorative Arts Fund. Recorded ownership history (excerpt): Possibly John Whitfield, Canterbury (died 1691), based on the inclusion in the painting of the ostrich egg cup mentioned in Whitfield’s will. Possibly by descent in the Whitfield family. Sold, Sotheby’s, London, 15 December, 1976, no. 130. Paris, Loudmer, Hôtel Drouot, June 30, 1993, no. 21. Sold. Phillips, London [according to the catalogue of the 2008 Christie’s sale cited…. Exhibition record (excerpt): New Haven, Yale Center for British Art, The Paston Treasure: Microcosm of the Known World, Feb. 15-May 27; Norwich, England, Norwich Castle Museum and Art Gallery, June 23-Sept. 23, 2018, cat. 9 (ill)..",
+    "description": "Pieter Gerritsz. van Roestraeten, trained in the Dutch Republic and later active in London, specialized in still lifes of luxury objects made from rare materials. Here, a lidded agate cup with silver mounts balances an overturned cup lined with mother-of-pearl, while coral hangs over the table’s edge. At the center is the Whitfield Cup, an ostrich egg cup made in 1590 by royal jeweler John Spilman; the painting dates to about 1670.",
+    "descriptionTranslations": {
+      "ja": "オランダ共和国で修業し、のちにロンドンで活動したピーテル・ヘリッツゾーン・ファン・ルーストラーテンは、希少な素材を用いた贅沢な品々の静物画を得意としました。本作では、銀の装飾を施した蓋付きの瑪瑙の杯と、裏側の真珠母が見えるように伏せた杯が呼応し、珊瑚が卓の縁から垂れています。中央のダチョウの卵の杯は「ホイットフィールド・カップ」と呼ばれ、王室御用達の金細工師ジョン・スピルマンが1590年に制作したものです。絵は1670年頃の作です。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/198905",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/198905",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-264716": {
     "description": "This seemingly straightforward scene by Maria van Oosterwijck, one of the few known female painters in the Dutch Republic, in fact depicts a fantastical image. The 11 species of flora, accompanied by a single grasshopper and hung from a nail by a ribbon, do not all blossom in the same season. Additionally, several of these varieties are not indigenous to Northern Europe. The arrangement thus reflects the global markets in which the Dutch participated: the sweet sultan (the orange flower at upper left) would have been imported from Turkey, while the bitter orange (beneath the ribbon at center) originated in the Mediterranean. Oosterwijck was renowned for such paintings of suspended bouquets.\n\nCatalogue information\nRecorded artist or maker: Maria van Oosterwijck (Dutch, 1630–1693). Date: c. 1680. Materials and technique: Oil on canvas. Artistic style or school: 17th Century. Place of creation: Netherlands. Classification: still life. Physical dimensions: 36 × 28.3 cm (14 1/4 × 11 1/8 in.); Framed: 49.3 × 41.3 × 6.7 cm (19 3/8 × 16 1/4 × 2 5/8 in.). Museum catalogue subjects: flowers, insects, ribbon, still life. Museum credit line: Rhoades Foundation and Julius Lewis Acquisition Endowment Fund; Josephine and John J. Louis Jr. Endowed Acquisition Fund; C. Harker and Mae Svoboda Rhodes Acquisition Fund; John A. Bross Fund in memory of Louise Smith Bross. Recorded ownership history (excerpt): Probably sold through Jean Chretien Kaller, Frankfurt, Mar. 12, 1764, lot 87 to Benedikt Ludwig Schlund [Schlundt] for 17.3 florins [according to analysis of detailed description in auction catalog and list of known works compiled by McIntosh 2010, cat. 19]. Sold, Hôtel Drouot, Paris, Apr. 24, 1961, lot 122. Sold, Sotheby’s London, Dec. 9, 1992, lot 92, to Salomon Lilian…. Exhibition record (excerpt): Washington, D.C., National Museum of Women in the Arts, Women Artists from Antwerp to Amsterdam, 1600-1750, Sep. 26, 2025–Jan. 11, 2026, cat. 165; Ghent, Belgium, Museum of Fine Arts, Mar. 7–May 31, 2026 (Washington only)..",
@@ -2958,13 +2994,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-181777": {
-    "description": "A seemingly uncomplicated representation of two potatoes suspended by a string against a wood panel, The Irish Question is an unusual and striking trompe l’oeil painting that raises numerous questions. The title may refer to the troubled status of the Irish in the late 19th century; the hanging potatoes inflect this allusion with either ominous overtones or a dark sense of humor. Illusionistic paintings such as The Irish Question offer an enjoyable form of visual deception, and the pseudonymous signature “S.S. David” suggests that De Scott Evans relished the opportunity to puzzle his viewers on many levels.\n\nCatalogue information\nRecorded artist or maker: De Scott Evans American, 1847–1898. Date: 1880s. Materials and technique: Oil on canvas. Artistic style or school: Realism. Place of creation: United States. Classification: painting. Physical dimensions: 30.5 × 25.4 cm (12 × 10 in.). Museum catalogue subjects: still life, potatoes, potato. Museum credit line: Purchased with funds provided by Carol W. Wardlaw and Jill Burnside Zeno; Roger and J. Peter McCormick Endowment Fund. Recorded ownership history (excerpt): Shannon's FIne Art Auctioneers, Milford, CT, April 2001, lot 53. Christie's, New York; purchased by the Art Institute of Chicago at auction, December 4, 2003, lot 49.. Exhibition record (excerpt): Art Institute of Chicago, Art and Appetite: American Painting, Culture, and Cuisine , Nov. 10, 2013–Jan. 27, 2014, cat. 15; Fort Worth, Amon Carter Museum of American Art, Feb. 22–May 18, 2014..",
+    "description": "De Scott Evans’s small oil painting presents two potatoes hanging from a string against a wood panel, rendered with trompe-l’oeil realism. Its title may allude to the troubled position of the Irish in the late nineteenth century, lending the oddly suspended vegetables either ominous force or dark humor. Signed with the pseudonym “S.S. David,” the work turns visual deception into a puzzle for its viewers.",
+    "descriptionTranslations": {
+      "ja": "木目の板を背景に、ひもで吊るされた二つのジャガイモを描く、デ・スコット・エヴァンズの小品。油彩によるトロンプ・ルイユの手法が、実物のような錯覚を生み出します。題名は19世紀後半のアイルランド人をめぐる困難な状況を示唆するとも考えられ、吊るされた姿には不穏さ、あるいはブラックユーモアが漂います。「S.S. David」という筆名の署名も、見る者を惑わせる作品の仕掛けの一つです。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/181777",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/181777",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-94126": {
     "description": "Jean-Baptiste Oudry received numerous commissions from Louis XV of France, who admired his skill as a painter of animals and still lifes. The artist frequently combined his two specialties, as in this work, in which a monkey, an animal celebrated in this period for its mischievous and lustful character, snatches a few grapes. The French Rococo taste for the sensual is manifest in the lush, overripe quality of the fruits and flowers, reminiscent of 17th-century Flemish works that Oudry is known to have studied. Paintings such as this typically adorned dining rooms as part of an overall decorative scheme.\n\nCatalogue information\nRecorded artist or maker: Jean Baptiste Oudry (French, 1686–1755). Date: 1724. Materials and technique: Oil on canvas. Artistic style or school: 18th Century. Place of creation: France. Classification: oil on canvas. Physical dimensions: 141.6 × 144.8 cm (55 3/4 × 57 in.); Framed: 172.8 × 175.3 × 12.7 cm (68 × 69 × 5 in.). Museum catalogue subjects: still life, animals, vase, tulips, trees, sky, pink (color). Museum credit line: Major Acquisitions Centennial Fund. Recorded ownership history (excerpt): Louis Aubert, Lyon (died c. 1886); his sale, Hôtel des Ventes, Lyons, April 12–13, 1886, lot 43, as Singe dérobant des fruits. Paris art market, c. 1970 [according to Opperman 1977 and telephone conversation of Opperman with Martha Wolff, July 12, 2005]. Heim Gallery, London by 1977; sold to the Art Institute, 1977.. Exhibition record (excerpt): Paris, Galeries Nationales du Grand Palais, J.–B. Oudry, 1686–1755, 1982–83, cat. 32 (cat. 17 in English catalogue); traveled to Kimbell Art Museum, Forth Worth, Texas, and Kansas City, Missouri..",
@@ -3011,13 +3051,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-16823": {
-    "description": "By the time Homer first began visiting the Adirondacks in the 1870s, commercial logging operations in the region were beginning to destroy large tracts of forest and to clog the rivers. He acutely observed and recorded these events in his watercolors, rarely passing explicit judgment. In The Rapids, Hudson River, Adirondacks , the artist combined themes of fishing and logging. On first encounter, this watercolor is peaceful and intimate, a virtuoso study of the movement of the river’s surface over partially submerged rocks. Long, painterly strokes of black watercolor over layers of blue describe the depth and speed of the water, while areas of bright white paper have been revealed by scraping to indicate the bubbling froth of whitewater rapids. It is only along the far bank that one becomes aware of the presence of man in this tranquil landscape, implied by the clean-cut logs lying haphazardly along the rocky bank. Even more subtle is Homer’s suggestion of a fisherman’s presence, indicated by the leaping fish at river’s edge, where the artist used his knife blade to sketch the serpentine motion of a fishing line in mid-cast. The fisherman is invisible, yet we are made to understand that the presence of human beings alters nature profoundly.\n\nCatalogue information\nRecorded artist or maker: Winslow Homer American, 1836-1910. Date: 1894. Materials and technique: Transparent watercolor, with traces of opaque watercolor, blotting, and scraping, over graphite, on thick, rough-textured, ivory wove paper. Place of creation: United States. Classification: watercolor. Physical dimensions: 38.4 × 54.6 cm (15 1/8 × 21 1/2 in.). Museum catalogue subjects: Century of Progress, fishing, world's fairs, Chicago World's Fairs, wilderness. Museum credit line: Mr. and Mrs. Martin A. Ryerson Collection. Recorded ownership history (excerpt): The artist to his brother, Charles S. Homer, Jr. (1834–1917), New York, by 1910 [according to correspondence from Abigail Booth Gerdts to the Art Institute, February 10, 2007]. Charles W. Gould (1849–1931), New York, by 1914 [Art In America 1914]. Sold by Knoedler and Company, New York, to Martin A. Ryerson (1856–1932), Chicago, November 11, 1915 [invoice]; given to the Art…. Exhibition record (excerpt): New York, The Museum of the Brooklyn Institute, \"Water Colors by Winslow Homer,\" October 16–November 7, 1915, p. 9, cat. 41. The Art Institute of Chicago, \"Twenty Water Colors by Winslow Homer, Martin Ryerson Collection,\" January 5–June 16, 1916, no cat. Pittsburgh, Pa.….",
+    "description": "In this 1894 watercolor, Winslow Homer joins fishing and logging in a seemingly tranquil Adirondack river scene. Long black strokes laid over blue suggest the water’s depth and speed, while scraping exposes bright paper for the bubbling rapids. Clean-cut logs on the far bank hint at logging, and a leaping fish and a knife-drawn fishing line imply an unseen angler. Homer’s observations of the region’s changing forests and rivers inform the work without explicit judgment.",
+    "descriptionTranslations": {
+      "ja": "1894年、ウィンスロー・ホーマーは、アディロンダックの川を舞台に、釣りと伐採の気配を一つの水彩画に重ねました。青の層に重ねた黒い長い筆線が水の深さと速さを表し、紙を削って残した明るい部分が泡立つ急流を示します。対岸の切り出された丸太、跳ねる魚、ナイフで描かれた釣り糸が、人の姿を見せずにその存在を伝えています。森林伐採が進む地域を見つめたホーマーは、自然と人間の関わりを、明示的な批判を加えずに描きました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/16823",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/16823",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-93433": {
     "description": "For to Be a Farmer’s Boy was painted at Prout’s Neck, Maine, and is one of several watercolors in which Homer returned to his earlier theme of rural American childhood. Although the sky has faded and appears empty, X-ray fluorescence spectroscopy and FTIR analyses have yielded evidence that the artist originally painted the sky with dilute washes of chrome yellow and pink madder (both fugitive pigments ), with a minute amount of vermilion, to create a glowing orange sunset. Thus, the watercolor originally showed a young boy pausing in his work of harvesting pumpkins to gaze off toward the setting sun, recalling the work of French Barbizon School artists, who influenced Homer in his early career. Their pictures of peasants pausing for a moment of contemplation at the end of their workday resonated with Homer, who showed a lifelong preference for depicting workers. Homer derived the title from an anonymous Old English song: “Though little, I’ll work as hard as a Turk, / If you’ll give me employ /To plow and sow, and reap and mow, / And be a farmer’s boy.” Interestingly, a longer version of the song includes the line “The sun went down behind yon hills,” thereby supporting findings that the watercolor originally depicted an orange sunset.\n\nCatalogue information\nRecorded artist or maker: Winslow Homer American, 1836-1910. Date: 1887. Materials and technique: Transparent and opaque watercolor, with rewetting, blotting, and scraping, heightened with gum glaze, over graphite, on thick, rough-textured ivory wove paper (lower edge trimmed). Place of creation: United States. Classification: watercolor. Physical dimensions: 35.5 × 50.9 cm (14 × 20 1/16 in.). Museum catalogue subjects: labor, work, children, farm life, people. Museum credit line: Gift of Mrs. George T. Langhorne in memory of Edward Carson Waller. Recorded ownership history (excerpt): Mr. and Mrs. Edward C. Waller, Sr. (née Mary Kirk; died 1963), Chicago, c. 1890; by descent to their daughter, Mrs. George T. Langhorne (née Mary Kirk Waller), Chicago; given to the Art Institute, 1963.. Exhibition record (excerpt): New York, American Watercolor Society,\" Twenty-first Annual Exhibition,\" January 30–February 25, 1888, p. 22, cat. 360, as “For to be a Farmer’s Boy” (Old Song). The Art Institute of Chicago, \"Chicago Collectors,\" September 20–October 27, 1963, pp. 5 and 26, pl. 15. The Art….",
@@ -3042,13 +3086,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-16831": {
-    "description": "Homer created sparkling watercolor sketches of sailboats in Bahamian waters during his 1898-99 Bahamas trip. When he visited Key West, Florida, in the winter of 1903-04, he further indulged his interest in the details of local boating. There, Homer painted Stowing Sail on December 22, 1903. Everything about this watercolor points toward rapid, plein-air execution. The artist’s graphite underdrawing is a quick and sketchy series of lines that establish the major contours on the sheet. Pentiments, or shifts, in the underdrawing show that when he began the sketch, the figure was leaning further forward, gathering the sail over the back of the boat. This adjustment suggests that Homer was working quickly to keep up with the man’s progress. Homer applied all of his washes directly within the forms marked in the underdrawing, working wet-on-wet, as if there were not enough time to wait for one to dry before adding the next. When he brushed the heavy, red stroke at the front of the boat, it bled upward into the still-wet blue shadow on the side.\n\nCatalogue information\nRecorded artist or maker: Winslow Homer American, 1836-1910. Date: 1903. Materials and technique: Transparent watercolor, with touches of opaque watercolor, rewetting, blotting, scraping and graphite, on thick, moderately textured (twill texture on verso), ivory wove paper. Place of creation: United States. Classification: watercolor. Physical dimensions: 35.5 × 55.4 cm (14 × 21 13/16 in.). Museum catalogue subjects: seascapes, people, boats, Century of Progress, world's fairs, Chicago World's Fairs. Museum credit line: Mr. and Mrs. Martin A. Ryerson Collection. Recorded ownership history (excerpt): The artist to his brother, Charles S. Homer, Jr. (1834–1917), New York, by 1910 [according to correspondence from Abigail Booth Gerdts to the Art Institute, February 10, 2007]. Charles W. Gould (1849–1931), New York, by 1915 [Brooklyn exh. cat. 1915]. Sold by Knoedler and Company, New York, to Martin A. Ryerson (1856–1932), Chicago, November 11, 1915 [invoice]; given to the…. Exhibition record (excerpt): New York, The Museum of the Brooklyn Institute, \"Water Colors by Winslow Homer,\" October 16–November 7, 1915, p. 9, cat. 44. The Art Institute of Chicago, \"Twenty Water Colors by Winslow Homer, Martin Ryerson Collection,\" January 5–June 16, 1916, no cat. Pittsburgh, Pa.….",
+    "description": "Painted in Key West on December 22, 1903, this watercolor reflects Winslow Homer’s attention to the details of local boating. A man gathers a sail over the back of a boat; changes in the sketchy graphite underdrawing reveal that Homer altered the figure’s leaning posture as he worked. Rapid, wet-on-wet washes stay within the penciled contours, while a heavy red stroke at the boat’s bow bleeds into a still-wet blue shadow. These signs point to an energetic sketch made in the open air.",
+    "descriptionTranslations": {
+      "ja": "1903年12月22日、キーウェストで描かれた本作は、地元の舟の営みに向けたホーマーの関心を伝えます。男性が船尾に帆をたぐり寄せる姿を描き、鉛筆による素早い下描きには、制作中に人物の前かがみの姿勢を修正した跡が見えます。輪郭に沿って、乾く前に重ねた水彩の色面が広がり、船首の赤い筆致は、まだ湿った青い影ににじみ込んでいます。戸外で手早く描いたことをうかがわせる作品です。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/16831",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/16831",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-16779": {
     "description": "Winslow Homer’s 1894 watercolor sets bands of color against a strong, dark horizon, with a smooth turquoise sea holding a moment of calm as storm weather gathers offshore. He rendered the rugged foreground shore with loose, abstract brushwork, while wet-on-wet washes let colors run and blend to suggest land, sea, and sky seen through rain and humidity. Homer had studied this technique in Japanese ink painting and began using it extensively in 1889.",
@@ -3086,13 +3134,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-18686": {
-    "description": "While Delacroix never completed classical academy training, the practice of drawing from three-dimensional sculptural fragments stayed with him. He sketched details for future paintings like these from live caged animals as well as from dissected cadavers. Delacroix’s friend and fellow artist Antoine-Louis Barye even used casts of animal parts for his monochrome bronzes. In contrast, Delacroix’s touches of color increase the liveliness of these isolated images.\n\nCatalogue information\nRecorded artist or maker: Eugène Delacroix French, 1798-1863. Date: n.d.. Materials and technique: Watercolor and graphite on tan wove paper. Place of creation: France. Classification: watercolor. Physical dimensions: 19.2 × 12.3 cm (7 9/16 × 4 7/8 in.). Museum credit line: Gift of Robert Allerton.",
+    "description": "Delacroix’s study isolates lions’ heads and paws, drawing on his practice of recording animal forms for possible use in future paintings. Although he did not complete classical academy training, he continued to study details from three-dimensional models, including live caged animals and dissected specimens. Here, watercolor touches enliven graphite marks on tan paper, distinguishing the work from the monochrome animal-part casts used by his friend Antoine-Louis Barye.",
+    "descriptionTranslations": {
+      "ja": "ライオンの頭部と足を描いた本作は、将来の絵画に生かすため動物の形を記録した習作です。古典的なアカデミー教育を修了しなかったドラクロワは、檻の中の生きた動物や解剖標本など、立体的な対象を観察して細部を描き留めました。黄褐色の紙にグラファイトで形を捉え、水彩の彩色を添えています。動物の部位の石膏型を用いた友人バリーの単色ブロンズとは異なり、色彩が図像に生気を与えています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/18686",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/18686",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-16772": {
     "description": "Winslow Homer portrays Rufus Wallace returning from a duck hunt in his canoe. He carefully defines the guide’s face, beard, and still-strong body with diluted watercolor, while lake and sky remain loosely suggested; Wallace looks forward and slightly upward. Made in 1892 in the United States, the work combines transparent watercolor with touches of opaque watercolor, using rewetting, blotting, and scraping over traces of graphite.",
@@ -3238,13 +3290,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-181315": {
-    "description": "The grand scale of Titian’s twelve-sheet woodcut (see 1957.12.1–12) mimics history paintings and large wall hangings. The assembled composition would fit only on a massive wall, a use confirmed by the total lack of early impressions. Only this 1549 state is known, printed from woodblocks studded with wormholes, which appear in the image as tiny white dots. The inscription at lower center of The Submersion describes the Israelites’ persecution under the Egyptian pharaoh and his army’s fate when they followed Moses into the Red Sea. The publisher opportunistically refers to the “great and immortal hand” of Titian in this legend, though the artist was still very much alive.\n\nCatalogue information\nRecorded artist or maker: After Titian (Italian, c. 1488-1576) published by Domenico dalle Greche (Italian, active 1543-1558). Date: c. 1515, printed 1549. Materials and technique: Woodcut in black on ivory laid paper. Place of creation: Italy. Classification: woodcut. Physical dimensions: 40.8 × 55.5 cm (16 1/8 × 21 7/8 in.). Museum credit line: Clarence Buckingham Collection.",
+    "description": "This large woodcut forms part of a twelve-sheet composition conceived on the scale of history paintings and wall hangings. Its inscription recounts the Israelites’ persecution by the Egyptian pharaoh and the destruction of his army after it pursued Moses into the Red Sea. Made after Titian and published by Domenico dalle Greche, the print is known only in a 1549 state; wormholes in its woodblocks appear as tiny white dots in the image.",
+    "descriptionTranslations": {
+      "ja": "歴史画や大画面の掛け物を思わせる規模で構想された、十二枚続きの木版画の一部です。下部中央の銘文は、イスラエル人を迫害したエジプト王と、モーセを追って紅海に入った軍勢の最期を記します。ティツィアーノに基づき、ドメニコ・ダッレ・グレケが刊行した本作は、1549年の刷りだけが知られています。版木の虫食い穴は、画面に小さな白点として現れています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/181315",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/181315",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-112023": {
     "description": "Published in 1812, *The Mildmay Sea-Piece* is plate 40 in Turner’s *Liber Studiorum*, a collection intended both to record his achievement as a painter and to instruct other artists. The brown etching and engraving on ivory wove paper belongs to a series in which variations of line and shading demonstrate the range of atmospheric effects available to landscape artists. Turner made etchings for the project and oversaw the printmaking process; this plate was engraved by W. Annis and I. C. Easling.",
@@ -3313,8 +3369,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-180711": {
-    "description": "The Gulf of Salerno is a work attributed in the Art Institute of Chicago catalogue to Joseph Wright of Derby.\n\nCatalogue information\nRecorded artist or maker: Joseph Wright of Derby (English, 1734-1797). Date: 1783–85. Materials and technique: Oil on canvas. Artistic style or school: 18th Century. Place of creation: England. Classification: oil on canvas. Physical dimensions: 41.6 × 59.4 cm (16 3/8 × 23 3/8 in.); Framed: 51.5 × 67.7 cm (20 1/4 × 26 5/8 in.). Museum catalogue subjects: landscape, water, seascapes, seas, sea, sailing, rocks. Museum credit line: L.L. and A.S. Coburn, Josephine and John I. Louis, Jr., and Alexander A. McKay Endowments; through prior acquisition of the Charles H. and Mary F.S. Worcester Endowment. Recorded ownership history (excerpt): Probably John Holland, Ford Hall, Derbyshire [a \"Sun Set in the Bay of Salerno\" listed in Wright's Account Book about 1783 as the companion to Bacon's Moonlight Vesuvius and \"sold to my friend Holland\"; see Judy Egerton, Wright of Derby, exhib. cat. Tate Gallery, Louvre, and Metropolitan Museum of Art, 1990, p. 180, under no. 109]. Private collection, England, by family…. Exhibition record (excerpt): Mr. Robin's Rooms, Convent Garden, Exhibition of Paintings by Joseph Wright of Derby, 1785, no. 16 Chicago, BUILDING A COLLECTION: NEW ACQUISITIONS AND PROMISED GIFTS OF BRITISH ART, Art Institute of Chicago, Chicago, IL, May 1–August 1, 2004, no. 5..",
-    "descriptionKind": "metadata_summary"
+    "description": "Attributed to Joseph Wright of Derby, this small oil-on-canvas landscape depicts the Gulf of Salerno. The catalogue’s subject headings include water, seascapes, sailing, and rocks, but provide no further description of the view. Painted in England around 1783–85, the work was recorded in Wright’s account book as a “Sun Set in the Bay of Salerno,” paired with a moonlit view of Vesuvius; it was exhibited in 1785.",
+    "descriptionTranslations": {
+      "ja": "ジョゼフ・ライト・オブ・ダービー作とされる、1783～85年頃の油彩画です。作品名はサレルノ湾を示し、カタログの主題項目には水、海景、帆走、岩が挙げられていますが、画面の細部は記されていません。ライトの帳簿には「サレルノ湾の夕日」として記録され、ヴェスヴィオ火山の月景画と対をなす作品とされています。1785年に展覧会へ出品されました。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/180711",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-81557": {
     "description": "Seascape is a work attributed in the Art Institute of Chicago catalogue to Pierre-Auguste Renoir.\n\nCatalogue information\nRecorded artist or maker: Pierre-Auguste Renoir (French, 1841–1919). Date: 1879. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: painting. Physical dimensions: 72.6 × 91.6 cm (28 1/2 × 36 in.); Framed: 97.8 × 116.9 × 8 cm (38 1/2 × 46 × 3 1/8 in.). Museum catalogue subjects: weather/seasons, sea, blue, blue (color), green (color), waves, sky. Museum credit line: Potter Palmer Collection. Recorded ownership history (excerpt): Alphonse Legrand, Paris, by Feb. 21, 1890 [this and the following per Durand-Ruel, Paris, stock book for 1884–90 (no. 2637), as confirmed by Paul-Louis Durand-Ruel and Flavie Durand-Ruel, Durand-Ruel Archives, Oct. 5, 2010, curatorial object file]; sold to Durand-Ruel, Paris, Feb. 21, 1890; transferred to Durand-Ruel, New York, by April 19, 1892 [this and the following per the…. Exhibition record (excerpt): Possibly Paris, Durand-Ruel, Exposition A. Renoir, May 1892, cat. 100. Art Institute of Chicago, Paintings by Renoir, Feb. 3–Apr. 1, 1973, cat. 27 (ill.). Highland Park, Ill., Neison Harris, Mar. 7–May 21, 1975, no cat. Los Angeles County Museum of Art, A Day in the Country:….",
@@ -3422,8 +3487,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-19366": {
-    "description": "The Actors Tamazawa Saijiro I as the pageboy Umezaburo and Segawa Kikunojo I as Oroku in the play \"Sazareishi Suehiro Genji,\" performed at the Nakamura Theater in the first month, 1744 is a work attributed in the Art Institute of Chicago catalogue to Torii Kiyomasu II.\n\nCatalogue information\nRecorded artist or maker: Torii Kiyomasu II Japanese, 1706 (?)–1763 (?). Date: 1744. Materials and technique: Color woodblock print; hosoban, benizuri-e. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 28.4 × 15 cm (11 3/16 × 5 7/8 in.). Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Ernest Francisco Fenollosa (1853–1908), Boston; by descent to his wife, Sidney McCall (1865–1954; born Mary McNeill, also Mary McNeil Fenollosa), Boston, 1908; sold to Clarence Buckingham (1854–1913), Chicago, 1909; by descent to his sisters Lucy Maud Buckingham (1870–1920) and Kate Sturges Buckingham (1858–1937), Chicago, 1913; given to the Art Institute of Chicago, 1925..",
-    "descriptionKind": "metadata_summary"
+    "description": "This 1744 Japanese color woodblock print depicts Tamazawa Saijiro I as the pageboy Umezaburo and Segawa Kikunojo I as Oroku in the play “Sazareishi Suehiro Genji,” performed at the Nakamura Theater. Made in the narrow hosoban format, it is a benizuri-e print, a technique identified in the museum catalogue. The work is attributed to Torii Kiyomasu II.",
+    "descriptionTranslations": {
+      "ja": "1744年、歌舞伎役者の玉沢才次郎初代が小姓梅三郎、瀬川菊之丞初代がお六に扮し、中村座で上演された芝居「さざれ石末広源氏」の場面を描く。細長い判型の細判に摺られた、紅摺絵の木版画で、鳥居清倍（二代）の作と伝えられる。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/19366",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-13405": {
     "description": "Attributed to Kitagawa Utamaro, this Japanese color woodblock print dates to about 1802 and belongs to the series *Elegant Comparison of Little Treasures*. The oban-format sheet measures 38.1 by 26.2 centimeters. The catalogue provides no further description of the image, so its visual details cannot be specified.",
@@ -3473,28 +3547,73 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionKind": "metadata_summary"
   },
   "aic-19386": {
-    "description": "Susano-o no Mikoto Killing the Eight-headed Dragon is a work attributed in the Art Institute of Chicago catalogue to Torii Kiyomasu II.\n\nCatalogue information\nRecorded artist or maker: Torii Kiyomasu II Japanese, 1706 (?)–1763 (?). Date: 1748. Materials and technique: Color woodblock print; hosoban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 31.9 × 4.7 cm (12 9/16 × 1 7/8 in.). Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): William Henry Ketcham, New York; sold to Clarence Buckingham (1854–1913), Chicago, Dec. 1897; by descent to his sisters Lucy Maud Buckingham (1870–1920) and Kate Sturges Buckingham (1858–1937), Chicago, 1913; given to the Art Institute of Chicago, 1925.. Exhibition record (excerpt): Bernd Jesse, \"Dance of the Dragons,\" AIC, Jan. 19 - Mar. 21, 2000.",
-    "descriptionKind": "metadata_summary"
+    "description": "Attributed to Torii Kiyomasu II, this 1748 Japanese color woodblock print depicts Susano-o no Mikoto killing an eight-headed dragon. Made in the hosoban format, the narrow print measures 31.9 by 4.7 centimeters. The Art Institute of Chicago records its creation in Japan and its later gift to the museum in 1925.",
+    "descriptionTranslations": {
+      "ja": "鳥居清倍（二代）に帰属される1748年の日本の多色木版画で、スサノオノミコトが八頭の龍を退治する場面を主題とします。細長い柱絵（細判）の形式で、寸法は31.9×4.7センチ。シカゴ美術館には1925年に寄贈されました。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/19386",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-19318": {
-    "description": "The Actor Segawa Kikunojo I as Hanjo in the play \"Tsumagoi Sumidagawa,\" performed at the Nakamura Theater in the third month, 1733 is a work attributed in the Art Institute of Chicago catalogue to Torii Kiyomasu II.\n\nCatalogue information\nRecorded artist or maker: Torii Kiyomasu II Japanese, 1706 (?)–1763 (?). Date: 1733. Materials and technique: Hand-colored woodblock print; hosoban, urushi-e. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 30.7 × 15 cm (12 1/8 × 5 15/16 in.). Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Ernest Francisco Fenollosa (1853–1908), Boston; by descent to his wife, Sidney McCall (1865–1954; born Mary McNeill, also Mary McNeil Fenollosa), Boston, 1908; sold to Clarence Buckingham (1854–1913), Chicago, 1909; by descent to his sisters Lucy Maud Buckingham (1870–1920) and Kate Sturges Buckingham (1858–1937), Chicago, 1913; given to the Art Institute of Chicago, 1925..",
-    "descriptionKind": "metadata_summary"
+    "description": "This 1733 print depicts the actor Segawa Kikunojo I as Hanjo in the play *Tsumagoi Sumidagawa*, performed at the Nakamura Theater in the third month of that year. Attributed by the Art Institute of Chicago to Torii Kiyomasu II, it is a narrow-format hosoban woodblock print, hand-colored and made in the urushi-e technique. The work measures 30.7 × 15 cm.",
+    "descriptionTranslations": {
+      "ja": "本作は、1733年の三月に中村座で上演された芝居「妻恋隅田川」において、瀬川菊之丞初代が班女を演じる姿を表した版画です。シカゴ美術館は鳥居清倍二代の作としています。細長い柱絵判（細判）の木版画で、手彩色を施し、漆絵の技法で制作されました。寸法は30.7×15センチです。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/19318",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-19040": {
-    "description": "Snow at Benzaiten Shrine in Inokashira Pond (Inokashira no ike Benzaiten no yashiro yuki no kei), from the series \"Snow, Moon, and Flowers at Famous Places (Meisho setsugekka)\" is a work attributed in the Art Institute of Chicago catalogue to Utagawa Hiroshige.\n\nCatalogue information\nRecorded artist or maker: Utagawa Hiroshige 歌川 広重 Japanese, 1797-1858. Date: c. 1844/45. Materials and technique: Color woodblock print; oban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 21.6 × 34 cm (8 1/2 × 13 3/8 in.). Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Charles Hibbard Chandler (1859–1946), Evanston, IL; sold to Kate Sturges Buckingham (1858–1937), Chicago, June 21, 1934; given to the Art Institute of Chicago, June 21, 1934..",
-    "descriptionKind": "metadata_summary"
+    "description": "Utagawa Hiroshige’s color woodblock print depicts snow at Benzaiten Shrine on Inokashira Pond, as identified in its title. Made in Japan around 1844–45, it belongs to the series *Snow, Moon, and Flowers at Famous Places*. The oban-format print measures 21.6 × 34 cm. The Art Institute of Chicago records it as part of the Clarence Buckingham Collection.",
+    "descriptionTranslations": {
+      "ja": "歌川広重による本作は、井の頭池の弁財天社に降る雪を題名に示す、彩色木版画です。日本で1844～45年頃に制作され、「名所雪月花」シリーズに属します。大判で、寸法は21.6×34センチ。シカゴ美術館の記録では、クラレンス・バッキンガム・コレクションに含まれます。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/19040",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-25613": {
     "description": "Kanbara: Evening Snow (Kanbara, yoru no yuki), from the series \"Fifty-three Stations of the Tokaido (Tokaido gojusan tsugi no uchi),\" also known as the Hoeido Tokaido is a work attributed in the Art Institute of Chicago catalogue to Utagawa Hiroshige.\n\nCatalogue information\nRecorded artist or maker: Utagawa Hiroshige 歌川 広重 Japanese, 1797-1858. Date: c. 1833/34. Materials and technique: Color woodblock print; oban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 24.1 × 36.8 cm (9 1/2 × 14 1/2 in.). Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Frank Lloyd Wright (1867–1959); sold to Clarence Buckingham (1854–1913), Chicago; by descent to his sisters Lucy Maud Buckingham (1870–1920) and Kate Sturges Buckingham (1858–1937), Chicago, 1913; given to the Art Institute of Chicago, 1925.. Exhibition record (excerpt): Milan, Italy, Arthemisia and Palazzo Reale, \"Ukiyoe, Il Mondo Fluttuante\" at Palazzo Reale from 6 February 2004 – 30 May 2004..",
     "descriptionKind": "metadata_summary"
   },
   "aic-19236": {
-    "description": "The Courtesan Arihara of the Tsuruya, and Child Attendants Aoe and Sekiya (Tsuruya uchi Arihara, Aoe, Sekiya), from an untitled series of courtesans is a work attributed in the Art Institute of Chicago catalogue to Kitagawa Utamaro.\n\nCatalogue information\nRecorded artist or maker: Kitagawa Utamaro 喜多川 歌麿 Japanese, c.1753-1806. Date: c. 1797. Materials and technique: Color woodblcok print; aiban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 33.3 × 22.2 cm (13 1/8 × 8 3/4 in.). Museum credit line: Purchased with funds provided by Mary Diamond Stein.",
-    "descriptionKind": "metadata_summary"
+    "description": "Attributed to Kitagawa Utamaro, this color woodblock print depicts the courtesan Arihara of the Tsuruya with the child attendants Aoe and Sekiya. Made in Japan around 1797 in the aiban format, the print belongs to an untitled series of courtesan portraits. The catalogue records its dimensions as 33.3 × 22.2 cm.",
+    "descriptionTranslations": {
+      "ja": "喜多川歌麿に帰属する本作は、鶴屋の遊女・ありはらと禿のあおえ、せきやを描いた多色木版画です。日本で1797年頃に制作され、遊女を題材とする無題のシリーズに属します。版型は大判、寸法は33.3×22.2センチです。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/19236",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-19326": {
-    "description": "The Actors Sanogawa Ichimatsu I as Senjiro disguised as Kichisaburo and Nakamura Tomijuro I as Oshichi in the joruri \"Midaregami Yoru no Amigasa,\" performed at the Nakamura Theater in the first month, 1742 is a work attributed in the Art Institute of Chicago catalogue to Torii Kiyomasu II.\n\nCatalogue information\nRecorded artist or maker: Torii Kiyomasu II Japanese, 1706 (?)–1763 (?). Date: 1742. Materials and technique: Hand-colored woodblock print; hosoban, urushi-e. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 29.9 × 14.7 cm (11 3/4 × 5 3/4 in.). Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Ernest Francisco Fenollosa (1853–1908), Boston; by descent to his wife, Sidney McCall (1865–1954; born Mary McNeill, also Mary McNeil Fenollosa), Boston, 1908; sold to Clarence Buckingham (1854–1913), Chicago, 1909; by descent to his sisters Lucy Maud Buckingham (1870–1920) and Kate Sturges Buckingham (1858–1937), Chicago, 1913; given to the Art Institute of Chicago, 1925..",
-    "descriptionKind": "metadata_summary"
+    "description": "This 1742 print depicts two kabuki actors in a joruri performance at the Nakamura Theater: Sanogawa Ichimatsu I as Senjiro, disguised as Kichisaburo, and Nakamura Tomijuro I as Oshichi. Torii Kiyomasu II is the recorded artist. The narrow-format hosoban print is hand-colored and made using the urushi-e technique; it is now in the Art Institute of Chicago’s Clarence Buckingham Collection.",
+    "descriptionTranslations": {
+      "ja": "1742年、中村座で上演された浄瑠璃「乱髪夜網笠」の役者絵。佐野川市松初代が吉三郎に変装した千次郎、中村富十郎初代がお七を演じる姿を描く。記録上の作者は鳥居清倍（二代）。細長い判型のほそ判で、手彩色を施した漆絵である。シカゴ美術館のクラレンス・バッキンガム・コレクション所蔵。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/19326",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-2906": {
     "description": "Odawara, from the series \"Fifty-three Stations of the Tokaido (Tokaido gojusan tsugi)\" is a work attributed in the Art Institute of Chicago catalogue to Katsushika Hokusai.\n\nCatalogue information\nRecorded artist or maker: Katsushika Hokusai 葛飾 北斎 Japanese, 1760-1849. Date: c. 1806. Materials and technique: Color woodblock print; chuban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: Approx: 24 × 18.3 cm (9 1/2 × 7 1/4 in.). Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Kate Sturges Buckingham (1858–1937), Chicago; given to the Art Institute of Chicago, Dec. 12, 1929..",
@@ -3509,12 +3628,30 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionKind": "metadata_summary"
   },
   "aic-18366": {
-    "description": "Oumayagashi, from the series \"One Hundred Famous Views of Edo (Meisho Edo hyakkei)\" is a work attributed in the Art Institute of Chicago catalogue to Utagawa Hiroshige.\n\nCatalogue information\nRecorded artist or maker: Utagawa Hiroshige 歌川 広重 Japanese, 1797-1858. Date: 1857. Materials and technique: Color woodblock print; oban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 36.3 × 24.5 cm (14 1/4 × 9 5/8 in.). Museum credit line: Gift of Mr. and Mrs. Harold G. Henderson. Recorded ownership history (excerpt): Harold Gould Henderson (1889–1974) and Mary A. Henderson (1905–1998), New York; given to the Art Institute of Chicago, 1963..",
-    "descriptionKind": "metadata_summary"
+    "description": "Utagawa Hiroshige’s Oumayagashi belongs to his series One Hundred Famous Views of Edo and was made in 1857. This Japanese oban-format print is produced with color woodblock printing. The catalogue records it as 36.3 × 24.5 cm; no further description of its depicted scene is provided.",
+    "descriptionTranslations": {
+      "ja": "歌川広重が1857年に制作した《御厩河岸》は、連作《名所江戸百景》の一図です。日本の大判判型による多色木版画で、寸法は36.3×24.5センチ。資料には、画面に描かれた情景についての詳しい説明はありません。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/18366",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-19832": {
-    "description": "The Maple Festival (Momiji no ga) from chapter 7 of The Tale of Genji is a work attributed in the Art Institute of Chicago catalogue to Kitao Shigemasa.\n\nCatalogue information\nRecorded artist or maker: Kitao Shigemasa Japanese, 1739-1820. Date: early 1760s. Materials and technique: Color woodblock print; hosoban, mizu-e. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 31.2 × 14 cm (12 1/4 × 5 1/2 in.). Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Yamanaka & Company; sold to Kate Sturges Buckingham (1858–1937), Chicago, Dec. 1918; given to the Art Institute of Chicago, 1925..",
-    "descriptionKind": "metadata_summary"
+    "description": "Attributed to Kitao Shigemasa, this print is associated with chapter 7 of The Tale of Genji, “The Maple Festival” (Momiji no ga). Made in Japan in the early 1760s, it is a color woodblock print in the narrow hosoban format, using the mizu-e technique. The Art Institute of Chicago records its dimensions as 31.2 × 14 cm.",
+    "descriptionTranslations": {
+      "ja": "喜多川重政作とされる本作は、『源氏物語』第七帖「紅葉賀」に取材した一枚です。日本で1760年代初頭に制作された、細長い柱絵判（細判）の多色木版画で、水絵の技法が用いられています。シカゴ美術館の記録による寸法は31.2×14センチです。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/19832",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-97933": {
     "description": "During World War I, after several years of inactivity because of bad health and grief over the death of his second wife, Claude Monet embarked on a period of intense work. Building a large studio and improving his garden, he began a group of monumental paintings of water lilies that he would later offer to the French state. Alongside this project, he painted a suite of 19 smaller canvases, including the present one. There is evidence—including a few photographs of the artist working in his garden—that Monet conceived these paintings outdoors and then reworked them in his studio. By this last stage of his career, however, the distinction between observation and memory in his work is intangible, and perhaps even irrelevant.\n\nCatalogue information\nRecorded artist or maker: Claude Monet (French, 1840–1926). Date: 1917–19. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: painting. Physical dimensions: 130.2 × 201.9 cm (51 1/2 × 79 1/2 in.); Framed: 147.4 × 218.5 × 9.9 cm (58 × 86 × 3 7/8 in.). Museum catalogue subjects: landscapes, pond, water, water lilies, Nymphaea, flowers, reflections. Museum credit line: Gift of Mrs. Harvey Kaplan. Recorded ownership history (excerpt): The artist (died 1926); by descent to his son, Michel Monet, Giverny [per Wildenstein 1996, and invoice on Paul Rosenberg letterhead, dated Oct. 16, 1956, in curatorial object file, Art Institute of Chicago. An estate signature stamp was documented in the lower right corner in a 1963 photograph]. Probably Katia Granoff, Paris, by Oct. 16, 1956 [per Wildenstein 1996]. Paul…. Exhibition record (excerpt): Possibly Basel, Kunsthalle Basel, Impressionisten: Monet, Pissarro, Sisley, Vorläufer und Zeitgenossen, Sept. 3–Nov. 20, 1949, cat. 203. Art Institute of Chicago, Chicago Collectors: An Exhibition Sponsored by the Men’s Council of the Art Institute, Sept. 20–Oct. 27, 1963, no….",
@@ -3632,12 +3769,30 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionKind": "metadata_summary"
   },
   "aic-19018": {
-    "description": "Japanese white-eye on flowering branch is a work attributed in the Art Institute of Chicago catalogue to Utagawa Hiroshige.\n\nCatalogue information\nRecorded artist or maker: Utagawa Hiroshige 歌川 広重 Japanese, 1797-1858. Date: 1830s–1840s. Materials and technique: Color woodblock print; yotsugiriban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 17.5 × 12.3 cm (7 × 4 3/4 in.). Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Charles Hibbard Chandler (1859–1946), Evanston, IL; sold to Kate Sturges Buckingham (1858–1937), Chicago, June 21, 1934; given to the Art Institute of Chicago, June 21, 1934..",
-    "descriptionKind": "metadata_summary"
+    "description": "Attributed to Utagawa Hiroshige, this Japanese color woodblock print depicts a Japanese white-eye on a flowering branch. Made in the 1830s–1840s in the yotsugiriban format, it measures 17.5 by 12.3 centimeters. The work is part of the Clarence Buckingham Collection at the Art Institute of Chicago.",
+    "descriptionTranslations": {
+      "ja": "歌川広重に帰属される本作は、花の咲く枝にとまるメジロを描いた日本の多色木版画です。1830〜1840年代の作で、寸法は17.5×12.3センチ。四つ切判の形式をとり、シカゴ美術館のクラレンス・バッキンガム・コレクションに収蔵されています。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/19018",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-180975": {
-    "description": "Flower-Shaped Ear Ornaments is a work attributed in the Art Institute of Chicago catalogue to Mexica (Aztec).\n\nCatalogue information\nRecorded artist or maker: Aztec (Mexica) Tenochtitlan, Mexico. Date: 1400–1500. Materials and technique: Ceramic and gold foil. Artistic style or school: aztec. Place of creation: Mexico. Classification: ear ornament. Physical dimensions: Each: 5.7 × 2.9 cm (2 1/4 × 1 1/8 in.). Museum catalogue subjects: jewelry, gold (color), flowers. Museum credit line: Pauline S. Armstrong Endowment. Recorded ownership history (excerpt): Huber Fine Arts, Lost Nation, Dixon, IL; sold to the Art Institute of Chicago, 2000.. Exhibition record (excerpt): Art Institute of Chicago, department of Medieval to Modern Art, Wunderkammer, September 2008–2009, no cat..",
-    "descriptionKind": "metadata_summary"
+    "description": "These flower-shaped ear ornaments are attributed to the Mexica (Aztec) and date to 1400–1500. Made of ceramic and gold foil, each measures 5.7 by 2.9 centimeters. The catalogue records their place of creation as Mexico and classifies them as jewelry.",
+    "descriptionTranslations": {
+      "ja": "メシカ（アステカ）に帰属する、1400～1500年頃の耳飾りです。花形の作品は陶器と金箔で作られ、それぞれ縦5.7センチ、横2.9センチ。カタログでは、メキシコで制作された装身具として記録されています。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/180975",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-21557": {
     "description": "Flower Viewing is a work attributed in the Art Institute of Chicago catalogue to Hishikawa Moronobu.\n\nCatalogue information\nRecorded artist or maker: Attributed to Hishikawa Moronobu Japanese, (?)-1694. Date: 1711 (reprint of 17th century work). Materials and technique: Hand-colored woodblock print; o-oban, tan-e. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 30.2 × 60.4 cm (11 7/8 × 23 3/4 in.). Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Hamilton Easter Field (1873–1922); sold to Kate Sturges Buckingham (1858–1937), Chicago, Dec. 6, 1922; given to the Art Institute of Chicago, 1925..",

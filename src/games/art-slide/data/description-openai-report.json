@@ -1,12 +1,12 @@
 {
   "model": "gpt-6-luna",
   "recipeVersion": "openai-bilingual-v1",
-  "generatedAt": "2026-11-14T09:40:06.266264+00:00",
+  "generatedAt": "2026-11-14T09:42:01.013769+00:00",
   "totalArtworks": 404,
-  "processed": 100,
-  "remaining": 304,
-  "medianEnglishCharacters": 477.0,
-  "medianJapaneseCharacters": 188.0,
+  "processed": 125,
+  "remaining": 279,
+  "medianEnglishCharacters": 469,
+  "medianJapaneseCharacters": 185,
   "records": {
     "aic-102131": {
       "id": "aic-102131",
@@ -906,6 +906,231 @@
       "rawSourceCharacters": 3347,
       "englishCharacters": 622,
       "japaneseCharacters": 243,
+      "apiWarning": null
+    },
+    "aic-16823": {
+      "id": "aic-16823",
+      "title": "The Rapids, Hudson River, Adirondacks",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2532,
+      "englishCharacters": 474,
+      "japaneseCharacters": 204,
+      "apiWarning": null
+    },
+    "aic-16831": {
+      "id": "aic-16831",
+      "title": "Stowing Sail",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2365,
+      "englishCharacters": 488,
+      "japaneseCharacters": 185,
+      "apiWarning": null
+    },
+    "aic-180711": {
+      "id": "aic-180711",
+      "title": "The Gulf of Salerno",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1429,
+      "englishCharacters": 414,
+      "japaneseCharacters": 168,
+      "apiWarning": null
+    },
+    "aic-180975": {
+      "id": "aic-180975",
+      "title": "Flower-Shaped Ear Ornaments",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 783,
+      "englishCharacters": 250,
+      "japaneseCharacters": 101,
+      "apiWarning": null
+    },
+    "aic-181315": {
+      "id": "aic-181315",
+      "title": "The Submersion of Pharaoh's Army in the Red Sea",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1083,
+      "englishCharacters": 439,
+      "japaneseCharacters": 170,
+      "apiWarning": null
+    },
+    "aic-181777": {
+      "id": "aic-181777",
+      "title": "The Irish Question",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1524,
+      "englishCharacters": 407,
+      "japaneseCharacters": 189,
+      "apiWarning": null
+    },
+    "aic-182381": {
+      "id": "aic-182381",
+      "title": "An Abundance of Fruit",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1132,
+      "englishCharacters": 509,
+      "japaneseCharacters": 213,
+      "apiWarning": null
+    },
+    "aic-183293": {
+      "id": "aic-183293",
+      "title": "Solitude",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1474,
+      "englishCharacters": 516,
+      "japaneseCharacters": 197,
+      "apiWarning": null
+    },
+    "aic-18366": {
+      "id": "aic-18366",
+      "title": "Oumayagashi, from the series \"One Hundred Famous Views of Edo (Meisho Edo hyakkei)\"",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 726,
+      "englishCharacters": 284,
+      "japaneseCharacters": 103,
+      "apiWarning": null
+    },
+    "aic-184371": {
+      "id": "aic-184371",
+      "title": "The Nativity",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2023,
+      "englishCharacters": 429,
+      "japaneseCharacters": 185,
+      "apiWarning": null
+    },
+    "aic-185185": {
+      "id": "aic-185185",
+      "title": "Coming Squall (Nahant Beach with a Summer Shower)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1728,
+      "englishCharacters": 486,
+      "japaneseCharacters": 231,
+      "apiWarning": null
+    },
+    "aic-185222": {
+      "id": "aic-185222",
+      "title": "Group Pilgrimage to the Jizo Nun",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 3183,
+      "englishCharacters": 574,
+      "japaneseCharacters": 203,
+      "apiWarning": null
+    },
+    "aic-18667": {
+      "id": "aic-18667",
+      "title": "Portrait of Berthe Morisot with a Fan",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1822,
+      "englishCharacters": 482,
+      "japaneseCharacters": 223,
+      "apiWarning": null
+    },
+    "aic-18686": {
+      "id": "aic-18686",
+      "title": "Heads and Paws of Lions",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 788,
+      "englishCharacters": 473,
+      "japaneseCharacters": 185,
+      "apiWarning": null
+    },
+    "aic-19018": {
+      "id": "aic-19018",
+      "title": "Japanese white-eye on flowering branch",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 731,
+      "englishCharacters": 298,
+      "japaneseCharacters": 119,
+      "apiWarning": null
+    },
+    "aic-19040": {
+      "id": "aic-19040",
+      "title": "Snow at Benzaiten Shrine in Inokashira Pond (Inokashira no ike Benzaiten no yashiro yuki no kei), from the series \"Snow, Moon, and Flowers at Famous Places (Meisho setsugekka)\"",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 863,
+      "englishCharacters": 353,
+      "japaneseCharacters": 130,
+      "apiWarning": null
+    },
+    "aic-19236": {
+      "id": "aic-19236",
+      "title": "The Courtesan Arihara of the Tsuruya, and Child Attendants Aoe and Sekiya (Tsuruya uchi Arihara, Aoe, Sekiya), from an untitled series of courtesans",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 643,
+      "englishCharacters": 312,
+      "japaneseCharacters": 106,
+      "apiWarning": null
+    },
+    "aic-19318": {
+      "id": "aic-19318",
+      "title": "The Actor Segawa Kikunojo I as Hanjo in the play \"Tsumagoi Sumidagawa,\" performed at the Nakamura Theater in the third month, 1733",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1036,
+      "englishCharacters": 355,
+      "japaneseCharacters": 135,
+      "apiWarning": null
+    },
+    "aic-19326": {
+      "id": "aic-19326",
+      "title": "The Actors Sanogawa Ichimatsu I as Senjiro disguised as Kichisaburo and Nakamura Tomijuro I as Oshichi in the joruri \"Midaregami Yoru no Amigasa,\" performed at the Nakamura Theater in the first month, 1742",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1111,
+      "englishCharacters": 390,
+      "japaneseCharacters": 138,
+      "apiWarning": null
+    },
+    "aic-19366": {
+      "id": "aic-19366",
+      "title": "The Actors Tamazawa Saijiro I as the pageboy Umezaburo and Segawa Kikunojo I as Oroku in the play \"Sazareishi Suehiro Genji,\" performed at the Nakamura Theater in the first month, 1744",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1084,
+      "englishCharacters": 352,
+      "japaneseCharacters": 108,
+      "apiWarning": null
+    },
+    "aic-193664": {
+      "id": "aic-193664",
+      "title": "The Captive Slave (Ira Aldridge)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2714,
+      "englishCharacters": 500,
+      "japaneseCharacters": 221,
+      "apiWarning": null
+    },
+    "aic-19386": {
+      "id": "aic-19386",
+      "title": "Susano-o no Mikoto Killing the Eight-headed Dragon",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 913,
+      "englishCharacters": 312,
+      "japaneseCharacters": 109,
+      "apiWarning": null
+    },
+    "aic-196282": {
+      "id": "aic-196282",
+      "title": "The Prairie on Fire",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1821,
+      "englishCharacters": 583,
+      "japaneseCharacters": 250,
+      "apiWarning": null
+    },
+    "aic-19832": {
+      "id": "aic-19832",
+      "title": "The Maple Festival (Momiji no ga) from chapter 7 of The Tale of Genji",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 713,
+      "englishCharacters": 320,
+      "japaneseCharacters": 117,
+      "apiWarning": null
+    },
+    "aic-198905": {
+      "id": "aic-198905",
+      "title": "Still Life with Ostrich Egg Cup and the Whitfield Heirlooms",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1873,
+      "englishCharacters": 435,
+      "japaneseCharacters": 218,
       "apiWarning": null
     }
   },
