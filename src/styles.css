@@ -1844,10 +1844,10 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   }
   .preview-card > .preview-image {
     flex: 0 0 auto;
-    width: 100%;
+    width: min(100%, calc(min(49svh, 520px) * var(--preview-ratio)));
     height: auto;
     max-height: min(49svh, 520px);
-    aspect-ratio: var(--preview-aspect);
+    align-self: center;
     overflow: hidden;
   }
   .preview-card > .preview-image > img {
