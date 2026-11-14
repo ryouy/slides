@@ -39,6 +39,7 @@ export function ArtGameView(p: Props) {
   const { initial, artwork, daily } = p;
   const t = useT();
   const lang = useLang();
+  const translatedDescription = lang === 'en' ? undefined : artwork.descriptionTranslations?.[lang];
   const [state, dispatch] = useReducer(artReducer, initial);
   const [preview, setPreview] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
@@ -224,13 +225,19 @@ export function ArtGameView(p: Props) {
             <Stat label={t('common.moves')} value={String(state.moves)} id="moves-desktop" />
           </div>
         </div>
-        <p className="ap-desc" data-testid="art-desc">
-          {lang === 'en' ? artwork.description : t('art.summary', {
+        <p className="ap-desc" data-testid="art-desc" lang={translatedDescription ? lang : undefined}>
+          {lang === 'en' ? artwork.description : translatedDescription ?? t('art.summary', {
             artist: artwork.artist,
             year: artwork.year,
             theme: t(`theme.${artwork.theme}` as Key),
           })}
         </p>
+        {lang !== 'en' && !translatedDescription && (
+          <div className="art-original-desc">
+            <span className="ap-original-caption">{t('art.englishDetail')}</span>
+            <p className="ap-desc" lang="en">{artwork.description}</p>
+          </div>
+        )}
         <p className="ap-credit">
           {artwork.museum} · <a href={artwork.licenseUrl} target="_blank" rel="noopener noreferrer">CC0</a> · <a href={artwork.sourceUrl} target="_blank" rel="noopener noreferrer">{t('art.source')}</a>
         </p>
@@ -241,7 +248,7 @@ export function ArtGameView(p: Props) {
             {' · '}{t('art.textAdjusted')}
           </p>
         )}
-        {lang !== 'en' && artwork.descriptionKind === 'museum_text' && (
+        {lang !== 'en' && !!translatedDescription && artwork.descriptionKind === 'museum_text' && (
           <details className="art-museum-text">
             <summary>{t('art.englishDetail')}</summary>
             <p lang="en">{artwork.description}</p>
