@@ -65,10 +65,6 @@ export function ArtHome() {
           </div>
         </details>
         <Link to="/settings" className="art-home-settings" data-testid="art-settings">
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="3" />
-            <path d="M9.8 2.8h4.4l.6 2.1 1.8.9 2-.9 3.1 3.1-.9 2 .9 1.8 2.1.6v4.4l-2.1.6-.9 1.8.9 2-3.1 3.1-2-.9-1.8.9-.6 2.1H9.8l-.6-2.1-1.8-.9-2 .9-3.1-3.1.9-2-.9-1.8-2.1-.6v-4.4l2.1-.6.9-1.8-.9-2 3.1-3.1 2 .9 1.8-.9.6-2.1Z" transform="translate(2 2) scale(.83)" />
-          </svg>
           <span>{t('home.settings')}</span>
         </Link>
       </div>
