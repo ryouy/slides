@@ -1,6 +1,6 @@
 /** Difficulty level; the grid has about level² pieces (see grid.ts). */
-export type ArtLevel = 3 | 4 | 5;
-export const ART_LEVELS: readonly ArtLevel[] = [3, 4, 5];
+export type ArtLevel = 3 | 4 | 5 | 6 | 7;
+export const ART_LEVELS: readonly ArtLevel[] = [3, 4, 5, 6, 7];
 export type ArtDirection = 'up' | 'down' | 'left' | 'right';
 
 /** Columns x rows of the board. Follows the painting's proportions, so nothing is cropped. */
