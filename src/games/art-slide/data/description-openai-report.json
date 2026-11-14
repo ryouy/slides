@@ -1,12 +1,12 @@
 {
   "model": "gpt-6-luna",
   "recipeVersion": "openai-bilingual-v1",
-  "generatedAt": "2026-11-14T09:38:06.799977+00:00",
+  "generatedAt": "2026-11-14T09:40:06.266264+00:00",
   "totalArtworks": 404,
-  "processed": 75,
-  "remaining": 329,
-  "medianEnglishCharacters": 458,
-  "medianJapaneseCharacters": 179,
+  "processed": 100,
+  "remaining": 304,
+  "medianEnglishCharacters": 477.0,
+  "medianJapaneseCharacters": 188.0,
   "records": {
     "aic-102131": {
       "id": "aic-102131",
@@ -681,6 +681,231 @@
       "rawSourceCharacters": 2102,
       "englishCharacters": 564,
       "japaneseCharacters": 229,
+      "apiWarning": null
+    },
+    "aic-156596": {
+      "id": "aic-156596",
+      "title": "Fruit Piece",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1917,
+      "englishCharacters": 640,
+      "japaneseCharacters": 241,
+      "apiWarning": null
+    },
+    "aic-157056": {
+      "id": "aic-157056",
+      "title": "Mrs. Herbert Duckworth",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2001,
+      "englishCharacters": 451,
+      "japaneseCharacters": 201,
+      "apiWarning": null
+    },
+    "aic-15728": {
+      "id": "aic-15728",
+      "title": "An Artist at His Easel",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 520,
+      "englishCharacters": 269,
+      "japaneseCharacters": 97,
+      "apiWarning": null
+    },
+    "aic-159722": {
+      "id": "aic-159722",
+      "title": "Mrs. Charles Deering (Marion Denison Whipple)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1257,
+      "englishCharacters": 484,
+      "japaneseCharacters": 185,
+      "apiWarning": null
+    },
+    "aic-160144": {
+      "id": "aic-160144",
+      "title": "The Sick Child I",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1773,
+      "englishCharacters": 495,
+      "japaneseCharacters": 174,
+      "apiWarning": null
+    },
+    "aic-16146": {
+      "id": "aic-16146",
+      "title": "Equestrienne (At the Cirque Fernando)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2034,
+      "englishCharacters": 535,
+      "japaneseCharacters": 212,
+      "apiWarning": null
+    },
+    "aic-16169": {
+      "id": "aic-16169",
+      "title": "The Beheading of Saint John the Baptist",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2544,
+      "englishCharacters": 480,
+      "japaneseCharacters": 192,
+      "apiWarning": null
+    },
+    "aic-16231": {
+      "id": "aic-16231",
+      "title": "Processional Cross with Saint Mary Magdalene and a Blessed Hermit",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2358,
+      "englishCharacters": 519,
+      "japaneseCharacters": 242,
+      "apiWarning": null
+    },
+    "aic-16298": {
+      "id": "aic-16298",
+      "title": "Portrait of Jean Gros (recto); Coat of Arms of Jean Gros (verso)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2554,
+      "englishCharacters": 474,
+      "japaneseCharacters": 192,
+      "apiWarning": null
+    },
+    "aic-16327": {
+      "id": "aic-16327",
+      "title": "The Annunciation",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2392,
+      "englishCharacters": 546,
+      "japaneseCharacters": 210,
+      "apiWarning": null
+    },
+    "aic-16362": {
+      "id": "aic-16362",
+      "title": "Friar Pedro Shoots El Maragato as His Horse Runs Off",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2895,
+      "englishCharacters": 523,
+      "japaneseCharacters": 202,
+      "apiWarning": null
+    },
+    "aic-16488": {
+      "id": "aic-16488",
+      "title": "Armida Encounters the Sleeping Rinaldo",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2514,
+      "englishCharacters": 563,
+      "japaneseCharacters": 209,
+      "apiWarning": null
+    },
+    "aic-16499": {
+      "id": "aic-16499",
+      "title": "Jesus Mocked by the Soldiers",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2810,
+      "englishCharacters": 510,
+      "japaneseCharacters": 190,
+      "apiWarning": null
+    },
+    "aic-16545": {
+      "id": "aic-16545",
+      "title": "Brooklyn Bridge",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1491,
+      "englishCharacters": 417,
+      "japaneseCharacters": 178,
+      "apiWarning": null
+    },
+    "aic-16551": {
+      "id": "aic-16551",
+      "title": "Beata Beatrix",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 3368,
+      "englishCharacters": 558,
+      "japaneseCharacters": 262,
+      "apiWarning": null
+    },
+    "aic-16571": {
+      "id": "aic-16571",
+      "title": "Arrival of the Normandy Train, Gare Saint-Lazare",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2671,
+      "englishCharacters": 576,
+      "japaneseCharacters": 221,
+      "apiWarning": null
+    },
+    "aic-16600": {
+      "id": "aic-16600",
+      "title": "Lucie Berard (Child in White)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1924,
+      "englishCharacters": 489,
+      "japaneseCharacters": 189,
+      "apiWarning": null
+    },
+    "aic-16648": {
+      "id": "aic-16648",
+      "title": "Woman in Front of a Still Life by Cezanne",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1967,
+      "englishCharacters": 500,
+      "japaneseCharacters": 228,
+      "apiWarning": null
+    },
+    "aic-16659": {
+      "id": "aic-16659",
+      "title": "Old Tower at Avignon",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1563,
+      "englishCharacters": 414,
+      "japaneseCharacters": 185,
+      "apiWarning": null
+    },
+    "aic-16772": {
+      "id": "aic-16772",
+      "title": "Adirondacks Guide",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1788,
+      "englishCharacters": 434,
+      "japaneseCharacters": 161,
+      "apiWarning": null
+    },
+    "aic-16776": {
+      "id": "aic-16776",
+      "title": "After the Hurricane, Bahamas",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2460,
+      "englishCharacters": 446,
+      "japaneseCharacters": 177,
+      "apiWarning": null
+    },
+    "aic-16779": {
+      "id": "aic-16779",
+      "title": "Breaking Storm, Coast of Maine",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2192,
+      "englishCharacters": 452,
+      "japaneseCharacters": 197,
+      "apiWarning": null
+    },
+    "aic-16782": {
+      "id": "aic-16782",
+      "title": "Campfire, Adirondacks",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 3133,
+      "englishCharacters": 507,
+      "japaneseCharacters": 210,
+      "apiWarning": null
+    },
+    "aic-16791": {
+      "id": "aic-16791",
+      "title": "Flamborough Head, England",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2218,
+      "englishCharacters": 541,
+      "japaneseCharacters": 187,
+      "apiWarning": null
+    },
+    "aic-16794": {
+      "id": "aic-16794",
+      "title": "The Gulf Stream",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 3347,
+      "englishCharacters": 622,
+      "japaneseCharacters": 243,
       "apiWarning": null
     }
   },
