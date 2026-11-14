@@ -4,7 +4,7 @@ import { AdSlot } from '../../../ads/AdSlot';
 import { ResultModal } from '../../../components/ResultModal';
 import { useGameTimer } from '../../../hooks/useGameTimer';
 import { useImageStatus } from '../../../hooks/useImageStatus';
-import { useT } from '../../../i18n';
+import { useLang, useT, type Key } from '../../../i18n';
 import { formatTime } from '../../../storage/stats';
 import { artShareUrl } from '../../../utils/share';
 import { ART_LEVELS, canMove, neighbors, type ArtDirection, type ArtLevel } from '../logic/board';
@@ -38,6 +38,7 @@ interface Props {
 export function ArtGameView(p: Props) {
   const { initial, artwork, daily } = p;
   const t = useT();
+  const lang = useLang();
   const [state, dispatch] = useReducer(artReducer, initial);
   const [preview, setPreview] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
@@ -209,7 +210,13 @@ export function ArtGameView(p: Props) {
 
 
       <div className="art-extra">
-        <p className="ap-desc" data-testid="art-desc">{artwork.description}</p>
+        <p className="ap-desc" data-testid="art-desc">
+          {lang === 'en' ? artwork.description : t('art.summary', {
+            artist: artwork.artist,
+            year: artwork.year,
+            theme: t(`theme.${artwork.theme}` as Key),
+          })}
+        </p>
         <p className="ap-credit">
           {artwork.museum} · <a href={artwork.licenseUrl} target="_blank" rel="noopener noreferrer">CC0</a> · <a href={artwork.sourceUrl} target="_blank" rel="noopener noreferrer">{t('art.source')}</a>
         </p>
