@@ -5,7 +5,10 @@ import type { Artwork } from '../types';
 
 export { ARTWORKS_VERSION } from './artworks';
 /** Base artworks retain their order. Colab additions appear in Gallery and random play. */
-export const ARTWORKS: Artwork[] = [...BASE_ARTWORKS, ...NEW_ARTWORKS];
+export const ARTWORKS: Artwork[] = [...BASE_ARTWORKS, ...NEW_ARTWORKS].map((artwork) => ({
+  ...artwork,
+  ...(DESCRIPTION_OVERRIDES[artwork.id] ?? {}),
+}));
 
 const byId = new Map(ARTWORKS.map((a) => [a.id, a]));
 export const getArtwork = (id: string): Artwork | undefined => byId.get(id);
