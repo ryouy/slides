@@ -12,13 +12,24 @@ interface Props {
   rect: { left: number; top: number; width: number; height: number };
   label: string;
   onClosed: () => void;
+  /** Shared description language state from the game view. */
+  descriptionLang: 'ja' | 'en';
+  onDescriptionLanguageChange: (lang: 'ja' | 'en') => void;
+  descriptionLanguageLabel: string;
+  japaneseLabel: string;
+  englishLabel: string;
+  sourceLabel: string;
 }
 
 /**
  * The finished painting laid over the actual puzzle. Tapping anywhere (or Escape) closes it with a
  * smooth fade instead of vanishing; the title and credit are tiny and sit inside the picture.
  */
-export function ArtPreview({ artwork, rect, label, onClosed }: Props) {
+export function ArtPreview({
+  artwork, rect, label, onClosed,
+  descriptionLang, onDescriptionLanguageChange,
+  descriptionLanguageLabel, japaneseLabel, englishLabel, sourceLabel,
+}: Props) {
   const [closing, setClosing] = useState(false);
   const timer = useRef<number | null>(null);
 
@@ -49,12 +60,37 @@ export function ArtPreview({ artwork, rect, label, onClosed }: Props) {
 
   return createPortal(
     <div className={`preview-layer${closing ? ' closing' : ''}`} role="dialog" aria-modal="true" aria-label={label} data-testid="preview-layer" data-state={closing ? 'closing' : 'open'} onClick={close}>
-      <figure className="preview-card" data-testid="preview-card" style={{ left, top, width: w, height: h }}>
+      <figure className="preview-card" data-testid="preview-card" style={{ left, top, width: w, height: h }}
+        onClick={(event) => {
+          // The mobile preview is a readable sheet: interactions inside it must not close it.
+          if (window.matchMedia('(max-width: 899px)').matches) event.stopPropagation();
+        }}>
         <img src={artwork.imageUrl} alt={`${artwork.title} – ${artwork.artist}`} width={artwork.width} height={artwork.height} draggable={false} />
         <figcaption>
           <span className="pv-title">{artwork.title} <i>{artwork.artist}, {artwork.year}</i></span>
           <span className="pv-credit">{artwork.museum} · CC0</span>
         </figcaption>
+        <div className="preview-description" data-testid="preview-description">
+          <p className="ap-desc" lang={descriptionLang} data-testid="preview-description-text">
+            {descriptionLang === 'ja' ? artwork.descriptionTranslations?.ja ?? artwork.description : artwork.description}
+          </p>
+          <div className="art-description-language" role="group" aria-label={descriptionLanguageLabel}>
+            <button type="button" aria-pressed={descriptionLang === 'ja'}
+              aria-label={japaneseLabel} className={descriptionLang === 'ja' ? 'on' : ''}
+              disabled={!artwork.descriptionTranslations?.ja}
+              onClick={() => onDescriptionLanguageChange('ja')}>日</button>
+            <span aria-hidden="true">/</span>
+            <button type="button" aria-pressed={descriptionLang === 'en'}
+              aria-label={englishLabel} className={descriptionLang === 'en' ? 'on' : ''}
+              onClick={() => onDescriptionLanguageChange('en')}>En</button>
+          </div>
+          <p className="ap-credit">
+            {artwork.museum} · <a href={artwork.licenseUrl} target="_blank" rel="noopener noreferrer">CC0</a> ·{' '}
+            <a href={artwork.sourceUrl} target="_blank" rel="noopener noreferrer">{sourceLabel}</a>
+          </p>
+        </div>
+        <button type="button" className="preview-close" data-testid="preview-close"
+          aria-label={label} onClick={close}>×</button>
       </figure>
     </div>,
     document.body,
