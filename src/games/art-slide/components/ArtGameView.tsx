@@ -91,7 +91,7 @@ export function ArtGameView(p: Props) {
     }
   }, [cleared, lineMoving]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  /** Moving several tiles is the same legal step sequence as tapping them nearest-first. */
+  /** Every aligned tile changes position in one render; CSS animates them together. */
   const tapLine = (cell: number) => {
     if (locked || lineMovingRef.current) return;
     const cells = lineSlideCells(state.board, dims, cell);
@@ -102,16 +102,12 @@ export function ArtGameView(p: Props) {
     }
     lineMovingRef.current = true;
     setLineMoving(true);
-    // Each tile completes its own movement before the next one moves.
-    const stepMs = 275; // .apiece uses a 260ms CSS transition
-    cells.forEach((nextCell, i) => {
-      if (i === 0) dispatch({ type: 'lineStep', cell: nextCell });
-      else timers.current.push(window.setTimeout(() => dispatch({ type: 'lineStep', cell: nextCell }), i * stepMs));
-    });
+    dispatch({ type: 'lineMove', cell });
+    // Unblock after the shared 260ms tile animation finishes.
     timers.current.push(window.setTimeout(() => {
       lineMovingRef.current = false;
       setLineMoving(false);
-    }, cells.length * stepMs));
+    }, 280));
   };
 
   const swipe = (cell: number, dir: ArtDirection) => {
