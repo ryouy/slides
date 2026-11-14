@@ -1,7 +1,7 @@
 import { createContext, createElement, useCallback, useContext, useMemo, useReducer, useRef, type ReactNode } from 'react';
 import { isValidArtState, type ArtState } from './logic/game';
 import { ART_LEVELS, type ArtLevel } from './logic/board';
-import type { GroupBy, SortBy } from './logic/gallery';
+import { GALLERY_COLUMN_OPTIONS, type GalleryColumns, type GroupBy, type SortBy } from './logic/gallery';
 import { updateBest } from '../../storage/stats';
 import type { Best } from '../../storage/storage';
 
@@ -33,8 +33,8 @@ export interface ArtSave {
   inProgress: { daily?: ArtState; free?: ArtState };
   lastSize: ArtLevel;
   showNumbers: boolean;
-  /** How the gallery is grouped and sorted (remembered). */
-  gallery: { groupBy: GroupBy; sortBy: SortBy };
+  /** Remember gallery filters, number of paintings per row, and random order. */
+  gallery: { groupBy: GroupBy; sortBy: SortBy; columns: GalleryColumns; randomSeed: number };
 }
 
 export const defaultArtSave = (): ArtSave => ({
@@ -46,7 +46,7 @@ export const defaultArtSave = (): ArtSave => ({
   inProgress: {},
   lastSize: 3,
   showNumbers: false,
-  gallery: { groupBy: 'theme', sortBy: 'artist' },
+  gallery: { groupBy: 'theme', sortBy: 'artist', columns: 'auto', randomSeed: 0 },
 });
 
 export function migrateArt(raw: unknown): ArtSave {
@@ -62,7 +62,16 @@ export function migrateArt(raw: unknown): ArtSave {
     bests: r.bests ?? {},
     history: Array.isArray(r.history) ? r.history : [],
     lastSize: ART_LEVELS.includes(r.lastSize as ArtLevel) ? (r.lastSize as ArtLevel) : 3,
-    gallery: { ...d.gallery, ...(r.gallery ?? {}) },
+    gallery: {
+      ...d.gallery,
+      ...(r.gallery ?? {}),
+      columns: GALLERY_COLUMN_OPTIONS.includes(r.gallery?.columns as GalleryColumns)
+        ? (r.gallery!.columns as GalleryColumns)
+        : 'auto',
+      randomSeed: typeof r.gallery?.randomSeed === 'number' && Number.isFinite(r.gallery.randomSeed)
+        ? r.gallery.randomSeed
+        : 0,
+    },
     inProgress: {},
   };
   if (r.inProgress?.daily && isValidArtState(r.inProgress.daily)) out.inProgress.daily = r.inProgress.daily;
