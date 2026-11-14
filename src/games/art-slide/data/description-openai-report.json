@@ -1,12 +1,12 @@
 {
   "model": "gpt-6-luna",
   "recipeVersion": "openai-bilingual-v1",
-  "generatedAt": "2026-11-14T09:53:57.920762+00:00",
+  "generatedAt": "2026-11-14T09:57:30.885636+00:00",
   "totalArtworks": 404,
-  "processed": 275,
-  "remaining": 129,
-  "medianEnglishCharacters": 469,
-  "medianJapaneseCharacters": 186,
+  "processed": 300,
+  "remaining": 104,
+  "medianEnglishCharacters": 474.5,
+  "medianJapaneseCharacters": 188.0,
   "records": {
     "aic-102131": {
       "id": "aic-102131",
@@ -2481,6 +2481,231 @@
       "rawSourceCharacters": 2737,
       "englishCharacters": 577,
       "japaneseCharacters": 212,
+      "apiWarning": null
+    },
+    "aic-88977": {
+      "id": "aic-88977",
+      "title": "Evening Snow on a Floss Shaper (Nurioke no bosetsu), from the series \"Eight Views of the Parlor (Zashiki hakkei)\"",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2088,
+      "englishCharacters": 577,
+      "japaneseCharacters": 188,
+      "apiWarning": null
+    },
+    "aic-89043": {
+      "id": "aic-89043",
+      "title": "Portrait of General José Manuel Romero",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1164,
+      "englishCharacters": 475,
+      "japaneseCharacters": 183,
+      "apiWarning": null
+    },
+    "aic-89503": {
+      "id": "aic-89503",
+      "title": "Under the Wave off Kanagawa (Kanagawa oki nami ura), also known as The Great Wave, from the series \"Thirty-Six Views of Mount Fuji (Fugaku sanjurokkei)\"",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1504,
+      "englishCharacters": 512,
+      "japaneseCharacters": 178,
+      "apiWarning": null
+    },
+    "aic-8958": {
+      "id": "aic-8958",
+      "title": "Arrangement in Flesh Color and Brown: Portrait of Arthur Jerome Eddy",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1652,
+      "englishCharacters": 451,
+      "japaneseCharacters": 216,
+      "apiWarning": null
+    },
+    "aic-8969": {
+      "id": "aic-8969",
+      "title": "Beggar with Oysters (Philosopher)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2084,
+      "englishCharacters": 590,
+      "japaneseCharacters": 228,
+      "apiWarning": null
+    },
+    "aic-8983": {
+      "id": "aic-8983",
+      "title": "Painting with Troika",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1782,
+      "englishCharacters": 507,
+      "japaneseCharacters": 180,
+      "apiWarning": null
+    },
+    "aic-89856": {
+      "id": "aic-89856",
+      "title": "The actor Bando Mitsugoro II as Ishii Genzo",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1849,
+      "englishCharacters": 518,
+      "japaneseCharacters": 181,
+      "apiWarning": null
+    },
+    "aic-8991": {
+      "id": "aic-8991",
+      "title": "Improvisation No. 30 (Cannons)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1874,
+      "englishCharacters": 477,
+      "japaneseCharacters": 194,
+      "apiWarning": null
+    },
+    "aic-9": {
+      "id": "aic-9",
+      "title": "Interior of St. Mark's, Venice",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 640,
+      "englishCharacters": 452,
+      "japaneseCharacters": 178,
+      "apiWarning": null
+    },
+    "aic-9021": {
+      "id": "aic-9021",
+      "title": "The Bewitched Mill",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1788,
+      "englishCharacters": 472,
+      "japaneseCharacters": 201,
+      "apiWarning": null
+    },
+    "aic-90326": {
+      "id": "aic-90326",
+      "title": "Strange Flower (Little Sister of the Poor)",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1150,
+      "englishCharacters": 382,
+      "japaneseCharacters": 137,
+      "apiWarning": null
+    },
+    "aic-90333": {
+      "id": "aic-90333",
+      "title": "An Alcove in the Art Students' League",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1878,
+      "englishCharacters": 470,
+      "japaneseCharacters": 211,
+      "apiWarning": null
+    },
+    "aic-90536": {
+      "id": "aic-90536",
+      "title": "Seated Female Nude",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2431,
+      "englishCharacters": 514,
+      "japaneseCharacters": 199,
+      "apiWarning": null
+    },
+    "aic-92975": {
+      "id": "aic-92975",
+      "title": "King Anushirwan and the Owls, from the Khamsa of Nizami",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2140,
+      "englishCharacters": 535,
+      "japaneseCharacters": 226,
+      "apiWarning": null
+    },
+    "aic-93433": {
+      "id": "aic-93433",
+      "title": "For to Be a Farmer's Boy",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2380,
+      "englishCharacters": 569,
+      "japaneseCharacters": 226,
+      "apiWarning": null
+    },
+    "aic-93900": {
+      "id": "aic-93900",
+      "title": "Portrait of a Man in Costume",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2766,
+      "englishCharacters": 504,
+      "japaneseCharacters": 231,
+      "apiWarning": null
+    },
+    "aic-94126": {
+      "id": "aic-94126",
+      "title": "Still Life with Monkey, Fruits, and Flowers",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1685,
+      "englishCharacters": 486,
+      "japaneseCharacters": 203,
+      "apiWarning": null
+    },
+    "aic-95752": {
+      "id": "aic-95752",
+      "title": "Allegory of Sea Trade",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 453,
+      "englishCharacters": 293,
+      "japaneseCharacters": 105,
+      "apiWarning": null
+    },
+    "aic-97291": {
+      "id": "aic-97291",
+      "title": "Kauterskill Clove, Catskill Mountains",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1422,
+      "englishCharacters": 415,
+      "japaneseCharacters": 169,
+      "apiWarning": null
+    },
+    "aic-97292": {
+      "id": "aic-97292",
+      "title": "Spring in France",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1453,
+      "englishCharacters": 541,
+      "japaneseCharacters": 216,
+      "apiWarning": null
+    },
+    "aic-97873": {
+      "id": "aic-97873",
+      "title": "Rip Van Winkle",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1358,
+      "englishCharacters": 503,
+      "japaneseCharacters": 195,
+      "apiWarning": null
+    },
+    "aic-97907": {
+      "id": "aic-97907",
+      "title": "A Mexican Vaquero",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1740,
+      "englishCharacters": 486,
+      "japaneseCharacters": 198,
+      "apiWarning": null
+    },
+    "aic-97910": {
+      "id": "aic-97910",
+      "title": "The Advance-Guard, or The Military Sacrifice (The Ambush)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1892,
+      "englishCharacters": 586,
+      "japaneseCharacters": 246,
+      "apiWarning": null
+    },
+    "aic-97933": {
+      "id": "aic-97933",
+      "title": "Water Lily Pond",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1947,
+      "englishCharacters": 502,
+      "japaneseCharacters": 191,
+      "apiWarning": null
+    },
+    "aic-99603": {
+      "id": "aic-99603",
+      "title": "The Cock Fight",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1748,
+      "englishCharacters": 519,
+      "japaneseCharacters": 211,
       "apiWarning": null
     }
   },
