@@ -7,7 +7,7 @@ import { useImageStatus } from '../../../hooks/useImageStatus';
 import { useLang, useT } from '../../../i18n';
 import { formatTime } from '../../../storage/stats';
 import { artShareUrl } from '../../../utils/share';
-import { ART_LEVELS, canMove, neighbors, type ArtDirection, type ArtLevel } from '../logic/board';
+import { canMove, neighbors, type ArtDirection, type ArtLevel } from '../logic/board';
 import { artReducer, dimsOf, type ArtState } from '../logic/game';
 import { aspectOf, gridFor } from '../logic/grid';
 import { visibleShuffleStepMs } from '../logic/generator';
