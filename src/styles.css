@@ -1877,3 +1877,26 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
     flex: 0 0 auto;
   }
 }
+
+
+/* Mobile: title owns the whole first row; piece count sits just before Info. */
+@media (max-width: 899px) {
+  .screen.artgame > .art-top {
+    grid-template-columns: 24px minmax(0, 1fr) max-content;
+  }
+  .artgame .art-top .top-titles {
+    grid-column: 2 / 4;
+    grid-row: 1;
+    padding-right: 0;
+  }
+  .artgame .art-header-controls .art-actions .art-mobile-level {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: flex-end;
+    margin-right: 4px;
+  }
+  .artgame .art-header-controls .art-actions .art-mobile-level .art-level-menu-wrap {
+    display: inline-flex;
+  }
+}
