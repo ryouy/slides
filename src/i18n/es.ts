@@ -150,5 +150,9 @@ const es: Partial<Dict> = {
   "art.textSource": "Descripción",
   "art.textAdjusted": "HTML convertido a texto sin formato",
   "art.englishDetail": "Descripción del museo (en inglés)",
+  "sort.random": "Aleatorio",
+  "gal.columns": "Por fila",
+  "gal.columnsAuto": "Auto",
+  "gal.reshuffle": "Volver a mezclar",
 };
 export default es;
