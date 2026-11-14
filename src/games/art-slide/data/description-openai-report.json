@@ -1,12 +1,12 @@
 {
   "model": "gpt-6-luna",
   "recipeVersion": "openai-bilingual-v1",
-  "generatedAt": "2026-11-14T10:01:32.819085+00:00",
+  "generatedAt": "2026-11-14T10:03:33.889048+00:00",
   "totalArtworks": 404,
-  "processed": 350,
-  "remaining": 54,
-  "medianEnglishCharacters": 473.5,
-  "medianJapaneseCharacters": 185.0,
+  "processed": 375,
+  "remaining": 29,
+  "medianEnglishCharacters": 472,
+  "medianJapaneseCharacters": 185,
   "records": {
     "aic-102131": {
       "id": "aic-102131",
@@ -3156,6 +3156,231 @@
       "rawSourceCharacters": 2056,
       "englishCharacters": 456,
       "japaneseCharacters": 173,
+      "apiWarning": null
+    },
+    "homer-the-herring-net": {
+      "id": "homer-the-herring-net",
+      "title": "The Herring Net",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1779,
+      "englishCharacters": 499,
+      "japaneseCharacters": 218,
+      "apiWarning": null
+    },
+    "ingres-amedee-david-the-comte-de-pastoret": {
+      "id": "ingres-amedee-david-the-comte-de-pastoret",
+      "title": "Amédée-David, the Comte de Pastoret",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2586,
+      "englishCharacters": 557,
+      "japaneseCharacters": 206,
+      "apiWarning": null
+    },
+    "inness-early-morning-tarpon-springs": {
+      "id": "inness-early-morning-tarpon-springs",
+      "title": "Early Morning, Tarpon Springs",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1442,
+      "englishCharacters": 431,
+      "japaneseCharacters": 170,
+      "apiWarning": null
+    },
+    "inness-the-home-of-the-heron": {
+      "id": "inness-the-home-of-the-heron",
+      "title": "The Home of the Heron",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2427,
+      "englishCharacters": 469,
+      "japaneseCharacters": 121,
+      "apiWarning": null
+    },
+    "jongkind-entrance-to-the-port-of-honfleur": {
+      "id": "jongkind-entrance-to-the-port-of-honfleur",
+      "title": "Entrance to the Port of Honfleur",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1836,
+      "englishCharacters": 423,
+      "japaneseCharacters": 188,
+      "apiWarning": null
+    },
+    "lorrain-view-of-delphi-with-a-procession": {
+      "id": "lorrain-view-of-delphi-with-a-procession",
+      "title": "View of Delphi with a Procession",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1785,
+      "englishCharacters": 451,
+      "japaneseCharacters": 185,
+      "apiWarning": null
+    },
+    "manet-sea-view-calm-weather-vue-de-mer-temps-calme": {
+      "id": "manet-sea-view-calm-weather-vue-de-mer-temps-calme",
+      "title": "Sea View, Calm Weather (Vue de mer, temps calme)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1718,
+      "englishCharacters": 408,
+      "japaneseCharacters": 165,
+      "apiWarning": null
+    },
+    "manet-woman-reading": {
+      "id": "manet-woman-reading",
+      "title": "Woman Reading",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2489,
+      "englishCharacters": 500,
+      "japaneseCharacters": 198,
+      "apiWarning": null
+    },
+    "millet-peasants-bringing-home-a-calf-born-in-the-fields": {
+      "id": "millet-peasants-bringing-home-a-calf-born-in-the-fields",
+      "title": "Peasants Bringing Home a Calf Born in the Fields",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1265,
+      "englishCharacters": 320,
+      "japaneseCharacters": 126,
+      "apiWarning": null
+    },
+    "millet-the-keeper-of-the-flock": {
+      "id": "millet-the-keeper-of-the-flock",
+      "title": "The Keeper of the Flock",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1326,
+      "englishCharacters": 307,
+      "japaneseCharacters": 118,
+      "apiWarning": null
+    },
+    "monet-bordighera": {
+      "id": "monet-bordighera",
+      "title": "Bordighera",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1771,
+      "englishCharacters": 395,
+      "japaneseCharacters": 155,
+      "apiWarning": null
+    },
+    "monet-cliff-walk-at-pourville": {
+      "id": "monet-cliff-walk-at-pourville",
+      "title": "Cliff Walk at Pourville",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 3052,
+      "englishCharacters": 500,
+      "japaneseCharacters": 175,
+      "apiWarning": null
+    },
+    "monet-stacks-of-wheat": {
+      "id": "monet-stacks-of-wheat",
+      "title": "Stacks of Wheat (End of Day, Autumn)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2425,
+      "englishCharacters": 510,
+      "japaneseCharacters": 194,
+      "apiWarning": null
+    },
+    "monet-stacks-of-wheat-end-of-summer": {
+      "id": "monet-stacks-of-wheat-end-of-summer",
+      "title": "Stacks of Wheat (End of Summer)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2418,
+      "englishCharacters": 448,
+      "japaneseCharacters": 179,
+      "apiWarning": null
+    },
+    "monet-the-beach-at-sainte-adresse": {
+      "id": "monet-the-beach-at-sainte-adresse",
+      "title": "The Beach at Sainte-Adresse",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 3092,
+      "englishCharacters": 528,
+      "japaneseCharacters": 201,
+      "apiWarning": null
+    },
+    "monet-water-lilies": {
+      "id": "monet-water-lilies",
+      "title": "Water Lilies",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2517,
+      "englishCharacters": 541,
+      "japaneseCharacters": 177,
+      "apiWarning": null
+    },
+    "morisot-woman-at-her-toilette": {
+      "id": "morisot-woman-at-her-toilette",
+      "title": "Woman at Her Toilette",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2461,
+      "englishCharacters": 528,
+      "japaneseCharacters": 205,
+      "apiWarning": null
+    },
+    "morisot-woman-in-a-garden": {
+      "id": "morisot-woman-in-a-garden",
+      "title": "Woman in a Garden",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1966,
+      "englishCharacters": 468,
+      "japaneseCharacters": 184,
+      "apiWarning": null
+    },
+    "munch-the-girl-by-the-window": {
+      "id": "munch-the-girl-by-the-window",
+      "title": "The Girl by the Window",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2501,
+      "englishCharacters": 490,
+      "japaneseCharacters": 178,
+      "apiWarning": null
+    },
+    "panini-festival-in-piazza-navona": {
+      "id": "panini-festival-in-piazza-navona",
+      "title": "Festival in Piazza Navona",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1038,
+      "englishCharacters": 377,
+      "japaneseCharacters": 133,
+      "apiWarning": null
+    },
+    "pissarro-the-banks-of-the-marne-in-winter": {
+      "id": "pissarro-the-banks-of-the-marne-in-winter",
+      "title": "The Banks of the Marne in Winter",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2012,
+      "englishCharacters": 456,
+      "japaneseCharacters": 176,
+      "apiWarning": null
+    },
+    "pissarro-the-crystal-palace": {
+      "id": "pissarro-the-crystal-palace",
+      "title": "The Crystal Palace",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2045,
+      "englishCharacters": 475,
+      "japaneseCharacters": 188,
+      "apiWarning": null
+    },
+    "poussin-landscape-with-saint-john-on-patmos": {
+      "id": "poussin-landscape-with-saint-john-on-patmos",
+      "title": "Landscape with Saint John on Patmos",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2581,
+      "englishCharacters": 554,
+      "japaneseCharacters": 236,
+      "apiWarning": null
+    },
+    "redon-flowers-poppies-and-daisies": {
+      "id": "redon-flowers-poppies-and-daisies",
+      "title": "Flowers: Poppies and Daisies",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1346,
+      "englishCharacters": 358,
+      "japaneseCharacters": 123,
+      "apiWarning": null
+    },
+    "redon-still-life-with-flowers": {
+      "id": "redon-still-life-with-flowers",
+      "title": "Still Life with Flowers",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1343,
+      "englishCharacters": 372,
+      "japaneseCharacters": 132,
       "apiWarning": null
     }
   },
