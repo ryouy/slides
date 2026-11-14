@@ -1,11 +1,11 @@
 {
   "model": "gpt-6-luna",
   "recipeVersion": "openai-bilingual-v1",
-  "generatedAt": "2026-11-14T10:05:42.465913+00:00",
+  "generatedAt": "2026-11-14T10:06:10.881397+00:00",
   "totalArtworks": 404,
-  "processed": 400,
-  "remaining": 4,
-  "medianEnglishCharacters": 473.5,
+  "processed": 404,
+  "remaining": 0,
+  "medianEnglishCharacters": 472.5,
   "medianJapaneseCharacters": 185.0,
   "records": {
     "aic-102131": {
@@ -3606,6 +3606,42 @@
       "rawSourceCharacters": 514,
       "englishCharacters": 366,
       "japaneseCharacters": 150,
+      "apiWarning": null
+    },
+    "vermeer-water-pitcher": {
+      "id": "vermeer-water-pitcher",
+      "title": "Young Woman with a Water Pitcher",
+      "source": "Met metadata only",
+      "rawSourceCharacters": 512,
+      "englishCharacters": 352,
+      "japaneseCharacters": 129,
+      "apiWarning": null
+    },
+    "whistler-trouville-grey-and-green-the-silver-sea": {
+      "id": "whistler-trouville-grey-and-green-the-silver-sea",
+      "title": "Trouville (Grey and Green, the Silver Sea)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1818,
+      "englishCharacters": 520,
+      "japaneseCharacters": 189,
+      "apiWarning": null
+    },
+    "whistler-violet-and-silver-the-deep-sea": {
+      "id": "whistler-violet-and-silver-the-deep-sea",
+      "title": "Violet and Silver—The Deep Sea",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1650,
+      "englishCharacters": 409,
+      "japaneseCharacters": 153,
+      "apiWarning": null
+    },
+    "zorn-portrait-study-of-a-man": {
+      "id": "zorn-portrait-study-of-a-man",
+      "title": "Portrait Study of a Man",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1015,
+      "englishCharacters": 408,
+      "japaneseCharacters": 157,
       "apiWarning": null
     }
   },
