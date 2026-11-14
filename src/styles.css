@@ -1584,3 +1584,132 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 
 /* Only the Next Artwork link remains in the game details. */
 .artgame .art-quiet { justify-content: flex-end; }
+
+
+/* A painting preview is an image-only lightbox on desktop. */
+.preview-description,
+.preview-close { display: none; }
+
+/* Phones: let the painting lead straight into its label, covering the ad beneath it. */
+@media (max-width: 899px) {
+  .preview-layer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom));
+    box-sizing: border-box;
+    background: var(--bg);
+    touch-action: auto;
+  }
+  .preview-card {
+    position: relative;
+    left: auto !important;
+    top: auto !important;
+    width: min(100%, 580px) !important;
+    height: auto !important;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--bg);
+    color: var(--fg);
+    box-shadow: none;
+    cursor: default;
+  }
+  .preview-card > img {
+    flex: 0 1 auto;
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: min(49svh, 520px);
+    min-height: 0;
+    object-fit: contain;
+    background: var(--bg);
+  }
+  .preview-card figcaption {
+    position: relative;
+    flex: 0 0 auto;
+    bottom: auto;
+    display: block;
+    padding: 10px 14px 8px;
+    background: transparent;
+    color: var(--fg);
+    text-shadow: none;
+    font-size: 12px;
+    line-height: 1.45;
+    opacity: 1;
+  }
+  .preview-card figcaption .pv-title {
+    display: block;
+    padding-right: 24px;
+    font-weight: 600;
+  }
+  .preview-card figcaption .pv-title i {
+    display: block;
+    margin-top: 2px;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .preview-card figcaption .pv-credit { display: none; }
+  .preview-description {
+    display: block;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 14px 4px;
+    padding: 11px 0 17px;
+    border-top: 1px solid var(--line);
+    background: var(--bg);
+    text-align: left;
+    scrollbar-width: thin;
+  }
+  .preview-description .ap-desc {
+    display: block;
+    margin: 0;
+    color: var(--fg);
+    font-size: 14px;
+    line-height: 1.7;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+  }
+  .preview-description .art-description-language {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+    margin: 11px 0 8px;
+  }
+  .preview-description .ap-credit {
+    margin: 0;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+  .preview-close {
+    display: grid;
+    position: absolute;
+    z-index: 1;
+    right: 7px;
+    top: 7px;
+    width: 35px;
+    height: 35px;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(20, 20, 20, .65);
+    color: white;
+    font: inherit;
+    font-size: 23px;
+    font-weight: 300;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .preview-close:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+}
