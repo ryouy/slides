@@ -1,0 +1,238 @@
+{
+  "model": "gpt-6-luna",
+  "recipeVersion": "openai-bilingual-v1",
+  "generatedAt": "2026-11-14T09:34:13.451001+00:00",
+  "totalArtworks": 404,
+  "processed": 25,
+  "remaining": 379,
+  "medianEnglishCharacters": 459,
+  "medianJapaneseCharacters": 175,
+  "records": {
+    "aic-102131": {
+      "id": "aic-102131",
+      "title": "Self-Portrait with a Visor",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2367,
+      "englishCharacters": 501,
+      "japaneseCharacters": 172,
+      "apiWarning": null
+    },
+    "aic-100476": {
+      "id": "aic-100476",
+      "title": "Beach at Cabasson (Baigne-Cul)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1993,
+      "englishCharacters": 444,
+      "japaneseCharacters": 180,
+      "apiWarning": null
+    },
+    "aic-100489": {
+      "id": "aic-100489",
+      "title": "The Coast of Labrador",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1355,
+      "englishCharacters": 459,
+      "japaneseCharacters": 195,
+      "apiWarning": null
+    },
+    "aic-10086": {
+      "id": "aic-10086",
+      "title": "Letter of Congratulations to Karna Martensdottir",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 497,
+      "englishCharacters": 327,
+      "japaneseCharacters": 145,
+      "apiWarning": null
+    },
+    "aic-101509": {
+      "id": "aic-101509",
+      "title": "Man Wearing a Straw Hat",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1186,
+      "englishCharacters": 370,
+      "japaneseCharacters": 133,
+      "apiWarning": null
+    },
+    "aic-103887": {
+      "id": "aic-103887",
+      "title": "A Young Lady with a Parrot",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2537,
+      "englishCharacters": 613,
+      "japaneseCharacters": 254,
+      "apiWarning": null
+    },
+    "aic-105073": {
+      "id": "aic-105073",
+      "title": "The Creation of Adam",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2463,
+      "englishCharacters": 533,
+      "japaneseCharacters": 211,
+      "apiWarning": null
+    },
+    "aic-105101": {
+      "id": "aic-105101",
+      "title": "First View of the Yosemite Valley from the Mariposa Trail",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1618,
+      "englishCharacters": 533,
+      "japaneseCharacters": 241,
+      "apiWarning": null
+    },
+    "aic-105466": {
+      "id": "aic-105466",
+      "title": "The Battle between the Gods and the Giants",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1971,
+      "englishCharacters": 503,
+      "japaneseCharacters": 209,
+      "apiWarning": null
+    },
+    "aic-105719": {
+      "id": "aic-105719",
+      "title": "Man of Sorrows",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1027,
+      "englishCharacters": 502,
+      "japaneseCharacters": 201,
+      "apiWarning": null
+    },
+    "aic-107862": {
+      "id": "aic-107862",
+      "title": "Bailey's Beach, Newport, R.I.",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1805,
+      "englishCharacters": 454,
+      "japaneseCharacters": 157,
+      "apiWarning": null
+    },
+    "aic-108583": {
+      "id": "aic-108583",
+      "title": "Cliffs and Sea, Sainte-Adresse",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1169,
+      "englishCharacters": 307,
+      "japaneseCharacters": 138,
+      "apiWarning": null
+    },
+    "aic-109228": {
+      "id": "aic-109228",
+      "title": "Near Newport",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1573,
+      "englishCharacters": 521,
+      "japaneseCharacters": 217,
+      "apiWarning": null
+    },
+    "aic-109780": {
+      "id": "aic-109780",
+      "title": "Love of Winter",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1600,
+      "englishCharacters": 415,
+      "japaneseCharacters": 155,
+      "apiWarning": null
+    },
+    "aic-109819": {
+      "id": "aic-109819",
+      "title": "Lozenge Composition with Yellow, Black, Blue, Red, and Gray",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1974,
+      "englishCharacters": 445,
+      "japaneseCharacters": 171,
+      "apiWarning": null
+    },
+    "aic-109926": {
+      "id": "aic-109926",
+      "title": "Landscape: Window Overlooking the Woods",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1434,
+      "englishCharacters": 401,
+      "japaneseCharacters": 150,
+      "apiWarning": null
+    },
+    "aic-11": {
+      "id": "aic-11",
+      "title": "Self-Portrait",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 741,
+      "englishCharacters": 334,
+      "japaneseCharacters": 137,
+      "apiWarning": null
+    },
+    "aic-11050": {
+      "id": "aic-11050",
+      "title": "No. 37: Miyanokoshi, from the series \"Sixty-nine Stations of the Kisokaido (Kisokaido rokujukyu tsugi no uchi)\"",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 722,
+      "englishCharacters": 364,
+      "japaneseCharacters": 122,
+      "apiWarning": null
+    },
+    "aic-110507": {
+      "id": "aic-110507",
+      "title": "In the Sea",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2566,
+      "englishCharacters": 541,
+      "japaneseCharacters": 173,
+      "apiWarning": null
+    },
+    "aic-11054": {
+      "id": "aic-11054",
+      "title": "No. 32: Seba, from the series \"Sixty-nine Stations of the Kisokaido (Kisokaido rokujukyu tsugi no uchi)\"",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 715,
+      "englishCharacters": 306,
+      "japaneseCharacters": 118,
+      "apiWarning": null
+    },
+    "aic-110661": {
+      "id": "aic-110661",
+      "title": "Self-Portrait",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2198,
+      "englishCharacters": 529,
+      "japaneseCharacters": 212,
+      "apiWarning": null
+    },
+    "aic-110663": {
+      "id": "aic-110663",
+      "title": "The Combat of the Giaour and Hassan",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2566,
+      "englishCharacters": 604,
+      "japaneseCharacters": 220,
+      "apiWarning": null
+    },
+    "aic-110766": {
+      "id": "aic-110766",
+      "title": "Fishermen Catching a Sea Monster",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 911,
+      "englishCharacters": 407,
+      "japaneseCharacters": 175,
+      "apiWarning": null
+    },
+    "aic-110776": {
+      "id": "aic-110776",
+      "title": "Théodore Géricault on His Deathbed",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1967,
+      "englishCharacters": 542,
+      "japaneseCharacters": 228,
+      "apiWarning": null
+    },
+    "aic-110879": {
+      "id": "aic-110879",
+      "title": "Mrs. Charles Gifford Dyer (Mary Anthony)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1838,
+      "englishCharacters": 514,
+      "japaneseCharacters": 224,
+      "apiWarning": null
+    }
+  },
+  "note": "Only labels and their attributions change; museum API failures are marked as fallback."
+}
