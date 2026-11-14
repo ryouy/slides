@@ -106,5 +106,16 @@ const es: Partial<Dict> = {
   "era.1800–1849": "1800–1849",
   "era.1850–1879": "1850–1879",
   "era.1880–1899": "1880–1899",
+  "word.card": "PALABRA",
+  "word.letterCount": "{n} letras",
+  "word.known": "conocida",
+  "word.hintCategory": "Categoría",
+  "word.hintMeaning": "Significado",
+  "word.hintFirst": "1.ª letra",
+  "word.hintExtra": "+ Letra",
+  "word.hintCategoryTitle": "Mostrar categoría",
+  "word.hintMeaningTitle": "Mostrar significado",
+  "word.hintFirstTitle": "Mostrar primera letra",
+  "word.hintExtraTitle": "Mostrar otra letra (requiere la primera)",
 };
 export default es;
