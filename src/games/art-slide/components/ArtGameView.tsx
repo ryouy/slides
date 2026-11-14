@@ -39,7 +39,9 @@ export function ArtGameView(p: Props) {
   const { initial, artwork, daily } = p;
   const t = useT();
   const lang = useLang();
-  const translatedDescription = lang === 'en' ? undefined : artwork.descriptionTranslations?.[lang];
+  const [descriptionLangChoice, setDescriptionLangChoice] = useState<'ja' | 'en' | null>(null);
+  const descriptionLang = descriptionLangChoice ?? (lang === 'ja' && artwork.descriptionTranslations?.ja ? 'ja' : 'en');
+  const hasJapaneseDescription = !!artwork.descriptionTranslations?.ja;
   const [state, dispatch] = useReducer(artReducer, initial);
   const [preview, setPreview] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
@@ -226,13 +228,18 @@ export function ArtGameView(p: Props) {
             <Stat label={t('common.moves')} value={String(state.moves)} id="moves-desktop" />
           </div>
         </div>
-        <p className="ap-desc" data-testid="art-desc" lang={translatedDescription ? lang : undefined}>
-          {lang === 'en' ? artwork.description : translatedDescription ?? t('art.summary', {
-            artist: artwork.artist,
-            year: artwork.year,
-            theme: t(`theme.${artwork.theme}` as Key),
-          })}
+        <p className="ap-desc" data-testid="art-desc" lang={descriptionLang}>
+          {descriptionLang === 'ja' ? artwork.descriptionTranslations?.ja ?? artwork.description : artwork.description}
         </p>
+        <div className="art-description-language" role="group" aria-label={t('art.descriptionLanguage')} data-testid="art-description-language">
+          <button type="button" className={descriptionLang === 'ja' ? 'on' : ''}
+            aria-pressed={descriptionLang === 'ja'} aria-label={t('art.descriptionJapanese')}
+            disabled={!hasJapaneseDescription} onClick={() => setDescriptionLangChoice('ja')}>日</button>
+          <span aria-hidden="true">/</span>
+          <button type="button" className={descriptionLang === 'en' ? 'on' : ''}
+            aria-pressed={descriptionLang === 'en'} aria-label={t('art.descriptionEnglish')}
+            onClick={() => setDescriptionLangChoice('en')}>英</button>
+        </div>
         <p className="ap-credit">
           {artwork.museum} · <a href={artwork.licenseUrl} target="_blank" rel="noopener noreferrer">CC0</a> · <a href={artwork.sourceUrl} target="_blank" rel="noopener noreferrer">{t('art.source')}</a>
         </p>
