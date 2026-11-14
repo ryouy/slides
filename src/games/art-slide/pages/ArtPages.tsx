@@ -42,7 +42,8 @@ export function ArtHome() {
         <button className="btn big" data-testid="art-random" onClick={() => go(`play/${pickRandomArtwork().id}`)}>{t('art.random')}</button>
         {resumable && <button className="btn big" data-testid="art-resume" onClick={() => go('play')}>{t('art.resume')}</button>}
       </nav>
-      <details className="art-more" data-testid="art-more">
+      <div className="art-home-secondary">
+        <details className="art-more" data-testid="art-more">
         <summary>{t('home.other')}</summary>
         <div className="art-more-content">
           <nav className="art-more-main" aria-label={t('home.other')}>
@@ -59,10 +60,17 @@ export function ArtHome() {
             <Link to="/privacy">{t('common.privacy')}</Link>
             <Link to="/terms">{t('common.terms')}</Link>
             <Link to="/contact">{t('common.contact')}</Link>
-            <Link to="/settings">{t('home.settings')}</Link>
           </nav>
         </div>
-      </details>
+        </details>
+        <Link to="/settings" className="art-home-settings" data-testid="art-settings">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M9.8 2.8h4.4l.6 2.1 1.8.9 2-.9 3.1 3.1-.9 2 .9 1.8 2.1.6v4.4l-2.1.6-.9 1.8.9 2-3.1 3.1-2-.9-1.8.9-.6 2.1H9.8l-.6-2.1-1.8-.9-2 .9-3.1-3.1.9-2-.9-1.8-2.1-.6v-4.4l2.1-.6.9-1.8-.9-2 3.1-3.1 2 .9 1.8-.9.6-2.1Z" transform="translate(2 2) scale(.83)" />
+          </svg>
+          <span>{t('home.settings')}</span>
+        </Link>
+      </div>
     </div>
   );
 }
@@ -313,6 +321,14 @@ export function ArtCreditsPage() {
           <li key={a.id}>
             <b>{a.title}</b>, {a.artist}, {a.year}.<br />
             {a.museum} · <a href={a.licenseUrl} target="_blank" rel="noopener noreferrer">{a.license}</a> · <a href={a.sourceUrl} target="_blank" rel="noopener noreferrer">{t('credits.source')}</a> · {t('credits.checked', { date: a.verifiedAt })}
+            {a.descriptionLicenseUrl && (
+              <span className="credits-description">
+                <br />
+                {t('art.textSource')}: <a href={a.descriptionSourceUrl ?? a.sourceUrl} target="_blank" rel="noopener noreferrer">{a.descriptionAttribution ?? a.museum}</a>
+                {' · '}<a href={a.descriptionLicenseUrl} target="_blank" rel="noopener noreferrer">{a.descriptionLicense ?? 'CC BY 4.0'}</a>
+                {a.descriptionModifications && <> · {a.descriptionModifications}</>}
+              </span>
+            )}
           </li>
         ))}
       </ul>
