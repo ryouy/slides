@@ -106,10 +106,18 @@ export function shuffleFromBoard(rng: Rng, d: Dims, start: ArtBoard, steps: numb
   return { board, clicks };
 }
 
-/** Steps of a visible shuffle (shorter than the initial scramble: it is meant to be watched). */
-export function visibleShuffleSteps(level: ArtLevel, d: Dims) {
+/** More tiles require proportionally more visible legal slides. */
+export function visibleShuffleSteps(_level: ArtLevel, d: Dims) {
   const count = cellCount(d);
-  return { steps: Math.round(({ 3: 44, 4: 60, 5: 76, 6: 92, 7: 108 } satisfies Record<ArtLevel, number>)[level] * Math.sqrt(count / (level * level))), minMisplaced: Math.max(4, Math.round(count * 0.55)) };
+  return {
+    steps: Math.round(count * 5),
+    minMisplaced: Math.max(4, Math.round(count * 0.55)),
+  };
+}
+
+/** Increase shuffle animation speed as the actual tile count grows (60ms at 9 tiles, 26ms at 49). */
+export function visibleShuffleStepMs(d: Dims): number {
+  return Math.max(26, Math.round(60 * Math.sqrt(9 / cellCount(d))));
 }
 
 export function validateArtPuzzle(p: ArtPuzzle): boolean {
