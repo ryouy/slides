@@ -1,6 +1,6 @@
 import { canApply, isFullyRevealed, maskedWord, nextExtraPosition, type CardHint, type HintKind } from '../core/hints';
 import type { WordEntry } from '../core/types';
-import { useT } from '../i18n';
+import { useT, type Key } from '../i18n';
 
 interface Props {
   clues: WordEntry[];
@@ -49,7 +49,7 @@ export function Clues({ clues, cards, found, selCard, selRow, disabled, onSelect
                 <span>{t('word.card')} {i + 1}</span>
                 <span className="len">{t('word.letterCount', { n: clue.word.length })}{done ? ' ✓' : known ? ` · ${t('word.known')}` : ''}</span>
               </button>
-              <div className="clue-cat" data-testid={`cat-${i}`}>{card.category ? clue.category : '? ? ?'}</div>
+              <div className="clue-cat" data-testid={`cat-${i}`}>{card.category ? t(`wordCat.${clue.category}` as Key) : '? ? ?'}</div>
               <div className="clue-slots" data-testid={`slots-${i}`} aria-label={done ? clue.word : mask.map((c) => c ?? 'blank').join(' ')}>
                 {clue.word.split('').map((ch, k) => (
                   <span key={k} className={`slot-l${done ? ' ok' : mask[k] ? ' shown' : ''}`}>
