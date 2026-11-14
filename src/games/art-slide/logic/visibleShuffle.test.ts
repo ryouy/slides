@@ -6,10 +6,10 @@ import { shuffleFromBoard, visibleShuffleStepMs, visibleShuffleSteps } from './g
 describe('visible artwork shuffle scales with actual tile count', () => {
   it.each([
     { level: 3, count: 9, moves: 23, interval: 160 },
-    { level: 4, count: 16, moves: 29, interval: 150 },
-    { level: 5, count: 25, moves: 38, interval: 140 },
-    { level: 6, count: 36, moves: 48, interval: 130 },
-    { level: 7, count: 49, moves: 61, interval: 120 },
+    { level: 4, count: 16, moves: 31, interval: 150 },
+    { level: 5, count: 25, moves: 43, interval: 140 },
+    { level: 6, count: 36, moves: 61, interval: 130 },
+    { level: 7, count: 49, moves: 87, interval: 120 },
   ])('level $level: $moves planned slides at $interval ms', ({ level, count, moves, interval }) => {
     const d: Dims = { cols: level, rows: level };
     expect(d.cols * d.rows).toBe(count);
@@ -19,7 +19,7 @@ describe('visible artwork shuffle scales with actual tile count', () => {
 
   it('uses actual tile counts for differently proportioned paintings', () => {
     const d: Dims = { cols: 9, rows: 4 };
-    expect(visibleShuffleSteps(6, d).steps).toBe(48);
+    expect(visibleShuffleSteps(6, d).steps).toBe(61);
     expect(visibleShuffleStepMs(d)).toBe(130);
   });
 
@@ -27,9 +27,9 @@ describe('visible artwork shuffle scales with actual tile count', () => {
     const d: Dims = { cols: 9, rows: 8 };
     const { steps, minMisplaced } = visibleShuffleSteps(7, d);
     const interval = visibleShuffleStepMs(d);
-    expect(steps).toBe(82);
+    expect(steps).toBe(143);
     expect(interval).toBe(110);
-    expect(minMisplaced).toBe(32);
+    expect(minMisplaced).toBe(36);
     const first = solvedBoard(d);
     const { board, clicks } = shuffleFromBoard(rngFromString('large-board-test'), d, first, steps, minMisplaced);
     expect(clicks.length).toBeGreaterThanOrEqual(steps);
