@@ -1,12 +1,12 @@
 {
   "model": "gpt-6-luna",
   "recipeVersion": "openai-bilingual-v1",
-  "generatedAt": "2026-11-14T10:03:33.889048+00:00",
+  "generatedAt": "2026-11-14T10:05:42.465913+00:00",
   "totalArtworks": 404,
-  "processed": 375,
-  "remaining": 29,
-  "medianEnglishCharacters": 472,
-  "medianJapaneseCharacters": 185,
+  "processed": 400,
+  "remaining": 4,
+  "medianEnglishCharacters": 473.5,
+  "medianJapaneseCharacters": 185.0,
   "records": {
     "aic-102131": {
       "id": "aic-102131",
@@ -3381,6 +3381,231 @@
       "rawSourceCharacters": 1343,
       "englishCharacters": 372,
       "japaneseCharacters": 132,
+      "apiWarning": null
+    },
+    "rembrandt-aristotle-homer": {
+      "id": "rembrandt-aristotle-homer",
+      "title": "Aristotle with a Bust of Homer",
+      "source": "Met metadata only",
+      "rawSourceCharacters": 559,
+      "englishCharacters": 318,
+      "japaneseCharacters": 123,
+      "apiWarning": null
+    },
+    "renoir-acrobats-at-the-cirque-fernando": {
+      "id": "renoir-acrobats-at-the-cirque-fernando",
+      "title": "Acrobats at the Cirque Fernando",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2952,
+      "englishCharacters": 503,
+      "japaneseCharacters": 214,
+      "apiWarning": null
+    },
+    "renoir-two-sisters": {
+      "id": "renoir-two-sisters",
+      "title": "Two Sisters (On the Terrace)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2494,
+      "englishCharacters": 570,
+      "japaneseCharacters": 224,
+      "apiWarning": null
+    },
+    "renoir-woman-at-the-piano": {
+      "id": "renoir-woman-at-the-piano",
+      "title": "Woman at the Piano",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1385,
+      "englishCharacters": 365,
+      "japaneseCharacters": 150,
+      "apiWarning": null
+    },
+    "rijn-old-man-with-a-gold-chain": {
+      "id": "rijn-old-man-with-a-gold-chain",
+      "title": "Old Man with a Gold Chain",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2590,
+      "englishCharacters": 574,
+      "japaneseCharacters": 232,
+      "apiWarning": null
+    },
+    "rousseau-sawmill-outskirts-of-paris": {
+      "id": "rousseau-sawmill-outskirts-of-paris",
+      "title": "Sawmill, Outskirts of Paris",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1122,
+      "englishCharacters": 412,
+      "japaneseCharacters": 152,
+      "apiWarning": null
+    },
+    "rousseau-springtime": {
+      "id": "rousseau-springtime",
+      "title": "Springtime",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1145,
+      "englishCharacters": 381,
+      "japaneseCharacters": 152,
+      "apiWarning": null
+    },
+    "rubens-the-holy-family-with-saints-elizabeth-and-john-th": {
+      "id": "rubens-the-holy-family-with-saints-elizabeth-and-john-th",
+      "title": "The Holy Family with Saints Elizabeth and John the Baptist",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2509,
+      "englishCharacters": 520,
+      "japaneseCharacters": 194,
+      "apiWarning": null
+    },
+    "ruisdael-landscape-with-the-ruins-of-the-castle-of-egmon": {
+      "id": "ruisdael-landscape-with-the-ruins-of-the-castle-of-egmon",
+      "title": "Landscape with the Ruins of the Castle of Egmond",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1749,
+      "englishCharacters": 384,
+      "japaneseCharacters": 171,
+      "apiWarning": null
+    },
+    "sargent-madame-paul-escudier-louise-lefevre": {
+      "id": "sargent-madame-paul-escudier-louise-lefevre",
+      "title": "Madame Paul Escudier (Louise Lefevre)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1894,
+      "englishCharacters": 559,
+      "japaneseCharacters": 236,
+      "apiWarning": null
+    },
+    "sargent-madame-x": {
+      "id": "sargent-madame-x",
+      "title": "Madame X (Madame Pierre Gautreau)",
+      "source": "Met metadata only",
+      "rawSourceCharacters": 583,
+      "englishCharacters": 355,
+      "japaneseCharacters": 149,
+      "apiWarning": null
+    },
+    "sargent-the-fountain-villa-torlonia-frascati-italy": {
+      "id": "sargent-the-fountain-villa-torlonia-frascati-italy",
+      "title": "The Fountain, Villa Torlonia, Frascati, Italy",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1594,
+      "englishCharacters": 518,
+      "japaneseCharacters": 204,
+      "apiWarning": null
+    },
+    "sargent-venetian-glass-workers": {
+      "id": "sargent-venetian-glass-workers",
+      "title": "Venetian Glass Workers",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1787,
+      "englishCharacters": 493,
+      "japaneseCharacters": 167,
+      "apiWarning": null
+    },
+    "seurat-grande-jatte": {
+      "id": "seurat-grande-jatte",
+      "title": "A Sunday on La Grande Jatte",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2395,
+      "englishCharacters": 488,
+      "japaneseCharacters": 193,
+      "apiWarning": null
+    },
+    "signac-les-andelys-cote-d-aval": {
+      "id": "signac-les-andelys-cote-d-aval",
+      "title": "Les Andelys, Côte d'Aval",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1792,
+      "englishCharacters": 452,
+      "japaneseCharacters": 176,
+      "apiWarning": null
+    },
+    "sisley-the-seine-at-port-marly-piles-of-sand": {
+      "id": "sisley-the-seine-at-port-marly-piles-of-sand",
+      "title": "The Seine at Port-Marly, Piles of Sand",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1730,
+      "englishCharacters": 410,
+      "japaneseCharacters": 159,
+      "apiWarning": null
+    },
+    "sisley-watering-place-at-marly": {
+      "id": "sisley-watering-place-at-marly",
+      "title": "Watering Place at Marly",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1783,
+      "englishCharacters": 469,
+      "japaneseCharacters": 176,
+      "apiWarning": null
+    },
+    "sorolla-rocks-at-the-lighthouse-biarritz": {
+      "id": "sorolla-rocks-at-the-lighthouse-biarritz",
+      "title": "Rocks at the Lighthouse, Biarritz",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1320,
+      "englishCharacters": 362,
+      "japaneseCharacters": 154,
+      "apiWarning": null
+    },
+    "toulouse-lautrec-ballet-dancers": {
+      "id": "toulouse-lautrec-ballet-dancers",
+      "title": "Ballet Dancers",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1292,
+      "englishCharacters": 482,
+      "japaneseCharacters": 206,
+      "apiWarning": null
+    },
+    "toulouse-lautrec-moulin-de-la-galette": {
+      "id": "toulouse-lautrec-moulin-de-la-galette",
+      "title": "Moulin de la Galette",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1722,
+      "englishCharacters": 485,
+      "japaneseCharacters": 191,
+      "apiWarning": null
+    },
+    "toulouse-lautrec-moulin-rouge": {
+      "id": "toulouse-lautrec-moulin-rouge",
+      "title": "At the Moulin Rouge",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2538,
+      "englishCharacters": 601,
+      "japaneseCharacters": 275,
+      "apiWarning": null
+    },
+    "turner-fishing-boats-with-hucksters-bargaining-for-fish": {
+      "id": "turner-fishing-boats-with-hucksters-bargaining-for-fish",
+      "title": "Fishing Boats with Hucksters Bargaining for Fish",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2434,
+      "englishCharacters": 501,
+      "japaneseCharacters": 179,
+      "apiWarning": null
+    },
+    "van-gogh-bedroom": {
+      "id": "van-gogh-bedroom",
+      "title": "The Bedroom",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2287,
+      "englishCharacters": 525,
+      "japaneseCharacters": 213,
+      "apiWarning": null
+    },
+    "van-gogh-self-portrait": {
+      "id": "van-gogh-self-portrait",
+      "title": "Self-Portrait",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2974,
+      "englishCharacters": 516,
+      "japaneseCharacters": 198,
+      "apiWarning": null
+    },
+    "van-gogh-wheat-field-cypresses": {
+      "id": "van-gogh-wheat-field-cypresses",
+      "title": "Wheat Field with Cypresses",
+      "source": "Met metadata only",
+      "rawSourceCharacters": 514,
+      "englishCharacters": 366,
+      "japaneseCharacters": 150,
       "apiWarning": null
     }
   },
