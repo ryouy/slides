@@ -1,5 +1,6 @@
 import { ARTWORKS as BASE_ARTWORKS } from './artworks';
 import { NEW_ARTWORKS } from './additional-artworks';
+import { DESCRIPTION_OVERRIDES } from './description-overrides';
 import type { Artwork } from '../types';
 
 export { ARTWORKS_VERSION } from './artworks';
