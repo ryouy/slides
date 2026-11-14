@@ -1063,6 +1063,9 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   min-width: 0;
 }
 .gallery-screen .gal-control-field { display: grid; min-width: 0; gap: 5px; }
+.gallery-screen .gal-group-field { grid-column: 1; grid-row: 2; }
+.gallery-screen .gal-columns-field { grid-column: 2; grid-row: 2; }
+.gallery-screen .gal-controls .gal-random { grid-column: 3; grid-row: 2; }
 .gallery-screen .gal-control-field > span {
   color: var(--muted);
   font-size: 10px;
@@ -1170,7 +1173,10 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   .gallery-screen .gal-controls {
     grid-template-columns: minmax(220px, 1fr) minmax(125px, 155px) 122px 92px;
   }
-  .gallery-screen .gal-controls .gal-search { grid-column: 1; }
+  .gallery-screen .gal-controls .gal-search { grid-column: 1; grid-row: 1; }
+  .gallery-screen .gal-group-field { grid-column: 2; grid-row: 1; }
+  .gallery-screen .gal-columns-field { grid-column: 3; grid-row: 1; }
+  .gallery-screen .gal-controls .gal-random { grid-column: 4; grid-row: 1; }
 }
 
 /* Full museum interpretation remains readable in every selected language. */
