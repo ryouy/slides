@@ -23,7 +23,7 @@ export function ArtHome() {
   const streak = currentDailyStreak(data.dailyHistory, today);
   const exhibit = getArtwork(dailyArtworkId(today)) ?? ARTWORKS[0];
   const resumable = data.inProgress.free && data.inProgress.free.status === 'playing';
-  const done = !!data.dailyHistory[today];
+  const done = data.dailyHistory[today]?.artworkId === exhibit.id;
   return (
     <div className="screen home art-home">
       <header className="art-home-head">
@@ -202,7 +202,8 @@ export function ArtDaily() {
   const [dateKey] = useState(() => jstDateKey());
   const [initial] = useState<ArtState>(() => {
     const saved = getData().inProgress.daily;
-    return saved && saved.puzzle.id === `artdaily-${dateKey}` ? saved : newArtGame(generateArtDaily(dateKey));
+    return saved && saved.puzzle.id === `artdaily-${dateKey}` && saved.puzzle.artworkId === dailyArtworkId(dateKey)
+      ? saved : newArtGame(generateArtDaily(dateKey));
   });
   const artwork = getArtwork(initial.puzzle.artworkId)!;
   return (
