@@ -257,6 +257,10 @@ const en = {
   "art.textSource": "Description",
   "art.textAdjusted": "HTML converted to plain text",
   "art.englishDetail": "Museum description (English)",
+  "sort.random": "Random order",
+  "gal.columns": "Per row",
+  "gal.columnsAuto": "Auto",
+  "gal.reshuffle": "Shuffle again",
 } as const;
 
 export type Key = keyof typeof en;
