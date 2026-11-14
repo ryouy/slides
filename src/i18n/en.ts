@@ -254,6 +254,9 @@ const en = {
   "wordCat.Vehicle": "Vehicle",
   "wordCat.Fantasy": "Fantasy",
   "wordCat.Person": "Person",
+  "art.textSource": "Description",
+  "art.textAdjusted": "HTML converted to plain text",
+  "art.englishDetail": "Museum description (English)",
 } as const;
 
 export type Key = keyof typeof en;
