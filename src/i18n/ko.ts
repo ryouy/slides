@@ -106,5 +106,16 @@ const ko: Partial<Dict> = {
   "era.1800–1849": "1800~1849년",
   "era.1850–1879": "1850~1879년",
   "era.1880–1899": "1880~1899년",
+  "word.card": "단어",
+  "word.letterCount": "{n}글자",
+  "word.known": "확인됨",
+  "word.hintCategory": "분류",
+  "word.hintMeaning": "뜻",
+  "word.hintFirst": "첫 글자",
+  "word.hintExtra": "+ 글자",
+  "word.hintCategoryTitle": "분류 표시",
+  "word.hintMeaningTitle": "뜻 표시",
+  "word.hintFirstTitle": "첫 글자 표시",
+  "word.hintExtraTitle": "추가 글자 표시(첫 글자 필요)",
 };
 export default ko;
