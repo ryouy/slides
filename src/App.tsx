@@ -11,8 +11,8 @@ import { Home } from './ui/Home';
 import { AboutPage, ContactPage, HowToPage, PrivacyPage, SettingsPage, StatsPage, TermsPage } from './ui/Pages';
 import { DailyScreen, EndlessScreen } from './ui/Screens';
 
-const TITLES = { 'word-slide': 'WORD SLIDE – slide puzzle meets Wordle', 'big-slide': 'BIG SLIDE – slide the giant tile', 'art-slide': 'ART SLIDE – reassemble a masterpiece' };
-const SITE_TITLE = 'ART SLIDE – reassemble a masterpiece';
+const TITLES = { 'word-slide': 'WORD SLIDE', 'big-slide': 'BIG SLIDE', 'art-slide': 'ART SLIDE' };
+const SITE_TITLE = 'ART SLIDE';
 
 function WordRoutes({ sub }: { sub: string }) {
   switch (sub) {
