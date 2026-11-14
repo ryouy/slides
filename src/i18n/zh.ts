@@ -106,5 +106,16 @@ const zh: Partial<Dict> = {
   "era.1800–1849": "1800—1849年",
   "era.1850–1879": "1850—1879年",
   "era.1880–1899": "1880—1899年",
+  "word.card": "单词",
+  "word.letterCount": "{n}个字母",
+  "word.known": "已知",
+  "word.hintCategory": "类别",
+  "word.hintMeaning": "含义",
+  "word.hintFirst": "首字母",
+  "word.hintExtra": "+ 字母",
+  "word.hintCategoryTitle": "显示类别",
+  "word.hintMeaningTitle": "显示含义",
+  "word.hintFirstTitle": "显示首字母",
+  "word.hintExtraTitle": "显示下一个字母（需先显示首字母）",
 };
 export default zh;
