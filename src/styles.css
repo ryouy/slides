@@ -1593,6 +1593,7 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
               margin .24s ease, visibility 0s;
 }
 .result-modal .share-text {
+  white-space: pre-line;
   margin: 0 0 11px;
   padding: 0 1px;
   background: transparent;
@@ -1645,3 +1646,6 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 @media (prefers-reduced-motion: reduce) {
   .result-modal .share-panel { transition: none; }
 }
+
+/* Only the Next Artwork link remains in the game details. */
+.artgame .art-quiet { justify-content: flex-end; }
