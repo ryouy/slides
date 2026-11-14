@@ -1822,3 +1822,58 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   margin: 0;
 }
 .gallery-screen .gal-ad-item .ad-box { margin: 8px auto; }
+
+
+/* Preview: artwork never shrinks or crops when the language/text length changes.
+ * Only the paragraph scrolls; title, language controls and source remain visible. */
+.preview-image { width: 100%; height: 100%; }
+.preview-image > img {
+  display: block; width: 100%; height: 100%; object-fit: contain;
+  user-select: none; -webkit-user-drag: none;
+}
+@media (max-width: 899px) {
+  .preview-layer {
+    overflow: hidden;
+    height: 100dvh;
+  }
+  .preview-card {
+    height: 100% !important;
+    max-height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .preview-card > .preview-image {
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    max-height: min(49svh, 520px);
+    aspect-ratio: var(--preview-aspect);
+    overflow: hidden;
+  }
+  .preview-card > .preview-image > img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .preview-card .preview-description {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-bottom: 6px;
+  }
+  .preview-card .preview-description-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    scrollbar-width: thin;
+  }
+  .preview-card .preview-description .art-description-language,
+  .preview-card .preview-description .ap-credit {
+    flex: 0 0 auto;
+  }
+}
