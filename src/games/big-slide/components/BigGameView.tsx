@@ -151,7 +151,7 @@ export function BigGameView({ initial, title, onProgress, onCleared, onNext, nex
         />
       )}
       {cleared && !showClear && (
-        <button className="btn primary wide" onClick={() => setShowClear(true)}>Show result</button>
+        <button className="btn primary wide" onClick={() => setShowClear(true)}>{t('result.showResult')}</button>
       )}
     </div>
   );
