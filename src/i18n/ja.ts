@@ -154,5 +154,6 @@ const ja: Partial<Dict> = {
   "gal.columns": "1行の枚数",
   "gal.columnsAuto": "自動",
   "gal.reshuffle": "もう一度シャッフル",
+  "art.englishInfo": "詳しい説明（英語原文）",
 };
 export default ja;
