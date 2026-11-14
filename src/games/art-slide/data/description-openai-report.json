@@ -1,12 +1,12 @@
 {
   "model": "gpt-6-luna",
   "recipeVersion": "openai-bilingual-v1",
-  "generatedAt": "2026-11-14T09:42:01.013769+00:00",
+  "generatedAt": "2026-11-14T09:43:54.193857+00:00",
   "totalArtworks": 404,
-  "processed": 125,
-  "remaining": 279,
-  "medianEnglishCharacters": 469,
-  "medianJapaneseCharacters": 185,
+  "processed": 150,
+  "remaining": 254,
+  "medianEnglishCharacters": 458.5,
+  "medianJapaneseCharacters": 185.0,
   "records": {
     "aic-102131": {
       "id": "aic-102131",
@@ -1131,6 +1131,231 @@
       "rawSourceCharacters": 1873,
       "englishCharacters": 435,
       "japaneseCharacters": 218,
+      "apiWarning": null
+    },
+    "aic-19966": {
+      "id": "aic-19966",
+      "title": "A Flower Vendor",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1220,
+      "englishCharacters": 363,
+      "japaneseCharacters": 125,
+      "apiWarning": null
+    },
+    "aic-20010": {
+      "id": "aic-20010",
+      "title": "Gathering Lotus Flowers",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 986,
+      "englishCharacters": 326,
+      "japaneseCharacters": 93,
+      "apiWarning": null
+    },
+    "aic-20199": {
+      "id": "aic-20199",
+      "title": "Final Study for \"Bathers at Asnières\"",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2022,
+      "englishCharacters": 537,
+      "japaneseCharacters": 229,
+      "apiWarning": null
+    },
+    "aic-20432": {
+      "id": "aic-20432",
+      "title": "The Old Savoyard",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2173,
+      "englishCharacters": 541,
+      "japaneseCharacters": 213,
+      "apiWarning": null
+    },
+    "aic-204686": {
+      "id": "aic-204686",
+      "title": "At the Circus: The Bareback Rider (Au Cirque: Écuyère)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1829,
+      "englishCharacters": 439,
+      "japaneseCharacters": 188,
+      "apiWarning": null
+    },
+    "aic-20579": {
+      "id": "aic-20579",
+      "title": "Hercules and the Lernaean Hydra",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2815,
+      "englishCharacters": 549,
+      "japaneseCharacters": 211,
+      "apiWarning": null
+    },
+    "aic-20992": {
+      "id": "aic-20992",
+      "title": "Ise, from an untitled series of Thirty-six Immortal Poets",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 999,
+      "englishCharacters": 350,
+      "japaneseCharacters": 128,
+      "apiWarning": null
+    },
+    "aic-20994": {
+      "id": "aic-20994",
+      "title": "Double-Flowered Cherry: Motoura of the Minami Yamasakiya (Minami Yamasakiya uchi Motoura, Yaezakura), from the series \"Beauties of the Floating World Compared to Flowers (Ukiyo bijin hana ni yosu)\"",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1189,
+      "englishCharacters": 420,
+      "japaneseCharacters": 135,
+      "apiWarning": null
+    },
+    "aic-214353": {
+      "id": "aic-214353",
+      "title": "The Sea at Bognor",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 891,
+      "englishCharacters": 426,
+      "japaneseCharacters": 189,
+      "apiWarning": null
+    },
+    "aic-21557": {
+      "id": "aic-21557",
+      "title": "Flower Viewing",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 727,
+      "englishCharacters": 305,
+      "japaneseCharacters": 116,
+      "apiWarning": null
+    },
+    "aic-2156": {
+      "id": "aic-2156",
+      "title": "Lights of Other Days",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1322,
+      "englishCharacters": 433,
+      "japaneseCharacters": 135,
+      "apiWarning": null
+    },
+    "aic-21682": {
+      "id": "aic-21682",
+      "title": "Still Life",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1671,
+      "englishCharacters": 422,
+      "japaneseCharacters": 143,
+      "apiWarning": null
+    },
+    "aic-2171": {
+      "id": "aic-2171",
+      "title": "Salisbury Cathedral from the Meadows: the Rainbow",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1217,
+      "englishCharacters": 407,
+      "japaneseCharacters": 163,
+      "apiWarning": null
+    },
+    "aic-21720": {
+      "id": "aic-21720",
+      "title": "Cranes on snow-covered pine",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 705,
+      "englishCharacters": 360,
+      "japaneseCharacters": 138,
+      "apiWarning": null
+    },
+    "aic-217536": {
+      "id": "aic-217536",
+      "title": "Crèche",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 921,
+      "englishCharacters": 373,
+      "japaneseCharacters": 148,
+      "apiWarning": null
+    },
+    "aic-21937": {
+      "id": "aic-21937",
+      "title": "Adoration of the Magi",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2135,
+      "englishCharacters": 544,
+      "japaneseCharacters": 243,
+      "apiWarning": null
+    },
+    "aic-22732": {
+      "id": "aic-22732",
+      "title": "Interior with Pink Wallpaper I, plate five from Landscapes and Interiors",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1147,
+      "englishCharacters": 498,
+      "japaneseCharacters": 190,
+      "apiWarning": null
+    },
+    "aic-23333": {
+      "id": "aic-23333",
+      "title": "Pastoral Scene",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1956,
+      "englishCharacters": 539,
+      "japaneseCharacters": 260,
+      "apiWarning": null
+    },
+    "aic-234781": {
+      "id": "aic-234781",
+      "title": "Christ Carrying the Cross",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2010,
+      "englishCharacters": 505,
+      "japaneseCharacters": 212,
+      "apiWarning": null
+    },
+    "aic-23506": {
+      "id": "aic-23506",
+      "title": "Young Bull",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1541,
+      "englishCharacters": 440,
+      "japaneseCharacters": 169,
+      "apiWarning": null
+    },
+    "aic-23972": {
+      "id": "aic-23972",
+      "title": "Virgin and Child with the Young Saint John the Baptist",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2245,
+      "englishCharacters": 481,
+      "japaneseCharacters": 185,
+      "apiWarning": null
+    },
+    "aic-24684": {
+      "id": "aic-24684",
+      "title": "Francesco de' Medici",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1529,
+      "englishCharacters": 516,
+      "japaneseCharacters": 219,
+      "apiWarning": null
+    },
+    "aic-25129": {
+      "id": "aic-25129",
+      "title": "Bell-Flower and Dragonfly, from an untitled series of large flowers",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 854,
+      "englishCharacters": 375,
+      "japaneseCharacters": 146,
+      "apiWarning": null
+    },
+    "aic-25613": {
+      "id": "aic-25613",
+      "title": "Kanbara: Evening Snow (Kanbara, yoru no yuki), from the series \"Fifty-three Stations of the Tokaido (Tokaido gojusan tsugi no uchi),\" also known as the Hoeido Tokaido",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1079,
+      "englishCharacters": 476,
+      "japaneseCharacters": 167,
+      "apiWarning": null
+    },
+    "aic-257286": {
+      "id": "aic-257286",
+      "title": "Breakfast Still Life",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1586,
+      "englishCharacters": 433,
+      "japaneseCharacters": 158,
       "apiWarning": null
     }
   },
