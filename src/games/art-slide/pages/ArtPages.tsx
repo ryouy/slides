@@ -1,5 +1,5 @@
 import { BackButton, ChevronRight } from '../../../components/Icons';
-import { useLayoutEffect, useMemo, useState, type KeyboardEvent } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState, type KeyboardEvent } from 'react';
 import { AdSlot } from '../../../ads/AdSlot';
 import { Link } from '../../../components/Link';
 import { useT, type Key } from '../../../i18n';
@@ -79,6 +79,14 @@ export function ArtGallery() {
   const { groupBy, columns, randomSeed, randomized } = data.gallery;
   const [query, setQuery] = useState('');
   const [selectedGroup, setSelectedGroup] = useState('');
+  const [wideGallery, setWideGallery] = useState(() => window.innerWidth >= 640);
+  useEffect(() => {
+    const onResize = () => setWideGallery(window.innerWidth >= 640);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+  const galleryCols = columns === 'auto' ? (wideGallery ? 3 : 2) : columns;
+  const adEvery = galleryCols * 3;
   const filtered = useMemo(() => filterArtworks(ARTWORKS, query), [query]);
   const groups = useMemo(
     () => groupArtworks(filtered, groupBy, randomized ? 'random' : 'artist', randomSeed),
@@ -170,7 +178,7 @@ export function ArtGallery() {
             data-testid={`group-${slugId(activeGroup.key)}`}>
             <ul className="gallery" data-columns={columns} key={`${activeGroup.key}-${randomSeed}-${randomized}`}
               style={columns === 'auto' ? undefined : { ['--gallery-cols' as string]: columns }}>
-              {activeGroup.items.map((a, i) => (
+              {activeGroup.items.flatMap((a, i) => [
                 <li key={a.id} style={{ ['--i' as string]: Math.min(i, 12) }}>
                   <Link to={`/art-slide/play/${a.id}`} className="gcard" data-testid={`art-${a.id}`}>
                     <img src={a.thumbnailUrl} alt={`${a.title} – ${a.artist}`}
@@ -179,13 +187,15 @@ export function ArtGallery() {
                     <span className="g-title" title={a.title}>{a.title}</span>
                     <span className="g-meta">{a.artist} · {a.year}</span>
                   </Link>
-                </li>
-              ))}
+                </li>,
+                ...((i + 1) % adEvery === 0 && i < activeGroup.items.length - 1
+                  ? [<li key={`ad-${i}`} className="gal-ad-item"><AdSlot gallery /></li>]
+                  : []),
+              ])}
             </ul>
           </section>
         )}
       </div>
-      <AdSlot />
     </div>
   );
 }
