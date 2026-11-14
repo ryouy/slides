@@ -109,7 +109,7 @@ export function shuffleFromBoard(rng: Rng, d: Dims, start: ArtBoard, steps: numb
 /** Steps of a visible shuffle (shorter than the initial scramble: it is meant to be watched). */
 export function visibleShuffleSteps(level: ArtLevel, d: Dims) {
   const count = cellCount(d);
-  return { steps: Math.round(({ 3: 22, 4: 30, 5: 38 } as const)[level] * Math.sqrt(count / (level * level))), minMisplaced: Math.max(4, Math.round(count * 0.55)) };
+  return { steps: Math.round(({ 3: 44, 4: 60, 5: 76 } as const)[level] * Math.sqrt(count / (level * level))), minMisplaced: Math.max(4, Math.round(count * 0.55)) };
 }
 
 export function validateArtPuzzle(p: ArtPuzzle): boolean {
