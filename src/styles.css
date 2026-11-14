@@ -1605,7 +1605,9 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
     position: relative;
     left: auto !important;
     top: auto !important;
-    width: min(100%, 580px) !important;
+    width: 100% !important;
+    max-width: 580px;
+    box-sizing: border-box;
     height: auto !important;
     max-height: 100%;
     display: flex;
@@ -1779,5 +1781,5 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 /* Fix the top edge of the mobile preview; only its bottom may expand with text. */
 @media (max-width: 899px) {
   .preview-layer { align-items: flex-start; }
-  .preview-card { flex: 0 1 auto; }
+  .preview-card { flex: 0 0 auto; }
 }
