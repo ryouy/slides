@@ -68,22 +68,30 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "van-gogh-bedroom": {
-    "description": "Perhaps the most famous depiction of a bedroom in Western art history, this vibrant painting documents Vincent van Gogh’s sleeping quarters in his beloved “Yellow House” in Arles, France. The composition exists in three versions, the first of which Van Gogh conceived in October 1888, a month after he moved into the home. In a letter to his brother Theo, he described having painted “the walls pale lilac, the floor in a broken and faded red, the chairs and the bed chrome yellow, the pillows and the sheet very pale lemon green, the bedspread blood-red, the dressing table orange, the washbasin blue, the window green.” With its bold colors, thick and broken brushwork, and sharply receding lines, the picture might suggest a nervous energy. But the artist understood it as a calming and restful image. The painting in the Art Institute’s collection is Van Gogh’s second version of the scene, made nearly a year after the first, in September 1889. He produced a third, smaller version at the same time as a gift for his mother and sister.\n\nCatalogue information\nRecorded artist or maker: Vincent van Gogh (Dutch, 1853–1890). Date: 1889. Materials and technique: Oil on canvas. Artistic style or school: Post-Impressionism. Place of creation: Saint-Rémy-de-Provence. Classification: oil on canvas. Physical dimensions: 73.6 × 92.3 cm (29 × 36 5/8 in.); Framed: 88.9 × 108 × 8.9 cm (35 × 42 1/2 × 3 1/2 in.). Museum catalogue subjects: interiors, basin, blue (color), chair, chairs, doors, France. Museum credit line: Helen Birch Bartlett Memorial Collection. Recorded ownership history (excerpt): The artist; sent to his brother, Theo van Gogh (died 1891), Paris, Dec. 18, 1889 [Letter 829 from Vincent van Gogh to Theo van Gogh, Dec. 19, 1889, notes that The Bedroom was sent the day before]; by descent to Johanna van Gogh-Bonger (died 1925), the Netherlands, 1891; sold to Jos Hessel, Paris, by 1901 [Paris 1901]. Carl Reininghaus, Vienna, by 1909, to at least 1914 [Vienna…. Exhibition record (excerpt): Paris, Galerie Vollard, 1895, no cat. Paris, Galerie Bernheim-Jeune, Vincent van Gogh, Mar. 15–31, 1901, cat. 19, as La Chambre de Vincent à Arles. Vienna Secession, Internationalen Kunstschau, May–Oct. 1909, room 14, cat. 1, as Das Schlafzimmer. Berlin, Paul Cassirer, Zehnte….",
+    "description": "Vincent van Gogh painted his bedroom in the Yellow House in Arles, where he had moved in 1888. This canvas is the second of three versions of the scene, made in Saint-Rémy in September 1889; the first was conceived the previous October, and a smaller third was made as a gift for his mother and sister. Van Gogh described the room’s contrasting colors in a letter to his brother Theo. Bold color, thick, broken brushwork, and sharply receding lines animate the interior, which the artist intended as a calming, restful image.",
+    "descriptionTranslations": {
+      "ja": "ファン・ゴッホが描いたのは、1888年に移り住んだアルルの「黄色い家」の寝室です。本作は三つのヴァージョンのうち二作目で、サン＝レミで1889年9月に制作されました。最初の作は前年10月に構想され、三作目の小型作は母と妹への贈り物として描かれています。画家は弟テオへの手紙で室内の色彩を詳しく記しました。鮮やかな色、厚く途切れる筆触、奥へ鋭く伸びる線が空間を形づくりますが、ゴッホ自身は心を休める静かなイメージを意図しました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/28560",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/28560",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "van-gogh-self-portrait": {
-    "description": "In 1886 Vincent van Gogh left his native Holland and settled in Paris, where his beloved brother Theo was a dealer in paintings. Van Gogh was apparently inspired by the energy of the city and by his introduction to Impressionism, and he created at least twenty-four self-portraits during his two-year stay in the French capital. This early example is modest in size and was painted on prepared artist’s board rather than canvas. Its densely dabbed brushwork, which became a hallmark of Van Gogh’s style, reﬂects the artist’s response to Georges Seurat’s revolutionary pointillist technique in A Sunday on La Grande Jatte—1884 . What was for Seurat a method based on the cool objectivity of science became in Van Gogh’s hands an intense emotional language. The surface of the painting dances with particles of color—intense greens, blues, reds, and oranges. Dominating this dazzling array of staccato dots and dashes are the artist’s deep green eyes and the intensity of their gaze. “I prefer painting people’s eyes to cathedrals,” Van Gogh once wrote to Theo. “However solemn and imposing the latter may be—a human soul, be it that of a poor streetwalker, is more interesting to me.” From Paris, Van Gogh traveled to the southern town of Arles for fifteen months. At the time of his death, in 1890, he had actively pursued his art for only five years. Van Gogh’s career as a painter was actually very brief. From Paris, he traveled to the southern town of Arles for ﬁ ft een months. At the time of his death, in 1890, he had actively pursued his art for just ﬁve years. This is one of thirty-five works that comprise the Winterbotham Collection. Click here to learn more about the collection.\n\nCatalogue information\nRecorded artist or maker: Vincent van Gogh (Dutch, 1853–1890). Date: 1887. Materials and technique: Oil on artist's board, mounted on cradled panel. Artistic style or school: Post-Impressionism. Place of creation: Netherlands. Classification: oil on board. Physical dimensions: 41 × 32.5 cm (16 1/8 × 12 13/16 in.); Framed: 61.6 × 53.4 × 8.9 cm (24 1/4 × 21 × 3 1/2 in.). Museum catalogue subjects: portraits, red (color), blue (color), green (color), orange (color), artist, self-portraits. Museum credit line: Joseph Winterbotham Collection. Recorded ownership history (excerpt): The artist’s sister-in-law, Johanna van Gogh-Bonger (died 1925), Amsterdam [this and the following according to Van Gogh-Bonger’s account book: \"19/2 2-1912 'Kunstverein Frankfurt portret' 2942.50 [guilders]\" and \"95/15 2-1912 'ontvangen uit Frankfort Kunstverein voor portret' 2942.50 [guilders];\" reproduced in Stolwijk and Veenenbos 2002, 54, 130]; sold through Frankfurter…. Exhibition record (excerpt): Cologne, Sonderbund Westdeutscher Kunstfreunde und Künstler, Internationale Kunstausstellung des Sonderbundes Westdeutscher Kunstfreunde und Künstler zu Cöln 1912, May 25–Sep. 30, 1912, cat. 11. Berlin, Galerie Paul Cassirer, 10. Ausstellung, May–June 1914, cat. 28.….",
+    "description": "Made in Paris in 1887, this self-portrait belongs to the more than two dozen Van Gogh painted during his two-year stay in the city. He worked on prepared artist’s board, using closely packed dabs and strokes of green, blue, red, and orange. The vivid surface reflects his response to Georges Seurat’s Pointillism, transformed here from a scientific method into an emotionally charged style. Deep green eyes hold the viewer’s attention at the center of the color. The work is oil on board, mounted on a cradled panel.",
+    "descriptionTranslations": {
+      "ja": "1887年、パリ滞在中に描かれた自画像です。ファン・ゴッホはパリで過ごした二年間に、二十数点の自画像を制作しました。キャンバスではなく、下地を施した画家用ボードに、緑、青、赤、橙の色を細かな点や短い筆触で重ねています。スーラの点描技法への応答を示す画面は、科学的な手法を強い感情を帯びた表現へと変えています。色彩のなかで、深い緑色の眼差しが際立ちます。油彩、画家用ボードをゆりかご状パネルに貼付。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/80607",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/80607",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "gogh-a-peasant-woman-digging-in-front-of-her-cottage": {
     "description": "In this painting, a woman digs outside her cottage, one of a group of village cottages Van Gogh painted after walks around Nuenen. Having returned to his parents’ home in the Netherlands in 1883, he adopted the subdued browns, greens, and grays of his early Dutch work. Earthy tones unite the woman, cottage, and surroundings, while loose, directional brushstrokes shape the scene. Van Gogh’s treatment reflects his interest in the lives of the people who inhabited these rural homes.",
@@ -125,26 +133,43 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "renoir-two-sisters": {
-    "description": "Pierre-Auguste Renoir considered the Restaurant Fournaise in Chatou (a village along the Seine River) the perfect spot to enjoy nature and good company away from the urban distractions of Paris. His painting Two Sisters (On the Terrace) , which he exhibited at the Impressionist exhibition of 1882, is among the last of his paintings set there. Sometimes, as in his most famous work on this subject, Luncheon of the Boating Party (1882; Phillips Collection, Washington, DC), Renoir used his close friends as models. For Two Sisters , however, despite the title of the painting, he paid unrelated models to create this intimate and perfectly balanced pairing of youth and nature. The older girl, wearing the blue flannel of a female boater’s outfit, sports a luxurious red hat, but it is her younger companion who captivates. Her oversize headdress composed of a floral bouquet is echoed in the brightly colored skeins of yarn in the basket that she gently touches. As was typical for the artist, Renoir painted the faces of his models with controlled and precise brushwork creating a porcelain-like surface that contrasts brilliantly with the diaphanous, impressionist backdrop of river, boats, and blossoming trees just beyond the railing of the terrace.\n\nCatalogue information\nRecorded artist or maker: Pierre-Auguste Renoir (French, 1841–1919). Date: 1881. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: painting. Physical dimensions: 100.4 × 80.9 cm (39 1/2 × 31 7/8 in.); Framed: 119.1 × 100.1 × 9.6 cm (46 7/8 × 39 3/8 × 3 3/4 in.). Museum catalogue subjects: sisters, families, girls, girl, lake, water, trees. Museum credit line: Mr. and Mrs. Lewis Larned Coburn Memorial Collection. Recorded ownership history (excerpt): The artist (d. 1919); sold to Durand-Ruel, Paris, July 7, 1881, for 1,500 francs [per Durand-Ruel, Paris, stock book for 1880–82 (no. 1451, as Femme sur une terrasse au bord de la Seine), as confirmed by Paul-Louis Durand-Ruel and Flavie Durand-Ruel, Durand-Ruel Archives, to the Art Institute of Chicago, Oct. 5, 2010, curatorial object file]; transferred to Durand-Ruel, New…. Exhibition record (excerpt): Paris, 251, rue Saint-Honoré, Salons du Panorama de Reischoffen, 7me exposition des artistes independants [seventh Impressionist exhibition], Mar. 1–31, 1882, cat. 138, as Les deux soeurs. Paris, Durand-Ruel, Exposition des oeuvres de P.-A. Renoir, Apr. 1–25, 1883, cat. 30, as….",
+    "description": "Set at the Restaurant Fournaise in Chatou, a riverside retreat Renoir valued for its nature and conviviality, this 1881 painting was shown at the 1882 Impressionist exhibition. Two unrelated models sit together on a terrace: the older girl wears a blue boating outfit and red hat, while a floral headdress on the younger girl echoes the bright skeins of yarn in a basket she touches. Renoir rendered their faces with precise, controlled brushwork, setting their smooth surfaces against a light, impressionist view of river, boats, and flowering trees beyond the railing.",
+    "descriptionTranslations": {
+      "ja": "セーヌ川沿いの町シャトゥーにあったレストラン「フルネーズ」を舞台に、ルノワールはテラスに並ぶ二人の少女を描きました。姉妹という題名ながら、モデルは血縁のない二人です。青い舟遊び用の服と赤い帽子を着けた年長の少女に対し、年少の少女の花飾りは、手を添える籠の色鮮やかな毛糸と響き合います。顔には抑制のきいた精緻な筆致を用い、手すりの向こうに広がる川や舟、花咲く木々を軽やかな印象派の背景として描きました。1881年作で、翌年の印象派展に出品されました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/14655",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/14655",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "renoir-acrobats-at-the-cirque-fernando": {
-    "description": "This painting depicts a favorite Parisian pastime in the late nineteenth century: attending the circus. Among the enthusiastic crowds at these events were men on the prowl in a world of young female entertainers. But Pierre-Auguste Renoir barely alluded to the unwholesome aspects of this environment, relegating a group of dark-suited men, seated in the front row, to the very top of the composition. “For me a picture . . . should be something likeable, joyous, and pretty,” Renoir insisted. “There are enough ugly things in life for us not to add to them.” Acrobats at the Cirque Fernando reﬂects this worldview as well as the artist’s enchantment with the innocence of childhood. The two circus girls in this painting, Francisca and Angelina Wartenberg, were actually seventeen and fourteen years old, respectively, when Renoir made this painting, although they appear much younger here. Although they were acrobats in the circus, Renoir posed the sisters in costume at his studio, allowing him to capture them in daylight—he feared that the circus’s harsh gas lighting would turn “faces into grimaces.” He portrayed them standing in the middle of the circus ring, having just ﬁnished their act and taking their bows. One sister turns to the crowd, acknowledging its approval, while the other faces the viewer with an armful of oranges, a rare treat that audiences tossed in tribute. Renoir enveloped the girls in a virtual halo of pinks, oranges, yellows, and whites, as if acknowledging the rose-colored lens through which he preferred to view such scenes. The painting’s ﬁrst owner, Chicago collector Bertha Honoré Palmer, became so enamored of it that she kept it with her at all times, even on her travels abroad.\n\nCatalogue information\nRecorded artist or maker: Pierre-Auguste Renoir (French, 1841–1919). Date: 1879. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: painting. Physical dimensions: 131.2 × 99.2 cm (51 1/2 × 39 1/16 in.); Framed: 160.1 × 129 × 10.2 cm (63 × 50 3/4 × 4 in.). Museum catalogue subjects: Century of Progress, public, costume, entertainment, girls, portraits, work. Museum credit line: Potter Palmer Collection. Recorded ownership history (excerpt): The artist (d. 1919); deposited with Durand-Ruel, Paris, Apr. 6, 1881 [per Durand-Ruel, Paris, stock book for 1879–84 (no. 3155, as Les Petites acrobates), as confirmed by Paul-Louis Durand-Ruel and Flavie Durand-Ruel, Durand-Ruel Archives, Oct. 5, 2010, curatorial object file]; sold to Durand-Ruel, Paris, May 12, 1882, for 2,000 francs. [This transaction is recorded in the…. Exhibition record (excerpt): Paris, Offices of La vie moderne, Cinquième exposition de La vie moderne, P.-A. Renoir, June 19–July 3, 1879, no cat. Paris, 251, rue Saint-Honoré, Salons du Panorama de Reischoffen, 7me exposition des artistes independants [seventh Impressionist exhibition], Mar. 1–31, 1882, no….",
+    "description": "In this 1879 oil painting, Renoir places sisters Francisca and Angelina Wartenberg in the circus ring after their act, taking their bows. One turns toward the audience; the other faces the viewer with oranges thrown in tribute. Though acrobats, the girls posed in costume at Renoir’s studio, where daylight let him avoid the circus’s harsh gas lighting. Pink, orange, yellow, and white surround them in a scene that reflects Renoir’s preference for agreeable subjects and his enchantment with childhood.",
+    "descriptionTranslations": {
+      "ja": "ルノワールは、演技を終えてお辞儀をする姉妹、フランシスカとアンジェリーナ・ヴァルテンベルクをサーカスのリングに描いた。一人は観客に顔を向け、もう一人は、客席から贈られたオレンジを抱えてこちらを見る。実際に曲芸師だった二人は、ガス灯の強い光を避けるため、衣装を着けて画家のアトリエでポーズをとった。ピンクやオレンジ、黄色、白に包まれた画面には、明るく好ましい題材を描こうとしたルノワールの姿勢と、子どもへの心惹かれ方が表れている。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/81558",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/81558",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "renoir-woman-at-the-piano": {
-    "description": "Woman at the Piano is a work attributed in the Art Institute of Chicago catalogue to Pierre-Auguste Renoir.\n\nCatalogue information\nRecorded artist or maker: Pierre-Auguste Renoir (French, 1841–1919). Date: 1875–76. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: oil on canvas. Physical dimensions: 93 × 74 cm (36 9/16 × 29 1/8 in.); Framed: 111.2 × 98.8 × 11.8 cm (43 3/4 × 38 7/8 × 4 5/8 in.). Museum catalogue subjects: pianos, portraits: female subject, portraits, portrait, plants, musical instruments, interior. Museum credit line: Mr. and Mrs. Martin A. Ryerson Collection. Recorded ownership history (excerpt): Paul-Victor Poupin, Paris, by Apr. 1876 [per Catalogue de la 2e exposition de peinture, exh. cat. (Alcan-Lévy, 1876), p. 21, cat. 219, which lists Femme au piano as “appartient à M. Poupin”]. Possibly Durand-Ruel, Paris, by Apr. 1883 [per exhibition catalogue, cat. 13 is listed as Femme au piano with an asking price of £100, however Durand-Ruel Archives cannot confirm that the…. Exhibition record (excerpt): Paris, 11, rue Le Peletier, 2e exposition de peinture [second Impressionist exhibition], Apr. 1876, cat. 219, as Femme au Piano. Appartient à M. Poupin. Possibly London, Dowdeswell and Dowdeswell, Paintings, Drawings and Pastels by Members of “La société des impressionnistes,”….",
-    "descriptionKind": "metadata_summary"
+    "description": "Painted in France in 1875–76, this oil on canvas is attributed to Pierre-Auguste Renoir and associated with Impressionism. Its catalogue subjects include a female portrait, a piano and other musical instruments, plants, and an interior. The work was shown in the second Impressionist exhibition in Paris in April 1876, where it was listed as belonging to M. Poupin.",
+    "descriptionTranslations": {
+      "ja": "1875–76年にフランスで制作された、ピエール＝オーギュスト・ルノワール作とされる油彩画で、印象派に分類されています。女性の肖像、ピアノをはじめとする楽器、植物、室内が主題として記録されています。1876年4月、パリで開かれた第2回印象派展に出品され、当時はプーポン氏の所蔵品として記載されました。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/25825",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "degas-the-millinery-shop": {
     "description": "In this large painting of a millinery shop, a woman examines a wide-brimmed hat. Degas developed her pose and clothing through numerous drawings and pastels before arranging the final composition. Her green wool dress and long gloves could suit either a shop employee or a wealthy customer, while her lack of a hat suggests she is not a high-class young woman. A hat trimmed with green is positioned so that it seems to rest on her head, playfully sharpening the work’s uncertainty about class identity in late nineteenth-century France.",
@@ -212,13 +237,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "seurat-grande-jatte": {
-    "description": "In Ferris Bueller’s Day Off , Ferris’s best friend Cameron Frye intensely studies this nearly ten-foot-wide painting during a scene set at the Art Institute. Featuring people of every age and social class on the banks of the River Seine, A Sunday on La Grande Jatte—1884 has captivated visitors ever since its arrival at the museum in 1924. If we, like Cameron, come closer to the painting, figures and forms dissolve into dots and dashes of complementary colors laid side by side, characteristic of Seurat’s pointillist technique. Many smaller painted and drawn sketches and several larger canvases, in which Seurat laid out the parameters for the landscape and figures, led up to this majestically composed scene. Seurat returned to the work two years after its start date, amplifying the silhouettes of some figures and adding others. Some of these, like the monkey on the leash, seem so integral to the final composition that it is hard to imagine them as add-ons, but others, like the man carrying a rolled newspaper in the furthest distance, are barely noticeable. To the artist, however, every decision was essential to his aim of making a painting of modern life equivalent to a classical Greek frieze.\n\nCatalogue information\nRecorded artist or maker: Georges Seurat (French, 1859–1891). Date: 1884–86, border added 1888–89. Materials and technique: Oil on canvas. Artistic style or school: Pointillism. Place of creation: France. Classification: oil on canvas. Physical dimensions: 207.5 × 308.1 cm (81 3/4 × 121 1/4 in.). Museum catalogue subjects: leisure, animals, landscape, dogs, dog, monkeys, sailing. Museum credit line: Helen Birch Bartlett Memorial Collection. Recorded ownership history (excerpt): By descent to Mme. Seurat, the artist’s mother (died 1899), Paris, 1891; by descent to Emile Seurat, the artist’s brother; sold for 800 francs to Casimir Brû, Paris, 1900; given by him to his daughter, Lucie, Paris, 1900; Lucie Brû Cousturier and Edmond Cousturier, Paris; sold for $20,000 possibly through Charles Vildrac, Paris to Frederic Clay and Helen Birch Bartlett…. Exhibition record (excerpt): Paris, Maison Dorée, 1, rue Laffitte, VIIIème Exposition de peinture, May 15–June 15, 1886, cat. 175. Paris, Rue des Tuileries, IIème Exposition de la Société des Artistes Indépendants, August 21–September 21, 1886, cat. 353. Brussels, Musée de l’Art Modern, IVe exposition….",
+    "description": "Georges Seurat’s nearly ten-foot-wide scene shows people of different ages and social classes at leisure beside the Seine. Seen close up, its forms resolve into dots and dashes of complementary colors, a hallmark of Pointillism. Seurat developed the composition through many preparatory studies, then returned to the canvas two years after beginning it, altering figures and adding others. He sought to make a painting of modern life with the ordered presence of a classical Greek frieze.",
+    "descriptionTranslations": {
+      "ja": "ジョルジュ・スーラは、セーヌ川のほとりで余暇を過ごす、さまざまな年齢や社会階層の人々を描きました。近づいて見ると、形は補色の点や短い筆触へとほどけ、点描の技法が明らかになります。多くの素描や習作を重ねて構図を練り、制作開始から二年後にも人物の輪郭を強めたり、新たな人物を加えたりしました。近代生活の情景を、古代ギリシャのフリーズのような秩序を備えた絵画にすることが、スーラの目標でした。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/27992",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/27992",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "caillebotte-paris-street": {
     "description": "Gustave Caillebotte’s monumental 1877 painting depicts a busy Paris intersection near the artist’s home. Its sharply cropped composition, possibly influenced by photography, brings two central figures toward the viewer, while carefully positioned people suggest the movement of city life. Caillebotte joined an Impressionist interest in modern urban subjects with a more Realist technique. Rather than show raindrops, he conveys the weather through retractable umbrellas and subtle reflections on wet cobblestones.",
@@ -234,26 +263,43 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "toulouse-lautrec-moulin-rouge": {
-    "description": "Café-concerts were popular venues for drinking and entertainment in late nineteenth-century Paris and attracted the interest of artists such as Henri de Toulouse-Lautrec. The Moulin Rouge, which opened in 1889, was the most famous of the café-concerts, and Toulouse-Lautrec was a habitué of the establishment—he even had a permanently reserved table. His painting Equestrienne (1887–88), now also in the Art Institute’s collection, was acquired by the owner of the nightclub as decoration for the lobby. At the Moulin Rouge is a cleverly observed group portrait of the (in some cases) infamous customers and entertainers who formed part of the artist’s circle. Standing in the background, the dancer La Goulue arranges her hair. Seated at the table are dancers La Macarona and Jane Avril, as well as photographer Paul Sescau, poet Édouard Dujardin, and vintner Maurice Guibert. Singer May Milton peers out from the right edge of the painting, her face harshly lit and a shocking acid green—the Moulin Rouge was designed to have electric lighting and Toulouse-Lautrec reveled in the artistic possibilities of artificial glare. The artist himself appears in the center background of the painting, a diminutive figure accompanied by his much taller cousin, the physician Gabriel Tapié de Céleyran.\n\nCatalogue information\nRecorded artist or maker: Henri de Toulouse-Lautrec (French, 1864–1901). Date: 1892–95. Materials and technique: Oil on canvas. Artistic style or school: Post-Impressionism. Place of creation: France. Classification: oil on canvas. Physical dimensions: 123 × 141 cm (48 7/16 × 55 1/2 in.); Framed: 136.9 × 154.7 × 8.5 cm (53 7/8 × 60 7/8 × 3 5/16 in.). Museum catalogue subjects: nightlife, table, performers, performance, dancers, dance, chairs. Museum credit line: Helen Birch Bartlett Memorial Collection. Recorded ownership history (excerpt): Maurice Joyant, executor of the artist's estate and co-director of Galerie Manzi-Joyant, Paris, by 1902 [according to Heller 1986]; sold to Manzi [according to Dortu 1971 and Heller 1986]. Jean Laroche, Paris, 1926. Paul Rosenberg [according to Dortu 1971]. Mssrs. Reid & Lefevre, London, June 1928. Frederick Clay Bartlett, Chicago; given to the Art Institute, 1928.. Exhibition record (excerpt): Possibly, Paris, Les XX, January 1892, as Nocturne [see Murray 1980]. Paris, Boussod et Valadon, 1893 [according to Toulouse-Lautrec 1991-92]. Paris, Le Barc de Boutteville, 7e Exposition des peintures impressionnists et symbolists, July 1894, cat. 84, as Un Coin du Moulin….",
+    "description": "Henri de Toulouse-Lautrec’s At the Moulin Rouge (1892–95) portrays customers and entertainers from the artist’s circle at the famous Paris café-concert. Dancer La Goulue stands behind a table occupied by dancers La Macarona and Jane Avril, photographer Paul Sescau, poet Édouard Dujardin, and vintner Maurice Guibert; singer May Milton peers in from the right, her face sharply lit in acid green. Toulouse-Lautrec also appears in the background beside his taller cousin, physician Gabriel Tapié de Céleyran. The venue’s electric lighting offered the artist striking possibilities for artificial glare.",
+    "descriptionTranslations": {
+      "ja": "アンリ・ド・トゥールーズ＝ロートレックの《ムーラン・ルージュにて》（1892–95）は、画家と縁のあった人々が集う、パリの著名なカフェ・コンセールを描く。踊り子ラ・グーリュが奥で髪を整え、テーブルには踊り子のラ・マカロナとジェーン・アヴリル、写真家ポール・セスコー、詩人エドゥアール・デュジャルダン、ワイン商モーリス・ギベールが座る。右端から顔をのぞかせる歌手メイ・ミルトンは、刺激的な酸性の緑色の光に照らされている。画家も奥に従兄で医師のガブリエル・タピエ・ド・セレイランとともに描かれ、電灯による人工的な光は、彼の表現に新たな可能性をもたらした。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/61128",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/61128",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "toulouse-lautrec-moulin-de-la-galette": {
-    "description": "With this painting of the dance hall known as the Moulin de la Galette, Henri de Toulouse-Lautrec established his reputation as the chronicler of the Montmartre district’s famed nightlife. A wooden barrier bisects the composition, dividing the frenzied action of the dance floor in the background from the stillness of the women waiting in the foreground. Toulouse-Lautrec used turpentine to thin his paint and applied it in loose washes, a technique known as peinture à l’essence . The result is a sketchy style that conveys both the immediacy of the artist’s observations and the tawdry atmosphere of his subject.\n\nCatalogue information\nRecorded artist or maker: Henri de Toulouse-Lautrec (French, 1864–1901). Date: 1889. Materials and technique: Oil on canvas. Artistic style or school: Post-Impressionism. Place of creation: France. Classification: oil on canvas. Physical dimensions: 88.5 × 101.3 cm (35 7/8 × 39 5/8 in.); Framed: 109.3 × 123.2 × 12.1 cm (43 × 48 1/2 × 4 3/4 in.). Museum catalogue subjects: nightlife, table, night, dance, women, night scenes, leisure. Museum credit line: Mr. and Mrs. Lewis Larned Coburn Memorial Collection. Recorded ownership history (excerpt): Joseph Albert. Mme Montandon, Paris, by February 1890. Paul Gallimard, Paris. Paul Rosenberg by 1924 [see Chicago 1924/5]; Annie Swan Coburn (Mrs. Lewis L. Coburn), Chicago; bequeathed to the Art Institute of Chicago, 1933. Exhibition record (excerpt): Paris, Exposition des Indépendants, 1889, cat. 257. Brussels, Salon des XX, 1890. Paris, Salon des Arts Libéraux, 1891. Paris, Galerie Goupil, Exposition, 1893. Paris, Galerie Durand-Ruel, H. de Toulouse-Lautrec, 1902, cat. 71, as Le Bal du Moulin de la Galette. Paris, Musée des….",
+    "description": "Painted in 1889, this oil on canvas depicts the Moulin de la Galette, a Montmartre dance hall whose nightlife helped establish Toulouse-Lautrec’s reputation as a chronicler of the district. A wooden barrier divides the lively dance floor behind from the still women waiting in front. He thinned the paint with turpentine and laid it in loose washes, a method called peinture à l’essence; its sketchy finish conveys the immediacy of his observations and the subject’s tawdry atmosphere.",
+    "descriptionTranslations": {
+      "ja": "1889年制作の油彩画。モンマルトルの舞踏場ムーラン・ド・ラ・ギャレットを描き、この界隈の夜の生活を記録する画家としてのロートレックの名声を確立した作品です。画面を横切る木製の柵が、奥で賑わう踊りの場と、手前で待つ静かな女性たちを分けています。テレピン油で絵具を薄め、ゆるやかな筆致で重ねる「ペインチュール・ア・レサンス」の技法が、観察の即時性と主題のけばけばしい雰囲気を伝えます。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/14664",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/14664",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "toulouse-lautrec-ballet-dancers": {
-    "description": "Ballet Dancers is a work attributed in the Art Institute of Chicago catalogue to Henri de Toulouse-Lautrec.\n\nCatalogue information\nRecorded artist or maker: Henri de Toulouse-Lautrec (French, 1864–1901). Date: 1885–86. Materials and technique: Oil on plaster, transferred to canvas. Artistic style or school: Post-Impressionism. Place of creation: France. Classification: painting. Physical dimensions: 153.5 × 152.5 cm (60 3/8 × 60 in.); Framed: 167.7 × 167.7 cm (66 × 66 in.). Museum catalogue subjects: ballet, yellow (color), women, woman, white (color), performers, performance. Museum credit line: Helen Birch Bartlett Memorial Collection. Recorded ownership history (excerpt): Painted as part of a series of murals for Pere Ancelin's inn, Villieres-sur-Morin, France, c. 1885–86 until before 1920 [see Murray 1991, Duret 1920]. Christian Tetzen-Lund, Copenhagen. L. C. Hodebert, Paris. Etienne Bignon, Paris. Frederic C. Bartlett (1873–1953); given to the Art Institute of Chicago, 1931.. Exhibition record (excerpt): Art Institute of Chicago, A Century of Progress, June 1–Nov. 1, 1934, cat. 326. Art Institute of Chicago, Toulouse-Lautrec: Paintings, 1979, cat. 22 Washington, D.C., National Gallery, Toulouse-Lautrec and Montmartre; Art Institute of Chicago, July 16–Oct. 10, 2005..",
-    "descriptionKind": "metadata_summary"
+    "description": "Henri de Toulouse-Lautrec’s *Ballet Dancers*, dated 1885–86, is an oil painting originally made on plaster and later transferred to canvas. The catalogue identifies its subjects as ballet performers and women, and lists yellow and white among its colors. It was created in France as part of a series of murals for Pere Ancelin’s inn at Villiers-sur-Morin. The Art Institute of Chicago classifies it as Post-Impressionist and holds it in the Helen Birch Bartlett Memorial Collection.",
+    "descriptionTranslations": {
+      "ja": "アンリ・ド・トゥールーズ＝ロートレックの《バレエの踊り子》は、1885～86年の作。石膏面に油彩で描かれ、のちにカンヴァスへ移された。カタログには、バレエの演者や女性、黄色と白が主題・色彩として記録されている。フランスのヴィリエ＝シュル＝モランにあったペール・アンセランの宿屋を飾る壁画連作の一作として制作された。シカゴ美術館は本作をポスト印象派に分類し、ヘレン・バーチ・バートレット記念コレクションに所蔵する。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/9148",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "gauguin-arlesiennes-mistral": {
     "description": "Painted during Gauguin’s two-month stay with Vincent van Gogh in Arles in the winter of 1888, this work shows four women moving through a public garden opposite the house they shared. Their dark shawls and guarded gestures meet a sharply tilted space, where solid forms become flat shapes; orange-yellow plant coverings rise like figures beside a red fence and green bush. A deliberately painted face within the foliage lends the scene an uncanny, watchful presence. Gauguin worked in oil on jute canvas.",
@@ -347,22 +393,30 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "sisley-the-seine-at-port-marly-piles-of-sand": {
-    "description": "Of all the landscapes Alfred Sisley painted in and around Marly-le-Roi, where he lived from 1875 to 1878, this scene of workers dredging sand to facilitate barge traffic is perhaps the most original. Generally, the Impressionists showed the Seine River as a place of weekend leisure for Parisians, painting activities such as boating, yachting, promenading, and dining. Sisley depicted the river during the workweek, along with some of the men who depended on it for their livelihood.\n\nCatalogue information\nRecorded artist or maker: Alfred Sisley (British, active in France, 1839–1899). Date: 1875. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: oil on canvas. Physical dimensions: 54.5 × 73.7 cm (21 7/16 × 29 in.); Framed: 71.5 × 90.5 × 9.6 cm (28 1/8 × 35 5/8 × 3 3/4 in.). Museum catalogue subjects: landscape, boats, boatman, river, labor, building, buildings. Museum credit line: Mr. and Mrs. Martin A. Ryerson Collection. Recorded ownership history (excerpt): Georges Viau, Paris; his sale, Galeries Durand-Ruel, March 4, 1907, lot 74 (ill.), as La Seine à Port-Marly, 1875; bought in by Durand-Ruel [acc. to London 1992]. Georges Bernheim, Paris, April 1920 [acc. to archival Registrar card]; Martin A. Ryerson (died 1932), Chicago, June 11, 1920 [acc. to Ryerson purchase book; copy in curatorial object file]; bequeathed to the Art…. Exhibition record (excerpt): Paris, Galeries Georges Petit, A. Sisley, February 1897, cat. 19. Paris, Exposition Centennale de L’Art Français, 1800-1889, 1900, cat. 614, as La Seine à Port-Marly, 1875, appartient à M. George Viau. Paris, Georges Petit, Exposition d’oeuvres d’Alfred Sisley, May 7-June 1917….",
+    "description": "In this 1875 landscape, Alfred Sisley depicts workers dredging sand from the Seine at Port-Marly to keep the river navigable for barges. Rather than showing the leisure activities often associated with Impressionist views of the Seine, he attends to the working river and the men who relied on it for their livelihood. Painted in oil on canvas, the scene was made while Sisley lived in and around Marly-le-Roi.",
+    "descriptionTranslations": {
+      "ja": "1875年、マルリー＝ル＝ロワ周辺に暮らしていたアルフレッド・シスレーは、ポール＝マルリーのセーヌ川で砂をさらう人々を描きました。川底の砂を取り除くのは、はしけの通行を助けるためです。余暇を楽しむ人々を描くことの多かった印象派のセーヌ川風景とは異なり、本作は川で生計を立てる労働者に目を向けています。油彩、カンヴァス。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/16633",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/16633",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "sisley-watering-place-at-marly": {
-    "description": "In 1875 Alfred Sisley moved to the village of Marly-le-Roi, where in the 1600s King Louis XIV had built an elegant country retreat. The artist’s home on the rue de l’Abreuvoir flanked the pool, or “watering place,” featured on the left of this canvas. The pool was all that remained of the water gardens that had been part of the king’s park. Sisley remained faithful to landscape subjects throughout his career, spending most of his life painting in the villages along the Seine River, in the region referred to as the cradle of Impressionism.\n\nCatalogue information\nRecorded artist or maker: Alfred Sisley (British, active in France, 1839–1899). Date: 1875. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: oil on canvas. Physical dimensions: 39.5 × 56.2 cm (15 7/16 × 22 1/8 in.); Framed: 63.9 × 80.7 × 9.6 cm (25 1/8 × 31 3/4 × 3 3/4 in.). Museum catalogue subjects: landscape, fences, bridge, people, figure, figures, house. Museum credit line: Gift of Mrs. Clive Runnells. Recorded ownership history (excerpt): Louis Flornoy, Paris; his sale, Hôtel Drouot, Paris, April 10, 1905, lot 40 for 5350 fr. to Camentron; M. L. Camentron, Paris. Paul Rosenberg and Co., Paris and New York [acc. to Daulte 1959]. M. Ziegler [according to Daulte 1959]. Possibly Wildenstein and Co., New York [Wildenstein valued the painting in 1971 and the Runnells purchased many paintings through them]; Mrs. Clive…. Exhibition record (excerpt): Los Angeles, Los Angeles County Museum of Art / Chicago, Art Institute of Chicago / Paris, Galeries Nationales d’Exposition du Grand Palais, A Day in the Country: Impressionism and the French Landscape, June 28 - September 6, 1984 / October 23, 1984 - January 6, 1985 / February….",
+    "description": "In 1875, Alfred Sisley moved to Marly-le-Roi, where this landscape depicts the pool known as the watering place, visible at the left of the canvas. His home on the rue de l’Abreuvoir stood beside it; the pool was the sole remnant of the water gardens in Louis XIV’s former park. Painted in oil on canvas, the work reflects Sisley’s enduring focus on landscape and his years painting in villages along the Seine, a region associated with the beginnings of Impressionism.",
+    "descriptionTranslations": {
+      "ja": "1875年、アルフレッド・シスレーはマルリー＝ル＝ロワに移り、本作では画面左にある「水飲み場」と呼ばれた池を描きました。彼の住まいは池に隣接し、池はルイ14世の公園にあった水庭の唯一の名残でした。油彩で描かれたこの風景画は、セーヌ川沿いの村々を主な制作地とし、生涯にわたり風景に取り組んだシスレーの姿を伝えています。この地域は印象派発祥の地とされます。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/37741",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/37741",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "morisot-woman-at-her-toilette": {
     "description": "At her vanity after a ball, a woman still wears earrings and a velvet ribbon as she reaches to undo her chignon. Berthe Morisot uses soft, feathery brushwork to evoke floral patterns in the room and to blur the mirror, obscuring the figure’s reflection. Her signature along the mirror’s lower edge may hint that the sitter stands in for the artist. Painted in oil in 1875–80, the work reflects Morisot’s Impressionist interest in capturing modern life with understated economy; it was shown at the 1880 Impressionist exhibition.",
@@ -435,31 +489,43 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "sargent-the-fountain-villa-torlonia-frascati-italy": {
-    "description": "The year 1907 was a turning point for John Singer Sargent, as he daringly stepped away from his successful career as a portraitist in favor of plein air (outdoor) painting. This lively work aptly captures that moment of transition, combining landscape and portraiture in a composition that speaks to friendship and painterly pursuits while also celebrating color, surface, and fleeting effects of light and movement. The couple is Wilfrid and Jane Emmet de Glehn, professional artists and Sargent’s frequent traveling companions. Although The Fountain has the appearance of spontaneity, Sargent was frequently interrupted by rain as he worked. He thus completed it over several days, requiring his friends to pose at length.\n\nCatalogue information\nRecorded artist or maker: John Singer Sargent (American, 1856–1925). Date: 1907. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: Frascati. Classification: oil on canvas. Physical dimensions: 71.4 × 56.5 cm (28 1/8 × 22 1/4 in.). Museum catalogue subjects: people, men, women, water, leisure, Century of Progress, world's fairs. Museum credit line: Friends of American Art Collection. Recorded ownership history (excerpt): The artist, London; sold to the Art Institute of Chicago, 1914.. Exhibition record (excerpt): Art Institute of Chicago, Twenty–fifth Annual Exhibition of American Oil Paintings and Sculpture, Nov. 5–Dec. 8, 1912, cat. 228. New York, Grand Central Art Galleries, Retrospective Exhibition of Important Works of John Singer Sargent, Feb. 23–Mar. 22, 1924, cat. 48. New York….",
+    "description": "In this 1907 oil painting, John Singer Sargent brings landscape and portraiture together in a scene with his friends Wilfrid and Jane Emmet de Glehn, both professional artists and frequent traveling companions. The work marks a shift from his successful portrait career toward outdoor painting, while attending to color, surface, and passing effects of light and movement. Rain interrupted Sargent’s work, so he completed the apparently spontaneous scene over several days, with the couple posing for extended periods.",
+    "descriptionTranslations": {
+      "ja": "1907年、ジョン・シンガー・サージェントは、職業画家で旅を共にすることの多かった友人、ウィルフリッドとジェーン・エメット・ド・グレーン夫妻を描きました。風景と肖像を組み合わせたこの油彩画は、肖像画家としての成功から戸外制作へと向かう転機を示し、色彩や画面の質感、移ろう光と動きを捉えています。一見即興的な印象ながら、雨にたびたび制作を妨げられ、夫妻に長時間ポーズを取ってもらいながら数日かけて完成しました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/69780",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/69780",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "sargent-madame-paul-escudier-louise-lefevre": {
-    "description": "In this depiction of Frenchwoman Louise Escudier, John Singer Sargent undercut traditional portrait conventions by prioritizing the dramatic effects of light and dark in a Parisian apartment. The picture grew out of a series of atmospheric views of working-class women in darkened interiors that the artist produced on two trips to Venice between 1880 and 1882. Undertaken in Paris shortly thereafter, this painting transforms those techniques in the portrayal of a fashionable sitter, similarly combining the gestural brushwork of the Impressionists with a heightened chiaroscuro (light and shade) drawn from Spanish Baroque artists such as Diego Velázquez. Such works helped to establish Sargent’s reputation in Paris as a daring and original painter.\n\nCatalogue information\nRecorded artist or maker: John Singer Sargent (American, 1856–1925). Date: 1882. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: United States. Classification: oil on canvas. Physical dimensions: 129.5 × 91.4 cm (51 × 36 in.). Museum catalogue subjects: portraits, Chicago, fashion, people. Museum credit line: Bequest of Brooks McCormick. Recorded ownership history (excerpt): The sitter, Louise Lefevre (1861–1950), Paris, 1882; sold through Carnegie Institute, Pittsburgh, to Charles Deering (1852–1927), Chicago and Miami, Nov. 1923 [“Carnegie Sells Two Sargents for $60,000,” Art News , Nov. 10, 1923, 1]; by descent to his daughter, Marion Deering McCormick (1886–1965), Chicago, 1927; by descent to her son, Brooks McCormick (1917–2006), Chicago…. Exhibition record (excerpt): Pittsburgh, Carnegie Institute, Twenty–second Annual International Exhibition of Paintings , Apr. 26–June 17, 1923, cat. 60. Art Institute of Chicago, John Singer Sargent and Chicago’s Gilded Age , July 1–Sept. 30, 2018, cat. 13. New York, Metropolitan Museum of Art, Sargent and….",
+    "description": "John Singer Sargent portrays the fashionable Frenchwoman Louise Escudier in a Paris apartment, using contrasts of light and shadow to unsettle the conventions of portraiture. Painted in 1882, the work adapts techniques developed in atmospheric views of working-class women in dark interiors during the artist’s trips to Venice. Its gestural brushwork reflects Impressionism, while its heightened chiaroscuro recalls Spanish Baroque painters such as Diego Velázquez. The painting helped establish Sargent’s reputation in Paris as an original and daring artist.",
+    "descriptionTranslations": {
+      "ja": "ジョン・シンガー・サージェントは、パリのアパルトマンにいる洗練された装いのフランス人女性、ルイーズ・エスキュディエを描きました。1882年の本作では、明暗の劇的な対比によって肖像画の伝統的な枠組みを揺さぶっています。ヴェネツィア滞在中に描いた、暗い室内の労働者階級の女性をめぐる作品で培った手法を応用し、印象派を思わせる身振りのある筆致と、ベラスケスらスペイン・バロック絵画に通じる強い明暗表現を組み合わせました。本作はパリでのサージェントの評価を高める一助となりました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/191183",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/191183",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "sargent-venetian-glass-workers": {
-    "description": "Trained in Paris, John Singer Sargent traveled to Spain, the Netherlands, and Italy early in his career in order to study how painters such as Diego Velázquez and Frans Hals captured the effects of light and rendered figures in space. Venetian Glass Workers is one of several genre scenes featuring glass-bead workers that Sargent executed in the early 1880s. This backlit view of a shop in Venice is dark and atmospheric except for the brilliant strokes of light green and silvery white paint that describe the canes of glass as tradespeople prepare to cut them into bead-sized pieces, which will then be polished and strung into jewelry.\n\nCatalogue information\nRecorded artist or maker: John Singer Sargent (American, 1856–1925). Date: 1880–82. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: Venice. Classification: painting. Physical dimensions: 56.5 × 84.5 cm (22 1/4 × 33 1/4 in.). Museum catalogue subjects: Chicago, everyday life (genre), women, work, Century of Progress, world's fairs, Chicago World's Fairs. Museum credit line: Mr. and Mrs. Martin A. Ryerson Collection. Recorded ownership history (excerpt): Friedrich Wilhelm Carl Bechstein, Berlin, by 1886. Hotel Drouot, Paris, by 1895. Charles Hovey Pepper, (Paris?), by 1896. Macbeth Gallery, New York, by 1911; Mr. and Mrs. Martin A. Ryerson, Chicago, 1912; by descent to Mrs. Martn A. Ryerson, Chicago, 1932; bequeathed to the Art Institute of Chicago, 1933.. Exhibition record (excerpt): Art Institute of Chicago, The Friends of American Art Loan Exhibition of American Paintings at the Art Institute of Chicago , Jan. 8–28, 1914, cat. 1. Boston Museum of Fine Arts, Memorial Exhibition of the Works of the Late John Singer Sargent , Nov. 3–Dec. 27, 1925, cat. 14.….",
+    "description": "In this genre scene painted in Venice in 1880–82, John Singer Sargent shows glass workers preparing long glass canes to be cut into bead-sized pieces, then polished and strung as jewelry. The shop is seen against the light, its interior dark and atmospheric; bright strokes of light green and silvery white pick out the glass. The oil painting belongs to several scenes of bead workers that Sargent made in the early 1880s, during travels that informed his study of light and figures in space.",
+    "descriptionTranslations": {
+      "ja": "1880～82年、ヴェネツィアで描かれたこの風俗画では、職人たちがガラスの棒をビーズ大に切り分け、磨いて連ね、宝飾品にする作業を見せています。逆光の店内は暗く、静かな雰囲気に包まれ、ガラスの棒には淡い緑と銀白色の鮮やかな筆致が走ります。サージェントは1880年代初頭、ビーズ職人を題材とする一連の作品を制作しました。油彩、カンヴァス。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/110761",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/110761",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "homer-the-herring-net": {
     "description": "Painted in Prouts Neck, Maine, in 1885, Winslow Homer’s *The Herring Net* shows two fishermen working in a small dory, far from the schooners on the horizon. One hauls in glistening herring as the other, perhaps a boy, unloads the catch; together they struggle to steady their precarious boat on incoming swells. The oil painting reflects Homer’s later focus on people’s daily labor and their contest with nature, a direction shaped by his time in the English fishing community of Tynemouth in 1881.",
@@ -501,8 +567,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "rousseau-sawmill-outskirts-of-paris": {
-    "description": "Sawmill, Outskirts of Paris is a work attributed in the Art Institute of Chicago catalogue to Henri Rousseau.\n\nCatalogue information\nRecorded artist or maker: Henri Rousseau French, 1844-1910. Date: c. 1893/95. Materials and technique: Oil on canvas. Place of creation: France. Classification: oil on canvas. Physical dimensions: 25.5 × 45.5 cm (10 × 17 7/8 in.). Museum catalogue subjects: countryside, France, people, plants, mills, trees, landscapes. Museum credit line: Bequest of Kate L. Brewster. Recorded ownership history (excerpt): Paul Guillaume (1891–1934), Paris, by 1927 [Zervos 1927]. Valentine Dudensing, New York, 1929 [Chicago 1933]. Walter S. Brewster (1872–1954) and Kate Brewster (née Lancaster; c. 1879–1947), by 1933 [Chicago 1933]; bequeathed by Kate Brewster to the Art Institute, 1950.. Exhibition record (excerpt): Chicago, Home of Mr. and Mrs. Walter Brewster, Special View for the benefit of Chicago Public School Art Society of the Collection of Mr. and Mrs. Walter S. Brewster, Jan. 20–22, 1933, cat. 27. The Art Institute of Chicago, Henri Rousseau, January 22–February 23, 1942, pp. 20–21….",
-    "descriptionKind": "metadata_summary"
+    "description": "Henri Rousseau’s Sawmill, Outskirts of Paris is an oil painting on canvas made in France around 1893–95. Its catalogue subjects—countryside, people, plants, mills, trees, and landscape—place the work within a rural setting, but the available record gives no further description of their arrangement or appearance. The painting entered the Art Institute of Chicago in 1950 through the bequest of Kate L. Brewster.",
+    "descriptionTranslations": {
+      "ja": "アンリ・ルソー作《パリ郊外の製材所》は、フランスで1893～95年頃に制作された油彩画です。目録には、田園、人物、植物、製材所、樹木、風景が主題として記録されていますが、それらの配置や具体的な描写は示されていません。作品はケイト・L・ブリュースターの遺贈により、1950年にシカゴ美術館へ収蔵されました。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/68433",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "corot-interrupted-reading": {
     "description": "In this late figure painting, a woman in Italianate dress pauses and looks up from her book, enclosed within the private setting of Corot’s studio. The subject was familiar in nineteenth-century art, but Corot’s broad, direct brushwork builds the body from balanced masses, set against carefully observed details such as the hair ribbon, earrings, and deep skirt folds. Painted around 1870, the work reveals a side of Corot’s practice that he rarely exhibited, alongside his better-known landscapes.",
@@ -596,22 +671,30 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "rijn-old-man-with-a-gold-chain": {
-    "description": "This compelling figure—fancifully adorned with a steel gorget (armor protecting the throat and upper chest), golden chain, and plumed beret—represents a new commodity on the Northern European art market: a tronie , or character study. While artists had created such studies since the 1500s, Rembrandt and his colleague Jan Lievens made these images into more affordable alternatives to portraits, heightening their appeal by introducing bold visual elements like dramatic lighting, whimsical costumes, and dynamic poses. Rembrandt and his colleagues painted this model frequently; although he has been called “Rembrandt’s father,” recent research suggests that the “Old Man” may have been the keeper of an almshouse in Leiden, the Netherlands. Although tronies were less expensive than commissioned portraits, Rembrandt invested just as much skill in them. The attention given to the folds of flesh beneath the eyes, the prickly, tightly trimmed beard, and the highlights in the gorget and gold chain reveal a talented painter engaged in the joys of painting. The prominent gold chain appears in several works from Rembrandt’s Leiden and Amsterdam periods: He must have had one in his studio. But unlike his acclaimed peers Peter Paul Rubens and Anthony van Dyck , Rembrandt never received one as a gift from a royal patron.\n\nCatalogue information\nRecorded artist or maker: Rembrandt van Rijn (Dutch, 1606–1669). Date: 1631. Materials and technique: Oil on panel. Artistic style or school: Renaissance. Place of creation: Holland. Classification: oil on panel. Physical dimensions: 83.1 × 75.7 cm (32 3/4 × 29 3/4 in.); Framed: 105.1 × 99.5 cm (41 3/8 × 39 3/16 in.). Museum catalogue subjects: portraits: male subject, chains, portraits, Century of Progress, world's fairs, Chicago World's Fairs, men. Museum credit line: Mr. and Mrs. W. W. Kimball Collection. Recorded ownership history (excerpt): Jacob Alewijn, Amsterdam; by descent to his widow Margaretha Helena Graafland (died 1766); sold Amsterdam, June 10, 1767, no. 14, to Ketelaar, “Rembrandt. Het Hoofd van een Oud Man, zynde een Kniestuk, Levensgroote, met een dokere Mantel om, en een gouden Keten met een Medaille om den hals. Het hoofd is van vooren en op zyde te zien; gekeerd naar den linker Schouder, en gedekt…. Exhibition record (excerpt): Düsseldorf, Städtische Kunsthalle, Sammlung des Kgl. Rates Marczell von Nemes, Budapest, 1912, no. 43. Detroit Institute of Arts, Loan Exhibition of Paintings by Rembrandt, no. 8. Art Institute of Chicago, A Century of Progress, 1933, no. 74 Art Institute of Chicago, A Century….",
+    "description": "Painted in 1631, this oil on panel presents an older man in a plumed beret, steel gorget, and prominent gold chain. It is a tronie, or character study: a form that Rembrandt and Jan Lievens helped popularize as a less costly alternative to commissioned portraiture, using striking costume and dramatic lighting to heighten its appeal. Rembrandt’s close attention to the folds beneath the eyes, trimmed beard, and glints on the metal and gold shows the care he brought to this kind of work. The sitter’s identity remains uncertain; he may have been a Leiden almshouse keeper.",
+    "descriptionTranslations": {
+      "ja": "1631年制作の板絵で、羽飾りの帽子、喉と胸上部を守る鋼鉄製のゴルジェット、目立つ金鎖を身につけた老人を描く。特定の依頼主を写す肖像画ではなく、人物の性格や表情を表す「トロニー」で、レンブラントとヤン・リーフェンスは、劇的な光や趣向を凝らした衣装によって、この比較的手頃な形式の人気を高めた。目の下の皮膚の重なり、整えられた髭、金属や鎖の輝きには、細部まで描き込む画家の技量がうかがえる。モデルはライデンの救貧院の管理人だった可能性があるが、身元は確定していない。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/95998",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/95998",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "rubens-the-holy-family-with-saints-elizabeth-and-john-th": {
-    "description": "Peter Paul Rubens’s distinctive blend of fleshy figures and heroic actions dominated the artistic ethos of Antwerp (in present-day Belgium) for much of the 1600s. Here, he translated a sacred subject into vernacular language. The infant Jesus cuddles on the lap of his mother, Mary, whose exposed breast serves as a visual reminder of the human needs of Jesus, also the child of God. Her elderly cousin Elizabeth and Elizabeth’s son, John the Baptist, look on in wonder and awe, and Joseph, Mary’s husband, tends to a lamb, a symbol of Jesus’s eventual self-sacrifice. Notably, not one of these figures bears a halo, and they are all wearing contemporary dress. Furthermore, not one engages with the viewer; rather, they participate in a series of interlocked gazes that ultimately lead back to Mary. Rubens energized the European art market with his robust and monumental forms, inspired by those of Michelangelo and Raphael that he had seen in Italy. A consummate businessman, Rubens not only directed assistants to paint multiple variants of this composition, but he also commissioned engravings after it. It was an early success for the young, ambitious painter, who achieved a harmonious blend of emotional tenderness and moral strength within each figure.\n\nCatalogue information\nRecorded artist or maker: Peter Paul Rubens (Flemish, 1577–1640). Date: c. 1615. Materials and technique: Oil on panel. Artistic style or school: 17th Century. Place of creation: Flanders. Classification: oil on panel. Physical dimensions: 114.5 × 91.5 cm (45 1/8 × 36 in.); Framed: 137.8 × 115.6 × 12.7 cm (54 1/4 × 45 1/2 × 5 in.). Museum catalogue subjects: religion, children, Saint Elizabeth, Saint John the Baptist, saints, babies, Christian subjects. Museum credit line: Major Acquisitions Fund. Recorded ownership history (excerpt): Jacques Langlier, Paris, who acquired it in three pieces and had it conserved by the successors to Godefroid before selling it to Antoine Poullain for 24,000 fr [annotation in the copy of the Poullain sale in the Philadelphia Museum of Art; information on this and related annotations in other copies of this sale catalogue were kindly supplied by Burton Fredericksen, email of…. Exhibition record (excerpt): Los Angeles, Los Angeles County Museum, Loan Exhibition of Forty-Three Paintings by Rubens, and Twenty-Five Paintings by Van Dyck, November 19–December 22, 1946, no. 21. New York, Wildenstein, A Loan Exhibition of Rubens for the Benefit of the Public Education Association….",
+    "description": "In this oil painting on panel, Rubens presents the Holy Family alongside Mary’s elderly cousin Elizabeth and her son, John the Baptist. The infant Jesus nestles on Mary’s lap, while Joseph tends a lamb, a symbol of Christ’s future self-sacrifice. The figures wear contemporary dress and have no halos; their interwoven gazes lead back to Mary. Painted around 1615 in Flanders, the work reflects Rubens’s blend of emotional tenderness and moral strength, as well as the monumental forms that shaped his influential style.",
+    "descriptionTranslations": {
+      "ja": "ルーベンスは、聖家族と、マリアの年長のいとこエリザベト、その子ヨハネを描いています。幼子イエスは母の膝に抱かれ、ヨセフはキリストの将来の自己犠牲を示す小羊の世話をしています。人物たちは当世風の衣服をまとい、後光はありません。互いに交わる視線はマリアへと導かれます。1615年頃、フランドルで板に油彩で描かれた本作には、ルーベンスの記念碑的な造形と、情感の深さ、道徳的な強さが表れています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/27310",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/27310",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "hals-portrait-of-a-lady": {
     "description": "Frans Hals’s 1627 portrait presents a 33-year-old woman in a lace cap and brocaded bodice. Against a plain background marked with the painting’s date and her age, her face and fine clothing take focus. Hals uses loose brushstrokes to bring highlights to the lace and bodice, and conveys the freshness of her skin and the sheen of black satin. The painting is oil on canvas and reflects portrait conventions associated with specialists such as Paulus Moreelse.",
@@ -627,13 +710,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "ruisdael-landscape-with-the-ruins-of-the-castle-of-egmon": {
-    "description": "The deteriorating Castle of Egmond was a visible reminder of the Dutch struggle for independence: it was sacrificially destroyed during the revolt against Spain more than 80 years before Jacob van Ruisdael produced this painting. Landscape specialists like Van Ruisdael invoked Dutch patriotism by selecting sites representative of the republic, including ruins, windmills, and city views. Ruisdael distinguished himself by working on an unusually large scale and by imbuing his scenes with drama through low horizon lines and swollen clouds.\n\nCatalogue information\nRecorded artist or maker: Jacob van Ruisdael (Dutch, 1628/29-1682). Date: 1650–55. Materials and technique: Oil on canvas. Artistic style or school: 17th Century. Place of creation: Holland. Classification: oil on canvas. Physical dimensions: 98 × 130 cm (38 7/8 × 51 3/8 in.); Framed: 101 × 131.5 × 8.6 cm (39 3/4 × 51 3/4 × 3 3/8 in.). Museum catalogue subjects: landscapes, foliage, water, towers, clouds, rivers, trees. Museum credit line: Potter Palmer Collection. Recorded ownership history (excerpt): Possibly Collection of Jean-André Tardieu; sold, Paris, Hôtel Drouot, May 10-11, 1867, lot 51 as Les Ruines du Château de Brederode for 3,650 francs. Baron Etienne Martin de Beurnonville (1789-1876), château de la Chapelle, Labbeville, Val d'Oise, France; sale of his estate, Paris, Hôtel Drouot, May 9, 1881, lot 451 as Ruins of the Castle of Brederode; sold to Charles…. Exhibition record (excerpt): Berlin, Kaiser-Friedrich-Museums-Verein, Palais Redern, Ausstellung von Werken alter Kunst aus dem Privatbesitz der Mitglieder des Kaiser-Friedrich-Museums-Verein, 1906, no. 117, ill. Rotterdam, J. Goudstikker, Collection Goudstikker 36, 22 December 1928 - 6 January 1929….",
+    "description": "Jacob van Ruisdael painted the deteriorating Castle of Egmond, destroyed during the Dutch revolt against Spain more than eighty years earlier. Dutch landscape painters used sites such as ruins to evoke patriotism, and Ruisdael gave his scenes unusual scale and drama through low horizons and swollen clouds. Made in Holland around 1650–55, this oil painting belongs to that tradition.",
+    "descriptionTranslations": {
+      "ja": "ヤーコプ・ファン・ライスダールは、スペインに対するオランダの反乱で破壊されてから80年以上を経たエフモント城の廃墟を描きました。廃墟など共和国を象徴する場所は、風景画家が愛国心を表す題材でした。ライスダールは大画面の作品を手がけ、低い地平線と膨らむ雲によって風景に劇的な印象を与えています。1650～55年頃、オランダで制作された油彩画です。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/60755",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/60755",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "cole-distant-view-of-niagara-falls": {
     "description": "After visiting Niagara Falls in May 1829, Thomas Cole painted this autumnal scene the following year, presenting the falls as a monumental feature of the American landscape. He left out the factories, hotels, and viewing platforms that already surrounded the site, reflecting concern about industrial expansion. Two Native American figures appear at the center, but their small scale and limited number evoke the period’s false notion of Indigenous disappearance rather than the history of colonial dispossession and sovereignty in the region.",
@@ -792,13 +879,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "signac-les-andelys-cote-d-aval": {
-    "description": "This view of the harbor of Les Andelys, a village on the Seine River near Giverny, France, is part of Paul Signac’s first series of works painted in dots and dashes of contrasting colors. The technique, called pointillism, was originated by Signac’s friend Georges Seurat . Signac would prove to be the most ardent proponent of this style, which he made his own through particular attention to geometric form. Here, for example, a triangular patch of blue creates a curve in the river, while an expanse of trapezoids in the background defines the cultivated hill.\n\nCatalogue information\nRecorded artist or maker: Paul Signac (French, 1863-1935). Date: 1886. Materials and technique: Oil on canvas. Artistic style or school: Post-Impressionism. Place of creation: France. Classification: oil on canvas. Physical dimensions: 60 × 92 cm (23 5/8 × 36 1/4 in.); Framed: 77.5 × 109.6 × 6.4 cm (30 1/2 × 43 1/8 × 2 1/2 in.). Museum catalogue subjects: weather/seasons, boats, towns, farming, water, landscapes. Museum credit line: Through prior gift of William Wood Prince. Recorded ownership history (excerpt): Given by the artist to Alexandre Charpentier (died 1909), Paris [according to Signac’s cahier d’opus no. 139 and G. Lévy and Signac’s pré-catalogue, p. 136 in Archives Signac, see Cachin 2000]. Valla, Paris, 1951 [this and the following according to Cachin 2000]. Jean Roubaud, Marseilles, 1960. Private collection, Switzerland, 1989. Sold Hôtel Drouot, Paris, June 21, 1993, lot…. Exhibition record (excerpt): Paris, Théâtre Libre d’Antoine, Sep. 1887, no cat. Paris, Société des Artistes Indépendants, 3e Exposition, Mar. 26-May 3, 1887, cat. 452 Paris, Musée national d’art moderne, P. Signac, Oct. 25-Dec. 2, 1951, cat. 8 Marseille, Musée Cantini, Les Impressionnistes français: De….",
+    "description": "Painted in 1886, this view of the harbor at Les Andelys, a village on the Seine near Giverny, belongs to Paul Signac’s first series made with dots and dashes of contrasting color. The pointillist technique was originated by his friend Georges Seurat; Signac developed it through a particular emphasis on geometric form. Here, a triangular patch of blue shapes a bend in the river, while trapezoidal forms across the background define a cultivated hill.",
+    "descriptionTranslations": {
+      "ja": "1886年制作の本作は、ジヴェルニー近郊、セーヌ川沿いの村レ・ザンドリの港を描いています。対照的な色彩を点や短い筆触で置く、シニャック初期の連作の一作で、この技法は友人ジョルジュ・スーラが創始しました。シニャックは幾何学的な形態を重視して独自の展開を見せ、ここでは青い三角形の色面が川の曲がりを示し、背景の台形の連なりが耕作された丘を形づくっています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/122130",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/122130",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "gainsborough-sarah-dupont": {
     "description": "In this intimate portrait, Thomas Gainsborough depicts his older sister, Sarah Dupont, whose husband was a carpenter in their hometown of Sudbury, Suffolk. Painted in England around 1777–79, the oil on canvas belongs to the smaller family portraits that contrast with the artist’s celebrated, opulent full-length likenesses of society figures. Gainsborough had established himself as a portrait painter in Sudbury before moving to Bath and London.",
@@ -931,8 +1022,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "sorolla-rocks-at-the-lighthouse-biarritz": {
-    "description": "Rocks at the Lighthouse, Biarritz is a work attributed in the Art Institute of Chicago catalogue to Joaquín Sorolla.\n\nCatalogue information\nRecorded artist or maker: Joaquín Sorolla y Bastida (Spanish, 1863-1923). Date: 1906. Materials and technique: Oil on canvas. Artistic style or school: 20th Century. Place of creation: Spain. Classification: oil on canvas. Physical dimensions: 61.5 × 103.2 cm (23 5/8 × 40 1/2 in.); Framed: 82.6 × 125.1 × 5.8 cm (32 1/2 × 49 1/4 × 2 1/4 in.). Museum catalogue subjects: beach, water, coasts, coastal scenes, rocks, children, women. Museum credit line: Bequest of Maribel G. Blum. Recorded ownership history (excerpt): The artist; sold to Stephen Carlton Clark, Sr. (died 1960), New York, 1909 [copy of c. 1909 Hispanic Society exhibition inventory, in curatorial file]. Maribel G. Blum (died February 13, 1985), Miami Beach, Fla. and Chicago, by 1975–1985 [inventory by John Keefe, Curator, Art Institute, 1975, in curatorial file]; bequeathed to the Art Institute, 1986.. Exhibition record (excerpt): Berlin, Schulte Galeries, 1907. London, Grafton Galleries, May–July 1908, p. 44, no. 231, as The Lighthouse Rocks, Biarritz. New York, The Hispanic Society of America, Exhibition of Paintings by Joaquin Sorolla y Bastida, Feb. 8–Mar. 8, 1909, p. 93, no. 30, as Rocas del Faro….",
-    "descriptionKind": "metadata_summary"
+    "description": "Joaquín Sorolla’s *Rocks at the Lighthouse, Biarritz* is an oil painting on canvas made in 1906. The Art Institute of Chicago’s catalogue lists its subjects as a beach, water, the coast, rocks, children, and women. The work was exhibited in Berlin in 1907 and in London and New York in 1908 and 1909; it entered the Art Institute’s collection by bequest in 1986.",
+    "descriptionTranslations": {
+      "ja": "ホアキン・ソローリャが1906年に制作した、油彩・カンヴァスの作品です。シカゴ美術館の目録には、浜辺や水辺、海岸、岩、子ども、女性が主題として記録されています。1907年にベルリン、1908年にロンドン、1909年にニューヨークで展示され、1986年、マリベル・G・ブラムの遺贈により同館の所蔵となりました。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/66144",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "zorn-portrait-study-of-a-man": {
     "description": "Portrait Study of a Man is a work attributed in the Art Institute of Chicago catalogue to Anders Zorn.\n\nCatalogue information\nRecorded artist or maker: Anders Leonard Zorn (Swedish, 1860–1920). Date: 1901. Materials and technique: Oil on canvas. Artistic style or school: 20th Century. Place of creation: Sweden. Classification: oil on canvas. Physical dimensions: 76.2 × 63.5 cm (30 × 25 in.); Framed: 114.3 × 101.6 × 4.5 cm (45 × 40 × 1 3/4 in.). Museum catalogue subjects: portrait, portraits: male subject, portraits, man, smoking, smoke, jackets. Museum credit line: Anonymous gift. Recorded ownership history (excerpt): Charles Deering (died 1927), Evanston, Ill. and Miami, Fla., by 1924–1927 [Hedberg 1924]; by descent to his daughters, Mrs. Richard E. Danielson and Mrs. Chauncey McCormick, 1927 [R of O 6340 in curatorial file]; given anonymously to the Art Institute, 1951.. Exhibition record (excerpt): Art Institute of Chicago, John Singer Sargent and Chicago's Gilded Age, June 27-Septembet 30, 2018..",
@@ -1004,8 +1104,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "rousseau-springtime": {
-    "description": "Springtime is a work attributed in the Art Institute of Chicago catalogue to Théodore Rousseau.\n\nCatalogue information\nRecorded artist or maker: Théodore Rousseau (French, 1812–1867). Date: c. 1860. Materials and technique: Oil on panel. Artistic style or school: nineteenth century. Place of creation: France. Classification: painting. Physical dimensions: 42.2 × 54 cm (15 5/8 × 21 1/4 in.); Framed: 71.8 × 85.1 cm (28 1/4 × 33 1/2 in.). Museum catalogue subjects: landscape, figure, water, paths, wilderness, weather/seasons, trees. Museum credit line: Henry Field Memorial Collection. Recorded ownership history (excerpt): John Saulnier, Bordeaux, by 1886; his sale, Paris, Hôtel Drouot, June 5, 1886, lot 73 for 24,500 francs to Brogue et Cie, possibly as agent for Eugène Secrétan [price and buyer according to an annotated sale catalogue in the Rijksbureau voor Kunsthistorische Documentatie, The Hague]. Eugène Secrétan, Paris, by 1889; his sale Galerie Sedelmeyer, July 1, 1889, lot 71. Henry…. Exhibition record (excerpt): Carbondale, Illinois, Southern Illinois University, A Festival of Fine Arts, February 26–March 10, 1956, no. 2..",
-    "descriptionKind": "metadata_summary"
+    "description": "Attributed to Théodore Rousseau, this oil painting on panel dates to about 1860 and was made in France. The catalogue classifies it as a nineteenth-century landscape and lists a figure, water, paths, trees, wilderness, and seasonal or weather-related themes among its subjects. It measures 42.2 × 54 cm and is held in the Art Institute of Chicago’s Henry Field Memorial Collection.",
+    "descriptionTranslations": {
+      "ja": "テオドール・ルソーの作とされる、フランスで制作された1860年頃の油彩、板絵です。美術館の目録では19世紀の風景画に分類され、人物、水辺、小道、樹木、荒野、季節や天候に関わる主題が挙げられています。画面の寸法は42.2×54センチで、シカゴ美術館のヘンリー・フィールド記念コレクションに所蔵されています。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/894",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "jongkind-entrance-to-the-port-of-honfleur": {
     "description": "Johan Barthold Jongkind painted this oil on canvas in 1863–64. Alongside Eugène-Louis Boudin, he brought a new spirit to coastal painting; the two artists’ subject matter, palette, and technique helped shape the development of Impressionism. Although they completed their final works in the studio, both sought to preserve the freshness of their outdoor sketches. Claude Monet later said that Jongkind had educated his eye.",
@@ -1021,13 +1130,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "turner-fishing-boats-with-hucksters-bargaining-for-fish": {
-    "description": "English artist J. M. W. Turner was fascinated by the sea. Here, a crowded fishing boat rides atop rolling, tumultuous waves. A smaller boat occupied by hucksters, or peddlers, navigates the churning waters as it approaches the larger vessel to negotiate the buying of fish to sell back at port. A steamship chugs along in the background, signaling the new industrial age. This painting dates from a period when the artist was increasingly interested in atmospheric drama and the effects of light, exemplified here by the turbulent storm brewing in the background. The sunlit water in the foreground is dotted with a thick impasto, the heavy application of paint that results in painterly depth and surface texture. For this composition and others, Turner was inspired by the tradition of seventeenth-century Dutch marine painting and its leading painter, Willem van de Velde , whose work was popular in England. The subject itself and compositional elements such as the low horizon line are characteristic of earlier Dutch seascapes, but Turner cleverly laid claim to this painting by signing it on the white flag fluttering high on the mast of the fishing boat that pokes through to the sliver of clear blue sky.\n\nCatalogue information\nRecorded artist or maker: Joseph Mallord William Turner (English, 1775–1851). Date: 1837–38. Materials and technique: Oil on canvas. Artistic style or school: 19th century. Place of creation: England. Classification: oil on canvas. Physical dimensions: 174.5 × 224.9 cm (68 3/4 × 88 1/2 in.); Framed: 216.6 × 268 cm (85 1/4 × 105 1/2 in.). Museum catalogue subjects: fishing, men, figures, weather/seasons, clouds, sky, sails. Museum credit line: Mr. and Mrs. W. W. Kimball Collection. Recorded ownership history (excerpt): Bought from the artist by John Naylor (died 1889), Leighton Hall, Welshpool, Montgomeryshire, 1851 [based on inventory of Naylor’s collection begun in October 1856 citied in Butlin and Joll 1984, p. 145; see also Thornbury 1862]; by descent to Mrs. Naylor, presumably his widow; sold through Dyer and Sons to Thomas Agnew and Sons, London, 1910 [this and the following…. Exhibition record (excerpt): London, British Institution, 1838, cat. 134. Liverpool Town Hall, Pictures Exhibited at a Soiree Given by John Buck Lloyd Esq., Mayor of Liverpool, at the Town Hall on Saturday Evening September 23, 1854, 1854, cat. 40. The Art Institute of Chicago, A Century of Progress….",
+    "description": "A crowded fishing boat pitches on turbulent waves as a smaller vessel approaches, its hucksters bargaining for fish to sell at port. In the distance, a steamship marks the arrival of the industrial age, while a storm gathers behind the sunlit, thickly painted water in the foreground. Turner’s atmospheric drama and impasto surface reflect his interest in light and texture, as well as the influence of seventeenth-century Dutch marine painting; his signature appears on the fishing boat’s white flag.",
+    "descriptionTranslations": {
+      "ja": "荒波に揺れる漁船へ、小舟が近づき、魚を買い付けて港で売る行商人たちが交渉しています。遠景には産業時代の到来を告げる蒸気船が進み、手前では厚塗りの水面に陽光が差す一方、背景には嵐が迫ります。光と大気の効果に関心を深めたターナーは、厚く絵具を置いて水面に質感を与えました。低い水平線などには17世紀オランダ海洋画の伝統が表れ、漁船の白旗には画家の署名があります。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/4796",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/4796",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "guardi-the-grand-canal-venice": {
     "description": "Francesco Guardi painted this view of the Grand Canal’s entrance around 1760, in one of his most important early cityscapes. The waterway is alive with late-afternoon activity, while the church of Santa Maria della Salute and the customhouse appear at the right. Though influenced by Canaletto and Michele Marieschi, Guardi gives the scene a distinctively brooding, melancholy mood through the sky. He took up the veduta, or city view, only in his mid-40s, but soon became an accomplished practitioner.",
@@ -1151,16 +1264,43 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionKind": "metadata_summary"
   },
   "van-gogh-wheat-field-cypresses": {
-    "description": "Wheat Field with Cypresses is recorded in the Metropolitan Museum of Art collection as a work by Vincent van Gogh.\n\nCatalogue information\nArtist: Vincent van Gogh. Artist background: Dutch, Zundert 1853–1890 Auvers-sur-Oise. Date: 1889. Materials and technique: Oil on canvas. Classification: Paintings. Physical dimensions: 28 13/16 × 36 3/4 in. (73.2 × 93.4 cm). Department: European Paintings. Catalogue subjects: Landscapes, Cypresses, Summer. Acquisition credit: Purchase, The Annenberg Foundation Gift, 1993.",
-    "descriptionKind": "metadata_summary"
+    "description": "Vincent van Gogh’s *Wheat Field with Cypresses* is an oil painting on canvas dated 1889. The Metropolitan Museum of Art records it among its European paintings and lists its subjects as landscape, cypresses, and summer. The canvas measures 73.2 by 93.4 centimeters; it entered the collection in 1993 through a purchase made with a gift from the Annenberg Foundation.",
+    "descriptionTranslations": {
+      "ja": "フィンセント・ファン・ゴッホによる1889年の油彩画《糸杉のある麦畑》は、ニューヨークのメトロポリタン美術館が所蔵しています。同館の目録では、風景、糸杉、夏を主題とする作品として記載され、画面寸法は73.2×93.4センチです。1993年、アンネンバーグ財団からの寄贈資金による購入で収蔵されました。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.metmuseum.org/art/collection/search/436535",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "sargent-madame-x": {
-    "description": "Madame X (Madame Pierre Gautreau) is recorded in the Metropolitan Museum of Art collection as a work by John Singer Sargent.\n\nCatalogue information\nArtist: John Singer Sargent. Artist background: American, Florence 1856–1925 London. Date: 1883–84. Materials and technique: Oil on canvas. Classification: Painting. Culture: American. Physical dimensions: 82 1/8 × 43 1/4 in. (208.6 × 109.9 cm) Framed: 95 3/4 × 56 5/8 × 5 in. (243.2 × 143.8 × 12.7 cm). Department: The American Wing. Catalogue subjects: Portraits, Profiles, Women. Acquisition credit: Arthur Hoppock Hearn Fund, 1916.",
-    "descriptionKind": "metadata_summary"
+    "description": "John Singer Sargent’s *Madame X (Madame Pierre Gautreau)* is an oil-on-canvas portrait dated 1883–84. The Metropolitan Museum of Art classifies it as an American painting and lists its subjects as portraits, profiles, and women. The canvas measures 82 1/8 by 43 1/4 inches; it entered the museum’s collection in 1916 through the Arthur Hoppock Hearn Fund.",
+    "descriptionTranslations": {
+      "ja": "ジョン・シンガー・サージェントによる本作は、1883–84年制作の油彩・カンヴァスによる肖像画です。メトロポリタン美術館はアメリカ美術に分類し、主題を肖像、横顔、女性と記録しています。画布の寸法は約208.6×109.9センチで、1916年にアーサー・ホッポック・ハーン基金を通じて収蔵されました。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.metmuseum.org/art/collection/search/12127",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "rembrandt-aristotle-homer": {
-    "description": "Aristotle with a Bust of Homer is recorded in the Metropolitan Museum of Art collection as a work by Rembrandt van Rijn.\n\nCatalogue information\nArtist: Rembrandt (Rembrandt van Rijn). Artist background: Dutch, Leiden 1606–1669 Amsterdam. Date: 1653. Materials and technique: Oil on canvas. Classification: Paintings. Physical dimensions: 56 1/2 x 53 3/4 in. (143.5 x 136.5 cm). Department: European Paintings. Catalogue subjects: Men, Portraits. Acquisition credit: Purchase, special contributions and funds given or bequeathed by friends of the Museum, 1961.",
-    "descriptionKind": "metadata_summary"
+    "description": "Painted in 1653, this oil on canvas by Rembrandt van Rijn is catalogued at The Metropolitan Museum of Art as a portrait depicting a man. The work measures 56½ by 53¾ inches (143.5 by 136.5 cm) and entered the collection in 1961 through a purchase supported by special contributions and funds from the Museum’s friends.",
+    "descriptionTranslations": {
+      "ja": "レンブラント・ファン・レインが1653年に描いた油彩画で、メトロポリタン美術館では男性の肖像として登録されています。大きさは143.5×136.5センチ。1961年、購入にあたり美術館の友人たちから寄せられた特別寄付や基金を受けて収蔵されました。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.metmuseum.org/art/collection/search/437394",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "hokusai-great-wave": {
     "description": "Katsushika Hokusai’s *The Great Wave off Kanagawa* is a Japanese woodblock print made around 1830–32, during the Edo period (1615–1868). Printed in ink and color on paper, it is catalogued with the subjects of waves and boats. The Metropolitan Museum of Art records its dimensions as 25.7 by 37.9 centimeters and its provenance as the H. O. Havemeyer Collection, bequeathed in 1929.",
