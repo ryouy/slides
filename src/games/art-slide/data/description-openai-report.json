@@ -1,12 +1,12 @@
 {
   "model": "gpt-6-luna",
   "recipeVersion": "openai-bilingual-v1",
-  "generatedAt": "2026-11-14T09:45:47.295094+00:00",
+  "generatedAt": "2026-11-14T09:47:50.399632+00:00",
   "totalArtworks": 404,
-  "processed": 175,
-  "remaining": 229,
-  "medianEnglishCharacters": 459,
-  "medianJapaneseCharacters": 185,
+  "processed": 200,
+  "remaining": 204,
+  "medianEnglishCharacters": 460.0,
+  "medianJapaneseCharacters": 185.0,
   "records": {
     "aic-102131": {
       "id": "aic-102131",
@@ -1581,6 +1581,231 @@
       "rawSourceCharacters": 916,
       "englishCharacters": 501,
       "japaneseCharacters": 211,
+      "apiWarning": null
+    },
+    "aic-4371": {
+      "id": "aic-4371",
+      "title": "Hamamatsu, from the series \"Fifty-three Stations of the Tokaido (Tokaido gojusan tsugi),\" also known as the Tokaido with Poem (Kyoka iri Tokaido)",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 792,
+      "englishCharacters": 332,
+      "japaneseCharacters": 135,
+      "apiWarning": null
+    },
+    "aic-4374": {
+      "id": "aic-4374",
+      "title": "Maisaka: The Ferry at Imagiri (Maisaka, Imagiri funawatashi), from the series \"Fifty-three Stations of the Tokaido (Tokaido gojusan tsugi),\" also known as the Tokaido with Poem (Kyoka iri Tokaido)",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 849,
+      "englishCharacters": 306,
+      "japaneseCharacters": 102,
+      "apiWarning": null
+    },
+    "aic-44892": {
+      "id": "aic-44892",
+      "title": "Fish (Still Life)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2448,
+      "englishCharacters": 531,
+      "japaneseCharacters": 189,
+      "apiWarning": null
+    },
+    "aic-45240": {
+      "id": "aic-45240",
+      "title": "The Bathers",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1912,
+      "englishCharacters": 436,
+      "japaneseCharacters": 169,
+      "apiWarning": null
+    },
+    "aic-4575": {
+      "id": "aic-4575",
+      "title": "Judith",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2445,
+      "englishCharacters": 554,
+      "japaneseCharacters": 197,
+      "apiWarning": null
+    },
+    "aic-47153": {
+      "id": "aic-47153",
+      "title": "Mother and Child on a Seashore",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 751,
+      "englishCharacters": 389,
+      "japaneseCharacters": 161,
+      "apiWarning": null
+    },
+    "aic-47398": {
+      "id": "aic-47398",
+      "title": "Kohada Koheiji, from the series \"One Hundred Ghost Tales (Hyaku monogatari)\"",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1832,
+      "englishCharacters": 570,
+      "japaneseCharacters": 193,
+      "apiWarning": null
+    },
+    "aic-4749": {
+      "id": "aic-4749",
+      "title": "Mrs. George Swinton (Elizabeth Ebsworth)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1783,
+      "englishCharacters": 542,
+      "japaneseCharacters": 202,
+      "apiWarning": null
+    },
+    "aic-4773": {
+      "id": "aic-4773",
+      "title": "Isabella Wolff",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1922,
+      "englishCharacters": 454,
+      "japaneseCharacters": 184,
+      "apiWarning": null
+    },
+    "aic-4788": {
+      "id": "aic-4788",
+      "title": "Lady Sarah Bunbury Sacrificing to the Graces",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1860,
+      "englishCharacters": 498,
+      "japaneseCharacters": 221,
+      "apiWarning": null
+    },
+    "aic-4887": {
+      "id": "aic-4887",
+      "title": "Irises",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1961,
+      "englishCharacters": 623,
+      "japaneseCharacters": 263,
+      "apiWarning": null
+    },
+    "aic-49195": {
+      "id": "aic-49195",
+      "title": "Maharana Bhim Singh in Procession",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1475,
+      "englishCharacters": 493,
+      "japaneseCharacters": 195,
+      "apiWarning": null
+    },
+    "aic-49702": {
+      "id": "aic-49702",
+      "title": "Richard Bill",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1541,
+      "englishCharacters": 421,
+      "japaneseCharacters": 169,
+      "apiWarning": null
+    },
+    "aic-50276": {
+      "id": "aic-50276",
+      "title": "Statue of the Madonna in the Mountains",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2154,
+      "englishCharacters": 446,
+      "japaneseCharacters": 198,
+      "apiWarning": null
+    },
+    "aic-5150": {
+      "id": "aic-5150",
+      "title": "Summer: Planting Rice (Natsu: taue no zu), No. 2 from the series \"The Four Seasons of Farmers (Shiki no hyakusho)\"",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 608,
+      "englishCharacters": 323,
+      "japaneseCharacters": 122,
+      "apiWarning": null
+    },
+    "aic-51577": {
+      "id": "aic-51577",
+      "title": "The White Tablecloth",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1887,
+      "englishCharacters": 513,
+      "japaneseCharacters": 222,
+      "apiWarning": null
+    },
+    "aic-52736": {
+      "id": "aic-52736",
+      "title": "The Letter, or The Spanish Conversation",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2092,
+      "englishCharacters": 451,
+      "japaneseCharacters": 178,
+      "apiWarning": null
+    },
+    "aic-54071": {
+      "id": "aic-54071",
+      "title": "Friendship Quilt",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1950,
+      "englishCharacters": 516,
+      "japaneseCharacters": 196,
+      "apiWarning": null
+    },
+    "aic-55494": {
+      "id": "aic-55494",
+      "title": "Peach Blossoms",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1405,
+      "englishCharacters": 448,
+      "japaneseCharacters": 172,
+      "apiWarning": null
+    },
+    "aic-55706": {
+      "id": "aic-55706",
+      "title": "Cornelius Allerton",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2067,
+      "englishCharacters": 634,
+      "japaneseCharacters": 243,
+      "apiWarning": null
+    },
+    "aic-56236": {
+      "id": "aic-56236",
+      "title": "Autumn Flower and Sparrow",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 839,
+      "englishCharacters": 326,
+      "japaneseCharacters": 91,
+      "apiWarning": null
+    },
+    "aic-56905": {
+      "id": "aic-56905",
+      "title": "Nocturne: Blue and Gold—Southampton Water",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1873,
+      "englishCharacters": 421,
+      "japaneseCharacters": 172,
+      "apiWarning": null
+    },
+    "aic-57051": {
+      "id": "aic-57051",
+      "title": "The Fountains",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2508,
+      "englishCharacters": 495,
+      "japaneseCharacters": 184,
+      "apiWarning": null
+    },
+    "aic-59787": {
+      "id": "aic-59787",
+      "title": "Mrs. Daniel Hubbard (Mary Greene)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2056,
+      "englishCharacters": 486,
+      "japaneseCharacters": 169,
+      "apiWarning": null
+    },
+    "aic-59798": {
+      "id": "aic-59798",
+      "title": "Winged Figure",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1612,
+      "englishCharacters": 481,
+      "japaneseCharacters": 203,
       "apiWarning": null
     }
   },
