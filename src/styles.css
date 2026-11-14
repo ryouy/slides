@@ -836,3 +836,70 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   .artgame .art-top .back-btn { width: 23px; }
   .artgame .art-header-controls { max-width: 148px; }
 }
+
+
+/* ART SLIDE home: exhibition-first composition, with quiet secondary navigation. */
+.art-home { width: 100%; }
+.art-home .art-home-head { padding: 0 0 10px; }
+.art-home .art-home-title {
+  margin: 8px 0 21px; font-weight: 300; letter-spacing: .27em;
+  font-size: clamp(29px, 7vw, 39px); line-height: 1.2;
+}
+.art-home .exhibit-card {
+  position: relative; display: grid; grid-template-columns: minmax(110px, 41%) minmax(0, 1fr);
+  gap: clamp(12px, 4vw, 21px); padding: 12px; margin: 0 0 16px;
+  border: 1px solid var(--line); border-radius: 3px; background: transparent;
+  transition: border-color .18s ease, background .18s ease;
+}
+.art-home .exhibit-card:hover { border-color: var(--fg); background: var(--surface); }
+.art-home .exhibit-card img {
+  width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; display: block;
+  background: var(--surface); border-radius: 1px;
+}
+.art-home .exhibit-card .ex-text {
+  display: flex; flex-direction: column; justify-content: center;
+  align-items: flex-start; gap: 9px; min-width: 0;
+}
+.art-home .exhibit-card .ex-text small { font-size: 10px; line-height: 1.45; letter-spacing: .07em; }
+.art-home .exhibit-card .ex-text b {
+  font-family: Georgia, 'Times New Roman', serif; font-weight: 400;
+  font-size: clamp(17px, 4.6vw, 24px); line-height: 1.32; letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+.art-home .exhibit-card .ex-text > span:not(.ex-enter) { font-size: 11px; line-height: 1.4; }
+.art-home .exhibit-card .ex-enter {
+  display: inline-flex; align-items: center; gap: 3px; margin-top: 6px;
+  border-bottom: 1px solid var(--line); padding-bottom: 3px;
+  font-size: 11px; color: var(--fg);
+}
+.art-home .art-home-menu { margin: 0 0 22px; gap: 10px; }
+.art-home .art-home-menu .btn,
+.art-home .art-home-menu .btn + .btn {
+  font-weight: 500; font-size: 13px; letter-spacing: .01em;
+  border: 1px solid var(--line); border-radius: 3px;
+  min-height: 58px; padding: 12px; background: var(--bg);
+}
+.art-home .art-home-menu .btn:hover { border-color: var(--fg); background: var(--surface); padding-left: 12px; }
+.art-home .art-more { margin: 6px 0 0; padding: 0; border-top: 1px solid var(--line); }
+.art-home .art-more summary {
+  display: flex; justify-content: space-between; align-items: center;
+  min-height: 46px; padding: 12px 2px; color: var(--muted);
+  cursor: pointer; list-style: none; font-size: 12px; letter-spacing: .09em;
+}
+.art-home .art-more summary::-webkit-details-marker { display: none; }
+.art-home .art-more summary::after { content: '+'; font-size: 19px; line-height: 1; font-weight: 300; color: var(--muted); }
+.art-home .art-more[open] summary::after { content: '−'; }
+.art-home .art-more summary:hover, .art-home .art-more summary:focus-visible { color: var(--fg); }
+.art-home .art-more-content { padding: 6px 0 15px; border-top: 1px solid var(--line); }
+.art-home .art-more-content .home-links { justify-content: flex-start; gap: 2px 18px; margin: 0; }
+.art-home .art-more-content .home-links button { font-size: 12px; min-height: 40px; text-decoration: none; }
+.art-home .art-more-content .other-games { margin-top: 12px; }
+.art-home .art-more-content .other-games h2 { margin: 0 0 5px; }
+.art-home .art-more-content .og-row { min-height: 43px; padding: 10px 2px; }
+.art-home .art-more-content .footer { margin-top: 12px; font-size: 11px; }
+.art-home .art-more-content > .home-links:last-child { margin-top: 5px; justify-content: flex-end; }
+.art-home .art-more-content > .home-links:last-child button { color: var(--muted); font-size: 11px; }
+@media (min-width: 680px) {
+  .art-home .exhibit-card { grid-template-columns: minmax(140px, 38%) minmax(0, 1fr); }
+  .art-home .exhibit-card .ex-text b { font-size: 23px; }
+}
