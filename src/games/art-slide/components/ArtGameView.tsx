@@ -4,7 +4,7 @@ import { AdSlot } from '../../../ads/AdSlot';
 import { ResultModal } from '../../../components/ResultModal';
 import { useGameTimer } from '../../../hooks/useGameTimer';
 import { useImageStatus } from '../../../hooks/useImageStatus';
-import { useLang, useT, type Key } from '../../../i18n';
+import { useLang, useT } from '../../../i18n';
 import { formatTime } from '../../../storage/stats';
 import { artShareUrl } from '../../../utils/share';
 import { ART_LEVELS, canMove, neighbors, type ArtDirection, type ArtLevel } from '../logic/board';
@@ -152,13 +152,13 @@ export function ArtGameView(p: Props) {
         <div className="art-header-controls">
           {!daily && (
             <div className="art-mobile-level">
-              <select className="art-level-select select" aria-label={t('big.size')} data-testid="art-size-select"
-                value={state.puzzle.size} onChange={(e) => {
-                  const level = Number(e.target.value);
-                  if (ART_LEVELS.some((l) => l === level)) chooseLevel(level as ArtLevel);
-                }}>
-                {ART_LEVELS.map((l) => <option key={l} value={l}>{gridLabel(l)}</option>)}
-              </select>
+              <ArtLevelMenu
+                current={state.puzzle.size}
+                getLabel={gridLabel}
+                ariaLabel={t('big.size')}
+                onSelect={chooseLevel}
+                disabled={shuffling}
+              />
             </div>
           )}
           <div className="stats art-mobile-stats" aria-live="polite">
