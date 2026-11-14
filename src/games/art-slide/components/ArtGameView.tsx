@@ -232,7 +232,7 @@ export function ArtGameView(p: Props) {
         </div>
       ) : (
         <div className="aboard-wrap" ref={boardRef} style={{ ['--aspect' as string]: aspect, ['--shuffle-tile-ms' as string]: `${Math.round(shuffleStepMs * 0.92)}ms` }}>
-          <ArtBoard board={state.board} dims={dims} artwork={artwork} showNumbers={p.showNumbers} disabled={locked} complete={cleared} shuffling={shuffling} onTap={tapLine} onSwipe={swipe} />
+          <ArtBoard board={state.board} dims={dims} artwork={artwork} showNumbers={p.showNumbers} disabled={locked} complete={cleared && !lineMoving} shuffling={shuffling} onTap={tapLine} onSwipe={swipe} />
           {img.status === 'loading' && <div className="art-loading" role="status">{t('art.loading')}</div>}
         </div>
       )}
