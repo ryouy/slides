@@ -887,6 +887,7 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   cursor: pointer; list-style: none; font-size: 12px; letter-spacing: .09em;
 }
 .art-home .art-more summary::-webkit-details-marker { display: none; }
+.art-home .art-more summary::marker { content: ''; }
 .art-home .art-more summary:hover, .art-home .art-more summary:focus-visible { color: var(--fg); }
 .art-home .art-more-content { padding: 6px 0 15px; border-top: 1px solid var(--line); }
 .art-home .art-more-content .home-links { justify-content: flex-start; gap: 2px 18px; margin: 0; }
