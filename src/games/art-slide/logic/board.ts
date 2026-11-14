@@ -37,6 +37,30 @@ export function neighbors(i: number, d: Dims): number[] {
   return out;
 }
 
+/**
+ * Legal one-cell slides from the blank toward a clicked tile in its row/column.
+ * The closest piece moves into the blank first, then the next, etc. This keeps
+ * the board solvable while allowing users to tap any aligned tile.
+ *
+ * Example (3x3, blank bottom-right): clicking top-right returns [5, 2].
+ * Tiles at 5 and then 2 each move down one cell; the blank ends at 2.
+ */
+export function lineSlideCells(b: ArtBoard, d: Dims, cell: number): number[] {
+  if (cell < 0 || cell >= b.length || b[cell] === null || b.length !== cellCount(d)) return [];
+  const blank = blankIndex(b);
+  if (blank < 0) return [];
+  const sameRow = Math.floor(blank / d.cols) === Math.floor(cell / d.cols);
+  const sameCol = blank % d.cols === cell % d.cols;
+  if (!sameRow && !sameCol) return [];
+  const step = sameRow ? (cell > blank ? 1 : -1) : (cell > blank ? d.cols : -d.cols);
+  const cells: number[] = [];
+  for (let cursor = blank + step; ; cursor += step) {
+    cells.push(cursor);
+    if (cursor === cell) break;
+  }
+  return cells;
+}
+
 /** Only a tile orthogonally next to the blank can move (decided from the board, not from screen positions). */
 export function canMove(b: ArtBoard, d: Dims, cell: number): boolean {
   if (cell < 0 || cell >= b.length || b[cell] === null) return false;
