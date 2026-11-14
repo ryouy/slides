@@ -205,6 +205,13 @@ export function ArtGameView(p: Props) {
               <span className="num-glyph art-action-icon" aria-hidden="true">#</span>
               <span className="art-action-label">{t('art.numbers')}</span>
             </button>
+            {!daily && <button className="btn" type="button" data-testid="next-artwork"
+              aria-label={t('art.nextArtwork')} title={t('art.nextArtwork')} onClick={p.onNextArtwork}>
+              <svg className="art-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12h13m-5-5 5 5-5 5"/>
+              </svg>
+              <span className="art-action-label">{t('art.nextArtwork')}</span>
+            </button>}
           </div>
         </div>
       </header>
@@ -265,11 +272,7 @@ export function ArtGameView(p: Props) {
         <p className="ap-credit">
           {artwork.museum} · <a href={artwork.licenseUrl} target="_blank" rel="noopener noreferrer">CC0</a> · <a href={artwork.sourceUrl} target="_blank" rel="noopener noreferrer">{t('art.source')}</a>
         </p>
-        {!daily && (
-          <div className="art-quiet">
-            <button className="quiet-link" data-testid="next-artwork" onClick={p.onNextArtwork}>{t('art.nextArtwork')} <ChevronRight size={14} /></button>
-          </div>
-        )}
+
       </div>
       <AdSlot side />
 
