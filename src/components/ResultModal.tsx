@@ -27,15 +27,6 @@ export function ResultModal({ stats, shareText, shareUrl, onClose, onNext, onHom
   const [panel, setPanel] = useState(false);
   const [msg, setMsg] = useState('');
   const links = shareLinks(shareText, shareUrl);
-  const canNative = typeof navigator !== 'undefined' && typeof navigator.share === 'function';
-
-  async function nativeShare() {
-    try {
-      await navigator.share({ text: shareText, url: shareUrl });
-    } catch {
-      /* cancelled */
-    }
-  }
   async function copy() {
     try {
       await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
@@ -47,7 +38,7 @@ export function ResultModal({ stats, shareText, shareUrl, onClose, onNext, onHom
 
   return (
     <div className="modal-back" role="dialog" aria-modal="true" aria-label={heading ?? t('result.cleared')}>
-      <div className="modal">
+      <div className="modal result-modal">
         <button className="icon-btn close" onClick={onClose} aria-label={t('common.close')}>✕</button>
         <h2 className="clear-title">{heading ?? t('result.cleared')}</h2>
         {children}
@@ -60,25 +51,21 @@ export function ResultModal({ stats, shareText, shareUrl, onClose, onNext, onHom
           ))}
         </div>
         {footer}
-        <div className="actions">
-          <button className="btn" data-testid="share-toggle" aria-expanded={panel} onClick={() => setPanel((o) => !o)}>{t('share.share')}</button>
+        <div className="actions result-actions">
+          <button className="btn" data-testid="share-toggle" aria-controls="result-share-panel" aria-expanded={panel} onClick={() => setPanel((o) => !o)}>{t('share.share')}</button>
           {secondary && <button className="btn" onClick={secondary.onClick}>{secondary.label}</button>}
           <button className="btn primary" onClick={onNext}>{nextLabel}</button>
         </div>
-        {panel && (
-          <div className="share-panel" data-testid="share-panel">
-            <p className="share-text" data-testid="share-text">{shareText}<br /><span className="share-url">{shareUrl}</span></p>
-            <div className="share-row">
-              {canNative && <button className="btn" onClick={nativeShare}>{t('share.share')}</button>}
-              <a className="btn" href={links.x} target="_blank" rel="noopener noreferrer" data-testid="share-x">X</a>
-              <a className="btn" href={links.line} target="_blank" rel="noopener noreferrer" data-testid="share-line">LINE</a>
-              <a className="btn" href={links.facebook} target="_blank" rel="noopener noreferrer" data-testid="share-facebook">Facebook</a>
-              <button className="btn" data-testid="share-copy" onClick={copy}>{t('share.copy')}</button>
-            </div>
-            <p className="share-msg" role="status">{msg}</p>
+        <div className="share-panel" id="result-share-panel" data-open={panel} aria-hidden={!panel} data-testid="share-panel">
+          <p className="share-text" data-testid="share-text">{shareText}</p>
+          <div className="share-row">
+            <a className="btn" href={links.x} target="_blank" rel="noopener noreferrer" data-testid="share-x">X</a>
+            <a className="btn" href={links.line} target="_blank" rel="noopener noreferrer" data-testid="share-line">LINE</a>
+            <button className="btn" type="button" data-testid="share-copy" onClick={copy}>{t('share.copy')}</button>
           </div>
-        )}
-        <button className="link-btn" onClick={onHome}>{t('art.backHome')}</button>
+          {msg && <p className="share-msg" role="status">{msg}</p>}
+        </div>
+        <button className="link-btn result-home" onClick={onHome}>{t('art.backHome')}</button>
       </div>
     </div>
   );
