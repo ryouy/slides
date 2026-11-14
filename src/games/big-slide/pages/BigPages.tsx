@@ -41,6 +41,7 @@ export function BigHome() {
 }
 
 export function BigDaily() {
+  const t = useT();
   const { getData, setProgress, update } = useBigSave();
   const [dateKey] = useState(() => jstDateKey());
   const [initial] = useState<BigState>(() => {
@@ -50,12 +51,12 @@ export function BigDaily() {
   return (
     <BigGameView
       initial={initial}
-      title={`DAILY #${dailyNumber(dateKey)}`}
+      title={t('art.dailyTitle', { n: dailyNumber(dateKey) })}
       onBack={() => go('')}
       onProgress={(s) => setProgress('daily', s)}
       onCleared={(s) => update((d) => recordBigClear(d, { puzzle: s.puzzle, dateKey, timeMs: s.elapsedMs, moves: s.moves, bigMoves: s.bigMoves }))}
       onNext={() => go('endless')}
-      nextLabel="TRY ENDLESS"
+      nextLabel={t('home.endless')}
     />
   );
 }
@@ -101,7 +102,7 @@ export function BigEndless() {
           <div className="top-right" />
         </header>
         <div className="picker-label">{t('big.blocks')}</div>
-        <div className="variant-grid" role="group" aria-label="Block set">
+        <div className="variant-grid" role="group" aria-label={t('big.blocks')}>
           {VARIANT_IDS.map((v) => (
             <button key={v} className={`variant-btn${variant === v ? ' on' : ''}`} aria-pressed={variant === v} data-testid={`variant-${v}`} onClick={() => setVariant(v)}>
               <strong>{VARIANTS[v].label}</strong>
@@ -109,7 +110,7 @@ export function BigEndless() {
           ))}
         </div>
         <div className="picker-label">{t('big.size')}</div>
-        <div className="seg" role="group" aria-label="Board size">
+        <div className="seg" role="group" aria-label={t('big.size')}>
           {BOARD_SIZES.map((s) => (
             <button key={s} className={`seg-btn${size === s ? ' on' : ''}`} aria-pressed={size === s} data-testid={`size-${s}`} onClick={() => setSize(s)}>
               {s}×{s}
@@ -143,61 +144,60 @@ export function BigEndless() {
     <BigGameView
       key={game.key}
       initial={game.state}
-      title={`ENDLESS · ${v === 'classic' ? '' : `${VARIANTS[v].label.toUpperCase()} · `}${p.size}×${p.size} · ${p.difficulty.toUpperCase()}`}
+      title={`${t('home.endless')} · ${v === 'classic' ? '' : `${VARIANTS[v].label} · `}${p.size}×${p.size} · ${t(`diff.${p.difficulty}`)}`}
       onBack={() => go('')}
       onProgress={(s) => setProgress('endless', s)}
       onCleared={(s) => update((d) => recordBigClear(d, { puzzle: s.puzzle, dateKey: jstDateKey(), timeMs: s.elapsedMs, moves: s.moves, bigMoves: s.bigMoves }))}
       onNext={() => start(v, p.size, p.difficulty)}
-      nextLabel="NEXT PUZZLE"
-      headerRight={<span className="streak" title="Streak">🔥 {data.endlessStreak}</span>}
+      nextLabel={t('result.next')}
+      headerRight={<span className="streak" title={t('stats.endlessStreak')}>🔥 {data.endlessStreak}</span>}
       footerExtra={<button className="btn" onClick={abandon}>{t('big.new')}</button>}
     />
   );
 }
 
 export function BigHowPage() {
+  const t = useT();
   return (
-    <Page title="HOW TO PLAY">
-      <p>Slide the tiles until the board matches the <b>GOAL</b> picture: every numbered tile and every big block on its goal cell.</p>
+    <Page title={t('home.howTo')}>
+      <p>{t('bigHow.intro')}</p>
       <ul>
-        <li>Numbered tiles are 1×1. Big blocks are single pieces that slide as a whole and never rotate.</li>
-        <li>A numbered tile slides into a gap next to it.</li>
-        <li>A big block slides one step only if <b>every cell it would newly cover is a gap</b>. A 2×2 block needs two gaps side by side; an L-shaped block needs gaps that fit its notch.</li>
-        <li>No diagonals, no rotating, one piece per move. Every big block always has to move at least once.</li>
-        <li>Pieces that already sit on their goal cell get a green outline.</li>
+        <li>{t('bigHow.tiles')}</li>
+        <li>{t('bigHow.slide')}</li>
+        <li>{t('bigHow.blocks')}</li>
+        <li>{t('bigHow.rules')}</li>
+        <li>{t('bigHow.found')}</li>
       </ul>
-      <h3>Block sets (Endless)</h3>
+      <h3>{t('bigHow.setsTitle')}</h3>
       <ul>
-        <li><b>Classic</b>: one 2×2 block, 2 gaps.</li>
-        <li><b>Duo</b>: two 2×2 blocks, A and B, 3 gaps. They are not interchangeable.</li>
-        <li><b>Shapes</b>: an L-shaped block and a 1×2 block, 3 gaps.</li>
-        <li><b>Mega</b>: one huge 2×3 block, 3 gaps.</li>
+        <li>{t('bigHow.classic')}</li>
+        <li>{t('bigHow.duo')}</li>
+        <li>{t('bigHow.shapes')}</li>
+        <li>{t('bigHow.mega')}</li>
       </ul>
-      <h3>Controls</h3>
-      <ul>
-        <li>Tap a tile beside a gap to slide it. If it could go in several directions, arrows appear: tap one.</li>
-        <li>Or swipe a piece in the direction you want. Keyboard: arrow keys move the selected piece (or the only piece that can go that way).</li>
-      </ul>
-      <h3>Modes</h3>
-      <p><b>Daily</b>: the same 4×4 Classic Normal puzzle for everyone, new every day at 0:00 Japan time. <b>Endless</b>: any block set, 4×4, 5×5 or 6×6, at Easy, Normal or Hard.</p>
-      <p className="muted">Easy and Normal puzzles are built so that their shortest solution has a verified length. Hard puzzles are guaranteed to need a long solution where every big block travels; on big Duo/Shapes/Mega boards Hard can occasionally be served as Normal (the title always shows the real level).</p>
+      <h3>{t('help.controls')}</h3>
+      <p>{t('bigHow.controls')}</p>
+      <h3>{t('help.modes')}</h3>
+      <p>{t('bigHow.modes')}</p>
+      <p className="muted">{t('bigHow.note')}</p>
     </Page>
   );
 }
 
 export function BigStatsPage() {
+  const t = useT();
   const { data } = useBigSave();
   const today = jstDateKey();
   return (
-    <Page title="STATISTICS">
+    <Page title={t('stats.title')}>
       <div className="stat-grid">
-        <Big n={data.completed} l="COMPLETED" />
-        <Big n={currentDailyStreak(data.dailyHistory, today)} l="DAILY STREAK" />
-        <Big n={maxDailyStreak(data.dailyHistory)} l="BEST DAILY STREAK" />
-        <Big n={data.endlessStreak} l="ENDLESS STREAK" />
+        <Big n={data.completed} l={t('stats.completed')} />
+        <Big n={currentDailyStreak(data.dailyHistory, today)} l={t('stats.streak')} />
+        <Big n={maxDailyStreak(data.dailyHistory)} l={t('stats.bestStreak')} />
+        <Big n={data.endlessStreak} l={t('stats.endlessStreak')} />
       </div>
-      <h3>Endless personal bests (time / fewest moves)</h3>
-      {Object.keys(data.bests).length === 0 ? <p>No records yet.</p> : (
+      <h3>{t('stats.endlessBests')}</h3>
+      {Object.keys(data.bests).length === 0 ? <p>{t('stats.noGames')}</p> : (
         <table className="table">
           <tbody>
             {Object.entries(data.bests).sort(([a], [b]) => a.localeCompare(b)).map(([k, b]) => {
@@ -206,20 +206,20 @@ export function BigStatsPage() {
               return (
                 <tr key={k}>
                   <th>{variant === 'classic' ? '' : `${variant} `}{size}×{size} {diff}</th>
-                  <td>{b.timeMs === undefined ? '–' : `${formatTime(b.timeMs)} / ${b.moves} moves`}</td>
+                  <td>{b.timeMs === undefined ? '–' : `${formatTime(b.timeMs)} / ${t('stats.moves', { n: b.moves ?? 0 })}`}</td>
                 </tr>
               );
             })}
           </tbody>
         </table>
       )}
-      <h3>Recent games</h3>
-      {data.history.length === 0 ? <p>No games yet.</p> : (
+      <h3>{t('stats.recent')}</h3>
+      {data.history.length === 0 ? <p>{t('stats.noGames')}</p> : (
         <table className="table">
           <tbody>
             {data.history.slice(-8).reverse().map((h, i) => (
               <tr key={i}>
-                <th>{h.date.slice(5)} {h.mode === 'daily' ? 'Daily' : `${h.variant && h.variant !== 'classic' ? `${h.variant} ` : ''}${h.size}×${h.size} ${h.difficulty}`}</th>
+                <th>{h.date.slice(5)} {h.mode === 'daily' ? t('home.dailyShort') : `${h.variant && h.variant !== 'classic' ? `${h.variant} ` : ''}${h.size}×${h.size} ${h.difficulty}`}</th>
                 <td>{formatTime(h.timeMs)} · {h.moves}m · {h.bigMoves}B</td>
               </tr>
             ))}
