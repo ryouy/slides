@@ -147,5 +147,8 @@ const ja: Partial<Dict> = {
   "wordCat.Vehicle": "乗り物",
   "wordCat.Fantasy": "空想",
   "wordCat.Person": "人物",
+  "art.textSource": "解説文",
+  "art.textAdjusted": "HTMLをプレーンテキストに整形",
+  "art.englishDetail": "美術館による詳しい解説（英語）",
 };
 export default ja;
