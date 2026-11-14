@@ -100,5 +100,11 @@ const fr: Partial<Dict> = {
   "legal.termsNote": "Exploitant du site : vérifiez ces conditions avant publication.",
   "legal.contact": "Vos questions, signalements de bugs et suggestions sont bienvenus.",
   "legal.contactNote": "Exploitant du site : indiquez ici une adresse e-mail ou un formulaire de contact.",
+  "art.summary": "Œuvre de {artist}, {year}. Collection : {theme}.",
+  "level.6": "Très difficile",
+  "level.7": "Expert",
+  "era.1800–1849": "1800–1849",
+  "era.1850–1879": "1850–1879",
+  "era.1880–1899": "1880–1899",
 };
 export default fr;
