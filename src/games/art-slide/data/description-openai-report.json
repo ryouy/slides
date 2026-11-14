@@ -1,12 +1,12 @@
 {
   "model": "gpt-6-luna",
   "recipeVersion": "openai-bilingual-v1",
-  "generatedAt": "2026-11-14T09:47:50.399632+00:00",
+  "generatedAt": "2026-11-14T09:49:55.035687+00:00",
   "totalArtworks": 404,
-  "processed": 200,
-  "remaining": 204,
-  "medianEnglishCharacters": 460.0,
-  "medianJapaneseCharacters": 185.0,
+  "processed": 225,
+  "remaining": 179,
+  "medianEnglishCharacters": 471,
+  "medianJapaneseCharacters": 187,
   "records": {
     "aic-102131": {
       "id": "aic-102131",
@@ -1806,6 +1806,231 @@
       "rawSourceCharacters": 1612,
       "englishCharacters": 481,
       "japaneseCharacters": 203,
+      "apiWarning": null
+    },
+    "aic-59847": {
+      "id": "aic-59847",
+      "title": "Cupid Chastised",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2791,
+      "englishCharacters": 619,
+      "japaneseCharacters": 228,
+      "apiWarning": null
+    },
+    "aic-59927": {
+      "id": "aic-59927",
+      "title": "Boats on the Beach at Étretat",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2281,
+      "englishCharacters": 492,
+      "japaneseCharacters": 186,
+      "apiWarning": null
+    },
+    "aic-59944": {
+      "id": "aic-59944",
+      "title": "The Laundress",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2131,
+      "englishCharacters": 526,
+      "japaneseCharacters": 197,
+      "apiWarning": null
+    },
+    "aic-60239": {
+      "id": "aic-60239",
+      "title": "The Essex Canal",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1813,
+      "englishCharacters": 533,
+      "japaneseCharacters": 230,
+      "apiWarning": null
+    },
+    "aic-61603": {
+      "id": "aic-61603",
+      "title": "Ballet at the Paris Opéra",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2301,
+      "englishCharacters": 528,
+      "japaneseCharacters": 210,
+      "apiWarning": null
+    },
+    "aic-61616": {
+      "id": "aic-61616",
+      "title": "Oil Sketch for \"A Sunday on La Grande Jatte — 1884\"",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1783,
+      "englishCharacters": 422,
+      "japaneseCharacters": 156,
+      "apiWarning": null
+    },
+    "aic-6198": {
+      "id": "aic-6198",
+      "title": "Jaguar Standing",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 940,
+      "englishCharacters": 414,
+      "japaneseCharacters": 188,
+      "apiWarning": null
+    },
+    "aic-62042": {
+      "id": "aic-62042",
+      "title": "Still Life with Dead Game, Fruits, and Vegetables in a Market",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1616,
+      "englishCharacters": 539,
+      "japaneseCharacters": 203,
+      "apiWarning": null
+    },
+    "aic-62371": {
+      "id": "aic-62371",
+      "title": "Madame Cezanne in a Yellow Chair",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1818,
+      "englishCharacters": 401,
+      "japaneseCharacters": 153,
+      "apiWarning": null
+    },
+    "aic-62450": {
+      "id": "aic-62450",
+      "title": "Still Life with a Basket of Fruit and a Bunch of Asparagus",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1870,
+      "englishCharacters": 477,
+      "japaneseCharacters": 184,
+      "apiWarning": null
+    },
+    "aic-63554": {
+      "id": "aic-63554",
+      "title": "Big River, from the Rancherie, Mendocino, California",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2121,
+      "englishCharacters": 466,
+      "japaneseCharacters": 190,
+      "apiWarning": null
+    },
+    "aic-64001": {
+      "id": "aic-64001",
+      "title": "Apples",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1895,
+      "englishCharacters": 450,
+      "japaneseCharacters": 180,
+      "apiWarning": null
+    },
+    "aic-64029": {
+      "id": "aic-64029",
+      "title": "Bouquet of Flowers in an Earthenware Vase",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 711,
+      "englishCharacters": 344,
+      "japaneseCharacters": 126,
+      "apiWarning": null
+    },
+    "aic-64476": {
+      "id": "aic-64476",
+      "title": "The Winter Sun",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1628,
+      "englishCharacters": 471,
+      "japaneseCharacters": 200,
+      "apiWarning": null
+    },
+    "aic-64957": {
+      "id": "aic-64957",
+      "title": "Grapes, Lemons, Pears, and Apples",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2031,
+      "englishCharacters": 534,
+      "japaneseCharacters": 190,
+      "apiWarning": null
+    },
+    "aic-65": {
+      "id": "aic-65",
+      "title": "Fishing Craft near the Cliffs at Collioure",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 522,
+      "englishCharacters": 309,
+      "japaneseCharacters": 125,
+      "apiWarning": null
+    },
+    "aic-65709": {
+      "id": "aic-65709",
+      "title": "The Artist in His Studio",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2016,
+      "englishCharacters": 415,
+      "japaneseCharacters": 182,
+      "apiWarning": null
+    },
+    "aic-65811": {
+      "id": "aic-65811",
+      "title": "The Plate of Apples",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1795,
+      "englishCharacters": 477,
+      "japaneseCharacters": 190,
+      "apiWarning": null
+    },
+    "aic-65916": {
+      "id": "aic-65916",
+      "title": "Movement",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1475,
+      "englishCharacters": 421,
+      "japaneseCharacters": 160,
+      "apiWarning": null
+    },
+    "aic-65925": {
+      "id": "aic-65925",
+      "title": "The Last of New England—The Beginning of New Mexico",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1644,
+      "englishCharacters": 515,
+      "japaneseCharacters": 224,
+      "apiWarning": null
+    },
+    "aic-65930": {
+      "id": "aic-65930",
+      "title": "Still Life No. 15",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1400,
+      "englishCharacters": 545,
+      "japaneseCharacters": 198,
+      "apiWarning": null
+    },
+    "aic-65937": {
+      "id": "aic-65937",
+      "title": "Landscape No. 3, Cash Entry Mines, New Mexico",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1527,
+      "englishCharacters": 506,
+      "japaneseCharacters": 201,
+      "apiWarning": null
+    },
+    "aic-66042": {
+      "id": "aic-66042",
+      "title": "Trompe-l'Oeil Still Life with a Flower Garland and a Curtain",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1842,
+      "englishCharacters": 579,
+      "japaneseCharacters": 232,
+      "apiWarning": null
+    },
+    "aic-66434": {
+      "id": "aic-66434",
+      "title": "Georgia O'Keeffe—Hands and Thimble",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2089,
+      "englishCharacters": 481,
+      "japaneseCharacters": 197,
+      "apiWarning": null
+    },
+    "aic-68388": {
+      "id": "aic-68388",
+      "title": "Catskill Mountains",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1644,
+      "englishCharacters": 466,
+      "japaneseCharacters": 212,
       "apiWarning": null
     }
   },
