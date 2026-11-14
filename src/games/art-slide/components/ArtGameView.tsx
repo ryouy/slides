@@ -7,7 +7,7 @@ import { useImageStatus } from '../../../hooks/useImageStatus';
 import { useLang, useT } from '../../../i18n';
 import { formatTime } from '../../../storage/stats';
 import { artShareUrl } from '../../../utils/share';
-import { canMove, neighbors, type ArtDirection, type ArtLevel } from '../logic/board';
+import { lineSlideCells, type ArtDirection, type ArtLevel } from '../logic/board';
 import { artReducer, dimsOf, type ArtState } from '../logic/game';
 import { aspectOf, gridFor } from '../logic/grid';
 import { visibleShuffleStepMs } from '../logic/generator';
@@ -18,7 +18,6 @@ import { ArtBoard } from './ArtBoard';
 import { ArtPreview } from './ArtPreview';
 
 const KEY_DIR: Record<string, ArtDirection> = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' };
-const DELTA: Record<ArtDirection, number> = { up: -1, down: 1, left: -1, right: 1 }; // sign only; rows use cols
 
 interface Props {
   initial: ArtState;
@@ -48,6 +47,8 @@ export function ArtGameView(p: Props) {
   const [pending, setPending] = useState<ArtLevel | null>(null);
   const [showResult, setShowResult] = useState(initial.status === 'cleared');
   const [shuffling, setShuffling] = useState(false);
+  const [lineMoving, setLineMoving] = useState(false);
+  const lineMovingRef = useRef(false);
   const shufflingRef = useRef(false);
   const timers = useRef<number[]>([]);
   const stateRef = useRef(initial);
@@ -57,7 +58,7 @@ export function ArtGameView(p: Props) {
   const cleared = state.status === 'cleared';
   const img = useImageStatus(artwork.imageUrl);
   stateRef.current = state;
-  const locked = !!preview || cleared || shuffling || img.status !== 'ready';
+  const locked = !!preview || cleared || shuffling || lineMoving || img.status !== 'ready';
   const aspect = aspectOf(artwork);
 
   useGameTimer((ms) => dispatch({ type: 'tick', ms }));
@@ -82,20 +83,45 @@ export function ArtGameView(p: Props) {
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
 
   useEffect(() => {
-    if (cleared && !recorded.current) {
+    if (cleared && !recorded.current && !lineMovingRef.current) {
       recorded.current = true;
       p.onCleared(state);
       const id = setTimeout(() => setShowResult(true), 1100); // let the painting come together first
       return () => clearTimeout(id);
     }
-  }, [cleared]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [cleared, lineMoving]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /** Moving several tiles is the same legal step sequence as tapping them nearest-first. */
+  const tapLine = (cell: number) => {
+    if (locked || lineMovingRef.current) return;
+    const cells = lineSlideCells(state.board, dims, cell);
+    if (!cells.length) return;
+    if (cells.length === 1) {
+      dispatch({ type: 'move', cell });
+      return;
+    }
+    lineMovingRef.current = true;
+    setLineMoving(true);
+    // Each tile completes its own movement before the next one moves.
+    const stepMs = 275; // .apiece uses a 260ms CSS transition
+    cells.forEach((nextCell, i) => {
+      if (i === 0) dispatch({ type: 'lineStep', cell: nextCell });
+      else timers.current.push(window.setTimeout(() => dispatch({ type: 'lineStep', cell: nextCell }), i * stepMs));
+    });
+    timers.current.push(window.setTimeout(() => {
+      lineMovingRef.current = false;
+      setLineMoving(false);
+    }, cells.length * stepMs));
+  };
 
   const swipe = (cell: number, dir: ArtDirection) => {
-    if (locked || !canMove(state.board, dims, cell)) return;
+    if (locked || lineMovingRef.current) return;
     const blank = state.board.indexOf(null);
-    const step = dir === 'up' || dir === 'down' ? dims.cols : 1;
-    const target = cell + DELTA[dir] * step;
-    if (target === blank && neighbors(cell, dims).includes(blank)) dispatch({ type: 'move', cell });
+    const sameCol = cell % dims.cols === blank % dims.cols;
+    const sameRow = Math.floor(cell / dims.cols) === Math.floor(blank / dims.cols);
+    const direction = sameCol ? (blank > cell ? 'down' : 'up')
+      : sameRow ? (blank > cell ? 'right' : 'left') : null;
+    if (direction === dir) tapLine(cell);
   };
 
   const gridLabel = (level: ArtLevel) => {
@@ -206,7 +232,7 @@ export function ArtGameView(p: Props) {
         </div>
       ) : (
         <div className="aboard-wrap" ref={boardRef} style={{ ['--aspect' as string]: aspect, ['--shuffle-tile-ms' as string]: `${Math.round(shuffleStepMs * 0.92)}ms` }}>
-          <ArtBoard board={state.board} dims={dims} artwork={artwork} showNumbers={p.showNumbers} disabled={locked} complete={cleared} shuffling={shuffling} onTap={(cell) => dispatch({ type: 'move', cell })} onSwipe={swipe} />
+          <ArtBoard board={state.board} dims={dims} artwork={artwork} showNumbers={p.showNumbers} disabled={locked} complete={cleared} shuffling={shuffling} onTap={tapLine} onSwipe={swipe} />
           {img.status === 'loading' && <div className="art-loading" role="status">{t('art.loading')}</div>}
         </div>
       )}
