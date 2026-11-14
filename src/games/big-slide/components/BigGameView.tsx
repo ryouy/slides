@@ -143,7 +143,7 @@ export function BigGameView({ initial, title, onProgress, onCleared, onNext, nex
             { label: t('big.bigMoves'), value: state.bigMoves },
           ]}
           shareText={state.puzzle.mode === 'daily' ? t('share.bigDaily', { n: state.puzzle.number ?? '', time: formatTime(state.elapsedMs), moves: state.moves }) : t('share.big', { size: state.puzzle.size, time: formatTime(state.elapsedMs), moves: state.moves })}
-          shareUrl={`${siteOrigin()}/big-slide`}
+          shareUrl={`${siteOrigin()}/s/big/`}
           onClose={() => setShowClear(false)}
           onNext={onNext}
           onHome={onBack}
