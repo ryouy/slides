@@ -1902,24 +1902,30 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 }
 
 
-/* Emphasize the empty sliding-puzzle cell without covering or intercepting tiles.
-   --fg follows the site's light/dark theme, including the device preference. */
-.aboard .art-empty-outline {
+/* The empty cell is a stationary-looking recessed well, not a moving outline. */
+.aboard .art-empty-well {
   position: absolute;
-  z-index: 2;
+  z-index: 0;
   padding: var(--gap);
   pointer-events: none;
-  transition: left .26s var(--ease), top .26s var(--ease);
+  transition: none;
 }
-.aboard .art-empty-outline::after {
+.aboard .art-empty-well::after {
   content: "";
   display: block;
   width: 100%;
   height: 100%;
-  border: 2px solid var(--fg);
   border-radius: 2px;
-  box-sizing: border-box;
+  background: #dce0e4;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, .12);
 }
-.aboard.shuffling .art-empty-outline {
-  transition-duration: var(--shuffle-tile-ms, 36ms);
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .aboard .art-empty-well::after {
+    background: #343438;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, .35);
+  }
+}
+:root[data-theme='dark'] .aboard .art-empty-well::after {
+  background: #343438;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, .35);
 }
