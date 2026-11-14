@@ -11,7 +11,7 @@ import { adsEnabled } from '../ads/admax';
 import { useAdConsent } from '../ads/consent';
 import { adsForcedLive } from '../components/AdBanner';
 
-export function Page({ title, children }: { title: string; children: ReactNode }) {
+export function Page({ title, children, showFooter = true }: { title: string; children: ReactNode; showFooter?: boolean }) {
   const t = useT();
   return (
     <div className="screen page">
@@ -21,7 +21,7 @@ export function Page({ title, children }: { title: string; children: ReactNode }
         <div className="top-right" />
       </header>
       <div className="prose">{children}</div>
-      <Footer />
+      {showFooter && <Footer />}
     </div>
   );
 }
@@ -131,7 +131,7 @@ export function SettingsPage() {
     { id: 'dark', label: t('settings.dark') },
   ];
   return (
-    <Page title={t('settings.title')}>
+    <Page title={t('settings.title')} showFooter={false}>
       <div className="set-list">
         <label className="set-row">
           <span className="set-label">{t('settings.language')}</span>
