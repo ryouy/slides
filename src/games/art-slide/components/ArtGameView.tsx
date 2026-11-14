@@ -144,6 +144,30 @@ export function ArtGameView(p: Props) {
           <h1 data-testid="art-title">{artwork.title}</h1>
           <span className="top-sub">{artwork.artist}, {artwork.year}</span>
         </div>
+        <div className="art-header-controls">
+      <div className="stats" aria-live="polite">
+        <Stat label={t('common.time')} value={formatTime(state.elapsedMs)} id="time" />
+        <Stat label={t('common.moves')} value={String(state.moves)} id="moves" />
+      </div>
+
+      <div className={`actions art-actions${daily ? " daily-actions" : ""}`}>
+        <button
+          className="btn"
+          data-testid="preview"
+          disabled={shuffling}
+          onClick={() => {
+            const r = boardRef.current?.getBoundingClientRect();
+            if (r) setPreview({ left: r.left, top: r.top, width: r.width, height: r.height });
+          }}
+        >{t('art.preview')}</button>
+        {!daily && <button className="btn" data-testid="shuffle" disabled={shuffling} onClick={runShuffle}>{t('art.shuffle')}</button>}
+        <button className={`btn num-btn${p.showNumbers ? ' on' : ''}`} data-testid="numbers-toggle" aria-pressed={p.showNumbers} onClick={() => p.onToggleNumbers(!p.showNumbers)}>
+          <span className="num-glyph" aria-hidden="true">#</span>
+          {t('art.numbers')}
+        </button>
+      </div>
+
+        </div>
       </header>
 
       {!daily && (
@@ -163,10 +187,6 @@ export function ArtGameView(p: Props) {
         </div>
       )}
 
-      <div className="stats" aria-live="polite">
-        <Stat label={t('common.time')} value={formatTime(state.elapsedMs)} id="time" />
-        <Stat label={t('common.moves')} value={String(state.moves)} id="moves" />
-      </div>
 
       {img.status === 'error' ? (
         <div className="aboard art-error" role="alert" data-testid="art-error" style={{ ['--aspect' as string]: `${artwork.width} / ${artwork.height}` }}>
@@ -183,22 +203,6 @@ export function ArtGameView(p: Props) {
         </div>
       )}
 
-      <div className={`actions art-actions${daily ? " daily-actions" : ""}`}>
-        <button
-          className="btn"
-          data-testid="preview"
-          disabled={shuffling}
-          onClick={() => {
-            const r = boardRef.current?.getBoundingClientRect();
-            if (r) setPreview({ left: r.left, top: r.top, width: r.width, height: r.height });
-          }}
-        >{t('art.preview')}</button>
-        {!daily && <button className="btn" data-testid="shuffle" disabled={shuffling} onClick={runShuffle}>{t('art.shuffle')}</button>}
-        <button className={`btn num-btn${p.showNumbers ? ' on' : ''}`} data-testid="numbers-toggle" aria-pressed={p.showNumbers} onClick={() => p.onToggleNumbers(!p.showNumbers)}>
-          <span className="num-glyph" aria-hidden="true">#</span>
-          {t('art.numbers')}
-        </button>
-      </div>
 
       <div className="art-extra">
         <p className="ap-desc" data-testid="art-desc">{artwork.description}</p>
@@ -208,6 +212,7 @@ export function ArtGameView(p: Props) {
         {!daily && (
           <div className="art-quiet">
             <button className="quiet-link" data-testid="change-artwork" onClick={p.onChangeArtwork}>{t('art.change')} <ChevronRight size={14} /></button>
+            <button className="quiet-link" data-testid="next-artwork" onClick={p.onNextArtwork}>{t('art.nextArtwork')} <ChevronRight size={14} /></button>
           </div>
         )}
       </div>
