@@ -823,13 +823,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-87479": {
-    "description": "The Assumption of the Virgin was the central image of El Greco’s first major commission, an altarpiece for the Church of Santo Domingo el Antiguo, a convent in Toledo, Spain. The painting’s subject, the raising of the Virgin Mary’s body into heaven, relates to the function of the church as the funerary monument of a wealthy noblewoman, Doña Maria de Silva; the iconography of the entire commission focuses on death and salvation. El Greco used broad, free brushwork, flickering hues, rich color harmonies, and bold figural arrangements to arouse devotional fervor in the viewer and impart a deep sense of faith. The composition is divided into two zones: the earthly sphere of the apostles and the celestial realm of the angels. El Greco masterfully compressed many figures into a tall and narrow format: In the earthly zone, the apostles’ faces and gestures express a range of emotions through their dynamic, agitated gestures and poses. They are so individually considered that it seems El Greco studied actual studio models. In contrast, the angels in the heavenly scene above are calm, graceful, and direct in their focus toward the looming figure of the Virgin Mary as she rises into their realm.\n\nCatalogue information\nRecorded artist or maker: El Greco (Doménikos Theotokópoulos; Greek, active in Spain, 1541–1614). Date: 1577–79. Materials and technique: Oil on canvas. Artistic style or school: Mannerism. Place of creation: Greece. Classification: oil on canvas. Physical dimensions: 403.2 × 211.8 cm (158 3/4 × 83 7/16 in.); Framed: 461.6 × 256.5 × 14 cm (181 3/4 × 101 × 5 9/16 in.). Museum catalogue subjects: Virgin Mary, religious, religious scenes, religious figures, death, moon, men. Museum credit line: Gift of Nancy Atwood Sprague in memory of Albert Arnold Sprague. Recorded ownership history (excerpt): Commissioned 1577 by Don Diego de Castilla for the convent church of Santo Domingo el Antiguo, Toledo; installed with other paintings in the main retable by September 1579; sold c. 1830 to the Infante Don Sebastián Gabriel de Borbón y Braganza (died 1875), Madrid and later Pau, France, but confiscated from him by the Spanish government and installed in the Museo Nacional de la…. Exhibition record (excerpt): Pau, Salons de l'ancien Asile de Pau, Tableaux appartenant aux héritiers de feu Msg. l’Enfant don Sébastien de Bourbon et Bragance, September 1876, cat. 668. Madrid, Museo Nacional de Pintura y Escultura, Exposición de las obras de Domenico Theotocópouli, llamado El Greco, April….",
+    "description": "Painted in 1577–79 for the convent church of Santo Domingo el Antiguo in Toledo, this large altarpiece was the central image of El Greco’s first major commission. Its subject—the Virgin Mary’s ascent into heaven—accorded with the church’s role as the funerary monument of Doña Maria de Silva and the commission’s focus on death and salvation. In a tall, narrow composition, agitated apostles fill the earthly realm below calm angels and the rising Virgin. El Greco’s free brushwork, vivid color harmonies, and forceful arrangement of figures heighten the scene’s devotional intensity.",
+    "descriptionTranslations": {
+      "ja": "1577～79年、エル・グレコがトレドのサント・ドミンゴ・エル・アンティグオ教会のために制作した大祭壇画の中心作です。聖母マリアの昇天という主題は、同教会が貴婦人ドーニャ・マリア・デ・シルバの墓所として建てられたこと、そして祭壇画全体が死と救済を主題としたことに結びつきます。縦長の画面では、地上の使徒たちが激しい身振りを見せる一方、天上の天使たちは静かに昇る聖母を見つめます。自在な筆致と豊かな色彩、力強い人物配置が、信仰に訴える場面を形づくっています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/87479",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/87479",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-16571": {
     "description": "In this 1877 oil painting, Claude Monet turns to the Gare Saint-Lazare, a modern Paris terminal that linked the city with Normandy and the towns west and north of it. His focus is the station’s glass-and-iron train shed, where locomotive steam gathers beneath the roof as daylight enters through its glazed sections. Monet completed eight of his twelve known station paintings for the third Impressionist exhibition in 1877. This series marked his sustained attention to a single motif and his final effort to depict urban life before he largely devoted himself to landscapes.",
@@ -858,13 +862,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-80084": {
-    "description": "In 1626 the Dominican monastery of San Pablo el Real in Seville, Spain, commissioned the young Francisco de Zurbarán to execute a cycle of paintings including The Crucifixion . This work was installed in a dimly lit space in the monastery and was visible to visitors through a grill. Early commentators remarked on its powerful illusion of three-dimensionality, as though it was a sculpture rather than a painting. The dramatically illuminated figure of Christ, set against a dark, empty background, appears outside of time and place, both idealized in its quiet beauty and humanized by the individualized face and insistent realism.\n\nCatalogue information\nRecorded artist or maker: Francisco de Zurbarán (Spanish, 1598–1664). Date: 1627. Materials and technique: Oil on canvas. Artistic style or school: Renaissance. Place of creation: Spain. Classification: oil on canvas. Physical dimensions: 290.3 × 165.5 cm (114 5/16 × 65 3/16 in.); Framed: 339.1 × 212.1 × 14 cm (133 3/8 × 83 1/2 × 5 1/2 in.). Museum catalogue subjects: crucifixions, man, biblical, Christianity, Christian subjects, religious, religion. Museum credit line: Robert A. Waller Memorial Fund. Recorded ownership history (excerpt): Painted for the sacristy of the Dominican monastery San Pablo el Real, Seville; placed on deposit at Palacio Real, Seville, on the order of Joseph Bonaparte, King of Spain, 1810 [see M. Gómez Imaz, 1917, p. 141, no. 224]; acquired by General Jean Toussaint Arrighi de Casanova, Duc de Padoue (died 1853) shortly thereafter [as recounted by his son to Father Stanislas Du Lac…. Exhibition record (excerpt): Chicago, Art Institute of Chicago, The Art of the Edge: European Frames 1300 - 1900, October 17- December 17, 1986, no. 30. New York, Metropolitan Museum of Art, Zurbarán, 22 September - 13 December 1987, no. 2; Paris, Galeries National du Grand Palais, January 14 - April 11….",
+    "description": "Commissioned in 1626 for the Dominican monastery of San Pablo el Real in Seville, this 1627 painting was displayed in a dim space and seen through a grill. Zurbarán sets the dramatically lit figure of Christ against a dark, empty background, creating a powerful illusion of sculptural depth. The image combines idealized, quiet beauty with the realism of Christ’s individualized face.",
+    "descriptionTranslations": {
+      "ja": "1626年、セビーリャのドミニコ会修道院サン・パブロ・エル・レアルのために制作が依頼され、翌年完成した作品です。薄暗い場所に置かれ、格子越しに見るよう設置されました。暗く何もない背景から、光を強く受けたキリストの姿が浮かび、彫刻を思わせる立体感を生みます。静謐で理想化された美しさと、個別性を感じさせる顔の写実性が共存しています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/80084",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/80084",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-8991": {
     "description": "In his 1912 book Concerning the Spiritual in Art , Vasily Kandinsky made an analogy between music and painting as two means of abstraction, a radical mode of artmaking that freed color and line from their traditionally representational functions. Between 1910 and 1914 he produced “improvisations,” works he described as unconscious, spontaneous expressions. Kandinsky commented on Improvisation No. 30 (Cannons) in a letter to Arthur Jerome Eddy, a friend and collector from Chicago: “The cannons . . . could probably be explained by the constant war talk going on through the year [but] the true contents are what the spectator experiences while under the effect of the forms and color combinations of the picture.”\n\nCatalogue information\nRecorded artist or maker: Vasily Kandinsky Born Moscow (formerly Russian Empire, now Russia), 1866; died Neuilly-sur-Seine, France, 1944. Date: 1913. Materials and technique: Oil on canvas. Artistic style or school: Modernism. Place of creation: Germany. Classification: oil on canvas. Physical dimensions: 111 × 111.3 cm (43 11/16 × 43 13/16 in.). Museum catalogue subjects: Century of Progress, world's fairs, Chicago World's Fairs, blue (color), purple (color), yellow (color), red (color). Museum credit line: Arthur Jerome Eddy Memorial Collection. Recorded ownership history (excerpt): Arthur Jerome Eddy (1859-1920), Chicago, probably purchased from the artist, by 1920; by descent to his wife Lucy O. Eddy (1863-1931) and son Jerome O. Eddy (1891-1951), Chicago, 1920; given to the Art Institute of Chicago, 1931.. Exhibition record (excerpt): London, Royal Albert Hall, The London Salon of the Allied Artists’ Association, Ltd., July 1913, p. 15, cat. 286. Chicago, Art Institute, Exhibition of Paintings from the Collection of the Late Arthur Jerome Eddy, September 19-October 22, 1922, cat. 36 (color ill.). Chicago, Art….",
@@ -889,13 +897,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-869": {
-    "description": "A pupil of Jacob van Ruisdael , Meindert Hobbema often borrowed motifs from his teacher, such as the watermill seen here. Watermills, which Hobbema employed more than 30 times in his paintings and which abounded along country waterways, would have been understood as symbols of human transience and Dutch industriousness. The well-dressed figures farther along the path at the left are intended to suggest the rewards of productivity and diligence.\n\nCatalogue information\nRecorded artist or maker: Meindert Hobbema (Dutch, 1638–1709). Date: c. 1665. Materials and technique: Oil on canvas. Artistic style or school: Realism. Place of creation: Holland. Classification: oil on canvas. Physical dimensions: 81.3 × 110 cm (32 × 43 1/4 in.); Framed: 101.3 × 130.5 × 8.3 cm (39 7/8 × 51 3/8 × 3 1/4 in.). Museum catalogue subjects: landscapes, ducks, river, water, clouds, trees, man. Museum credit line: Gift of Mr. and Mrs. Frank G. Logan. Recorded ownership history (excerpt): Possibly John Ellis, London 1755 [according to Smith 1835]. Possibly Lord Mount Temple [Hofstede de Groot cites Durand Ruel as the source of this information]. Durand-Ruel, Paris, by 1890; sold to the Art Institute of Chicago, June 1890, together with a group of Dutch and Flemish paintings, many from the Demidoff collection, using funds advanced by four trustees and reimbursed…. Exhibition record (excerpt): Pittsburgh, Carnegie Institute, Loan Exhibition of Paintings, 1902/1903, no. 70. Art Institute of Chicago, A Century of Progress, 1933, no. 66. Art Institute of Chicago, A Century of Progress, 1934, no. 93. New York World’s Fair, Masterpieces of Art, 1939, no. 193. New York….",
+    "description": "Meindert Hobbema, a pupil of Jacob van Ruisdael, adopted the watermill motif that his teacher also used. Painted around 1665 in oil on canvas, this Dutch landscape places the mill among familiar country waterways. Hobbema returned to watermills in more than thirty paintings; in his time they could signify both human transience and Dutch industry. The well-dressed figures on the path at left suggest the rewards of productivity and diligence.",
+    "descriptionTranslations": {
+      "ja": "ヤーコプ・ファン・ライスダールに学んだメインデルト・ホッベマは、師も用いた水車小屋の主題を取り上げました。1665年頃、油彩・カンヴァスで描かれたこのオランダの風景画では、田園の水辺に水車小屋が置かれています。ホッベマは水車小屋を30点以上の作品に描き、当時それは人の世のはかなさとオランダの勤勉さを象徴するものと受け止められました。左の小道を行く身なりのよい人物たちは、生産と勤勉がもたらす報いを示しています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/869",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/869",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-61603": {
     "description": "Edgar Degas joined pastel with the relatively uncommon monotype process in this 1877 view of dancers at the Paris Opéra. Seen from the orchestra pit, the scene is framed by the intruding necks of double basses; cropped forms and an unusual viewpoint heighten its immediacy. The central dancer balances en pointe in fifth position, while the corps de ballet’s scattered arrangement and loose hair suggest rehearsal rather than performance. The Opéra served as the official school of the Académie Royale de Danse, founded in 1661.",
@@ -1028,13 +1040,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-84709": {
-    "description": "Still Life with Game Fowl is the Art Institute’s earliest European still-life painting. Still life emerged as an independent genre in European art in the sixteenth century, when artists began to specialize in such categories as landscape, portraiture, and scenes of everyday life. Some, like Juan Sánchez Cotán, became interested in displaying their skill at depicting inanimate objects, in part as an expression of the order and variety of the natural world. The painter’s focus changed in 1603, however, when he left a successful, two-decade artistic career in the Spanish city of Toledo to become a lay brother of the Carthusian order at the Charterhouse of Granada. Accordingly, he changed his focus from still lifes to religious images. This painting was executed just before Sánchez Cotán left Toledo. It follows the conventional format of his still lifes: precisely rendered forms displayed in a shallow niche. In some works, he depicted few objects; in others, such as this example, he ﬁlled the space with them. The artist rigorously organized the composition so that the complex symmetry of the objects echoes the elegant geometry of the spherical quince, cabbage, and melon and the conical birds. A strong, raking light creates a lively play of brightness and shadow over each shape. This arrangement is further enlivened by a subtle compositional device—the hanging objects form a diagonal from the top-left to bottom-right corners of the niche. In these ways, Sánchez Cotán infused simple objects in a minimal setting with great presence.\n\nCatalogue information\nRecorded artist or maker: Juan Sánchez Cotán (Spanish, 1560–1627). Date: c. 1600–3. Materials and technique: Oil on canvas. Artistic style or school: Renaissance. Place of creation: Spain. Classification: oil on canvas. Physical dimensions: 67.8 × 88.7 cm (26 11/16 × 34 15/16 in.); Framed: 86.4 × 108 × 7 cm (34 × 42 1/2 × 2 3/4 in.). Museum catalogue subjects: still life, window, birds, cabbages, ducks, food, fowl. Museum credit line: Gift of Mr. and Mrs. Leigh B. Block. Recorded ownership history (excerpt): Probably in the artist’s possession, Toledo, before he retired to a Carthusian monastery, in August 1603 [inventory 1603, no. V, (“Un lienzo de frutas adonde está el ánade y otros tres pájaros ques de Diego de Valdivieso”; Jordan in Madrid 1992, pp. 41–43); probably Diego de Valdivieso, Toledo, 1603 [see 1603 inventory cited by Jordan 1992]. Cardinal Bernardo de Sandoval y…. Exhibition record (excerpt): Los Angeles, UCLA Art Galleries, Dickson Art Center, Spanish Masters, January 25–March 6, 1960; traveled to Fine Arts Gallery of San Diego, March 25–May 1, 1960, cat. 8. Caracas, Museo de Bellas Artes de Caracas, Grandes Maestros de los Siglos XV, XVI, XVII y XVIII, November….",
+    "description": "Painted shortly before Juan Sánchez Cotán left Toledo in 1603 to join the Carthusian order, this work is the Art Institute of Chicago’s earliest European still life. Birds and produce fill a shallow niche, their carefully arranged forms balancing the rounded quince, cabbage, and melon against the birds’ tapered shapes. A strong, slanting light sets brightness against shadow, while suspended objects trace a diagonal across the space. The oil painting reflects the artist’s precise approach to still life, a genre that had emerged independently in Europe during the sixteenth century.",
+    "descriptionTranslations": {
+      "ja": "フアン・サンチェス・コターンが1603年にトレドを離れ、カルトゥジオ会に入る直前に描いた本作は、シカゴ美術館が所蔵するヨーロッパ最初期の静物画です。浅い壁龕に鳥や果物、野菜を配し、丸みを帯びたマルメロ、キャベツ、メロンと、鳥の尖った形を緻密な構成のなかで響き合わせています。斜めから差す強い光が明暗を際立たせ、吊るされたものの連なりが画面に対角線をつくります。16世紀に独立したジャンルとして成立した静物画における、画家の精緻な描写が示されています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/84709",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/84709",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-15401": {
     "description": "In this 1905 oil painting, William Glackens brings members of his circle together at Mouquin’s, a New York restaurant. The proprietor’s wife, Jeanne Mouquin, shares a drink with restaurateur James B. Moore; Glackens’s wife, Edith, and critic Charles Fitzgerald appear in the mirror behind them. Vivid brushwork animates Jeanne’s dress, while her intent gaze lends the gathering tension and mystery. Blending portraiture with an everyday urban scene, Glackens pursued a form of painting attuned to modern city life.",
@@ -1267,13 +1283,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-88793": {
-    "description": "This altarpiece is made up of a retable, which was set up behind the altar table in a Catholic church, and a frontal, which decorated the front of the table itself. The work is a testament to the piety of Pedro López de Ayala, who had the altarpiece made for his family’s funerary chapel in their palace in northern Spain. A major ﬁgure in the political and cultural life of late-medieval Spain, Ayala was a courtier, diplomat, and soldier in the service of the kings of Castile, eventually serving as chancellor. The massive altarpiece must have been constructed and painted inside the small chapel. To accomplish this, Ayala called upon local artists, who created a series of scenes that tell the stories of the life of Jesus and his mother, Mary. The composition centers on images of the Cruciﬁxion and of an empty throne that probably once framed a statue of the Virgin and Child. These scenes are not projections of convincing pictorial space. Rather, with their plain backgrounds and framing arcades, they hearken back to earlier architectural decoration and manuscript illumination. The altarpiece was intended to impress through its monumental scale, its narrative clarity, and its costly materials, which include gold and silver leaf and glazes of rare and expensive ultramarine blue. Ayala expected his altarpiece to be a perpetual plea for his eternal salvation and that of his family, and it remained in the family chapel for more than ﬁve centuries. Ayala declared his donation of the altarpiece in honor of Christ and the Virgin Mary through the inscription that runs across the bottom margin; the images of Ayala and his wife, Leonora de Guzman, kneeling in prayer with their son and daughter-in-law at either end of the lower register; and their coats of arms—two wolves and two cauldrons—alternating around the frames.\n\nCatalogue information\nRecorded artist or maker: Spanish. Date: 1396. Materials and technique: Tempera and gold on panel. Artistic style or school: 14th century. Place of creation: Spain. Classification: altarpiece. Physical dimensions: Retable: 257 × 669.9 cm (99 3/4 × 263 3/4 in.); Frontal: 116.3 × 290.9 cm (45 3/4 × 114 1/2 in.). Museum catalogue subjects: religion, altar, angels, biblical, birth, Christian subjects, Christianity. Museum credit line: Gift of Charles Deering. Recorded ownership history (excerpt): Ayala family chapel, Dominican convent of Saint John the Baptist, Quejana, near Amurrio, Álava; sold by the convent to Lionel Harris, Spanish Art Gallery, London, 1913 [see Sánchez Sauleda 2010/2011, pp. 102-3, 109-10, citing a letter of 14 December 1916 from Charles Deering to Miquel Utrillo; see also Portilla 1988, pp. 792, 813]; sold to Charles Deering (died 1927), Chicago….",
+    "description": "Made in 1396 for the funerary chapel of Pedro López de Ayala’s family in northern Spain, this altarpiece comprises a retable behind the altar and a frontal covering its face. Local artists arranged scenes from the lives of Christ and the Virgin around a central Crucifixion and an empty throne, probably once framing a statue of the Virgin and Child. Plain backgrounds and arcades evoke architectural decoration and manuscript illumination rather than deep pictorial space; gold and silver leaf and costly ultramarine underscore the work’s scale and Ayala’s devotional purpose.",
+    "descriptionTranslations": {
+      "ja": "1396年、スペイン北部にあったペドロ・ロペス・デ・アヤラ家の葬祭礼拝堂のために制作された祭壇画。祭壇背後の上部装飾（レタブル）と、祭壇前面を飾る前飾りから成る。キリストと聖母マリアの生涯を描く場面は、磔刑図と、かつて聖母子像を囲んでいたと考えられる空の玉座を中心に配される。平坦な背景とアーケードは奥行きある空間表現よりも建築装飾や写本挿絵を想起させ、金銀箔や高価なウルトラマリンが、作品の規模と寄進者の信仰を示している。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/88793",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/88793",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-72801": {
     "description": "In the final decade of his life, John Henry Twachtman often painted the landscape near his home in Greenwich, Connecticut. In this winter scene, he treats frozen terrain not as barren but as beautiful and restorative. Dense layers of oil paint evoke snow accumulated on the ground, while sinuous curves of snow and ice against the water bring a sense of movement to the tranquil view. The nearly square composition reflects Twachtman’s interest in nature’s contemplative qualities.",
@@ -1432,13 +1452,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-87643": {
-    "description": "Working in Paris, Henry Ossawa Tanner grounded his portrayal of a biblical scene in the thoughtful, individual expressions of the figures. The Two Disciples at the Tomb depicts an event from the Gospel of Saint John in which Peter and John arrive at Christ’s empty tomb. The bearded Peter looks downward with a somber gaze, but John appears transfixed, his face bathed in a golden light that signifies the presence of Christ’s spirit. The son of a prominent minister of the African Methodist Episcopal Church, Tanner was perhaps the most renowned American painter of religious works at the turn of the 20th century. After studying at the Pennsylvania Academy of the Fine Arts, Tanner expatriated to France in 1891 in an effort to escape the trenchant racism that limited his career in the United States.\n\nCatalogue information\nRecorded artist or maker: Henry Ossawa Tanner (American, 1859–1937). Date: c. 1906. Materials and technique: Oil on canvas. Artistic style or school: Post-Impressionism. Place of creation: Paris. Classification: oil on canvas. Physical dimensions: 129.5 × 105.7 cm (51 × 41 7/8 in.). Museum catalogue subjects: Century of Progress, emotions, religious scenes, men, world's fairs, Chicago World's Fairs, people. Museum credit line: Robert A. Waller Fund. Recorded ownership history (excerpt): The artist; sold to the Art Institute of Chicago, 1906.. Exhibition record (excerpt): Art Institute of Chicago, Nineteenth Annual Exhibition of Oil Paintings and Sculpture by American Artists , Oct. 16–Nov. 29, 1906, cat. 295. New York, American Art Galleries, Religious Paintings by the Distinguished American Artist Mr. Henry O. Tanner , Dec. 15–25, 1908, cat.….",
+    "description": "Working in Paris, Henry Ossawa Tanner depicts Peter and John arriving at Christ’s empty tomb, as recounted in the Gospel of John. Peter’s bearded face turns downward in a somber expression, while John seems transfixed, his face illuminated by golden light that the museum identifies with Christ’s spirit. Painted in oil on canvas around 1906, the work reflects Tanner’s attention to the figures’ individual expressions. A prominent American painter of religious subjects, he moved to France in 1891 after studying in Philadelphia, seeking distance from racism that constrained his career in the United States.",
+    "descriptionTranslations": {
+      "ja": "パリで制作したヘンリー・オサワ・タナーは、ヨハネによる福音書に記された、キリストの空の墓に着いたペテロとヨハネを描きました。ひげをたくわえたペテロは沈痛な面持ちで視線を落とし、ヨハネは、キリストの霊の存在を示すとされる黄金色の光を顔に受け、心を奪われたように見えます。1906年頃の油彩画で、二人それぞれの表情に目を向けた作品です。宗教画で知られたタナーは、フィラデルフィアで学んだ後、アメリカで人種差別により活動を制限され、1891年にフランスへ移りました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/87643",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/87643",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-50276": {
     "description": "In this 1804 drawing, a tiny pilgrim kneels before a statue of the Madonna on the highest peak, dwarfed by an expansive landscape of stark hills, silent firs, and a blank sky. Friedrich’s subtly graded gray wash gives the scene the gloom of an overcast November day; black ink and graphite complete the work on cream wove paper. Made during his early years in Dresden, the image reflects the German Romantic artist’s search for meaning in nature.",
@@ -1493,13 +1517,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-87045": {
-    "description": "Like his artistic hero, Paul Cezanne, Henri Matisse merged the traditional and the avant-garde. In Still Life with Geranium , he transformed a simple still life into a populated Arcadian landscape painting, rendered in the brilliant color, thick paint, and rapid brushwork characteristic of the group of painters known as the Fauves (French for “wild beasts”). Matisse was recognized by critics as the leader of this group. This composition is one of contrasts—the pale palette and light brushwork in the upper half of the picture are juxtaposed with the darker colored, heavily painted lower half; the firmly planted pose of the female figure is contraposed with the almost-ﬂeeing figure of the male; and the red vegetables grown near Paris are set near ceramic objects from exotic, faraway places. One of many still-life paintings in which Matisse incorporated his own figurative sculptures, here the artist challenged his viewers’ expectations by rendering his modeled figures with minimal color and simple lines. Probably represented as plaster casts, these figures would later be made in bronze editions by the artist; versions of Woman Leaning on Her Hands (on the right of the geranium) and Thorn Extractor (on the left) are also in the collection of the Art Institute. This is one of thirty-five works that comprise the Winterbotham Collection. Click here to learn more about the collection.\n\nCatalogue information\nRecorded artist or maker: Henri Matisse French, 1869–1954. Date: 1906. Materials and technique: Oil on canvas. Place of creation: France. Classification: painting. Physical dimensions: 100.3 × 81.5 cm (39 1/2 × 32 1/8 in.). Museum catalogue subjects: still life, fruit, blue (color), brown (color), white (color), pink (color), red (color). Museum credit line: Joseph Winterbotham Collection. Recorded ownership history (excerpt): The artist; sold to Bernheim-Jeune, Paris, Mar. 1, 1907; sold to Oskar (July 21, 1875–Aug. 19, 1947) and Greta (1884–1977) Moll, Breslau, Germany (present-day Wrocław, Poland), from Oct. 27, 1908 [letter from Marguerite G. Duthuit, Sept. 17, 1975; photocopy in curatorial file]. Likely acquired by the Valentine Gallery, New York, inventory #147, fall 1927 [inventory card and…. Exhibition record (excerpt): Berlin, Paul Cassirer, X. Jahrgang, 1907/1908, September/October: I. Ausstellung, Sept. 30–Oct. 18, 1907, cat. 86, as Geranium. Moscow, Zolotoe runo/Toison d’Or, Salon Zolotogo Runa: Salon de La Toison d’Or, Apr. 18–May 24, 1908, no cat. Probably Berlin, Paul Cassirer, V.….",
+    "description": "In this 1906 still life, Matisse turns a familiar arrangement into an Arcadian scene, using the brilliant color, thick paint, and rapid brushwork associated with the Fauves, whose leader he was recognized as being. Contrasts shape the composition: light, pale handling above meets a darker, more heavily painted lower half, while red vegetables sit beside ceramics from distant places. Matisse also includes two of his modeled figures, rendered with spare color and simple lines; probably shown as plaster casts, they were later issued in bronze.",
+    "descriptionTranslations": {
+      "ja": "1906年の本作でマティスは、ありふれた静物を人物のいる牧歌的な風景へと変えています。鮮烈な色彩、厚塗り、素早い筆致には、彼が指導者と認められたフォーヴィスムの特徴が表れます。上半分の淡い色調と軽やかな筆遣いは、下半分の暗く厚塗りされた部分と対照をなし、赤い野菜は遠方の土地に由来する陶器と並びます。ゼラニウムの左右には、簡潔な線と限られた色で描かれた自作の人物像も置かれています。石膏像として表されたと考えられ、のちにブロンズでも制作されました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/87045",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/87045",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-65916": {
     "description": "Painted in Berlin in 1913, on the eve of World War I, Movement reflects Marsden Hartley’s stronger attraction to German Expressionism than to French modernism. Its turbulent energy evokes both the vitality of modern Berlin and musical motion. Like Vasily Kandinsky, Hartley sought to bring painting closer to music, valuing its freedom from narrative and its capacity to suggest a spiritual realm beyond material reality.",
@@ -1550,13 +1578,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-81564": {
-    "description": "Eastman Johnson painted this composition in 1876, 100 years after the founding of the United States. The centennial fostered a sense of nostalgia among some residents as industrialization and urban growth rapidly transformed the nation. Husking Bee, Island of Nantucket depicts a seasonal gathering on the rural Massachusetts island. Community members work together to shuck corn and ready the harvest, a traditional activity that was far removed from daily life for many in the late 19th century. Johnson employed a warm palette and loose brushwork to describe this agrarian subject, presenting an uncomplicated vision of cooperation and closeness to the land.\n\nCatalogue information\nRecorded artist or maker: Eastman Johnson (American, 1824–1906). Date: 1876. Materials and technique: Oil on canvas. Artistic style or school: Realism. Place of creation: Nantucket Island. Classification: painting. Physical dimensions: 69.6 × 138.2 cm (27 3/8 × 54 3/8 in.). Museum catalogue subjects: landscapes, animals. Museum credit line: Gift of Honoré and Potter Palmer. Recorded ownership history (excerpt): Eastman Johnson, New York, Jan-Feb. 1876 [lent to National Academy of Design 1876]. Napoleon Sarony (1821–1896), New York, by May 1878 [lent to Paris Exposition Universelle International 1878 and Chicago Inter–State Industrial Exposition 1882]. Potter (1826–1902) and Bertha Palmer (1849–1918; born Bertha Honoré, also Mrs. Potter Palmer), Chicago, 1889; by descent to his wife…. Exhibition record (excerpt): New York, National Academy of Design, Fifty-First Annual Exhibition , Mar. 28–May 31, 1876, cat. 285. Philadelphia, Memorial Hall and Art Annex, Centennial International Exhibition , May 10–Nov. 10, 1876, cat. 249e, as The Husking Bee (organized by United States Centennial….",
+    "description": "Painted in 1876, during the United States centennial, Eastman Johnson’s scene shows a seasonal community gathering on Nantucket, where people work together to husk corn and prepare the harvest. The rural activity had become increasingly distant from everyday life amid late-nineteenth-century industrialization and urban growth. Johnson uses a warm palette and loose brushwork to present this agrarian subject as a vision of cooperation and closeness to the land.",
+    "descriptionTranslations": {
+      "ja": "1876年、アメリカ合衆国建国百周年の年に描かれた本作は、ナンタケット島で人々が集まり、協力してトウモロコシの皮をむき、収穫の準備をする季節の営みを表しています。工業化と都市の拡大が進む19世紀後半には、こうした農村の共同作業は多くの人の日常から遠ざかっていました。ジョンソンは温かみのある色調と軽やかな筆致で、土地に根ざした協力の情景を描き出しています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/81564",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/81564",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-4081": {
     "description": "Giovanni Battista Moroni, a leading portraitist in the realist tradition of northern Italy’s Lombardy region, painted this likeness of Gian Lodovico Madruzzo in 1551–52. He also portrayed Madruzzo’s brother, Gian Federico, during the Council of Trent, convened to address challenges to the Catholic Church from the Protestant Reformation. In 1567, Gian Lodovico succeeded his uncle as prince-bishop and ruler of Trent.",
@@ -1920,13 +1952,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-86421": {
-    "description": "Copperplate printing reached England via Ireland and then found its way to France, where one of the country’s most important printing centers was established at Jouy-en-Josas by Christopher-Philippe Oberkampf in 1760. Jean-Baptiste Huet trained as a painter and was chief designer at the Jouy-en-Josas Manufactory for twenty-eight years. His chinoiserie scene presents a theme that fascinated Europeans, particularly during the eighteenth century. Entire rooms in palaces and hotels were decorated with furniture, porcelain, metal, lacquerwork, and fabrics, all conceived as whimsical, highly westernized versions of Far Eastern forms, designs, and motifs. Many a European garden encompassed a latticed teahouse or pagoda not unlike those pictured here. Panels such as this, with their large-scale repeats, would have been used on chairs and sofas, as well as to cover vast expanses of wall.\n\nCatalogue information\nRecorded artist or maker: Designed by Jean Baptiste Huet (French, 1745–1811) after Jean Baptiste Pillement (French, 1728-1808) Jouy-en-Josas or Nantes, France. Date: c. 1786. Materials and technique: Linen, plain weave; copperplate printed. Place of creation: Jouy-en-Josas. Classification: textile. Physical dimensions: 274 × 99.1 cm (107 7/8 × 39 in.); Warp repeat: H.: 92.2 cm (36 1/4 in.). Museum catalogue subjects: figures (representations), women, men, umbrellas, boats, tents, birds. Museum credit line: Gift of Robert Allerton. Exhibition record (excerpt): New York, Metropolitam Museum of Art, Retrospective Exhibitions of Painted and Printed Fabrics, May 16- Sept.11, 1927. Art Institute of Chicago, Masterpieces of Western Textiles, Jan. 25–Mar. 2, 1969, cat. Art Institute of Chicago, Selected Works of Eighteenth Century French Art….",
+    "description": "Designed by Jean-Baptiste Huet after Jean-Baptiste Pillement, this linen furnishing panel was copperplate-printed around 1786 at Jouy-en-Josas or Nantes. Its chinoiserie scene reflects the eighteenth-century European taste for fanciful, Westernized visions of East Asian forms and motifs, also seen in palace interiors and garden teahouses. The large-scale repeat suited the covering of chairs, sofas, or broad wall surfaces.",
+    "descriptionTranslations": {
+      "ja": "ジャン＝バティスト・ピルマンの意匠をもとに、ジャン＝バティスト・ユエがデザインした、1786年頃のリネン製室内装飾布。銅版印刷による中国趣味の情景には、東アジアの意匠を西洋風に再構成した、18世紀ヨーロッパの流行が表れています。大きな反復模様は、椅子やソファの張地、広い壁面の装飾に用いることを想定したものでした。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/86421",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/86421",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-157056": {
     "description": "Julia Margaret Cameron made this albumen print of her niece Julia Jackson in April 1867, after Jackson’s marriage to Herbert Duckworth. Jackson, celebrated for her beauty, was a frequent subject for Cameron, who often staged women as literary or mythological figures; Jackson was unusual in posing as herself. Cameron’s portraits of her niece explored shifting qualities, and this image was described as conveying Jackson’s mature beauty and strength.",
@@ -2094,13 +2130,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-80499": {
-    "description": "Cecilia Beaux explored the line between portraiture and figure painting in Dorothea and Francesca , which focuses less on the individuality of the sitters and more on their coordinated movements. The composition features two children of Beaux’s friends Helena de Kay and Richard Watson Gilder, a prominent couple in New York’s cultural scene. A double portrait of the daughters engaged in a dancing lesson, the work visually evokes the transition from girlhood to adolescence. A female artist competing for portrait commissions in the male-dominated art market of the turn of the 20th century, Beaux fared exceedingly well. She was also an influential teacher, becoming the first woman to secure a faculty position at the Pennsylvania Academy of the Fine Arts.\n\nCatalogue information\nRecorded artist or maker: Cecilia Beaux (American, 1855–1942). Date: 1898. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: Massachusetts. Classification: painting. Physical dimensions: 203.5 × 116.8 cm (80 1/8 × 46 in.). Museum catalogue subjects: fashion, dancers, families, portraits, children, people. Museum credit line: A. A. Munger Collection. Recorded ownership history (excerpt): Cecilia Beaux, New York, and Gloucester, MA, from 1898 to 1922; the Art Institute of Chicago, 1922.. Exhibition record (excerpt): New York, National Academy of Design, Loan Exhibition of Portraits , Dec. 14, 1898–Jan. 14, 1899, cat. 24, as Dorothea and Francesca . Philadelphia, Pennsylvania Academy of the Fine Arts, Sixty–Eighth Annual Exhibition , Jan. 16–Feb. 25, 1899, cat. 92, as Dorothea and Francesca….",
+    "description": "In this 1898 oil painting, Cecilia Beaux portrays Dorothea and Francesca, the daughters of her friends Helena de Kay and Richard Watson Gilder, during a dancing lesson. Rather than emphasizing each child’s individuality, the double portrait draws attention to their coordinated movements and evokes the passage from girlhood to adolescence. Beaux explored the boundary between portraiture and figure painting while building a successful career in the male-dominated portrait market of her time.",
+    "descriptionTranslations": {
+      "ja": "セシリア・ボーは1898年、友人ヘレナ・デ・ケイとリチャード・ワトソン・ギルダーの娘、ドロシアとフランチェスカを、踊りの稽古に取り組む姿で描いた。二人の個性を前面に出すより、動きのそろった様子に焦点を当て、肖像画と人物画の境界を探っている。少女期から思春期への移り変わりも感じさせる作品である。油彩、カンヴァス。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/80499",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/80499",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-55494": {
     "description": "A young woman looks toward burgeoning peach blossoms, joining a scene of leisure to the signs of early spring. Homer’s recurring rural setting evokes nostalgia for a past in decline, while the blossoms may also suggest the woman’s youth. The lighter palette, associated with Impressionism, and the tree’s linear treatment, reminiscent of Japanese calligraphy, connect the 1878 oil painting to French and Japanese art and to wider artistic exchange.",
@@ -2411,13 +2451,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-81552": {
-    "description": "By the 1880s, Camille Pissarro, like most of his Impressionist colleagues, sought an alternative to the style he had employed over the previous decade, deciding to focus on figures rather than landscapes. Of the 36 paintings he showed at the seventh Impressionist exhibition, in the spring of 1882, 27 were figural. Woman and Child at the Well is one of a series of works depicting peasant girls taking a break from their chores, their poses and gestures suggesting narratives that remain ambiguous. As the model for the boy in this composition, Pissarro used his fourth son, Ludovic-Rodolphe, who was four years old at the time.\n\nCatalogue information\nRecorded artist or maker: Camille Pissarro (French, 1830–1903). Date: 1882. Materials and technique: Oil on canvas. Artistic style or school: Post-Impressionism. Place of creation: France. Classification: painting. Physical dimensions: 81.5 × 66.4 cm (32 1/8 × 26 1/8 in.); Framed: 98.5 × 81.6 × 6.1 cm (38 3/4 × 32 1/8 × 2 3/8 in.). Museum catalogue subjects: woman with children, woman, woman, house, figures, buildings, nature. Museum credit line: Potter Palmer Collection. Recorded ownership history (excerpt): The artist (d. 1903); sold to Durand-Ruel, Paris, August 5, 1882 [this and the five following per Pissarro and Snollaerts 2005]. Durand-Ruel, New York, by August 5, 1882; sold to William Loring Andrews, New York, February 27, 1888; sold back to Durand-Ruel, New York, May 21, 1891; sold to Cyrus J. Lawrence, New York, December 19, 1891; sold back to Durand-Ruel, New York…. Exhibition record (excerpt): Tours, Société des Amis des Arts de la Touraine, [paintings lent by Durand-Ruel], [Sept.–Oct.], 1882, no cat. found. Paris, 9, boulevard de la Madeleine, Oeuvres de C. Pissarro, May 1–25, 1883, cat. 10, as Le Puits. Possibly New York, American Art Galleries, Works in Oil and….",
+    "description": "In 1882, Camille Pissarro turned increasingly from landscapes toward figures; 27 of the 36 paintings he exhibited that spring were figure subjects. Woman and Child at the Well belongs to a series of peasant girls resting from their chores, with poses and gestures that leave their stories unresolved. The boy was modeled by Pissarro’s fourth son, Ludovic-Rodolphe, then four years old. Painted in oil on canvas, the work reflects the artist’s shift in focus during the 1880s.",
+    "descriptionTranslations": {
+      "ja": "1880年代、カミーユ・ピサロは風景画から人物画へと関心を移し、1882年春の第7回印象派展では出品作36点のうち27点が人物を主題としていました。本作は、家事の手を休める農民の娘を描いた連作の一作です。人物の姿勢や身振りは物語をほのめかしながらも、その内容を明らかにしません。少年のモデルは、当時4歳だったピサロの四男リュドヴィック＝ロドルフです。油彩、カンヴァス。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/81552",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/81552",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-7503": {
     "description": "George Hitchcock recasts the Annunciation as a Dutch peasant girl standing among lilies in a field. The flower traditionally symbolizes the angel Gabriel; the girl’s lowered gaze and modest posture suggest that she has received his divine message. Painted in oil in 1887, the work’s religious subject, unconventional composition, and attention to sunlight and shadow reflect influences of the Pre-Raphaelites, Symbolists, and Impressionists. Hitchcock spent much of his life in Holland.",
@@ -2485,13 +2529,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-81548": {
-    "description": "In the 1880s, at a time when many of the original Impressionist painters had begun to pursue independent styles, Camille Pissarro actively worked to keep the group together. He persuaded Gustave Caillebotte and Claude Monet to take part in the seventh Impressionist exhibition, in 1882, and also displayed a number of his own paintings of peasant girls. Here the small brushstrokes, applied one next to the other and sometimes overlaid with dabs of thicker paint, result in an irregularly built-up surface, serving to integrate figure and setting and evoke the textures of the young woman’s wool clothing.\n\nCatalogue information\nRecorded artist or maker: Camille Pissarro (French, 1830–1903). Date: 1881. Materials and technique: Oil on canvas. Artistic style or school: Post-Impressionism. Place of creation: France. Classification: painting. Physical dimensions: 65.3 × 54.8 cm (25 11/16 × 21 9/16 in.); Framed: 87.4 × 77.5 × 7.4 cm (34 3/8 × 30 1/2 × 2 7/8 in.). Museum catalogue subjects: women, woman, coffee, woman, interior, cup, peasants. Museum credit line: Potter Palmer Collection. Recorded ownership history (excerpt): The artist (d. 1903); sold to Durand-Ruel, Paris, December 19, 1881 [this and the two following per Pissarro and Snollaerts 2005]; sold to Georges Petit, Paris, August 9, 1883; sold back to Durand-Ruel, Paris, April 17, 1891, for 1,000 francs; sold to Potter Palmer (d. 1902), Chicago, April 29, 1892, for 3,000 francs [per Durand-Ruel Archives, Paris stock no. 912, as Le Café…. Exhibition record (excerpt): Paris, 251, rue Saint-Honoré, Salons du Panorama de Reischoffen, 7me exposition des artistes indépendants [Seventh impressionist exhibition], Mar. 1–31, 1882, cat. 111, as Jeune paysanne prenant son café. London, Dowdeswell and Dowdeswell, Paintings, Drawings and Pastels by….",
+    "description": "Painted in 1881, this oil on canvas depicts a young peasant woman having coffee. Pissarro builds the image with small, adjacent brushstrokes, sometimes layering thicker dabs of paint; their uneven surface brings figure and setting together while suggesting the texture of her wool clothing. The work belongs to a period when Pissarro sought to sustain the Impressionist group, and he showed paintings of peasant girls at its 1882 exhibition.",
+    "descriptionTranslations": {
+      "ja": "1881年制作の油彩画で、若い農民の女性がコーヒーを飲む姿を描いている。ピサロは細かな筆触を隣り合わせに置き、ときに厚みのある絵具を重ねて、不均一な表面をつくり、人物と周囲を結びつけるとともに、女性の毛織物の質感を表した。印象派の画家たちがそれぞれ独自の道を探り始めた時期、ピサロはグループの維持に努め、1882年の展覧会には農民の娘を描いた作品を出品した。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/81548",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/81548",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-12888": {
     "description": "In this 1891 portrait, Georges Lemmen depicts his sister, Julie Fréderique Lemmen, in a likeness that joins a demure pose with what the artist’s daughter called Julie’s “biting personality.” The Belgian artist used Pointillism, building forms from uniform dots or dabs of color—a systematic method rarely applied to portraits. Lemmen had adopted the technique after seeing Georges Seurat’s *A Sunday on La Grande Jatte—1884* in Brussels in 1887.",
@@ -2572,13 +2620,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-8360": {
-    "description": "Completed early in Paul Gauguin’s first Tahitian sojourn, this landscape shows the artist grappling with representing an unfamiliar environment. Rather than documenting botanical species scientifically, Gauguin focused on the artistic potential of their variegated colors, textures, and forms. The human figure in the distance and the dog roaming through fallen branches activate the landscape and establish a sense of scale. This is one of thirty-five works that comprise the Winterbotham Collection. Click here to learn more about the collection.\n\nCatalogue information\nRecorded artist or maker: Paul Gauguin (French, 1848–1903). Date: 1892. Materials and technique: Oil on canvas. Artistic style or school: Post-Impressionism. Place of creation: France. Classification: oil on canvas. Physical dimensions: 68 × 90.7 cm (26 3/4 × 35 11/16 in.); Framed: 86.4 × 109.3 × 8.9 cm (34 × 43 × 3 1/2 in.). Museum catalogue subjects: landscapes, beach, building, buildings, figure, figures, foliage. Museum credit line: Joseph Winterbotham Collection. Recorded ownership history (excerpt): Marius de Zayas, New York; sold his sale, The Anderson Galleries, New York, March 23–24, 1923, lot 83 for $3,000 to the Art Institute [price according to an annotated copy of the sale catalogue in the Ryerson Library, Art Institute]; purchased by the Art Institute with funds provided by Joseph Winterbotham for the Joseph Winterbotham Collection, 1923.. Exhibition record (excerpt): New York, Metropolitan Museum of Art, Loan Exhibition of Impressionist and Post-Impressionist Paintings, May 3–September 15, 1921, cat. 50. Minneapolis Institute of Arts, An Exhibition of Modern French Paintings, November 1921, cat. 9. Art Institute of Chicago, A Century of….",
+    "description": "Painted during Paul Gauguin’s first stay in Tahiti in 1892, this landscape reflects his effort to depict an unfamiliar environment. Instead of treating its plants as botanical specimens, he explored their varied colors, textures, and forms. A distant human figure and a dog moving among fallen branches animate the scene and give the landscape a sense of scale.",
+    "descriptionTranslations": {
+      "ja": "1892年、初めてタヒチに滞在していた時期に描かれた風景画。ゴーギャンは、見慣れない土地の植物を科学的に記録するのではなく、その多彩な色や質感、形に造形的な可能性を見いだした。遠景の人物と、折れた枝の間を歩く犬が、風景に動きを与えるとともに、その広がりを感じさせている。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/8360",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/8360",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-151507": {
     "description": "In the 1890s, Degas made several groups of landscapes, combining observation with invention. This work pairs pastel with monotype, a print made by drawing or painting in greasy ink on a metal plate and transferring it to paper; Degas pioneered the technique in the 1870s. The landscape may be a recollection, and, unlike Monet’s interest in shifting atmospheric effects, Degas’s remembered landscapes are described as brooding and mysterious.",
@@ -2594,13 +2646,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-81533": {
-    "description": "This freely executed painting captures the thrilling conclusion of a horse race at Longchamp, located at the Bois de Boulogne on the western edge of Paris. Here, Édouard Manet radically departed from conventional representations of the sport, in which races were shown from the side with the horses in profile. Instead, the competitors gallop thunderously toward the viewer, raising a cloud of turf, their pace underlined by the sweeping diagonals of the racetrack fences. In France, horse racing became an important form of popular entertainment during the nineteenth century. Imported from England, the racetrack—with its speed, spectacle, and luxury—was a quintessentially modern space. In Manet’s painting, a throng of fashionably dressed men and women press against the fences to witness the event—one man, at the upper left, uses binoculars to better observe the race. Unlike his friend Edgar Degas , for whom the racetrack was a constant source of inspiration, Manet produced only two paintings on the theme. Originally a much larger composition, this canvas was cut down to its present scale by the artist.\n\nCatalogue information\nRecorded artist or maker: Édouard Manet (French, 1832–1883). Date: 1866. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: oil on canvas. Physical dimensions: 44 × 84.2 cm (17 5/16 × 33 1/8 in.); Framed: 69.6 × 109.9 × 10.2 cm (27 3/8 × 43 1/4 × 4 in.). Museum catalogue subjects: horses, animals, Competition, clouds, landscape, race, women. Museum credit line: Potter Palmer Collection. Recorded ownership history (excerpt): The artist; sold to Emile Théodore Delius, Paris, 1877, for 1,000 francs [per see Copie faite pour E. Moreau-Nélaton de documents sur Manet appartenant à Léon Leenhoff vers 1910, Bibliothèque nationale de France, Estampes et photographie, RESERVE 8-YB3-2401, p. 76]; sold to Durand-Ruel, Paris, June 1, 1896, for 3,000 francs [this and the following per Durand-Ruel, Paris, stock…. Exhibition record (excerpt): Paris, Ecole Nationale des Beaux-Arts, Exposition des Oeuvres de Edouard Manet, January 1884, cat. 61. New York, Durand-Ruel Galleries, Exposition of Paintings by Edouard Manet, 1895, cat. 27. The Art Institute of Chicago, A Century of Progress: Exhibition Painting and….",
+    "description": "In this freely handled oil painting of 1866, Édouard Manet depicts the finish of a horse race at Longchamp, in Paris’s Bois de Boulogne. Rather than show the horses in profile, as was customary, he sends them charging toward the viewer through a cloud of turf; the track fences’ sweeping diagonals emphasize their speed. Fashionably dressed spectators crowd the rails, including a man using binoculars. Horse racing had become popular entertainment in nineteenth-century France, and its racetracks embodied modern spectacle and luxury. Manet later cut this canvas down from a much larger composition.",
+    "descriptionTranslations": {
+      "ja": "1866年のこの油彩画で、エドゥアール・マネはパリ西部のブローニュの森にあるロンシャン競馬場で、競走の決着を描いています。馬を横から捉える従来の表現とは異なり、馬群は芝を巻き上げながら鑑賞者へ向かって駆け込み、柵の大きな斜線が疾走感を強めます。柵際には流行の装いの観客が集い、左上には双眼鏡でレースを見る男性もいます。19世紀フランスで競馬は人気の娯楽となり、競馬場は速度と華やかさを備えた近代的な空間でした。画面は当初より大きく、のちにマネ自身が切り詰めました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/81533",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/81533",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-68792": {
     "description": "In this dramatic seascape, George Inness uses rough, energetic brushwork to convey the ocean’s beauty and destructive force. Patches of orange and white light in the sky outline ships and a distant town; shifts in texture and shading distinguish wet from dry rock and sunlit from shadowed surfaces. Made during his European travels in the early 1870s, the painting is now believed to depict Porto d’Anzio, Italy, rather than Étretat, France. Its intimate treatment of rocks and spray reflects the Barbizon School landscape approach he studied there.",
@@ -2916,13 +2972,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-864": {
-    "description": "In this portrait from relatively early in his career, Quentin Massys followed stylistic conventions that appealed to Antwerp’s growing market of patrons while also exhibiting the bold innovations that ultimately made him one of city’s most influential painters. The sitter appears frozen in a somewhat unnatural pose, as was the fashion for half-length portraits at the time, and the positioning of his left hand on the painting’s lower edge recalls the spatial illusionism found in portraits by Netherlandish artists of the previous generation. However, the subtle modeling of the face conveys a strong sense of the sitter’s individual character at a time when such works tended to idealize their subjects. The pink, or carnation, held by the sitter could symbolize marriage or Jesus Christ’s incarnation.\n\nCatalogue information\nRecorded artist or maker: Quentin Massys (Netherlandish, 1466-1530). Date: 1500–10. Materials and technique: Oil on panel. Artistic style or school: 16th Century. Place of creation: Netherlands. Classification: oil on panel. Physical dimensions: 43.8 × 29.2 cm (17 1/4 × 11 1/2 in.); Framed: 51.8 × 36.9 × 4.5 cm (20 3/8 × 14 1/2 × 1 3/4 in.). Museum catalogue subjects: Century of Progress, flowers, man, portrait, portraits, portraits: male subject, world's fairs. Museum credit line: Gift of John J. Glessner. Recorded ownership history (excerpt): Possibly Colonna di Sciarra collection, Rome [according to catalogue of the 1881 Beurnonville sale]. Étienne-Edmond Martin, 2nd baron de Beurnonville, Paris; sold, Pillet, Paris, May 9–16, 1881, no. 323, as Holbein, to Brame for 14,000 fr. [according to annotated sale catalogue in the Bibliothèque Nationale, Paris]. Ernest May, Paris; sold, Galerie Georges Petit, Paris, June…. Exhibition record (excerpt): New York, Kleinberger, Loan Exhibition of Flemish Primitives, 1929, no. 48. Antwerp, Exposition d’art flamand ancien, 1930, no. 197. Art Institute of Chicago, A Century of Progress, 1933, no. 45. Art Institute of Chicago, A Century of Progress, 1934, no. 122. New York, Knoedler….",
+    "description": "Quentin Massys painted this half-length portrait in oil on panel around 1500–10, early in his career, for a period when Antwerp’s growing body of patrons favored established portrait conventions. The sitter’s pose is deliberately stiff, and his left hand rests against the lower edge, creating a spatial effect associated with earlier Netherlandish portraits. Yet subtle modeling gives the face a distinct individuality rather than idealizing it. The carnation he holds may signify marriage or the Incarnation of Jesus Christ.",
+    "descriptionTranslations": {
+      "ja": "クエンティン・マサイスがキャリア初期の1500〜10年頃に板に油彩で描いた、半身像の男性肖像です。当時のアントウェルペンで好まれた肖像画の慣習に沿い、人物はやや硬い姿勢で表され、左手は画面下端に置かれています。その手の配置は、前世代のネーデルラント絵画に見られる空間表現を想起させます。一方、顔には繊細な陰影が施され、理想化ではなく個人の特徴が伝わります。手にしたカーネーションは、結婚またはキリストの受肉を象徴する可能性があります。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/864",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/864",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-69003": {
     "description": "In this self-portrait, Nicolas de Largillière presents himself as fashionably dressed and self-assured, poised as a master of his art. With a porte-crayon—a holder for chalk—he appears ready to begin a painting, while a blank canvas stands behind him. One of the artist’s many self-portraits, the oil on canvas dates to about 1725, during a period when his popularity continued after the death of Louis XIV.",
@@ -2986,13 +3046,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-88632": {
-    "description": "Following his father’s death in 1757, the young Jacques-Louis David was raised in the house of his uncle, architect François Buron, and his wife, Marie-Josèphe Fromont. Madame Buron was particularly supportive of David’s desire to become a painter, in opposition to her husband’s wish that he study architecture. In this intimate early portrait, David presented his aunt looking up momentarily from her reading to acknowledge the viewer with a warm reserve. Her glance suggests an affectionate bond between the painter and sitter and displays the ambitious young artist’s awareness of contemporary conventions for depicting middle-class women of sensibility.\n\nCatalogue information\nRecorded artist or maker: Jacques-Louis David (French, 1748–1825). Date: 1769. Materials and technique: Oil on canvas. Artistic style or school: 18th Century. Place of creation: France. Classification: oil on canvas. Physical dimensions: 66.3 × 55.5 cm (26 1/8 × 21 7/8 in.); Framed: 92.4 × 81.6 × 10.2 cm (36 3/8 × 32 1/8 × 4 in.). Museum catalogue subjects: portraits: female subject, book, dresses, France, French, portrait, portraits. Museum credit line: Purchased with funds provided by Mrs. Albert J. Beveridge in memory of her mother, Abby Louise Spencer (Mrs. Augustus Eddy).. Recorded ownership history (excerpt): Probably in the sitter’s possession [for the descent of this portrait and the companion portrait of François Buron, see Schnapper in Paris 1989-90, p. 44, under no. 2]; probably by descent to her daughter, Marie Françoise Buron, who married François Charles Seigneur; probably by descent to their daughter, Alexandrine Marie Louise, who married Charles François Baudry; probably…. Exhibition record (excerpt): Paris, Palais des Beaux-Arts de la Ville de Paris (Petit Palais), David et ses éleves, 1913, cat. no. 2. New York, Wildenstein and Co., Fashion in Headdress, 1450-1943, 1943, no. 53. Toledo, The Toledo Museum of Art, The Spirit of Modern France: An Essay on Painting in Society….",
+    "description": "In this early portrait, David depicts his aunt, Marie-Josèphe Fromont, wife of architect François Buron, who helped raise him after his father’s death and encouraged his ambition to paint. Shown pausing her reading to look toward the viewer, she meets us with a warm yet reserved expression. Painted in oil on canvas in France in 1769, the work reflects David’s engagement with contemporary conventions for portraying middle-class women.",
+    "descriptionTranslations": {
+      "ja": "1769年、フランスで制作された油彩画。父の死後、建築家フランソワ・ビュロン夫妻の家で育ったダヴィッドにとって、妻マリー＝ジョゼフ・フロモンは画家になる志を支えてくれた叔母でした。読書の手を休めてこちらを見る彼女のまなざしには、温かさと慎みが感じられます。親密な肖像であると同時に、当時の中産階級女性の描写様式への若き画家の関心も示しています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/88632",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/88632",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-16600": {
     "description": "In this 1883 portrait, Pierre-Auguste Renoir depicts Lucie Berard, the youngest of his patron Paul-Antoine Berard’s four children, at age three. Her hands rest formally at her sides, without the toys or books seen in some of Renoir’s other children’s portraits. The white dress and subtle smile lend the moment a quiet, youthful character. Painted in oil on canvas in France, the work reflects Renoir’s celebrated attention to children’s expressions and belongs to the Impressionist style.",
@@ -3017,22 +3081,30 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-87760": {
-    "description": "As court painter to the electors of Saxony, Lucas Cranach the Elder developed a portrait style that catered to his patrons’ concern with dynastic continuity by emphasizing their princely status through careful depictions of their sumptuous garb and lavish jewelry. The artist’s attention to such details enabled the identification of this sitter: a signet ring in a companion portrait of her husband in the Philadelphia Museum of Art reveals her to be the Saxon princess Magdalena. A watercolor showing Magdalena in the same richly patterned dress suggests that Cranach made this portrait during his visit to Berlin around 1529.\n\nCatalogue information\nRecorded artist or maker: Lucas Cranach the Elder (German, 1472–1553). Date: c. 1529. Materials and technique: Oil on panel. Artistic style or school: 16th Century. Place of creation: Germany. Classification: oil on panel. Physical dimensions: 59.8 × 41.6 cm (23 9/16 × 16 3/8 in.); Framed: 69.3 × 50.8 × 5.8 cm (27 1/4 × 20 × 2 1/4 in.). Museum catalogue subjects: portraits: female subject, fashion, feathers, female, hats, jewelry, nobility. Museum credit line: Gift of Kate S. Buckingham. Recorded ownership history (excerpt): Gustav Fincke, Bamberg; sold, Bamberg, Sept. 11 or following, 1865, no. 8, to Buchner, Bamberg, with a portrait now identiable as the sitter’s husband Joachim II of Brandenburg [Frimmell 1891]; sold, Lepke, Berlin, June 3 or following, 1891, no. 831. Ament collection, Bamberg; sold, Bangel, Frankfurt, Apr. 9, 1894, no. 109. Alexis Schönlank, Berlin; sold, Lempertz, Cologne…. Exhibition record (excerpt): San Francisco Museum of Art, Paintings by Old Masters, 1920, no. 56, as Sibille of Cleves. Chicago, Lackritz Jewelers, 1952 (no cat.)..",
+    "description": "Lucas Cranach the Elder painted this portrait of Magdalena of Saxony, wife of Elector Joachim II of Brandenburg, around 1529, using oil on panel. As court painter to the electors of Saxony, Cranach fashioned portraits that underscored princely status through carefully rendered clothing and jewelry. A signet ring in a companion portrait of Joachim identifies the sitter; a watercolor showing Magdalena in the same patterned dress supports the proposed date and connection to Cranach’s visit to Berlin.",
+    "descriptionTranslations": {
+      "ja": "ルーカス・クラーナハ（父）は、選帝侯ヨアヒム2世の妻でザクセン公女のマグダレーナを、1529年頃、板に油彩で描きました。ザクセン選帝侯の宮廷画家として、豪華な衣装や宝飾品を丹念に描き、肖像に君主の身分を示しました。夫の肖像に描かれた印章付き指輪が女性の身元を明らかにし、同じ模様のドレスを着たマグダレーナを描く水彩画は、制作年代とクラーナハのベルリン滞在との関連を裏付けます。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/87760",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/87760",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-81576": {
-    "description": "This portrait shows Bertha Palmer holding the ivory gavel she used to preside over meetings of the Board of Lady Managers for the World’s Columbian Exposition, which opened in Chicago in 1893. The board, with Palmer as president, was responsible for organizing the Woman’s Building at the fair. Palmer requested Swedish portraitist Anders Zorn for this painting because his impressionistic style was in keeping with her taste as a collector, which was considered radical at the time. While organizing the Exposition, Palmer traveled through Europe acquiring Impressionist works, including several on view in this gallery.\n\nCatalogue information\nRecorded artist or maker: Anders Leonard Zorn (Swedish, 1860–1920). Date: 1893. Materials and technique: Oil on canvas. Artistic style or school: nineteenth century. Place of creation: Sweden. Classification: painting. Physical dimensions: 258 × 141.2 cm (101 5/8 × 55 5/8 in.); Framed: 266.1 × 149.6 × 10.2 cm (104 3/4 × 58 7/8 × 4 in.). Museum catalogue subjects: portraits: female subject, woman, window, wealth, portraits, portrait, pink (color). Museum credit line: Potter Palmer Collection. Recorded ownership history (excerpt): Commissioned by Mrs. Potter Palmer (died 1918), Chicago, 1893; by descent in the Palmer family; given to the Art Institute, 1922.. Exhibition record (excerpt): Sarasota, Fla., John and Mable Ringling Museum of Art, Palmer Family Collections, February 23-March 24, 1963. Mora, Sweden, Zorn Museum, Anders Zorn, June 1-August 20, 1989; Kiel, Germany, Kunsthalle zu Kiel, September 3-October 22, 1989; Copenhagen, Statens Museum for Kunst….",
+    "description": "Anders Zorn’s 1893 portrait depicts Bertha Palmer holding the ivory gavel she used to chair the Board of Lady Managers for Chicago’s World’s Columbian Exposition. As its president, Palmer led the board responsible for organizing the Woman’s Building. She requested Zorn, a Swedish portraitist, because his Impressionistic style suited her then-radical taste as a collector; while organizing the fair, she traveled in Europe and acquired Impressionist works.",
+    "descriptionTranslations": {
+      "ja": "アンダース・ゾーンが1893年に描いたベアタ・パーマーの肖像。彼女はシカゴ万国博覧会の婦人管理委員会を主宰した際に用いた象牙の槌を手にしている。委員長として、女性館の運営を担う同委員会を率いた。印象派作品の収集家として当時は先進的な趣味を持つパーマーは、その好みに合う印象派風の作風を理由に、スウェーデンの肖像画家ゾーンを指名した。博覧会の準備中にはヨーロッパを巡り、印象派の作品を購入した。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/81576",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/81576",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-11390": {
     "description": "The sitter’s identity is unknown, but her black dress and mourning veil mark her as an aristocratic widow. A prominent crucifix and the prayer book in her hand signal her piety. Nearly life-size, she is set against a dramatic black curtain, a format used for noble portraits across Europe around 1600. Jacopo da Empoli painted the work in oil on canvas at a time when Medici court artists and workshops helped spread an international style sought by princely and aristocratic patrons.",
@@ -3083,13 +3155,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-79586": {
-    "description": "Edgar Degas rarely accepted portrait commissions; his sitters were almost always family members or people within his social circle. The two women in this somber, unfinished painting were identified through preparatory drawings that label them as “Mme Lisle” (left) and “Mme Loubens” (right). Both were friends of artist Édouard Manet’s family; they likely met Degas at a gathering at Manet’s home. In an 1869 letter, artist Berthe Morisot lamented that Degas had abandoned her at one such soirée for the company of Madame Lisle and Madame Loubens, attesting to the group’s closeness.\n\nCatalogue information\nRecorded artist or maker: Edgar Degas (French, 1834–1917). Date: c. 1867. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: painting. Physical dimensions: 84 × 96.6 cm (33 1/16 × 38 in.); Framed: 101.6 × 115 × 8 cm (40 × 45 1/4 × 3 1/8 in.). Museum catalogue subjects: portraits: female subject, chair, curtains, dresses, flowers, France, French. Museum credit line: Gift of Annie Laurie Ryerson in memory of Joseph Turner Ryerson. Exhibition record (excerpt): Fort Worth Art Center, Inaugural Exhibiton, Oct. 8–31, 1954. New York, Wildenstein Gallery, Degas, April 5–May 7, 1960. Kunsthaus Zurich, Degas: The Portraits, December 2, 1994-March 5, 1995; Kunsthalle Tubingen March 18, 1995-June 18, 1995 [Zurich only]. Treviso, Museo di Santa….",
+    "description": "In this somber, unfinished portrait, Degas depicts two women identified in preparatory drawings as Mme Lisle, at left, and Mme Loubens, at right. He rarely accepted portrait commissions, and his sitters were generally relatives or members of his social circle. Both women were friends of Édouard Manet’s family and likely met Degas at a gathering in Manet’s home. Berthe Morisot’s 1869 letter recalling that Degas had left her at a soirée to join their company offers a glimpse of the group’s ties.",
+    "descriptionTranslations": {
+      "ja": "陰鬱な調子を帯び、未完成のまま残されたこの肖像画には、二人の女性が描かれている。準備素描の記載から、左がリスル夫人、右がルーベンス夫人と特定されている。肖像画の依頼を受けることが稀だったドガにとって、モデルは親族や社交上の知人がほとんどだった。二人はエドゥアール・マネの家族の友人で、マネ宅の集まりでドガと知り合った可能性が高い。ベルト・モリゾは1869年の手紙で、ある夜会でドガが自分を離れ、二人のもとへ行ったと記している。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/79586",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/79586",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-13551": {
     "description": "Made in 1857, when Degas was twenty-three, this etching shows a young artist already displaying a searching gaze and assured command of printmaking. Inspired by Rembrandt’s early graphic self-portraits, Degas uses a rich, individually wiped plate to build an atmosphere that gives the sitter a compelling presence. The handling anticipates his later work in monotype. Printed in black on ivory laid paper, the work belongs to the artist’s early years in France.",
@@ -3339,13 +3415,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-867": {
-    "description": "The versatile Flemish painter David Teniers turned to military paraphernalia as the subject of his still lifes in the mid-1640s, as the long conflict of the Thirty Years’ War was drawing to a close. Here soldiers play cards in the dim interior of a guardhouse, while a page carries the officers’ cloaks. However, the chief subject of the work is the pile of discarded armor, weaponry, and parade gear—a saddle, musket, powder horn, charging spanner, and gauntlets—in the immediate foreground. In treating armor as a still-life subject, Teniers followed the precedent of Jan Breughel the Elder, whose daughter he had married.\n\nCatalogue information\nRecorded artist or maker: David Teniers the Younger (Flemish, 1610-1690). Date: c. 1645. Materials and technique: Oil on canvas. Artistic style or school: 17th Century. Place of creation: Flanders. Classification: oil on canvas. Physical dimensions: 72.6 × 55.4 cm (28 9/16 × 21 13/16 in.); Framed: 87 × 69.9 × 5.1 cm (34 1/4 × 27 1/2 × 2 in.). Museum catalogue subjects: armor, youth, window, white (color), weapons, table, swords. Museum credit line: Charles L. Hutchinson Collection.",
+    "description": "Painted in Flanders around 1645, as the Thirty Years’ War was nearing its end, this oil depicts soldiers playing cards in a dim guardhouse while a page carries the officers’ cloaks. The foreground is dominated by discarded armor and military equipment, including a saddle, musket, powder horn, charging spanner, and gauntlets. Teniers made military gear the focus of a still life, following a precedent set by Jan Breughel the Elder, whose daughter he had married.",
+    "descriptionTranslations": {
+      "ja": "三十年戦争が終結に近づいた1645年頃、フランドルで描かれた油彩画。薄暗い詰所では兵士たちがカードに興じ、従者が士官たちの外套を運んでいる。手前には、鞍、マスケット銃、火薬入れ、火縄銃の装填具、籠手など、脱ぎ置かれた甲冑や軍装品が積まれ、画面の中心をなす。テニールスは義父にあたるヤン・ブリューゲル（父）の先例にならい、軍装品を静物画の主題として扱った。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/867",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/867",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-66042": {
     "description": "Painted in 1658, this still life pairs a flower garland by Adriaen van der Spelt with a blue curtain by Frans van Mieris. The garland includes about twenty kinds of flowers, among them a tulip, introduced to Europe from Persia in the sixteenth century. Rendered to look real, the curtain recalls both the practice of covering paintings for protection and the ancient story of the artist Parrhasius, who tricked a rival with a painted curtain. Collaborative works by Dutch artists of this period are rare, perhaps reflecting fierce competition in the region’s thriving art market.",
@@ -3570,8 +3650,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-80336": {
-    "description": "The Three Skulls is a work attributed in the Art Institute of Chicago catalogue to Paul Cezanne.\n\nCatalogue information\nRecorded artist or maker: Paul Cézanne French, 1839-1906. Date: 1902/06. Materials and technique: Watercolor, with graphite, on ivory wove paper. Place of creation: France. Classification: watercolor. Physical dimensions: 48 × 62.8 cm (18 15/16 × 24 3/4 in.). Museum credit line: Olivia Shaler Swan Memorial Collection. Recorded ownership history (excerpt): Ambroise Vollard (1867-1939), Paris [Venturi 1936; a letter from Walter Feilchenfeldt of April 19, 2002, in the curatorial file]; sold to Jacques Seligmann, Paris and New York, by 1933 [New York 1933 and Feilchenfeldt letter mentioned above]. Justin K. Thannhauser (1892-1976), Lucerne, by 1936 [Venturi 1936 and Feilchenfeldt letter]. Ambroise Vollard, to 1939 [Feilchenfeldt…. Exhibition record (excerpt): Buffalo, N.Y., Albright Gallery, \"The Nineteenth Century,\" November 1-30, 1932, cat. 69 (ill.). New York, Jacques Seligmann Gallery, \"Watercolors by Cézanne,\" November 16-December 7, 1933, cat. 3. Paris, Musée de l’Orangerie, \"De David à Toulouse Lautrec,\" 1955, cat. 57, pl. 71.….",
-    "descriptionKind": "metadata_summary"
+    "description": "Attributed in the Art Institute of Chicago’s catalogue to Paul Cézanne, *The Three Skulls* is dated 1902/06 and was made in France. The watercolor, with graphite, is on ivory wove paper and measures 48 × 62.8 cm. The catalogue records the work’s ownership by Ambroise Vollard and its sale to Jacques Seligmann by 1933; it was shown at Seligmann’s New York gallery that year in an exhibition of Cézanne watercolors.",
+    "descriptionTranslations": {
+      "ja": "シカゴ美術館のカタログでポール・セザンヌ作とされる《三つの頭蓋骨》は、1902～06年にフランスで制作された。象牙色の簀目紙にグラファイトを用いて水彩で描かれ、寸法は48×62.8センチ。カタログによれば、アンブロワーズ・ヴォラールが所蔵し、1933年までにジャック・セリグマンへ売却された。同年、ニューヨークのセリグマン画廊で開かれたセザンヌ水彩画展に出品された。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/80336",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-101509": {
     "description": "Attributed in the Art Institute of Chicago’s catalogue to Paul Cézanne, this watercolor with graphite on white wove paper dates to 1905/06, the final years of the artist’s life. The catalogue records its place of creation as France and its dimensions as 47.9 × 31.5 centimeters. It entered the museum as a gift from Janis H. Palmer, given in memory of Pauline K. Palmer.",
@@ -3782,8 +3871,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-81557": {
-    "description": "Seascape is a work attributed in the Art Institute of Chicago catalogue to Pierre-Auguste Renoir.\n\nCatalogue information\nRecorded artist or maker: Pierre-Auguste Renoir (French, 1841–1919). Date: 1879. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: painting. Physical dimensions: 72.6 × 91.6 cm (28 1/2 × 36 in.); Framed: 97.8 × 116.9 × 8 cm (38 1/2 × 46 × 3 1/8 in.). Museum catalogue subjects: weather/seasons, sea, blue, blue (color), green (color), waves, sky. Museum credit line: Potter Palmer Collection. Recorded ownership history (excerpt): Alphonse Legrand, Paris, by Feb. 21, 1890 [this and the following per Durand-Ruel, Paris, stock book for 1884–90 (no. 2637), as confirmed by Paul-Louis Durand-Ruel and Flavie Durand-Ruel, Durand-Ruel Archives, Oct. 5, 2010, curatorial object file]; sold to Durand-Ruel, Paris, Feb. 21, 1890; transferred to Durand-Ruel, New York, by April 19, 1892 [this and the following per the…. Exhibition record (excerpt): Possibly Paris, Durand-Ruel, Exposition A. Renoir, May 1892, cat. 100. Art Institute of Chicago, Paintings by Renoir, Feb. 3–Apr. 1, 1973, cat. 27 (ill.). Highland Park, Ill., Neison Harris, Mar. 7–May 21, 1975, no cat. Los Angeles County Museum of Art, A Day in the Country:….",
-    "descriptionKind": "metadata_summary"
+    "description": "Attributed in the Art Institute of Chicago catalogue to Pierre-Auguste Renoir, this 1879 painting is an oil on canvas made in France and associated with Impressionism. Its recorded subjects include the sea, waves, sky, and weather or seasons; blue and green are noted among its colors. The work measures 72.6 by 91.6 centimeters and is part of the Potter Palmer Collection.",
+    "descriptionTranslations": {
+      "ja": "本作は、シカゴ美術館のカタログでピエール＝オーギュスト・ルノワール作とされる、1879年制作の油彩画です。フランスで描かれ、印象派に分類されています。カタログには海、波、空、天候・季節が主題として記され、色彩として青と緑が挙げられています。画面の寸法は72.6×91.6センチで、ポッター・パーマー・コレクションに所蔵されています。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/81557",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-3015": {
     "description": "This small drawing, made in the Netherlands by an unidentified Dutch artist of the sixteenth century, depicts sailboats at sea. Brushwork in black ink and gray wash is layered over faint traces of graphite on ivory laid paper. The catalogue does not provide a date.",
@@ -3881,8 +3979,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionKind": "metadata_summary"
   },
   "aic-83583": {
-    "description": "Ships at Sea During Storm is a work attributed in the Art Institute of Chicago catalogue to Jules Dupré.\n\nCatalogue information\nRecorded artist or maker: Jules Dupré (French, 1811-1889) or possibly James McNeill Whistler (American, 1834-1903). Date: 1830/49. Materials and technique: Pen and black ink, with graphite, on ivory wove paper. Place of creation: France. Classification: pen and ink drawings. Physical dimensions: 21.9 × 27.7 cm (8 5/8 × 10 15/16 in.). Museum credit line: The Leonora Hall Gurley Memorial Collection.",
-    "descriptionKind": "metadata_summary"
+    "description": "This drawing depicts ships at sea during a storm. Made in France and dated 1830/49, it combines pen and black ink with graphite on ivory wove paper. The Art Institute of Chicago records Jules Dupré as the artist, while noting that the work may instead be by James McNeill Whistler.",
+    "descriptionTranslations": {
+      "ja": "嵐の海に浮かぶ船を描いたドローイング。フランスで制作され、1830/49年と記録されている。象牙色の簀目紙に、ペンによる黒インクと鉛筆を用いる。シカゴ美術館はジュール・デュプレ作として登録する一方、ジェームズ・マクニール・ホイッスラー作の可能性も示している。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/83583",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-79000": {
     "description": "Albrecht Altdorfer’s small engraving, made in Germany around 1520–25, is recorded as after a design by Peregrino da Casena. Printed in black on ivory laid paper, the image measures just 4.6 by 8.1 centimeters. The catalogue identifies its subject as the triumph of the sea-gods but provides no further description of the scene.",
@@ -3924,13 +4031,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-88304": {
-    "description": "As told on stage in the play Edo no Hana Mimasu Soga (Flower of Edo: An Ichikawa Saga), the tragic love affair of the monk Seigen and the Cherry Princess Sakura-hime ends with him being driven from his temple for breaking his vows of celibacy. He later dies alone and impoverished and then haunts the princess; in this print, his ghost is shown as a skeleton drawing close to a cowering woman. When this scene was performed, the actor playing the ghost wore a black costume with bones painted on it. Here, the skeleton bears the crest of the actor on his arm, helping to identify the performance as one held at the Nakamura Theater in Edo (now Tokyo) in 1783.\n\nCatalogue information\nRecorded artist or maker: Katsukawa Shunsho 勝川 春章 (Japanese, 1726-1792). Date: c.1783. Materials and technique: Color woodblock print; hosoban diptych. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: Right: 32.9 × 15 cm (12 15/16 × 5 7/8 in.); Left: 32.9 × 15.2 cm (12 15/16 × 6 in.). Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Frederick William Gookin (1853–1936), Chicago; by descent to his estate; sold to the Art Institute of Chicago, Mar. 29, 1938.Purchased by the Art Institue with funds from Kate S. Buckingham's estate from the estate of Frederick Gookin..",
+    "description": "Katsukawa Shunshō depicts a scene from the play *Edo no Hana Mimasu Soga*, in which the ghost of the monk Seigen approaches the cowering Cherry Princess Sakura-hime. Seigen appears as a skeleton, recalling the black costume painted with bones worn by the actor in performance; the crest on the skeleton’s arm identifies the production with Edo’s Nakamura Theater in 1783. This color woodblock-print diptych, made around that year, presents the actors Ichikawa Danjūrō V as Seigen and Iwai Hanshirō IV as Sakura-hime.",
+    "descriptionTranslations": {
+      "ja": "勝川春章は、芝居『江戸の花見ます曽我』の一場面を描く。誓いを破って寺を追われ、亡くなった僧清玄の亡霊が、怯える桜姫に迫る。清玄は骸骨の姿で表され、これは舞台で役者が骨を描いた黒衣装を着たことを想起させる。骸骨の腕にある役者の紋から、1783年に江戸の中村座で上演された場面とわかる。市川團十郎五代目が清玄、岩井半四郎四代目が桜姫を演じた、二枚続の彩色木版画である。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/88304",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/88304",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-4371": {
     "description": "Utagawa Hiroshige’s Hamamatsu belongs to his Fifty-three Stations of the Tokaido, also known as the Tokaido with Poem. Made in Japan around 1837–42, this small-format print measures 17.1 by 22.9 centimeters. It was produced as a color woodblock print in the chūban format; the catalogue records no further details about its imagery.",
@@ -4453,13 +4564,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-81539": {
-    "description": "Here Claude Monet’s future wife, Camille Doncieux, sits on an island in the Seine River, looking toward the hamlet of Gloton, next to the town of Bennecourt, from which she and Monet have presumably rowed. This is the only painting to survive from the brief period that the couple spent in Gloton, which the novelist Émile Zola recommended to Monet as a cheap rural retreat that was easily accessible from Paris. Pentimenti (visible traces of earlier painting beneath a layer or layers of paint) suggest that in an early stage of the painting, Camille held a bonneted child, presumably the couple’s baby, Jean.\n\nCatalogue information\nRecorded artist or maker: Claude Monet (French, 1840–1926). Date: 1868. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: painting. Physical dimensions: 81.5 × 100.7 cm (32 1/16 × 39 5/8 in.); Framed: 98.5 × 117.8 × 8 cm (38 3/4 × 46 3/8 × 3 1/8 in.). Museum catalogue subjects: landscapes, trees, reflections, house, hills, France, flowers. Museum credit line: Potter Palmer Collection. Recorded ownership history (excerpt): Louis Aimé Léon Clapisson, Neuilly-sur-Seine, by June 21, 1889, for 500 francs [per Galerie Georges Petit exhibition catalogue and Distel, Appendix II in Bailey, 1997]; sold to Durand-Ruel, Paris, April 21, 1892, for 1,500 francs [this and the following per Durand-Ruel, Paris, stock book for 1891 (no. 2127, as Argenteuil), as confirmed by Paul-Louis Durand-Ruel and Flavie…. Exhibition record (excerpt): Paris, Galerie Georges Petit, Claude Monet—A. Rodin, June 21–Sept. 21, 1889, cat. 7, as Au bord de l’eau; Bennecourt. 1868. Appartient à M. Clapisson. Boston, Copley Society, Loan Collection of Paintings by Claude Monet and Eleven Sculptures by Auguste Rodin, Mar. 1905, cat. 78….",
+    "description": "Claude Monet’s future wife, Camille Doncieux, sits on an island in the Seine, facing the hamlet of Gloton beside Bennecourt. She and Monet are thought to have rowed there from the village. The painting is the sole surviving work from the couple’s brief stay at Gloton, a rural retreat near Paris suggested to Monet by the novelist Émile Zola. Traces of revisions beneath the paint indicate that Camille may originally have been shown holding a bonneted child, presumed to be their baby, Jean.",
+    "descriptionTranslations": {
+      "ja": "セーヌ川の中州に座るカミーユ・ドンシューは、ベヌクール近くの集落グロトンを見つめています。彼女はモネの将来の妻で、二人は村から舟でここへ来たと考えられています。小説家エミール・ゾラがモネに勧めた、パリから行きやすいグロトンでの短い滞在を伝える、現存唯一の作品です。絵具の下に残る描き直しの痕跡から、当初のカミーユは、二人の子ジャンと思われる帽子をかぶった幼児を抱いていた可能性が示されています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/81539",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/81539",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-111295": {
     "description": "On March 9, 1819, Philadelphia’s Masonic Hall, built only eight years earlier, burned to the ground. Publisher-commissioned as the basis for a news print etched by John Hill, this oil on mahogany panel is Samuel Jones’s study of the fire’s devastation. John Lewis Krimmel was hired to develop the foreground figures for the print, but whether he contributed to the figures in this painting is unknown. Such depictions helped circulate news of sensational events and brought fine art to a wider audience.",

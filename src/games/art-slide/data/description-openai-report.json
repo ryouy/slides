@@ -1,12 +1,12 @@
 {
   "model": "gpt-6-luna",
   "recipeVersion": "openai-bilingual-v1",
-  "generatedAt": "2026-11-14T09:51:56.578947+00:00",
+  "generatedAt": "2026-11-14T09:53:57.920762+00:00",
   "totalArtworks": 404,
-  "processed": 250,
-  "remaining": 154,
-  "medianEnglishCharacters": 467.5,
-  "medianJapaneseCharacters": 186.0,
+  "processed": 275,
+  "remaining": 129,
+  "medianEnglishCharacters": 469,
+  "medianJapaneseCharacters": 186,
   "records": {
     "aic-102131": {
       "id": "aic-102131",
@@ -2256,6 +2256,231 @@
       "rawSourceCharacters": 2160,
       "englishCharacters": 504,
       "japaneseCharacters": 171,
+      "apiWarning": null
+    },
+    "aic-79586": {
+      "id": "aic-79586",
+      "title": "Portrait of Mme Lisle and Mme Loubens",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1423,
+      "englishCharacters": 498,
+      "japaneseCharacters": 213,
+      "apiWarning": null
+    },
+    "aic-80084": {
+      "id": "aic-80084",
+      "title": "The Crucifixion",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1885,
+      "englishCharacters": 384,
+      "japaneseCharacters": 165,
+      "apiWarning": null
+    },
+    "aic-80336": {
+      "id": "aic-80336",
+      "title": "The Three Skulls",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1167,
+      "englishCharacters": 414,
+      "japaneseCharacters": 183,
+      "apiWarning": null
+    },
+    "aic-80499": {
+      "id": "aic-80499",
+      "title": "Dorothea and Francesca",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1634,
+      "englishCharacters": 494,
+      "japaneseCharacters": 156,
+      "apiWarning": null
+    },
+    "aic-81533": {
+      "id": "aic-81533",
+      "title": "The Races at Longchamp",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2321,
+      "englishCharacters": 600,
+      "japaneseCharacters": 232,
+      "apiWarning": null
+    },
+    "aic-81539": {
+      "id": "aic-81539",
+      "title": "On the Bank of the Seine, Bennecourt",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1820,
+      "englishCharacters": 492,
+      "japaneseCharacters": 197,
+      "apiWarning": null
+    },
+    "aic-81548": {
+      "id": "aic-81548",
+      "title": "Young Peasant Having Her Coffee",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1816,
+      "englishCharacters": 441,
+      "japaneseCharacters": 179,
+      "apiWarning": null
+    },
+    "aic-81552": {
+      "id": "aic-81552",
+      "title": "Woman and Child at the Well",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1849,
+      "englishCharacters": 475,
+      "japaneseCharacters": 184,
+      "apiWarning": null
+    },
+    "aic-81557": {
+      "id": "aic-81557",
+      "title": "Seascape",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1314,
+      "englishCharacters": 373,
+      "japaneseCharacters": 166,
+      "apiWarning": null
+    },
+    "aic-81564": {
+      "id": "aic-81564",
+      "title": "Husking Bee, Island of Nantucket",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1784,
+      "englishCharacters": 463,
+      "japaneseCharacters": 178,
+      "apiWarning": null
+    },
+    "aic-81576": {
+      "id": "aic-81576",
+      "title": "Mrs. Potter Palmer",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1617,
+      "englishCharacters": 457,
+      "japaneseCharacters": 196,
+      "apiWarning": null
+    },
+    "aic-83583": {
+      "id": "aic-83583",
+      "title": "Ships at Sea During Storm",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 528,
+      "englishCharacters": 281,
+      "japaneseCharacters": 129,
+      "apiWarning": null
+    },
+    "aic-8360": {
+      "id": "aic-8360",
+      "title": "Te burao (The Hibiscus Tree)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1743,
+      "englishCharacters": 361,
+      "japaneseCharacters": 135,
+      "apiWarning": null
+    },
+    "aic-84709": {
+      "id": "aic-84709",
+      "title": "Still Life with Game Fowl",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2773,
+      "englishCharacters": 586,
+      "japaneseCharacters": 225,
+      "apiWarning": null
+    },
+    "aic-864": {
+      "id": "aic-864",
+      "title": "Portrait of a Man with a Pink",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2070,
+      "englishCharacters": 526,
+      "japaneseCharacters": 217,
+      "apiWarning": null
+    },
+    "aic-86421": {
+      "id": "aic-86421",
+      "title": "Panel (Furnishing Fabric)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1762,
+      "englishCharacters": 425,
+      "japaneseCharacters": 157,
+      "apiWarning": null
+    },
+    "aic-867": {
+      "id": "aic-867",
+      "title": "The Guardhouse",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1134,
+      "englishCharacters": 464,
+      "japaneseCharacters": 177,
+      "apiWarning": null
+    },
+    "aic-869": {
+      "id": "aic-869",
+      "title": "The Watermill with the Great Red Roof",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1662,
+      "englishCharacters": 444,
+      "japaneseCharacters": 206,
+      "apiWarning": null
+    },
+    "aic-87045": {
+      "id": "aic-87045",
+      "title": "Still Life with Geranium",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2536,
+      "englishCharacters": 546,
+      "japaneseCharacters": 224,
+      "apiWarning": null
+    },
+    "aic-87479": {
+      "id": "aic-87479",
+      "title": "The Assumption of the Virgin",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2519,
+      "englishCharacters": 584,
+      "japaneseCharacters": 228,
+      "apiWarning": null
+    },
+    "aic-87643": {
+      "id": "aic-87643",
+      "title": "The Two Disciples at the Tomb",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1683,
+      "englishCharacters": 609,
+      "japaneseCharacters": 230,
+      "apiWarning": null
+    },
+    "aic-87760": {
+      "id": "aic-87760",
+      "title": "Portrait of Magdalena of Saxony, Wife of Elector Joachim II of Brandenburg",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1725,
+      "englishCharacters": 502,
+      "japaneseCharacters": 188,
+      "apiWarning": null
+    },
+    "aic-88304": {
+      "id": "aic-88304",
+      "title": "Ichikawa Danjūrō V as a Skeleton, Spirit of the Renegade Monk Seigen, and Iwai Hanshirō IV as the Cherry Princess, in “Flower of Edo: An Ichikawa Saga” (Edo no Hana Mimasu Soga)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1381,
+      "englishCharacters": 516,
+      "japaneseCharacters": 182,
+      "apiWarning": null
+    },
+    "aic-88632": {
+      "id": "aic-88632",
+      "title": "Madame François Buron",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1994,
+      "englishCharacters": 437,
+      "japaneseCharacters": 172,
+      "apiWarning": null
+    },
+    "aic-88793": {
+      "id": "aic-88793",
+      "title": "Retable and Frontal of the Life of Christ and the Virgin",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2737,
+      "englishCharacters": 577,
+      "japaneseCharacters": 212,
       "apiWarning": null
     }
   },
