@@ -10,7 +10,7 @@ import { Page } from '../../../ui/Pages';
 import { ArtGameView } from '../components/ArtGameView';
 import { ARTWORKS, getArtwork, nextArtwork, pickRandomArtwork } from '../data';
 import { ART_LEVELS, type ArtLevel } from '../logic/board';
-import { GROUP_OPTIONS, SORT_OPTIONS, filterArtworks, groupArtworks, type GroupBy, type SortBy } from '../logic/gallery';
+import { GALLERY_COLUMN_OPTIONS, GROUP_OPTIONS, SORT_OPTIONS, filterArtworks, groupArtworks, type GalleryColumns, type GroupBy, type SortBy } from '../logic/gallery';
 import { dailyArtworkId, generateArtDaily, generateArtFree } from '../logic/generator';
 import { newArtGame, type ArtState } from '../logic/game';
 import { recordArtClear, useArtSave } from '../storage';
@@ -72,11 +72,17 @@ const slugId = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 export function ArtGallery() {
   const t = useT();
   const { data, update } = useArtSave();
-  const { groupBy, sortBy } = data.gallery;
+  const { groupBy, sortBy, columns, randomSeed } = data.gallery;
   const [query, setQuery] = useState('');
   const filtered = useMemo(() => filterArtworks(ARTWORKS, query), [query]);
-  const groups = useMemo(() => groupArtworks(filtered, groupBy, sortBy), [filtered, groupBy, sortBy]);
+  const groups = useMemo(() => groupArtworks(filtered, groupBy, sortBy, randomSeed), [filtered, groupBy, sortBy, randomSeed]);
   const setPrefs = (p: Partial<typeof data.gallery>) => update((d) => ({ ...d, gallery: { ...d.gallery, ...p } }));
+  const newRandomSeed = () => Math.floor(Math.random() * 0x100000000);
+  const chooseSort = (next: SortBy) => setPrefs(
+    next === 'random'
+      ? { sortBy: next, groupBy: 'none', randomSeed: newRandomSeed() }
+      : { sortBy: next },
+  );
   const groupLabel = (label: string) => (groupBy === 'theme' ? t(`theme.${label}` as Key) : groupBy === 'era' ? t(`era.${label}` as Key) : label);
   return (
     <div className="screen gallery-screen">
@@ -94,10 +100,34 @@ export function ArtGallery() {
             {GROUP_OPTIONS.map((o) => <option key={o.id} value={o.id}>{t(`group.${o.id}` as Key)}</option>)}
           </select>
         </label>
-        <label>
-          <span>{t('gal.sortBy')}</span>
-          <select aria-label={t('gal.sortBy')} data-testid="sort-by" value={sortBy} onChange={(e) => setPrefs({ sortBy: e.target.value as SortBy })}>
-            {SORT_OPTIONS.map((o) => <option key={o.id} value={o.id}>{t(`sort.${o.id}` as Key)}</option>)}
+        <div className="gal-sort-field">
+          <label>
+            <span>{t('gal.sortBy')}</span>
+            <select aria-label={t('gal.sortBy')} data-testid="sort-by" value={sortBy} onChange={(e) => chooseSort(e.target.value as SortBy)}>
+              {SORT_OPTIONS.map((o) => <option key={o.id} value={o.id}>{t(`sort.${o.id}` as Key)}</option>)}
+            </select>
+          </label>
+          {sortBy === 'random' && (
+            <button className="gal-reshuffle" data-testid="gal-reshuffle" type="button"
+              aria-label={t('gal.reshuffle')} title={t('gal.reshuffle')}
+              onClick={() => setPrefs({ randomSeed: newRandomSeed() })}>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M20 7v5h-5M4 17v-5h5" />
+                <path d="M5.9 9A7.3 7.3 0 0 1 19.6 12M18.1 15A7.3 7.3 0 0 1 4.4 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+        <label className="gal-columns-field">
+          <span>{t('gal.columns')}</span>
+          <select aria-label={t('gal.columns')} data-testid="gal-columns" value={String(columns)}
+            onChange={(e) => {
+              const value = e.target.value === 'auto' ? 'auto' : Number(e.target.value);
+              if (GALLERY_COLUMN_OPTIONS.includes(value as GalleryColumns)) setPrefs({ columns: value as GalleryColumns });
+            }}>
+            {GALLERY_COLUMN_OPTIONS.map((n) => (
+              <option key={n} value={String(n)}>{n === 'auto' ? t('gal.columnsAuto') : String(n)}</option>
+            ))}
           </select>
         </label>
       </div>
@@ -107,7 +137,8 @@ export function ArtGallery() {
         {groups.map((g) => (
           <section key={g.key} className="gal-group" data-testid={`group-${slugId(g.key)}`}>
             {g.label && <h2 className="gal-h">{groupLabel(g.label)} <small>{g.items.length}</small></h2>}
-            <ul className="gallery" key={`${groupBy}-${sortBy}`}>
+            <ul className="gallery" data-columns={columns} key={`${groupBy}-${sortBy}-${randomSeed}`}
+              style={columns === 'auto' ? undefined : { ['--gallery-cols' as string]: columns }}>
               {g.items.map((a, i) => (
                 <li key={a.id} style={{ ['--i' as string]: Math.min(i, 12) }}>
                   <Link to={`/art-slide/play/${a.id}`} className="gcard" data-testid={`art-${a.id}`}>
