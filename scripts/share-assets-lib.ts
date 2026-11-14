@@ -37,7 +37,7 @@ function sampleBoard(art: Artwork, steps: number) {
 
 /** The painting cut into puzzle tiles with gaps, one tile missing and one caught mid-slide. */
 export async function buildOgImage(art: Artwork, publicDir = 'public'): Promise<Buffer> {
-  const { d, board, last } = sampleBoard(art, 9);
+  const { d, board, last } = sampleBoard(art, 52);
   const margin = 54;
   const boxW = OG_W - margin * 2;
   const boxH = 470;
@@ -48,7 +48,7 @@ export async function buildOgImage(art: Artwork, publicDir = 'public'): Promise<
   const top0 = 38 + Math.round((boxH - bh) / 2);
   const cw = bw / d.cols;
   const ch = bh / d.rows;
-  const gap = 5;
+  const gap = 7;
 
   const img = await sharp(`${publicDir}${art.imageUrl}`).resize(bw, bh, { fit: 'fill' }).toBuffer();
   const comps: { input: Buffer; left: number; top: number }[] = [];
@@ -68,8 +68,8 @@ export async function buildOgImage(art: Artwork, publicDir = 'public'): Promise<
       // caught mid-slide: 45% of the way back towards where it came from
       const fr = Math.floor(last.from / d.cols);
       const fc = last.from % d.cols;
-      x += (fc - c) * cw * 0.45;
-      y += (fr - r) * ch * 0.45;
+      x += (fc - c) * cw * 0.18;
+      y += (fr - r) * ch * 0.18;
     }
     comps.push({ input: tile, left: left0 + Math.round(x), top: top0 + Math.round(y) });
   }
