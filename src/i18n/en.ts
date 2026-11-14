@@ -213,6 +213,17 @@ const en = {
   "art.summary": "{artist}, {year}. A work in the {theme} collection.",
   "level.6": "Very hard",
   "level.7": "Expert",
+  "word.card": "WORD",
+  "word.letterCount": "{n} letters",
+  "word.known": "known",
+  "word.hintCategory": "Category",
+  "word.hintMeaning": "Meaning",
+  "word.hintFirst": "1st letter",
+  "word.hintExtra": "+ Letter",
+  "word.hintCategoryTitle": "Reveal the category",
+  "word.hintMeaningTitle": "Reveal the meaning",
+  "word.hintFirstTitle": "Reveal the first letter",
+  "word.hintExtraTitle": "Reveal another letter (requires the first letter)",
 } as const;
 
 export type Key = keyof typeof en;
