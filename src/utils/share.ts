@@ -13,7 +13,6 @@ export function shareLinks(text: string, url: string) {
   const e = encodeURIComponent;
   return {
     x: `https://twitter.com/intent/tweet?text=${e(text)}&url=${e(url)}`,
-    facebook: `https://www.facebook.com/sharer/sharer.php?u=${e(url)}&quote=${e(text)}`,
     line: `https://social-plugins.line.me/lineit/share?url=${e(url)}&text=${e(text)}`,
   };
 }
