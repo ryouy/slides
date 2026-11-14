@@ -1,12 +1,12 @@
 {
   "model": "gpt-6-luna",
   "recipeVersion": "openai-bilingual-v1",
-  "generatedAt": "2026-11-14T09:43:54.193857+00:00",
+  "generatedAt": "2026-11-14T09:45:47.295094+00:00",
   "totalArtworks": 404,
-  "processed": 150,
-  "remaining": 254,
-  "medianEnglishCharacters": 458.5,
-  "medianJapaneseCharacters": 185.0,
+  "processed": 175,
+  "remaining": 229,
+  "medianEnglishCharacters": 459,
+  "medianJapaneseCharacters": 185,
   "records": {
     "aic-102131": {
       "id": "aic-102131",
@@ -1356,6 +1356,231 @@
       "rawSourceCharacters": 1586,
       "englishCharacters": 433,
       "japaneseCharacters": 158,
+      "apiWarning": null
+    },
+    "aic-25752": {
+      "id": "aic-25752",
+      "title": "Flowers",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 608,
+      "englishCharacters": 331,
+      "japaneseCharacters": 129,
+      "apiWarning": null
+    },
+    "aic-258490": {
+      "id": "aic-258490",
+      "title": "A Vanitas Still Life with a Flag, Candlestick, Musical Instruments, Books, Writing Paraphernalia, Globes, and Hourglass",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2601,
+      "englishCharacters": 573,
+      "japaneseCharacters": 212,
+      "apiWarning": null
+    },
+    "aic-264716": {
+      "id": "aic-264716",
+      "title": "Bouquet of Flowers and Fruit with Blue Ribbon",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2039,
+      "englishCharacters": 507,
+      "japaneseCharacters": 205,
+      "apiWarning": null
+    },
+    "aic-265263": {
+      "id": "aic-265263",
+      "title": "Still Life with Grapes and Flowers",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1710,
+      "englishCharacters": 513,
+      "japaneseCharacters": 218,
+      "apiWarning": null
+    },
+    "aic-27": {
+      "id": "aic-27",
+      "title": "Remembrance of Italy",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 652,
+      "englishCharacters": 343,
+      "japaneseCharacters": 138,
+      "apiWarning": null
+    },
+    "aic-270002": {
+      "id": "aic-270002",
+      "title": "Interior. The Music Room, Strandgade 30",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2640,
+      "englishCharacters": 513,
+      "japaneseCharacters": 192,
+      "apiWarning": null
+    },
+    "aic-27954": {
+      "id": "aic-27954",
+      "title": "Terrace and Observation Deck at the Moulin de Blute-Fin, Montmartre",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1863,
+      "englishCharacters": 375,
+      "japaneseCharacters": 148,
+      "apiWarning": null
+    },
+    "aic-27984": {
+      "id": "aic-27984",
+      "title": "Woman before an Aquarium",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1574,
+      "englishCharacters": 388,
+      "japaneseCharacters": 175,
+      "apiWarning": null
+    },
+    "aic-27987": {
+      "id": "aic-27987",
+      "title": "Jacques and Berthe Lipchitz",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1907,
+      "englishCharacters": 477,
+      "japaneseCharacters": 212,
+      "apiWarning": null
+    },
+    "aic-28216": {
+      "id": "aic-28216",
+      "title": "The Sea Monster",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 435,
+      "englishCharacters": 398,
+      "japaneseCharacters": 147,
+      "apiWarning": null
+    },
+    "aic-2906": {
+      "id": "aic-2906",
+      "title": "Odawara, from the series \"Fifty-three Stations of the Tokaido (Tokaido gojusan tsugi)\"",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 706,
+      "englishCharacters": 340,
+      "japaneseCharacters": 103,
+      "apiWarning": null
+    },
+    "aic-29230": {
+      "id": "aic-29230",
+      "title": "Julia Jackson",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1740,
+      "englishCharacters": 421,
+      "japaneseCharacters": 207,
+      "apiWarning": null
+    },
+    "aic-3015": {
+      "id": "aic-3015",
+      "title": "Sailboats on Sea",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 502,
+      "englishCharacters": 265,
+      "japaneseCharacters": 87,
+      "apiWarning": null
+    },
+    "aic-30709": {
+      "id": "aic-30709",
+      "title": "Bar-room Scene",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1638,
+      "englishCharacters": 513,
+      "japaneseCharacters": 228,
+      "apiWarning": null
+    },
+    "aic-31233": {
+      "id": "aic-31233",
+      "title": "Portrait of Constance Pipelet",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1765,
+      "englishCharacters": 512,
+      "japaneseCharacters": 209,
+      "apiWarning": null
+    },
+    "aic-31285": {
+      "id": "aic-31285",
+      "title": "Portrait of Mary Adeline Williams",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1515,
+      "englishCharacters": 545,
+      "japaneseCharacters": 238,
+      "apiWarning": null
+    },
+    "aic-3406": {
+      "id": "aic-3406",
+      "title": "The Reappearance of the Tritons of the Sea, plate 412 from Actualités",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 571,
+      "englishCharacters": 364,
+      "japaneseCharacters": 136,
+      "apiWarning": null
+    },
+    "aic-36840": {
+      "id": "aic-36840",
+      "title": "Still Life with Travelling Trunk",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1422,
+      "englishCharacters": 496,
+      "japaneseCharacters": 199,
+      "apiWarning": null
+    },
+    "aic-3818": {
+      "id": "aic-3818",
+      "title": "Ornament With Flower and Eight Wild Folk",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1010,
+      "englishCharacters": 480,
+      "japaneseCharacters": 178,
+      "apiWarning": null
+    },
+    "aic-3819": {
+      "id": "aic-3819",
+      "title": "Andromeda and the Sea-Monster",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 549,
+      "englishCharacters": 340,
+      "japaneseCharacters": 130,
+      "apiWarning": null
+    },
+    "aic-38666": {
+      "id": "aic-38666",
+      "title": "The Water Fan",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2635,
+      "englishCharacters": 485,
+      "japaneseCharacters": 210,
+      "apiWarning": null
+    },
+    "aic-39691": {
+      "id": "aic-39691",
+      "title": "Nantasket Beach",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1829,
+      "englishCharacters": 535,
+      "japaneseCharacters": 196,
+      "apiWarning": null
+    },
+    "aic-4081": {
+      "id": "aic-4081",
+      "title": "Gian Lodovico Madruzzo",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1869,
+      "englishCharacters": 418,
+      "japaneseCharacters": 204,
+      "apiWarning": null
+    },
+    "aic-4285": {
+      "id": "aic-4285",
+      "title": "Battle of Sea-Gods, Left Half of a Frieze",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 846,
+      "englishCharacters": 456,
+      "japaneseCharacters": 177,
+      "apiWarning": null
+    },
+    "aic-4288": {
+      "id": "aic-4288",
+      "title": "Battle of the Sea Gods: Right Half of a Frieze",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 916,
+      "englishCharacters": 501,
+      "japaneseCharacters": 211,
       "apiWarning": null
     }
   },
