@@ -87,7 +87,10 @@ export function shuffleFromBoard(rng: Rng, d: Dims, start: ArtBoard, steps: numb
   const startKey = board.join(',');
   const visited = new Set([startKey]);
   const clicks: number[] = [];
-  for (let i = 0; i < steps + 300; i++) {
+  // The visible animation must stay reasonably short even when a random walk
+  // happens to revisit nearby states. Allow up to 25% extra moves to improve mixing.
+  const maxSteps = steps + Math.ceil(steps * 0.25);
+  for (let i = 0; i < maxSteps; i++) {
     if (i >= steps && misplacedCount(board) >= minMisplaced && !isSolved(board) && board.join(',') !== startKey) break;
     const options = neighbors(blank, d).filter((c) => c !== prev);
     const fresh = options.filter((c) => {
@@ -106,18 +109,26 @@ export function shuffleFromBoard(rng: Rng, d: Dims, start: ArtBoard, steps: numb
   return { board, clicks };
 }
 
-/** More tiles require proportionally more visible legal slides. */
+/**
+ * A shuffle is something people should be able to WATCH, not a full initial scramble.
+ * A small grid needs only a short legal walk; large grids use a little under one move
+ * per tile. This targets roughly 4–9 seconds of clearly visible movement.
+ *
+ * The initial puzzle generator is intentionally unchanged to preserve daily puzzles.
+ */
 export function visibleShuffleSteps(_level: ArtLevel, d: Dims) {
   const count = cellCount(d);
   return {
-    steps: Math.round(count * 5),
-    minMisplaced: Math.max(4, Math.round(count * 0.55)),
+    steps: Math.round(14 + count * 0.95),
+    // Enough movement to look shuffled, without pushing animation into a long
+    // random walk trying to reach a difficult end-state threshold.
+    minMisplaced: Math.max(4, Math.round(count * 0.45)),
   };
 }
 
-/** Increase shuffle animation speed as the actual tile count grows (60ms at 9 tiles, 26ms at 49). */
+/** Time between actual tile slides: never quicker than 110ms, even on dense boards. */
 export function visibleShuffleStepMs(d: Dims): number {
-  return Math.max(26, Math.round(60 * Math.sqrt(9 / cellCount(d))));
+  return Math.max(110, Math.round(190 - 10 * Math.sqrt(cellCount(d))));
 }
 
 export function validateArtPuzzle(p: ArtPuzzle): boolean {
