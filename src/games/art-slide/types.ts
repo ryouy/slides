@@ -28,6 +28,13 @@ export interface Artwork {
   sourceImageUrl: string;
   /** Date the public-domain flag was verified against the museum API. */
   verifiedAt: string;
-  /** Original short description written for this site. */
+  /** Full museum text (if licensed) or a description derived from official metadata. */
   description: string;
+  descriptionKind?: 'museum_text' | 'metadata_summary';
+  /** Museum-authored text is not necessarily under the image's CC0 license. */
+  descriptionAttribution?: string;
+  descriptionSourceUrl?: string;
+  descriptionLicense?: string;
+  descriptionLicenseUrl?: string;
+  descriptionModifications?: string;
 }
