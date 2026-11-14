@@ -30,6 +30,8 @@ export interface Artwork {
   verifiedAt: string;
   /** Full museum text (if licensed) or a description derived from official metadata. */
   description: string;
+  /** Optional translations of the detailed description, generated only when verified. */
+  descriptionTranslations?: Partial<Record<'ja' | 'zh' | 'ko' | 'es' | 'fr' | 'de', string>>;
   descriptionKind?: 'museum_text' | 'metadata_summary';
   /** Museum-authored text is not necessarily under the image's CC0 license. */
   descriptionAttribution?: string;
