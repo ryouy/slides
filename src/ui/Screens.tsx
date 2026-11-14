@@ -89,15 +89,15 @@ export function EndlessScreen() {
     <GameView
       key={game.key}
       initial={game.state}
-      title={`ENDLESS · ${diff.toUpperCase()}`}
+      title={`${t('home.endless')} · ${t(`diff.${diff}`)}`}
       onBack={() => go('')}
       onProgress={(s) => setProgress('endless', s)}
       onCleared={(s) =>
         update((d) => recordClear(d, { mode: 'endless', difficulty: s.puzzle.difficulty, dateKey: jstDateKey(), timeMs: s.elapsedMs, moves: s.moves, checks: s.checks, hints: totalHintUse(s.hintUse), noHint: isNoHintClear(s) }))
       }
       onNext={() => start(diff)}
-      nextLabel="NEXT PUZZLE"
-      headerRight={<span className="streak" title="Streak">🔥 {data.endlessStreak}</span>}
+      nextLabel={t('result.next')}
+      headerRight={<span className="streak" title={t('stats.endlessStreak')}>🔥 {data.endlessStreak}</span>}
       footerExtra={<button className="btn" onClick={abandon}>{t('word.new')}</button>}
     />
   );
