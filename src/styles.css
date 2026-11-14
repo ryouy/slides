@@ -650,3 +650,48 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .art-home .art-home-menu .btn { display: block; width: 100%; min-height: 58px; padding: 15px 5px; text-align: left; border: 0; border-radius: 0; background: transparent; font-weight: 400; font-size: 15px; letter-spacing: .045em; }
 .art-home .art-home-menu .btn + .btn { border-top: 1px solid var(--line); }
 .art-home .art-home-menu .btn:hover { background: var(--surface); padding-left: 12px; }
+
+/* Art header refinements: legible controls and complete, wrapping artwork titles. */
+.artgame .art-header-controls .art-level-select {
+  align-self: flex-end; width: 76px; height: 26px; min-height: 26px;
+  border: 1px solid var(--line); border-radius: 3px; background: var(--bg);
+  color: var(--fg); font: inherit; font-size: 11px; padding: 2px 4px;
+}
+.artgame .art-top .top-titles { min-width: 0; overflow: visible; }
+.artgame .art-top .top-titles h1 {
+  overflow: visible; text-overflow: clip; white-space: normal;
+  display: block; max-height: none; line-clamp: unset; -webkit-line-clamp: unset;
+  overflow-wrap: anywhere; hyphens: auto;
+}
+@media (max-width: 899px) {
+  .artgame .art-top { grid-template-columns: 26px minmax(0, 1fr) minmax(172px, 49%); gap: 5px; align-items: center; }
+  .artgame .art-top .top-titles h1 { font-size: 12px; line-height: 1.28; letter-spacing: 0; }
+  .artgame .art-top .top-sub { font-size: 9px; white-space: normal; overflow: visible; text-overflow: clip; }
+  .artgame .art-header-controls { min-width: 0; width: 100%; gap: 4px; }
+  .artgame .art-header-controls .art-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; }
+  .artgame .art-header-controls .art-actions.daily-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .artgame .art-header-controls .art-actions .btn {
+    display: flex; align-items: center; justify-content: center; width: 100%;
+    min-width: 0; min-height: 34px; padding: 3px 2px;
+    font-size: 10px; white-space: normal; overflow-wrap: anywhere; line-height: 1.15;
+  }
+  .artgame .art-header-controls .stats { width: 100%; }
+  .artgame .art-header-controls .stat-value { font-size: 14px; }
+  .artgame .art-header-controls .art-level-select { width: 68px; height: 24px; font-size: 10px; }
+}
+/* Gallery navigation as restrained, tactile buttons rather than plain ruled rows. */
+.art-home .art-home-menu {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px; border: 0; margin: 12px 0 22px;
+}
+.art-home .art-home-menu .btn,
+.art-home .art-home-menu .btn + .btn {
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  min-height: 66px; padding: 12px 9px; border: 1px solid var(--line);
+  border-radius: 3px; background: transparent; font-size: 13px;
+  font-weight: 500; letter-spacing: .02em; line-height: 1.4;
+  transition: border-color .18s, background .18s;
+}
+.art-home .art-home-menu .btn:hover { padding-left: 9px; border-color: var(--fg); background: var(--surface); }
+.art-home .art-home-menu .btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.art-home .art-home-menu .btn[data-testid="art-resume"] { grid-column: 1 / -1; min-height: 44px; }
