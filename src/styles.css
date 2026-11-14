@@ -748,6 +748,7 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 }
 .artgame .art-level-select.select:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 .artgame .art-action-icon { width: 16px; height: 16px; flex: 0 0 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.artgame .art-stat-icon { display: none; width: 12px; height: 12px; flex: 0 0 12px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .artgame .num-glyph.art-action-icon { display: inline-flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 500; }
 @media (min-width: 900px) {
   .artgame .art-top { min-width: 0; }
@@ -775,7 +776,9 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
     gap: 5px; min-height: 0; height: auto; padding: 3px 0;
     margin-left: 0; margin-right: 0; align-items: center;
   }
-  .artgame .art-top .top-titles { min-width: 0; max-width: 100%; }
+  .artgame .art-top .top-titles { min-width: 0; max-width: 100%; overflow: visible; }
+  .artgame .art-top .back-btn { width: 25px; height: 30px; padding: 0; }
+  .artgame .art-top .back-btn svg { width: 18px; height: 18px; }
   .artgame .art-top .top-titles h1 {
     font-size: 11px; line-height: 1.2; white-space: normal;
     overflow: visible; text-overflow: clip; overflow-wrap: anywhere;
@@ -784,7 +787,7 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   .artgame .art-desktop-meta { display: none; }
   .artgame .art-header-controls {
     display: grid; width: 100%; min-width: 0; max-width: 158px;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) 61px;
     gap: 3px 4px; align-items: center;
   }
   .artgame .art-mobile-level { grid-column: 2; grid-row: 1; min-width: 0; }
@@ -795,14 +798,25 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   }
   .artgame .art-header-controls .stats {
     grid-column: 1; grid-row: 1; display: flex; gap: 5px; min-width: 0; width: auto;
-    align-items: center; justify-content: flex-end;
+    align-items: center; justify-content: flex-end; flex-wrap: nowrap; border: 0;
   }
   .artgame .art-header-controls .stats .stat {
-    display: flex; flex-direction: column; gap: 0; min-width: 0;
-    align-items: center; justify-content: center; padding: 0;
+    display: inline-flex; flex: 0 1 auto; flex-direction: row; gap: 2px;
+    min-width: 0; align-items: center; justify-content: center; padding: 0;
+    background: transparent; border: 0;
   }
-  .artgame .art-header-controls .stat-label { font-size: 8px; letter-spacing: 0; }
-  .artgame .art-header-controls .stat-value { font-size: 11px; line-height: 1.1; }
+  .artgame .art-header-controls .stat-label {
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0; letter-spacing: 0; line-height: 1;
+  }
+  .artgame .art-header-controls .art-stat-icon { display: block; }
+  .artgame .art-header-controls .art-stat-text {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+  .artgame .art-header-controls .stat-value {
+    font-size: 11px; line-height: 1.1; letter-spacing: -.03em; white-space: nowrap;
+  }
   .artgame .art-header-controls .art-actions,
   .artgame .art-header-controls .art-actions.daily-actions {
     grid-column: 1 / -1; grid-row: 2; display: flex;
@@ -818,6 +832,7 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   .artgame .art-header-controls .art-actions .num-glyph { display: inline-flex; }
 }
 @media (max-width: 360px) {
-  .artgame .art-top { grid-template-columns: 23px minmax(0, 1fr) 148px; gap: 4px; }
+  .artgame .art-top { grid-template-columns: 23px minmax(0, 1fr) minmax(0, 148px); gap: 4px; }
+  .artgame .art-top .back-btn { width: 23px; }
   .artgame .art-header-controls { max-width: 148px; }
 }
