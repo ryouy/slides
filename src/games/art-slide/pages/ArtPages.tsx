@@ -27,7 +27,7 @@ export function ArtHome() {
   const done = !!data.dailyHistory[today];
   return (
     <div className="screen home art-home">
-      <h1 className="art-home-title">ART SLIDE</h1>
+      <div className="art-gallery-heading"><span className="art-gallery-eyebrow">A GALLERY OF PUZZLES</span><h1 className="art-home-title">ART SLIDE</h1><p>Masterpieces, one tile at a time.</p></div>
       <Link to="/art-slide/daily" className="exhibit-card" data-testid="exhibit">
         <img src={exhibit.thumbnailUrl} alt="" width={96} height={96} />
         <span className="ex-text">
