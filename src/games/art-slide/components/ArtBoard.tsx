@@ -57,7 +57,7 @@ export function ArtBoard({ board, dims, artwork, showNumbers, disabled, complete
     >
       {!complete && emptyCell >= 0 && (
         <div
-          className="art-empty-outline"
+          className="art-empty-well"
           aria-hidden="true"
           style={{
             left: `${((emptyCell % cols) / cols) * 100}%`,
