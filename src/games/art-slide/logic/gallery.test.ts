@@ -38,15 +38,26 @@ describe('gallery preferences', () => {
     expect(grouped.reduce((n, g) => n + g.items.length, 0)).toBe(paintings.length);
   });
 
-  it('migrates old gallery preferences without losing the stored sort', () => {
+  it('discards obsolete sort menus while migrating existing grouping preferences', () => {
     const old = defaultArtSave();
     const migrated = migrateArt({ ...old, gallery: { groupBy: 'artist', sortBy: 'year-desc' } });
-    expect(migrated.gallery).toEqual({ groupBy: 'artist', sortBy: 'year-desc', columns: 'auto', randomSeed: 0 });
+    expect(migrated.gallery).toEqual({
+      groupBy: 'artist', columns: 'auto', randomSeed: 0, randomized: false,
+    });
+    expect('sortBy' in migrated.gallery).toBe(false);
   });
 
-  it('remembers valid column and random settings', () => {
+  it('migrates a previously randomized gallery without losing its shuffled order', () => {
+    const old = defaultArtSave();
+    const migrated = migrateArt({ ...old, gallery: { groupBy: 'theme', sortBy: 'random', columns: 4, randomSeed: 712 } });
+    expect(migrated.gallery).toEqual({
+      groupBy: 'theme', columns: 4, randomSeed: 712, randomized: true,
+    });
+  });
+
+  it('remembers the new column, grouping and random settings', () => {
     const stored = defaultArtSave();
-    stored.gallery = { groupBy: 'none', sortBy: 'random', columns: 5, randomSeed: 712 };
+    stored.gallery = { groupBy: 'none', columns: 5, randomSeed: 712, randomized: true };
     expect(migrateArt(stored).gallery).toEqual(stored.gallery);
   });
 });
