@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { adFits, adFrameUrl, adsEnabled, chooseAdUnit } from '../ads/admax';
 import { useAdConsent } from '../ads/consent';
 import { useT } from '../i18n';
@@ -49,23 +49,39 @@ function useSlot(): boolean {
  *  - dev server: a placeholder. Production: the live ad, only when the visitor's consent status allows it
  *    (and VITE_ADS_ENABLED is not "false")
  */
-export const AdBanner = memo(function AdBanner({ side = false }: { side?: boolean }) {
+export const AdBanner = memo(function AdBanner({ side = false, gallery = false }: { side?: boolean; gallery?: boolean }) {
   const t = useT();
-  const owns = useSlot();
+  const ownsSingle = useSlot();
+  const ref = useRef<HTMLElement>(null);
+  const [near, setNear] = useState(false);
+  useEffect(() => {
+    if (!gallery) return;
+    const el = ref.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === 'undefined') { setNear(true); return; }
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        setNear(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: '500px 0px' });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [gallery]);
   const width = useViewportWidth();
   const { allowed } = useAdConsent();
   const unit = chooseAdUnit(width); // PC tag on wide screens, phone tag below; both 300x250
   const live = adsEnabled() || adsForcedLive();
 
-  if (!owns || !adFits(width)) return null; // too narrow for the smallest unit: no ad, no overflow
+  if ((!gallery && !ownsSingle) || !adFits(width)) return null; // too narrow for the smallest unit: no ad, no overflow
   const placeholder = import.meta.env.DEV && !adsForcedLive();
   if (!placeholder && !(live && allowed)) return null;
 
   return (
-    <aside className={`ad-box${side ? ' side' : ''}`} data-testid="ad-box" data-unit={unit.id} aria-label={t('ad.label')}>
+    <aside ref={ref} className={`ad-box${side ? ' side' : ''}`} data-testid="ad-box" data-unit={unit.id} aria-label={t('ad.label')}>
       <span className="ad-label">{t('ad.label')}</span>
       <div className="ad-frame" style={{ width: unit.width, height: unit.height }}>
-        {placeholder ? (
+        {!near && gallery ? null : placeholder ? (
           <div className="ad-placeholder" data-testid="ad-placeholder" style={{ width: unit.width, height: unit.height }}>
             {unit.width}×{unit.height}
           </div>
