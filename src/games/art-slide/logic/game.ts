@@ -1,4 +1,4 @@
-import { isSolved, isValidBoard, moveTile, tileForDirection, type ArtBoard, type ArtDirection, type Dims } from './board';
+import { ART_LEVELS, isSolved, isValidBoard, moveTile, tileForDirection, type ArtBoard, type ArtDirection, type Dims } from './board';
 import type { ArtPuzzle } from './generator';
 
 export interface ArtState {
@@ -56,7 +56,7 @@ export function isValidArtState(x: unknown): x is ArtState {
   return (
     !!s &&
     !!s.puzzle &&
-    [3, 4, 5].includes(s.puzzle.size) &&
+    ART_LEVELS.includes(s.puzzle.size) &&
     Number.isInteger(s.puzzle.cols) &&
     Number.isInteger(s.puzzle.rows) &&
     typeof s.puzzle.artworkId === 'string' &&
