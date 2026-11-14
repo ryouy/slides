@@ -587,3 +587,25 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   .artgame .art-extra { margin-top: 6px; }
   .artgame .ap-desc { font-size: 13px; line-height: 1.4; }
 }
+
+/* ART SLIDE: prioritize the painting's actual width on phones. Vertical scrolling is allowed. */
+@media (max-width: 899px) {
+  .screen.artgame { width: 100%; max-width: 640px; padding-left: 8px; padding-right: 8px; }
+  .artgame > .aboard-wrap, .artgame > .aboard,
+  .artgame .aboard-wrap { width: 100%; max-width: none; min-width: 0; }
+  .artgame .aboard { width: 100%; min-width: 0; }
+  .artgame .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; margin: 3px 0 6px; }
+  .artgame .stats .stat { display: flex; align-items: baseline; justify-content: center; gap: 9px; padding: 6px 4px; min-width: 0; }
+  .artgame .stat-label { display: inline; font-size: 10px; letter-spacing: .08em; }
+  .artgame .stat-value { display: inline; font-size: 19px; line-height: 1.1; }
+  .artgame .art-actions { margin-top: 7px; }
+}
+/* Gallery-style hierarchy through spacing and composition, not decorative copy. */
+.art-home { padding-top: 24px; }
+.art-home > .art-home-title { margin: 4px 0 30px; font-size: clamp(30px, 7vw, 42px); }
+.art-home .exhibit-card { position: relative; padding: 12px; gap: 18px; border-width: 1px; }
+.art-home .exhibit-card img { width: clamp(106px, 30vw, 142px); height: clamp(116px, 34vw, 158px); object-fit: cover; }
+.art-home .exhibit-card .ex-text { align-content: center; gap: 8px; }
+.art-home .exhibit-card .ex-text b { font-size: clamp(17px, 4.5vw, 22px); line-height: 1.25; font-weight: 500; }
+.art-home .menu { gap: 8px; }
+.art-home .menu .btn { border-radius: 2px; }
