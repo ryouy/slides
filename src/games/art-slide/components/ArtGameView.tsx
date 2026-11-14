@@ -145,6 +145,17 @@ export function ArtGameView(p: Props) {
           <span className="top-sub">{artwork.artist}, {artwork.year}</span>
         </div>
         <div className="art-header-controls">
+          {!daily && (
+            <select
+              className="art-level-select"
+              aria-label={t('gal.sortBy')}
+              data-testid="art-size-select"
+              value={state.puzzle.size}
+              onChange={(e) => chooseLevel(e.target.value as ArtLevel)}
+            >
+              {ART_LEVELS.map((l) => <option key={l} value={l}>{gridLabel(l)}</option>)}
+            </select>
+          )}
       <div className="stats" aria-live="polite">
         <Stat label={t('common.time')} value={formatTime(state.elapsedMs)} id="time" />
         <Stat label={t('common.moves')} value={String(state.moves)} id="moves" />
@@ -170,15 +181,6 @@ export function ArtGameView(p: Props) {
         </div>
       </header>
 
-      {!daily && (
-        <div className="seg levels" role="group" aria-label={t('gal.sortBy')}>
-          {ART_LEVELS.map((l) => (
-            <button key={l} className={`seg-btn${state.puzzle.size === l ? ' on' : ''}`} aria-pressed={state.puzzle.size === l} data-testid={`asize-${l}`} onClick={() => chooseLevel(l)}>
-              <b>{gridLabel(l)}</b>
-            </button>
-          ))}
-        </div>
-      )}
       {pending !== null && (
         <div className="confirm-bar" role="alert">
           <span>{t('art.confirmLevel', { grid: gridLabel(pending) })}</span>
