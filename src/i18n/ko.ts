@@ -100,5 +100,11 @@ const ko: Partial<Dict> = {
   "legal.termsNote": "사이트 운영자: 게시 전 약관을 검토하세요.",
   "legal.contact": "문의, 오류 신고 및 제안을 환영합니다.",
   "legal.contactNote": "사이트 운영자: 여기에 연락처 이메일 또는 문의 양식을 게시하세요.",
+  "art.summary": "{artist}의 {year}년 작품. 분류: {theme}.",
+  "level.6": "매우 어려움",
+  "level.7": "전문가",
+  "era.1800–1849": "1800~1849년",
+  "era.1850–1879": "1850~1879년",
+  "era.1880–1899": "1880~1899년",
 };
 export default ko;
