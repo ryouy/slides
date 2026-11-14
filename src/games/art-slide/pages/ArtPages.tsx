@@ -1,5 +1,5 @@
 import { BackButton, ChevronRight } from '../../../components/Icons';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type KeyboardEvent } from 'react';
 import { AdSlot } from '../../../ads/AdSlot';
 import { Link } from '../../../components/Link';
 import { useT, type Key } from '../../../i18n';
@@ -104,7 +104,7 @@ export function ArtGallery() {
   const columnOptions = GALLERY_COLUMN_OPTIONS.map((n) => ({
     value: String(n), label: n === 'auto' ? t('gal.columnsAuto') : String(n),
   }));
-  const focusTab = (event: React.KeyboardEvent<HTMLButtonElement>, i: number) => {
+  const focusTab = (event: KeyboardEvent<HTMLButtonElement>, i: number) => {
     const nextIndex = event.key === 'ArrowRight' ? (i + 1) % groups.length
       : event.key === 'ArrowLeft' ? (i + groups.length - 1) % groups.length
       : event.key === 'Home' ? 0
