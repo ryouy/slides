@@ -147,5 +147,8 @@ const es: Partial<Dict> = {
   "wordCat.Vehicle": "Vehículo",
   "wordCat.Fantasy": "Fantasía",
   "wordCat.Person": "Persona",
+  "art.textSource": "Descripción",
+  "art.textAdjusted": "HTML convertido a texto sin formato",
+  "art.englishDetail": "Descripción del museo (en inglés)",
 };
 export default es;
