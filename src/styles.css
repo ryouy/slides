@@ -609,3 +609,44 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .art-home .exhibit-card .ex-text b { font-size: clamp(17px, 4.5vw, 22px); line-height: 1.25; font-weight: 500; }
 .art-home .menu { gap: 8px; }
 .art-home .menu .btn { border-radius: 2px; }
+
+/* ART SLIDE: compact editorial header. Keep board width, reclaim the former controls row. */
+.artgame .art-top { gap: 10px; }
+.artgame .art-top .top-titles { min-width: 0; flex: 1; }
+.artgame .art-header-controls { display: flex; flex-direction: column; align-items: stretch; gap: 3px; flex: 0 0 auto; min-width: 0; }
+.artgame .art-header-controls .stats { margin: 0; }
+.artgame .art-header-controls .art-actions { margin: 0; }
+.artgame .art-quiet { justify-content: space-between; gap: 12px; }
+@media (max-width: 899px) {
+  .artgame .art-top { display: grid; grid-template-columns: 28px minmax(0, 1fr) minmax(156px, 46%); gap: 6px; align-items: center; min-height: 72px; padding: 3px 0 5px; }
+  .artgame .art-top .back-btn { align-self: start; }
+  .artgame .art-top .top-titles { overflow: hidden; }
+  .artgame .art-top .top-titles h1 { font-size: clamp(13px, 3.7vw, 19px); line-height: 1.2; overflow-wrap: anywhere; }
+  .artgame .art-top .top-sub { font-size: 10px; line-height: 1.2; }
+  .artgame .art-top .top-kicker { font-size: 9px; }
+  .artgame .art-header-controls .stats { display: flex; gap: 3px; border: 0; }
+  .artgame .art-header-controls .stats .stat { display: flex; flex-direction: column; gap: 1px; flex: 1; border: 0; padding: 1px; text-align: center; }
+  .artgame .art-header-controls .stat-label { font-size: 8px; }
+  .artgame .art-header-controls .stat-value { font-size: 15px; }
+  .artgame .art-header-controls .art-actions { display: flex; gap: 3px; }
+  .artgame .art-header-controls .art-actions .btn { flex: 1; min-width: 0; min-height: 32px; padding: 4px 1px; font-size: 9px; letter-spacing: 0; }
+  .artgame .art-header-controls .num-glyph { display: none; }
+  .artgame > .seg.levels { margin: 2px 0 5px; }
+  .artgame > .aboard-wrap { margin-top: 0; }
+  .artgame .art-extra { margin-top: 6px; }
+  .artgame .art-quiet { margin-top: 2px; }
+  .artgame .art-quiet .quiet-link { font-size: 11px; }
+}
+@media (min-width: 900px) {
+  .artgame .art-top { align-items: center; }
+  .artgame .art-header-controls { width: min(370px, 42%); }
+  .artgame .art-header-controls .art-actions { display: flex; gap: 5px; }
+  .artgame .art-header-controls .art-actions .btn { flex: 1; min-height: 34px; }
+  .artgame .art-header-controls .stats .stat { padding: 2px 4px; }
+  .artgame .art-header-controls .stat-value { font-size: 18px; }
+}
+/* Museum-style navigation: typography, alignment and rules, without decorative copy. */
+.art-home .art-home-menu { display: grid; gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 10px 0 22px; }
+.art-home .art-home-menu .btn { display: block; width: 100%; min-height: 58px; padding: 15px 5px; text-align: left; border: 0; border-radius: 0; background: transparent; font-weight: 400; font-size: 15px; letter-spacing: .045em; }
+.art-home .art-home-menu .btn + .btn { border-top: 1px solid var(--line); }
+.art-home .art-home-menu .btn:hover { background: var(--surface); padding-left: 12px; }
