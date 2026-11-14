@@ -4,16 +4,6 @@
 
 **[ART SLIDE](https://slides.ryouy.workers.dev/art-slide)** · [BIG SLIDE](https://slides.ryouy.workers.dev/big-slide) · [WORD SLIDE](https://slides.ryouy.workers.dev/word-slide)
 
-## 開発
-
-```bash
-npm install
-npm run dev
-npm run build
-npm test
-```
-
-React / TypeScript / Vite。ビルド結果は `dist/` に出力されます。
 
 ## 主な機能
 
@@ -31,8 +21,4 @@ React / TypeScript / Vite。ビルド結果は `dist/` に出力されます。
 - `public/artworks/` — ゲーム画像とサムネイル
 - `notebooks/` — GitHubへ作品を直接追加するColabノートブック
 
-新しい作品はギャラリーへ自動反映されます。過去のデイリーパズルの再現性を保つため、`daily-pools.ts` の既存リストは変更しません。
-
-## デプロイ
-
-Viteの静的サイトとして配信します。ビルドコマンドは `npm run build`、公開ディレクトリは `dist` です。SNSプレビュー画像の絶対URLには、本番環境で `SITE_URL` を設定してください。
+新しい作品はギャラリーへ自動反映されます。
