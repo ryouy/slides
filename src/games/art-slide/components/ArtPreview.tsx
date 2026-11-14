@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import type { Artwork } from '../types';
 
 /** How long the closing animation runs before the preview is removed. */
@@ -46,7 +47,7 @@ export function ArtPreview({ artwork, rect, label, onClosed }: Props) {
   const left = rect.left + rect.width / 2 - w / 2;
   const top = rect.top + rect.height / 2 - h / 2;
 
-  return (
+  return createPortal(
     <div className={`preview-layer${closing ? ' closing' : ''}`} role="dialog" aria-modal="true" aria-label={label} data-testid="preview-layer" data-state={closing ? 'closing' : 'open'} onClick={close}>
       <figure className="preview-card" data-testid="preview-card" style={{ left, top, width: w, height: h }}>
         <img src={artwork.imageUrl} alt={`${artwork.title} – ${artwork.artist}`} width={artwork.width} height={artwork.height} draggable={false} />
@@ -55,6 +56,7 @@ export function ArtPreview({ artwork, rect, label, onClosed }: Props) {
           <span className="pv-credit">{artwork.museum} · CC0</span>
         </figcaption>
       </figure>
-    </div>
+    </div>,
+    document.body,
   );
 }
