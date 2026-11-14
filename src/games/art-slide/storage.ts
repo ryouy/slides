@@ -105,7 +105,9 @@ export function recordArtClear(data: ArtSave, r: { state: ArtState; dateKey: str
     history: [...data.history, { date: r.dateKey, mode: p.mode, size: p.size, artworkId: p.artworkId, timeMs: r.state.elapsedMs, moves: r.state.moves }].slice(-200),
   };
   if (p.mode === 'daily') {
-    if (!data.dailyHistory[r.dateKey]) next.dailyHistory = { ...data.dailyHistory, [r.dateKey]: { number: p.number ?? 0, artworkId: p.artworkId, timeMs: r.state.elapsedMs, moves: r.state.moves } };
+    if (!data.dailyHistory[r.dateKey] || data.dailyHistory[r.dateKey].artworkId !== p.artworkId) {
+      next.dailyHistory = { ...data.dailyHistory, [r.dateKey]: { number: p.number ?? 0, artworkId: p.artworkId, timeMs: r.state.elapsedMs, moves: r.state.moves } };
+    }
   } else {
     next.bests = { ...data.bests, [p.size]: updateBest(data.bests[p.size] ?? {}, r.state.elapsedMs, r.state.moves) };
   }
