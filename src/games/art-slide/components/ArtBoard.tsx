@@ -29,6 +29,7 @@ export function ArtBoard({ board, dims, artwork, showNumbers, disabled, complete
   const cellOf = new Map<number, number>();
   board.forEach((t, cell) => t !== null && cellOf.set(t, cell));
   const total = cols * rows;
+  const emptyCell = board.indexOf(null);
   const ids = Array.from({ length: total }, (_, i) => i);
 
   return (
@@ -54,6 +55,18 @@ export function ArtBoard({ board, dims, artwork, showNumbers, disabled, complete
       }}
       onPointerCancel={() => (start.current = null)}
     >
+      {!complete && emptyCell >= 0 && (
+        <div
+          className="art-empty-outline"
+          aria-hidden="true"
+          style={{
+            left: `${((emptyCell % cols) / cols) * 100}%`,
+            top: `${(Math.floor(emptyCell / cols) / rows) * 100}%`,
+            width: `${100 / cols}%`,
+            height: `${100 / rows}%`,
+          }}
+        />
+      )}
       {ids.map((id) => {
         const cell = cellOf.get(id);
         const isGhost = id === total - 1; // the piece that is missing from the start
