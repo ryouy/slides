@@ -44,24 +44,24 @@ export function ArtHome() {
       </nav>
       <div className="art-home-secondary">
         <details className="art-more" data-testid="art-more">
-        <summary>{t('home.other')}</summary>
-        <div className="art-more-content">
-          <nav className="art-more-main" aria-label={t('home.other')}>
-            <Link to="/art-slide/how">{t('home.howTo')}</Link>
-            <Link to="/art-slide/stats">{t('home.stats')}</Link>
-            <Link to="/art-slide/credits">{t('home.credits')}</Link>
-          </nav>
-          <nav className="art-more-puzzles" aria-label={t('home.more')}>
-            <Link to="/big-slide" data-testid="more-big">BIG SLIDE</Link>
-            <Link to="/word-slide" data-testid="more-word">WORD SLIDE</Link>
-          </nav>
-          <nav className="art-more-sub" aria-label={t('common.about')}>
-            <Link to="/about">{t('common.about')}</Link>
-            <Link to="/privacy">{t('common.privacy')}</Link>
-            <Link to="/terms">{t('common.terms')}</Link>
-            <Link to="/contact">{t('common.contact')}</Link>
-          </nav>
-        </div>
+          <summary>{t('home.other')}</summary>
+          <div className="art-more-content">
+            <nav className="art-more-main" aria-label={t('home.other')}>
+              <Link to="/art-slide/how">{t('home.howTo')}</Link>
+              <Link to="/art-slide/stats">{t('home.stats')}</Link>
+              <Link to="/art-slide/credits">{t('home.credits')}</Link>
+            </nav>
+            <nav className="art-more-puzzles" aria-label={t('home.more')}>
+              <Link to="/big-slide" data-testid="more-big">BIG SLIDE</Link>
+              <Link to="/word-slide" data-testid="more-word">WORD SLIDE</Link>
+            </nav>
+            <nav className="art-more-sub" aria-label={t('common.about')}>
+              <Link to="/about">{t('common.about')}</Link>
+              <Link to="/privacy">{t('common.privacy')}</Link>
+              <Link to="/terms">{t('common.terms')}</Link>
+              <Link to="/contact">{t('common.contact')}</Link>
+            </nav>
+          </div>
         </details>
         <Link to="/settings" className="art-home-settings" data-testid="art-settings">
           <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
