@@ -19,6 +19,7 @@ interface Props {
   japaneseLabel: string;
   englishLabel: string;
   sourceLabel: string;
+  closeLabel: string;
 }
 
 /**
@@ -28,7 +29,7 @@ interface Props {
 export function ArtPreview({
   artwork, rect, label, onClosed,
   descriptionLang, onDescriptionLanguageChange,
-  descriptionLanguageLabel, japaneseLabel, englishLabel, sourceLabel,
+  descriptionLanguageLabel, japaneseLabel, englishLabel, sourceLabel, closeLabel,
 }: Props) {
   const [closing, setClosing] = useState(false);
   const timer = useRef<number | null>(null);
@@ -90,7 +91,7 @@ export function ArtPreview({
           </p>
         </div>
         <button type="button" className="preview-close" data-testid="preview-close"
-          aria-label={label} onClick={close}>×</button>
+          aria-label={closeLabel} onClick={close}>×</button>
       </figure>
     </div>,
     document.body,
