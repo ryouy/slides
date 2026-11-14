@@ -1,5 +1,5 @@
 import { BackButton, ChevronRight } from '../../../components/Icons';
-import { useMemo, useState, type KeyboardEvent } from 'react';
+import { useLayoutEffect, useMemo, useState, type KeyboardEvent } from 'react';
 import { AdSlot } from '../../../ads/AdSlot';
 import { Link } from '../../../components/Link';
 import { useT, type Key } from '../../../i18n';
@@ -236,6 +236,12 @@ export function ArtPlay({ artworkId }: { artworkId?: string }) {
     setProgress('free', state);
     return { key: 0, state };
   });
+
+  // ArtPlay remains mounted when Next Artwork changes the selected artwork.
+  // Reset scrolling before the new painting is painted, including on iOS Safari.
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [game?.state.puzzle.artworkId]);
 
   if (!game) {
     return (
