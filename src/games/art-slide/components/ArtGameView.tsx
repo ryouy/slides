@@ -251,7 +251,20 @@ export function ArtGameView(p: Props) {
       </div>
       <AdSlot side />
 
-      {preview && <ArtPreview artwork={artwork} rect={preview} label={t('art.preview')} onClosed={() => setPreview(null)} />}
+      {preview && (
+        <ArtPreview
+          artwork={artwork}
+          rect={preview}
+          label={t('art.preview')}
+          onClosed={() => setPreview(null)}
+          descriptionLang={descriptionLang}
+          onDescriptionLanguageChange={setDescriptionLangChoice}
+          descriptionLanguageLabel={t('art.descriptionLanguage')}
+          japaneseLabel={t('art.descriptionJapanese')}
+          englishLabel={t('art.descriptionEnglish')}
+          sourceLabel={t('art.source')}
+        />
+      )}
 
       {cleared && showResult && (
         <ResultModal
