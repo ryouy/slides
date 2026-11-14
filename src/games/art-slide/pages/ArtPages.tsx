@@ -35,7 +35,6 @@ export function ArtHome() {
           <small>{t('art.exhibitN', { n: dailyNumber(today) })}{done ? ' ✓' : ''}{streak > 0 ? ` · ${t('home.streak', { n: streak })}` : ''}</small>
           <b>{exhibit.title}</b>
           <span>{exhibit.artist}, {exhibit.year}</span>
-          <span className="ex-enter">{t('art.openExhibit')} <ChevronRight size={14} /></span>
         </span>
       </Link>
       <nav className="menu art-home-menu" aria-label={t('home.explore')}>
