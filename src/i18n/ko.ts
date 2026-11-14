@@ -155,5 +155,9 @@ const ko: Partial<Dict> = {
   "gal.columnsAuto": "자동",
   "gal.reshuffle": "다시 섞기",
   "art.englishInfo": "상세 설명 (영어 원문)",
+  "gal.randomize": "무작위",
+  "art.descriptionLanguage": "설명 언어",
+  "art.descriptionJapanese": "일본어 설명",
+  "art.descriptionEnglish": "영어 설명",
 };
 export default ko;
