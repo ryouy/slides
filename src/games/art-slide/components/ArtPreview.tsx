@@ -96,7 +96,7 @@ export function ArtPreview({
           // The mobile preview is a readable sheet: interactions inside it must not close it.
           if (window.matchMedia('(max-width: 899px)').matches) event.stopPropagation();
         }}>
-        <div className="preview-image" style={{ aspectRatio: `${artwork.width} / ${artwork.height}` }}>
+        <div className="preview-image" style={{ aspectRatio: `${artwork.width} / ${artwork.height}`, ['--preview-ratio' as string]: artwork.width / artwork.height }}>
           <img src={artwork.imageUrl} alt={`${artwork.title} – ${artwork.artist}`} width={artwork.width} height={artwork.height} draggable={false} />
         </div>
         <figcaption>
