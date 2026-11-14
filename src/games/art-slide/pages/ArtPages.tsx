@@ -1,13 +1,11 @@
 import { BackButton, ChevronRight } from '../../../components/Icons';
 import { useMemo, useState } from 'react';
 import { AdSlot } from '../../../ads/AdSlot';
-import { HomeLinks } from '../../../components/HomeLinks';
 import { Link } from '../../../components/Link';
 import { useT, type Key } from '../../../i18n';
 import { go } from '../../../router';
 import { currentDailyStreak, formatTime, maxDailyStreak } from '../../../storage/stats';
 import { dailyNumber, jstDateKey } from '../../../utils/date';
-import { Footer } from '../../../ui/Home';
 import { Page } from '../../../ui/Pages';
 import { ArtGameView } from '../components/ArtGameView';
 import { ARTWORKS, getArtwork, nextArtwork, pickRandomArtwork } from '../data';
@@ -47,18 +45,22 @@ export function ArtHome() {
       <details className="art-more" data-testid="art-more">
         <summary>{t('home.other')}</summary>
         <div className="art-more-content">
-          <HomeLinks items={[
-            { label: t('home.howTo'), to: 'how' },
-            { label: t('home.stats'), to: 'stats' },
-            { label: t('home.credits'), to: 'credits' },
-          ]} />
-          <section className="other-games" aria-label={t('home.more')}>
-            <h2>{t('home.more')}</h2>
-            <Link to="/big-slide" className="og-row" data-testid="more-big"><b>BIG SLIDE</b><ChevronRight size={18} className="og-chev" /></Link>
-            <Link to="/word-slide" className="og-row" data-testid="more-word"><b>WORD SLIDE</b><ChevronRight size={18} className="og-chev" /></Link>
-          </section>
-          <Footer />
-          <HomeLinks items={[{ label: t('home.settings'), to: 'settings' }]} />
+          <nav className="art-more-main" aria-label={t('home.other')}>
+            <Link to="/art-slide/how">{t('home.howTo')}</Link>
+            <Link to="/art-slide/stats">{t('home.stats')}</Link>
+            <Link to="/art-slide/credits">{t('home.credits')}</Link>
+          </nav>
+          <nav className="art-more-puzzles" aria-label={t('home.more')}>
+            <Link to="/big-slide" data-testid="more-big">BIG SLIDE</Link>
+            <Link to="/word-slide" data-testid="more-word">WORD SLIDE</Link>
+          </nav>
+          <nav className="art-more-sub" aria-label={t('common.about')}>
+            <Link to="/about">{t('common.about')}</Link>
+            <Link to="/privacy">{t('common.privacy')}</Link>
+            <Link to="/terms">{t('common.terms')}</Link>
+            <Link to="/contact">{t('common.contact')}</Link>
+            <Link to="/settings">{t('home.settings')}</Link>
+          </nav>
         </div>
       </details>
     </div>
