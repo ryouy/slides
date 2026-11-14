@@ -150,5 +150,9 @@ const ko: Partial<Dict> = {
   "art.textSource": "작품 해설",
   "art.textAdjusted": "HTML을 일반 텍스트로 변환",
   "art.englishDetail": "미술관 상세 해설 (영어)",
+  "sort.random": "무작위",
+  "gal.columns": "한 줄 개수",
+  "gal.columnsAuto": "자동",
+  "gal.reshuffle": "다시 섞기",
 };
 export default ko;
