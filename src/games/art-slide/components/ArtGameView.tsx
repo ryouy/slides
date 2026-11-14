@@ -238,7 +238,7 @@ export function ArtGameView(p: Props) {
           <span aria-hidden="true">/</span>
           <button type="button" className={descriptionLang === 'en' ? 'on' : ''}
             aria-pressed={descriptionLang === 'en'} aria-label={t('art.descriptionEnglish')}
-            onClick={() => setDescriptionLangChoice('en')}>英</button>
+            onClick={() => setDescriptionLangChoice('en')}>En</button>
         </div>
         <p className="ap-credit">
           {artwork.museum} · <a href={artwork.licenseUrl} target="_blank" rel="noopener noreferrer">CC0</a> · <a href={artwork.sourceUrl} target="_blank" rel="noopener noreferrer">{t('art.source')}</a>
