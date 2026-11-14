@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-11-14T08:57:23.653588+00:00",
+  "repository": "ryouy/slides",
+  "baseCommit": "eeb6fca1d4a60de35df80ce7425a2fbbe69cb6cc",
+  "totalArtworks": 404,
+  "updatedDescriptionsThisRun": 404,
+  "descriptionTypes": {
+    "museum_text": 316,
+    "metadata_summary": 88
+  },
+  "medianLength": 1783.0,
+  "minLength": 435,
+  "maxLength": 3368,
+  "under200": 0,
+  "under400": 0,
+  "over600": 384,
+  "failedRequests": {},
+  "notes": "Only official APIs were used; missing curator prose was replaced only with factual catalogue summaries."
+}
