@@ -1594,7 +1594,7 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 @media (max-width: 899px) {
   .preview-layer {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: max(10px, env(safe-area-inset-top)) 10px max(10px, env(safe-area-inset-bottom));
     box-sizing: border-box;
@@ -1757,4 +1757,27 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
     outline: 1px solid var(--fg);
     outline-offset: 2px;
   }
+}
+
+
+/* On phones, tall paintings are height-constrained instead of filling the width.
+ * Their aspect ratio stays intact, so the entire board remains reachable. */
+@media (max-width: 899px) {
+  .screen.artgame > .aboard-wrap {
+    width: min(100%, calc(70svh * var(--aspect)), calc(640px * var(--aspect)));
+    max-width: 100%;
+    min-width: 0;
+    margin-inline: auto;
+    justify-self: center;
+  }
+  .screen.artgame > .aboard-wrap .aboard {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* Fix the top edge of the mobile preview; only its bottom may expand with text. */
+@media (max-width: 899px) {
+  .preview-layer { align-items: flex-start; }
+  .preview-card { flex: 0 1 auto; }
 }
