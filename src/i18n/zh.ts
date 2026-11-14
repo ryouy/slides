@@ -100,5 +100,11 @@ const zh: Partial<Dict> = {
   "legal.termsNote": "致网站运营者：发布前请审核这些条款。",
   "legal.contact": "欢迎咨询、报告错误或提出建议。",
   "legal.contactNote": "致网站运营者：请在此提供联系邮箱或反馈表单。",
+  "art.summary": "{artist}创作于{year}年的作品。分类：{theme}。",
+  "level.6": "非常困难",
+  "level.7": "专家",
+  "era.1800–1849": "1800—1849年",
+  "era.1850–1879": "1850—1879年",
+  "era.1880–1899": "1880—1899年",
 };
 export default zh;
