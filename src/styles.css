@@ -1125,3 +1125,39 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .artgame .art-extra > .ap-desc { white-space: pre-line; }
 .artgame .art-museum-text { margin-top: 5px; }
 .artgame .art-museum-text p { white-space: pre-line; line-height: 1.65; }
+
+
+/* ART SLIDE home: Settings remains accessible without expanding More. */
+.art-home .art-home-secondary {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(14px, 4vw, 26px);
+  border-top: 1px solid var(--line);
+}
+.art-home .art-home-secondary .art-more {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  border-top: 0;
+}
+.art-home .art-home-settings {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  min-height: 46px;
+  padding: 11px 2px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: .04em;
+  line-height: 1.4;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color .18s ease;
+}
+.art-home .art-home-settings:hover { color: var(--fg); }
+.art-home .art-home-settings:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.art-home .art-home-settings svg { flex: 0 0 15px; }
+.credits-description { font-size: 12px; color: var(--muted); }
