@@ -29,7 +29,9 @@ describe('visible artwork shuffle scales with actual tile count', () => {
     const { steps, minMisplaced } = visibleShuffleSteps(7, d);
     const { board, clicks } = shuffleFromBoard(rngFromString('visible-shuffle-test'), d, first, steps, minMisplaced);
     let replay = first;
+    const formerBlanks: number[] = [];
     for (const cell of clicks) {
+      formerBlanks.push(replay.indexOf(null));
       const moved = moveTile(replay, d, cell);
       expect(moved).not.toBeNull();
       replay = moved!;
@@ -37,12 +39,13 @@ describe('visible artwork shuffle scales with actual tile count', () => {
     expect(replay).toEqual(board);
     expect(clicks.length).toBeGreaterThanOrEqual(steps);
     expect(isSolved(board)).toBe(false);
-    for (const cell of clicks.slice().reverse()) {
-      const previousBlank = replay.indexOf(null);
-      // Reverse the current move by clicking the cell the blank occupied just before it.
-      // A forward click sequence can always be reversed when its blank path is retained.
-      expect(previousBlank).toBeGreaterThanOrEqual(0);
-      expect(cell).toBeGreaterThanOrEqual(0);
+
+    // Reversing every legal slide must return to the starting arrangement.
+    for (const previousBlank of formerBlanks.reverse()) {
+      const undone = moveTile(replay, d, previousBlank);
+      expect(undone).not.toBeNull();
+      replay = undone!;
     }
+    expect(replay).toEqual(first);
   });
 });
