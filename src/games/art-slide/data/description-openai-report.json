@@ -1,12 +1,12 @@
 {
   "model": "gpt-6-luna",
   "recipeVersion": "openai-bilingual-v1",
-  "generatedAt": "2026-11-14T09:59:30.567317+00:00",
+  "generatedAt": "2026-11-14T10:01:32.819085+00:00",
   "totalArtworks": 404,
-  "processed": 325,
-  "remaining": 79,
-  "medianEnglishCharacters": 475,
-  "medianJapaneseCharacters": 187,
+  "processed": 350,
+  "remaining": 54,
+  "medianEnglishCharacters": 473.5,
+  "medianJapaneseCharacters": 185.0,
   "records": {
     "aic-102131": {
       "id": "aic-102131",
@@ -2931,6 +2931,231 @@
       "rawSourceCharacters": 1890,
       "englishCharacters": 423,
       "japaneseCharacters": 187,
+      "apiWarning": null
+    },
+    "eakins-riter-fitzgerald": {
+      "id": "eakins-riter-fitzgerald",
+      "title": "Riter Fitzgerald",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1716,
+      "englishCharacters": 432,
+      "japaneseCharacters": 170,
+      "apiWarning": null
+    },
+    "fantin-latour-roses-in-a-bowl": {
+      "id": "fantin-latour-roses-in-a-bowl",
+      "title": "Roses in a Bowl",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1119,
+      "englishCharacters": 309,
+      "japaneseCharacters": 123,
+      "apiWarning": null
+    },
+    "fantin-latour-still-life-corner-of-a-table": {
+      "id": "fantin-latour-still-life-corner-of-a-table",
+      "title": "Still Life: Corner of a Table",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1847,
+      "englishCharacters": 460,
+      "japaneseCharacters": 162,
+      "apiWarning": null
+    },
+    "gainsborough-sarah-dupont": {
+      "id": "gainsborough-sarah-dupont",
+      "title": "Sarah Dupont",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1854,
+      "englishCharacters": 447,
+      "japaneseCharacters": 188,
+      "apiWarning": null
+    },
+    "gauguin-arlesiennes-mistral": {
+      "id": "gauguin-arlesiennes-mistral",
+      "title": "Arlésiennes (Mistral)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2526,
+      "englishCharacters": 504,
+      "japaneseCharacters": 188,
+      "apiWarning": null
+    },
+    "gauguin-day-of-the-god": {
+      "id": "gauguin-day-of-the-god",
+      "title": "Day of the God (Mahana no atua)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1930,
+      "englishCharacters": 581,
+      "japaneseCharacters": 240,
+      "apiWarning": null
+    },
+    "gauguin-merahi-metua-no-tehamana-tehamana-has-many-paren": {
+      "id": "gauguin-merahi-metua-no-tehamana-tehamana-has-many-paren",
+      "title": "Merahi metua no Tehamana (Tehamana Has Many Parents or The…",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1807,
+      "englishCharacters": 486,
+      "japaneseCharacters": 178,
+      "apiWarning": null
+    },
+    "gogh-a-peasant-woman-digging-in-front-of-her-cottage": {
+      "id": "gogh-a-peasant-woman-digging-in-front-of-her-cottage",
+      "title": "A Peasant Woman Digging in Front of Her Cottage",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2090,
+      "englishCharacters": 484,
+      "japaneseCharacters": 185,
+      "apiWarning": null
+    },
+    "gogh-fishing-in-spring-the-pont-de-clichy-asnieres": {
+      "id": "gogh-fishing-in-spring-the-pont-de-clichy-asnieres",
+      "title": "Fishing in Spring, the Pont de Clichy (Asnières)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1985,
+      "englishCharacters": 392,
+      "japaneseCharacters": 161,
+      "apiWarning": null
+    },
+    "gogh-madame-roulin-rocking-the-cradle-la-berceuse": {
+      "id": "gogh-madame-roulin-rocking-the-cradle-la-berceuse",
+      "title": "Madame Roulin Rocking the Cradle (La berceuse)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2051,
+      "englishCharacters": 545,
+      "japaneseCharacters": 222,
+      "apiWarning": null
+    },
+    "guardi-the-grand-canal-venice": {
+      "id": "guardi-the-grand-canal-venice",
+      "title": "The Grand Canal, Venice",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1786,
+      "englishCharacters": 502,
+      "japaneseCharacters": 225,
+      "apiWarning": null
+    },
+    "hals-portrait-of-a-lady": {
+      "id": "hals-portrait-of-a-lady",
+      "title": "Portrait of a Lady",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1812,
+      "englishCharacters": 459,
+      "japaneseCharacters": 165,
+      "apiWarning": null
+    },
+    "harnett-just-dessert": {
+      "id": "harnett-just-dessert",
+      "title": "Just Dessert",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1596,
+      "englishCharacters": 425,
+      "japaneseCharacters": 184,
+      "apiWarning": null
+    },
+    "hassam-new-england-headlands": {
+      "id": "hassam-new-england-headlands",
+      "title": "New England Headlands",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1574,
+      "englishCharacters": 520,
+      "japaneseCharacters": 177,
+      "apiWarning": null
+    },
+    "hassam-new-york-street": {
+      "id": "hassam-new-york-street",
+      "title": "New York Street",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1590,
+      "englishCharacters": 462,
+      "japaneseCharacters": 172,
+      "apiWarning": null
+    },
+    "hassam-the-little-pond-appledore": {
+      "id": "hassam-the-little-pond-appledore",
+      "title": "The Little Pond, Appledore",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1676,
+      "englishCharacters": 391,
+      "japaneseCharacters": 180,
+      "apiWarning": null
+    },
+    "heade-magnolias-on-light-blue-velvet-cloth": {
+      "id": "heade-magnolias-on-light-blue-velvet-cloth",
+      "title": "Magnolias on Light Blue Velvet Cloth",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1810,
+      "englishCharacters": 456,
+      "japaneseCharacters": 185,
+      "apiWarning": null
+    },
+    "henri-himself": {
+      "id": "henri-himself",
+      "title": "Himself",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1432,
+      "englishCharacters": 359,
+      "japaneseCharacters": 142,
+      "apiWarning": null
+    },
+    "hiroshige-arai": {
+      "id": "hiroshige-arai",
+      "title": "Arai",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 651,
+      "englishCharacters": 338,
+      "japaneseCharacters": 113,
+      "apiWarning": null
+    },
+    "hiroshige-mishima-morning-mist": {
+      "id": "hiroshige-mishima-morning-mist",
+      "title": "Mishima: Morning Mist",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 632,
+      "englishCharacters": 334,
+      "japaneseCharacters": 117,
+      "apiWarning": null
+    },
+    "hiroshige-mitsuke-ferries-crossing-the-tenryu-river": {
+      "id": "hiroshige-mitsuke-ferries-crossing-the-tenryu-river",
+      "title": "Mitsuke: Ferries Crossing the Tenryu River",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 693,
+      "englishCharacters": 231,
+      "japaneseCharacters": 79,
+      "apiWarning": null
+    },
+    "hokusai-great-wave": {
+      "id": "hokusai-great-wave",
+      "title": "The Great Wave off Kanagawa",
+      "source": "Met metadata only",
+      "rawSourceCharacters": 594,
+      "englishCharacters": 382,
+      "japaneseCharacters": 156,
+      "apiWarning": null
+    },
+    "hokusai-hara": {
+      "id": "hokusai-hara",
+      "title": "Hara",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 624,
+      "englishCharacters": 268,
+      "japaneseCharacters": 89,
+      "apiWarning": null
+    },
+    "hokusai-shower-below-the-summit": {
+      "id": "hokusai-shower-below-the-summit",
+      "title": "Shower Below the Summit",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2397,
+      "englishCharacters": 399,
+      "japaneseCharacters": 137,
+      "apiWarning": null
+    },
+    "homer-croquet-scene": {
+      "id": "homer-croquet-scene",
+      "title": "Croquet Scene",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2056,
+      "englishCharacters": 456,
+      "japaneseCharacters": 173,
       "apiWarning": null
     }
   },

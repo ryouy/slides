@@ -66,31 +66,43 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "gogh-a-peasant-woman-digging-in-front-of-her-cottage": {
-    "description": "Driven by the loneliness and poverty he had experienced living in the Hague, Vincent van Gogh returned to his parents’ home in Nuenen, the Netherlands, in late 1883 and devoted himself entirely to painting. In Nuenen, the artist also returned to the more monochromatic palette of browns, greens, and grays that he had used in his early years in the Netherlands. He painted a series of cottages— including this painting—based on his walks through the village. He described this series to his brother: “I feel for the brood and the nests—particularly those human nests, those cottages on the heath and their inhabitants.” Van Gogh carefully infused the woman, the cottage, and the setting with the same earthy tones and the loose, directional texture of the brushstrokes. In doing so, he emphasized the way she belonged to this place, and it to her.\n\nCatalogue information\nRecorded artist or maker: Vincent van Gogh (Dutch, 1853–1890). Date: c. 1885. Materials and technique: Oil on canvas. Artistic style or school: Realism. Place of creation: Netherlands. Classification: oil on canvas. Physical dimensions: 31.3 × 42 cm (12 5/16 × 16 1/2 in.); Framed: 52.1 × 62.6 × 10.8 cm (20 1/2 × 24 5/8 × 4 1/4 in.). Museum catalogue subjects: everyday life (genre), green (color), brown (color), trees, clouds, house, woman. Museum credit line: Bequest of Dr. John J. Ireland. Recorded ownership history (excerpt): The artist; his mother, Mrs. A. C. Van Gogh Carbentus, Neunen and Breda, around 1885 [ according to a letter from Martha Op de Coul, Rijksbureau voor Kunsthistorische Documentatie, The Hague, Netherlands, Aug. 23, 2000]; given to the carpenter, Schrauwen, Breda, 1886 [this and the following according to Stokvis 1926, 5-6]; transferred to Jan and Rien Couvreur, Breda, 1903…. Exhibition record (excerpt): Omaha, Nebraska, Joslyn Art Museum, Jules Breton and the French Rural Tradition, Nov. 6, 1982–Jan. 2, 1983, cat. 99. Tokyo, Seibu Museum, The Impressionist Tradition: Masterpieces from the Art Institute of Chicago, Oct. 18–Dec. 1, 1985, cat. 11; Kyoto, Fukuoka Art Museum, Jan.….",
+    "description": "In this painting, a woman digs outside her cottage, one of a group of village cottages Van Gogh painted after walks around Nuenen. Having returned to his parents’ home in the Netherlands in 1883, he adopted the subdued browns, greens, and grays of his early Dutch work. Earthy tones unite the woman, cottage, and surroundings, while loose, directional brushstrokes shape the scene. Van Gogh’s treatment reflects his interest in the lives of the people who inhabited these rural homes.",
+    "descriptionTranslations": {
+      "ja": "小屋の前で土を掘る女性を描いた本作は、オランダのヌエネンで村を歩きながら制作した小屋の連作の一つです。1883年に両親のもとへ戻ったファン・ゴッホは、初期のオランダ時代に用いた茶、緑、灰色を基調とする抑えた色彩に立ち返りました。女性と小屋、周囲の風景は土色で結ばれ、方向性のあるのびやかな筆致が画面を形づくります。農村の住まいと、そこに暮らす人々への関心がうかがえます。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/28862",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/28862",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "gogh-fishing-in-spring-the-pont-de-clichy-asnieres": {
-    "description": "The setting of this work is the river Seine at the Clichy Bridge near Asnières, a suburb north of Paris where Vincent van Gogh painted on several occasions with his friend and fellow artist Paul Signac . Van Gogh was inspired by Signac and Georges Seurat , both of whose work is on view nearby. Their technique, called divisionism, used science-based theories of color, which they applied in individual strokes to maximize luminosity. Although Van Gogh was only in Paris working among these artists for about two years, their influence can be seen here in his use of small brushstrokes of pure, brilliant color that combine to create the effect of light reflecting off the various surfaces represented in the composition.\n\nCatalogue information\nRecorded artist or maker: Vincent van Gogh (Dutch, 1853–1890). Date: 1887. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: Netherlands. Classification: oil on canvas. Physical dimensions: 50.5 × 60 cm (19 7/8 × 23 5/8 in.); Framed: 71.2 × 78.5 × 4.8 cm (28 × 30 7/8 × 1 7/8 in.). Museum catalogue subjects: landscapes, blue (color), boatman, boats, bridge, bushes, carriage. Museum credit line: Gift of Charles Deering McCormick, Brooks McCormick, and Roger McCormick. Recorded ownership history (excerpt): The artist’s sister-in-law, Johanna van Gogh-Bonger (died 1925), Amsterdam [this and the following according to records in van Gogh Bonger’s account book, reproduced in Stolwijk and Veenenbos 2000, 47 no. 12/7, 142–43]; probably sent to Ambroise Vollard, Paris, Nov. 1896. Cornelis Hoogendijk (died 1911), The Hague, Netherlands, by 1906; by descent to his sister, Maria Ida…. Exhibition record (excerpt): Possibly on loan to Stedelijk Museum, Amsterdam, 1927. Amsterdam, Stedelijk Museum, Vincent van Gogh en zijn tijdgenooten, Sep. 6-Nov. 2, 1930, cat. 29. Venice, Palazzo dell'Esposizione, Ventunesima esposizione biennale internazionale d'arte, 1938 - 1939, cat. 14. New York….",
+    "description": "Painted in 1887, this oil on canvas depicts the Seine at the Clichy Bridge near Asnières, north of Paris, where Van Gogh worked alongside his friend Paul Signac. Influenced by Signac and Georges Seurat, he used small strokes of pure, brilliant color, drawing on divisionist ideas to heighten luminosity. The strokes combine to suggest light reflected from the different surfaces in the scene.",
+    "descriptionTranslations": {
+      "ja": "1887年制作の油彩画。パリ北郊の町アニエール近く、クリシー橋の架かるセーヌ川が描かれています。ゴーガンはこの地で友人の画家ポール・シニャックと制作し、シニャックやジョルジュ・スーラの影響を受けました。分割主義の考え方を踏まえた、純度の高い鮮やかな色彩の小さな筆触が、画面に描かれたさまざまな面に反射する光を表しています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/109314",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/109314",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "gogh-madame-roulin-rocking-the-cradle-la-berceuse": {
-    "description": "Vincent van Gogh saw in Augustine Roulin—along with her husband, Joseph, and their children—a model of love and family life. In this portrait, Roulin rocks a cradle by pulling on a rope. The title La Berceuse (the lullaby) suggests a consoling figure, and the artist described his palette as a soothing “lullaby in colors.” Van Gogh painted five versions of this image. He completed this one in January 1889, soon after returning from his stay in the hospital following Paul Gauguin’s fraught departure. Madame Roulin sits in Gauguin’s chair, an attempt by Van Gogh to fill the space left by the older artist. In May 1889, Van Gogh gave this canvas to Gauguin as a gesture of reconciliation and friendship, instructing that it be hung between two paintings of sunflowers.\n\nCatalogue information\nRecorded artist or maker: Vincent van Gogh (Dutch, 1853–1890). Date: 1889. Materials and technique: Oil on canvas. Artistic style or school: Post-Impressionism. Place of creation: Netherlands. Classification: oil on canvas. Physical dimensions: 92.7 × 73.8 cm (36 1/2 × 29 1/2 in.); Framed: 111.9 × 91.8 × 8.3 cm (44 1/16 × 36 1/8 × 3 1/2 in.). Museum catalogue subjects: portraits: female subject, red (color), green (color), woman with children, interior, chair, flowers. Museum credit line: Helen Birch Bartlett Memorial Collection. Recorded ownership history (excerpt): The artist; sent to his brother, Theo van Gogh (died 1891) [Letter 767 Vincent van Gogh to Theo van Gogh, May 2, 1889]. Paul Gauguin, Paris [this and the following according to La Faille 1928, no. 506]; Auguste Pellerin Collection (died 1929), Paris; Galerie de l’Art E. Blot, Paris [Paris 1909]; Amédée Schuffenecker (1854-1936), Saint-Maur, Paris; Galerie de l’Art Marcel…. Exhibition record (excerpt): Mannheim Kunsthalle, Internationale Kunstausstellung, March 1 - October 20, 1907, cat. 1080. Paris, Galerie E. Druet, Cinquante Tableaux de Vincent van Gogh, November 8 - 20, 1909, cat. 10 Paris, Galerie Marcel Bernheim, Exposition rétrospective d'oeuvres de Vincent Van Gogh….",
+    "description": "Augustine Roulin sits in a chair, rocking a cradle by pulling a rope. Van Gogh regarded her, her husband Joseph, and their children as an example of family affection; the title, La Berceuse, means “the lullaby,” and he described the painting’s palette as a soothing lullaby in color. He completed this oil on canvas in January 1889, after returning from hospital following Gauguin’s departure. It is one of five versions, and in May Van Gogh gave it to Gauguin as a gesture of reconciliation, asking that it hang between two sunflower paintings.",
+    "descriptionTranslations": {
+      "ja": "オーギュスティーヌ・ルーランは椅子に腰掛け、綱を引いて揺り籠を揺らしている。家族の愛情を体現する存在として彼女を見ていたファン・ゴッホは、「子守歌」を意味する《ラ・ベルスーズ》と名づけ、色彩も心を慰める子守歌のようだと語った。油彩・カンヴァスの本作は、ゴーギャンの去った後、入院生活を終えて戻った1889年1月に完成した五つのヴァージョンの一つである。同年5月、和解と友情のしるしとしてゴーギャンに贈り、ひまわりの絵二点の間に掛けるよう伝えた。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/27949",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/27949",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "renoir-two-sisters": {
     "description": "Pierre-Auguste Renoir considered the Restaurant Fournaise in Chatou (a village along the Seine River) the perfect spot to enjoy nature and good company away from the urban distractions of Paris. His painting Two Sisters (On the Terrace) , which he exhibited at the Impressionist exhibition of 1882, is among the last of his paintings set there. Sometimes, as in his most famous work on this subject, Luncheon of the Boating Party (1882; Phillips Collection, Washington, DC), Renoir used his close friends as models. For Two Sisters , however, despite the title of the painting, he paid unrelated models to create this intimate and perfectly balanced pairing of youth and nature. The older girl, wearing the blue flannel of a female boater’s outfit, sports a luxurious red hat, but it is her younger companion who captivates. Her oversize headdress composed of a floral bouquet is echoed in the brightly colored skeins of yarn in the basket that she gently touches. As was typical for the artist, Renoir painted the faces of his models with controlled and precise brushwork creating a porcelain-like surface that contrasts brilliantly with the diaphanous, impressionist backdrop of river, boats, and blossoming trees just beyond the railing of the terrace.\n\nCatalogue information\nRecorded artist or maker: Pierre-Auguste Renoir (French, 1841–1919). Date: 1881. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: painting. Physical dimensions: 100.4 × 80.9 cm (39 1/2 × 31 7/8 in.); Framed: 119.1 × 100.1 × 9.6 cm (46 7/8 × 39 3/8 × 3 3/4 in.). Museum catalogue subjects: sisters, families, girls, girl, lake, water, trees. Museum credit line: Mr. and Mrs. Lewis Larned Coburn Memorial Collection. Recorded ownership history (excerpt): The artist (d. 1919); sold to Durand-Ruel, Paris, July 7, 1881, for 1,500 francs [per Durand-Ruel, Paris, stock book for 1880–82 (no. 1451, as Femme sur une terrasse au bord de la Seine), as confirmed by Paul-Louis Durand-Ruel and Flavie Durand-Ruel, Durand-Ruel Archives, to the Art Institute of Chicago, Oct. 5, 2010, curatorial object file]; transferred to Durand-Ruel, New…. Exhibition record (excerpt): Paris, 251, rue Saint-Honoré, Salons du Panorama de Reischoffen, 7me exposition des artistes independants [seventh Impressionist exhibition], Mar. 1–31, 1882, cat. 138, as Les deux soeurs. Paris, Durand-Ruel, Exposition des oeuvres de P.-A. Renoir, Apr. 1–25, 1883, cat. 30, as….",
@@ -224,22 +236,30 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionKind": "metadata_summary"
   },
   "gauguin-arlesiennes-mistral": {
-    "description": "During the winter of 1888, Paul Gauguin spent a troubled two months with Vincent van Gogh in the southern French city of Arles. He painted the enigmatic Arlésiennes (Mistral) during this stay. The painters’ time together was intended to be the beginning of an artist’s colony, but their relationship grew increasingly tense, and Van Gogh’s mental health deteriorated. Set directly across the street from the house they shared, the painting depicts four women somberly processing through a public garden. The space is tilted radically upward, and complex, three-dimensional forms are reduced to simple, flat shapes. For example, twin orange-yellow cones—probably protective hay coverings to shield plants from the frost—tower at the right like abstracted human figures. Wrapped in dark shawls, the two closest women cover their mouths against the frigid air. Their gestures are withdrawn and introspective, and their passage is seemingly blocked by a bright red fence and large green bush. Perhaps the composition’s oddest element is the appearance of a face within the bush. This face—an intentional inclusion by the artist—adds an uncanny, watchful presence to the scene. It exemplifies Gauguin’s exploration of what he believed to be the mysteries that suffuse everyday life.\n\nCatalogue information\nRecorded artist or maker: Paul Gauguin (French, 1848–1903). Date: 1888. Materials and technique: Oil on jute canvas. Artistic style or school: Post-Impressionism. Place of creation: France. Classification: painting. Physical dimensions: 73 × 92 cm (28 3/4 × 36 3/16 in.); Framed: 97.5 × 116.6 × 8 cm (38 3/8 × 45 7/8 × 3 1/8 in.). Museum catalogue subjects: women, blue (color), red (color), fences, paths, water, foliage. Museum credit line: Mr. and Mrs. Lewis Larned Coburn Memorial Collection. Recorded ownership history (excerpt): Sold by the artist to Théo van Gogh for 300 Francs probably in the first half of 1889 [according to \"carnet de l'artiste,\" 1888-1889, see Huyghe 1952, p. 223]; Émile Schuffenecker [according to Jeanne Schuffenecker, see Wildenstein 2001]; Thannhauser Galerie, Lucerne, c. 1923, stock no. 1167 [according to Wildenstein 2001]. James W. Barney, New York, c. 1929 [according to New…. Exhibition record (excerpt): Berlin, Hugo Perls, De Delacroix à Gauguin, 1925, cat. 14. Basel, Kunsthalle, Paul Gauguin, 1848–1903, July-August 1928, cat. 39 or 44. Berlin, Galerie Thannhauser, Paul Gauguin 1848–1903, October 1928, cat. 30. New York, The Museum of Modern Art, First Loan Exhibition: Cézanne….",
+    "description": "Painted during Gauguin’s two-month stay with Vincent van Gogh in Arles in the winter of 1888, this work shows four women moving through a public garden opposite the house they shared. Their dark shawls and guarded gestures meet a sharply tilted space, where solid forms become flat shapes; orange-yellow plant coverings rise like figures beside a red fence and green bush. A deliberately painted face within the foliage lends the scene an uncanny, watchful presence. Gauguin worked in oil on jute canvas.",
+    "descriptionTranslations": {
+      "ja": "1888年冬、アルルでフィンセント・ファン・ゴッホと過ごした時期に描かれた作品です。二人が暮らした家の向かいにある庭を、暗いショールに身を包んだ四人の女性が進みます。大きく傾いた空間では、立体的な形が平らな形へと簡略化され、橙黄色の植物覆いが人物のようにそびえます。赤い柵と緑の茂みの中には、画家が意図して描き込んだ顔があり、場面に不穏な気配を添えています。ジュート地に油彩。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/19339",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/19339",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "gauguin-merahi-metua-no-tehamana-tehamana-has-many-paren": {
-    "description": "In this portrait, the 13-year-old Tahitian girl named Tehamana appears stoic, shoulders squared and gaze unflinching. She wears a missionary dress and wields a Samoan fan as white flowers tumble from her hair. The ripe mango beside her alludes to fertility. In the background, Gauguin combined various non-European emblems—glyphs derived from an Easter Island tablet and a female deity inspired by Polynesian and Hindu sources—to build a generic sense of foreigness and mystery, transforming Tehamana into the embodiment of his own desire.\n\nCatalogue information\nRecorded artist or maker: Paul Gauguin (French, 1848–1903). Date: 1893. Materials and technique: Oil on jute canvas. Artistic style or school: Post-Impressionism. Place of creation: France. Classification: oil on canvas. Physical dimensions: 75 × 53 cm (29 1/2 × 20 7/8 in.); Framed: 98.8 × 76.6 × 8.3 cm (38 7/8 × 30 1/8 × 3 1/4 in.). Museum catalogue subjects: portraits: child subject, deities, fruit, flowers, symbols, decoration, white (color). Museum credit line: Gift of Mr. and Mrs. Charles Deering McCormick. Recorded ownership history (excerpt): Gauguin Sale, Paris, Hôtel Drouot, February 18, 1895, lot 32; bought in for 300 francs; given by the artist to Daniel de Monfreid (died 1929), Paris; by descent to Mme Daniel de Monfreid, Paris; by descent to her daughter, Mme Huc de Monfreid; sold to Jacques Seligmann, Paris and New York, 1937 [see New York 1937 and Vogue 1937]. Stephen C. Clark, New York by 1938 [see Rewald…. Exhibition record (excerpt): Paris, Galeries Durand-Ruel, Exposition Paul Gauguin, November 1893, cat. 33. Béziers, Société des Beaux-Arts, 1901, cat. 53. Paris, Galerie L. Dru, Exposition retrospective de P. Gauguin (1848–1903); peintures, bois, céramiques, gravures, dessins, April 16–May 11, 1923, cat.….",
+    "description": "In this 1893 portrait, thirteen-year-old Tehamana sits with squared shoulders and an unwavering gaze, wearing a missionary dress and holding a Samoan fan; white flowers fall from her hair. A mango beside her evokes fertility, while the background combines glyphs based on an Easter Island tablet with a female deity drawing on Polynesian and Hindu sources. Gauguin painted the work in oil on jute canvas, using these varied emblems to construct an imagined, generalized foreign setting.",
+    "descriptionTranslations": {
+      "ja": "1893年、ゴーガンは13歳のテハマナを、肩を張り、揺るぎない眼差しを向ける姿で描いた。宣教師風のドレスを着てサモアの扇を手にし、髪から白い花がこぼれている。傍らのマンゴーは豊穣を示唆し、背景にはイースター島の石板に基づく記号と、ポリネシアおよびヒンドゥーの源泉に着想を得た女神像が配される。ジュート地に油彩で描かれた本作は、多様な図像を組み合わせている。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/60812",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/60812",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "cezanne-basket-of-apples": {
     "description": "In this still life, a wine bottle anchors a table laden with apples, a basket, and a precarious stack of langues de chat biscuits. The misaligned tabletop and tilted bottle unsettle the scene, while apples appear to cascade and the biscuits seem poised at the picture’s edge. Cézanne shifts from thick, sculptural brushwork in the fruit and cloth to sketch-like marks around the table and fabric. Rarely signing his paintings, he signed this work, made in France around 1893.",
@@ -407,22 +427,30 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "homer-croquet-scene": {
-    "description": "One of America’s foremost painters, Winslow Homer began his career as an illustrator during the Civil War. In the late 1860s, he turned his acute observational and technical skills toward oil painting, depicting figures bathed in sunlight out-of-doors. These early paintings, often executed in series, feature scenes of upper-class leisure pursuits—in this case, women and men competing with one another in the popular sport of croquet, which had recently been introduced to the United States from the British Isles. In Croquet Scene , one of five paintings Homer completed on the subject, progress on “the grand round” seems fairly advanced. The crouching male figure positions the ball belonging to the woman dressed in red. She is about to croquet (or “send up the country”) another ball, probably belonging to the woman in the left foreground, who shields her eyes against the bright afternoon sun. Notable for its bold patterning, strong contours, and brilliant light effects, the painting epitomizes the spirit of a breezy summer afternoon.\n\nCatalogue information\nRecorded artist or maker: Winslow Homer (American, 1836–1910). Date: 1866. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: United States. Classification: painting. Physical dimensions: 40.3 × 66.2 cm (15 7/8 × 26 1/16 in.). Museum catalogue subjects: fashion, women, weather/seasons, leisure, men. Museum credit line: Friends of American Art Collection; Goodman Fund. Recorded ownership history (excerpt): William Sumner Appleton, Boston, from 1871 to 1903; by descent to William Sumner Appleton, Jr., Boston, from 1903. C.C. Childes, Boston, by 1941; sold through M. Knoedler & Co., New York, to the Art Institute of Chicago, 1942.. Exhibition record (excerpt): New York, Macbeth Gallery, An Introduction to Homer, Dec. 15–Jan. 18, 1937, cat. 69. New York City, Metropolitan Museum of Art, Life in America, cat. 217. Museum of Fine Arts, Boston, Sport in American Art, Oct. 10–Dec. 10, 1944, cat. 56. Utica, Munson–Williams–Proctor….",
+    "description": "In this 1866 oil painting, Winslow Homer depicts women and men competing at croquet, a sport recently brought to the United States from the British Isles. A crouching man positions the red-clad woman’s ball as she prepares to strike another; in the foreground, a woman shields her eyes from the afternoon sun. One of five paintings Homer made on croquet, the scene is distinguished by bold patterns, strong contours, and brilliant effects of outdoor light.",
+    "descriptionTranslations": {
+      "ja": "ウィンスロー・ホーマーが1866年に描いた油彩画。イギリス諸島からアメリカに伝わって間もないクロッケーに興じる男女を描く。しゃがんだ男性が赤い服の女性の球を置き、彼女は別の球を打とうとしている。左手前の女性は午後の日差しから目を守る。クロッケーを主題とするホーマーの5点のうちの1作で、大胆な画面構成、明確な輪郭、戸外の光の鮮やかな表現が際立つ。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/44018",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/44018",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "eakins-riter-fitzgerald": {
-    "description": "Riter Fitzgerald—the art, music, and literary critic for the Philadelphia Evening Item —championed Thomas Eakins’s work and publicly defended the artist when his teaching methods proved controversial. Eakins’s portrait of the journalist is informed by Fitzgerald’s open-minded opinions, his appreciation of diverse art forms, and his commitment to intellectual life. Comfortably seated in his book-lined library, Fitzgerald is portrayed as a genteel man who enjoys a leisurely, yet contemplative lifestyle. With an open book in his lap, he thoughtfully gazes into the distance, peacefully lost in the realm of ideas.\n\nCatalogue information\nRecorded artist or maker: Thomas Eakins (American, 1844–1916). Date: 1895. Materials and technique: Oil on canvas. Artistic style or school: Realism. Place of creation: Philadelphia. Classification: painting. Physical dimensions: 193.7 × 163.2 cm (76 1/4 × 64 1/4 in.). Museum catalogue subjects: fashion, people, portraits. Museum credit line: Friends of American Art Collection; Goodman Fund. Recorded ownership history (excerpt): The artist, Philadelphia; given to Riter Fitzgerald (1844–1911), Philadelphia, 1895; by descent to Geraldine Maude Hubbard (born 1894; also Mrs. Jacob K. Spare), Philadelphia, 1911; sold to the Whitney Museum of American Art, New York, 1930; sold to M. Knoedler and Company, New York, 1950; sold to the Art Institute of Chicago, 1950.. Exhibition record (excerpt): Philadelphia, Earles’ Galleries, Eakins Exhibition, 1876. Philadelphia, Pennsylvania Academy of the Fine Arts, Sixty–fifth Annual Exhibition, Dec. 23, 1895–Feb. 22, 1896, cat. 112, as Portrait of Riter Fitzgerald, Esq. Philadelphia, Pennsylvania Academy of Fine Arts, Memorial….",
+    "description": "Thomas Eakins portrays Riter Fitzgerald, the Philadelphia Evening Item’s art, music, and literary critic, who championed the artist and defended him during controversy over his teaching. Seated in a library lined with books, Fitzgerald holds an open volume in his lap and gazes thoughtfully into the distance. Painted in Philadelphia in 1895, the oil on canvas presents the critic in a setting associated with his intellectual life.",
+    "descriptionTranslations": {
+      "ja": "トマス・イーキンズが描いたリター・フィッツジェラルドは、『フィラデルフィア・イブニング・アイテム』紙の美術・音楽・文学評論家で、イーキンズの作品を支持し、教授法をめぐる論争の際には公に擁護しました。本の並ぶ書斎に腰掛け、膝に開いた本を載せて遠くを思索するように見つめる姿が描かれています。1895年、フィラデルフィアで制作された油彩画です。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/72864",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/72864",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "rousseau-sawmill-outskirts-of-paris": {
     "description": "Sawmill, Outskirts of Paris is a work attributed in the Art Institute of Chicago catalogue to Henri Rousseau.\n\nCatalogue information\nRecorded artist or maker: Henri Rousseau French, 1844-1910. Date: c. 1893/95. Materials and technique: Oil on canvas. Place of creation: France. Classification: oil on canvas. Physical dimensions: 25.5 × 45.5 cm (10 × 17 7/8 in.). Museum catalogue subjects: countryside, France, people, plants, mills, trees, landscapes. Museum credit line: Bequest of Kate L. Brewster. Recorded ownership history (excerpt): Paul Guillaume (1891–1934), Paris, by 1927 [Zervos 1927]. Valentine Dudensing, New York, 1929 [Chicago 1933]. Walter S. Brewster (1872–1954) and Kate Brewster (née Lancaster; c. 1879–1947), by 1933 [Chicago 1933]; bequeathed by Kate Brewster to the Art Institute, 1950.. Exhibition record (excerpt): Chicago, Home of Mr. and Mrs. Walter Brewster, Special View for the benefit of Chicago Public School Art Society of the Collection of Mr. and Mrs. Walter S. Brewster, Jan. 20–22, 1933, cat. 27. The Art Institute of Chicago, Henri Rousseau, January 22–February 23, 1942, pp. 20–21….",
@@ -520,13 +548,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "hals-portrait-of-a-lady": {
-    "description": "Frans Hals, one of the most celebrated portrait painters of the 17th century, demonstrated here his signature verve in inscribing decoration on black satin and capturing the freshness of his subject’s skin. Adopting the portrait conventions established by such specialists as Paulus Moreelse , Hals enlivened this sitter through the application of loose brushstrokes to create highlights on her lace cap and brocaded bodice. The plain background, which bears the date of the painting and the age of the sitter, focuses attention on the 33-year-old woman’s face and fine attire.\n\nCatalogue information\nRecorded artist or maker: Frans Hals (Dutch, 1582–1666). Date: 1627. Materials and technique: Oil on canvas. Artistic style or school: 17th Century. Place of creation: Holland. Classification: oil on canvas. Physical dimensions: 86.5 × 70.7 cm (34 1/4 × 27 13/16 in.); Framed: 107 × 91.4 × 6.4 cm (42 1/8 × 36 × 2 1/2 in.). Museum catalogue subjects: portraits: female subject, lace, luxury, wealth, portraits: European subject, portrait. Museum credit line: Max and Leola Epstein Collection. Recorded ownership history (excerpt): Probably English private collection [W.R. Valentiner stated that it came from an English collection in an expertise dated 16 April 1923 in the curatorial file]; Steinmeyer, Lucerne, by 1921 [see Valentiner 1921]. Henry Reinhardt & Sons, Inc., New York, by 1923 [see letter from Reinhardt to Max Epstein dated 24 April 1923 in curatorial file]; sold to Max Epstein, Chicago…. Exhibition record (excerpt): New York, Reinhardt Galleries, Loan Exhibition of Paintings from El Greco and Rembrandt to Cézanne and Matisse, 15 Jan. - 29 Jan. 1927, cat. no. 4 (ill.). London, Royal Academy of Arts, Exhibition of Dutch Art, 1450-1900, Jan. 4 – Mar. 9, 1929, cat. no. 348 Detroit, Detroit….",
+    "description": "Frans Hals’s 1627 portrait presents a 33-year-old woman in a lace cap and brocaded bodice. Against a plain background marked with the painting’s date and her age, her face and fine clothing take focus. Hals uses loose brushstrokes to bring highlights to the lace and bodice, and conveys the freshness of her skin and the sheen of black satin. The painting is oil on canvas and reflects portrait conventions associated with specialists such as Paulus Moreelse.",
+    "descriptionTranslations": {
+      "ja": "フランス・ハルスが1627年に描いた、33歳の女性の肖像。レースの帽子と錦織の胴着をまとい、背景には制作年とモデルの年齢が記されている。簡潔な背景が顔と装いを際立たせ、ゆるやかな筆致によるレースや胴着の明部、肌の生き生きとした印象、黒いサテンの光沢が示される。油彩・カンヴァス。パウルス・モレールセら肖像画家の慣例を踏まえている。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/105945",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/105945",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "ruisdael-landscape-with-the-ruins-of-the-castle-of-egmon": {
     "description": "The deteriorating Castle of Egmond was a visible reminder of the Dutch struggle for independence: it was sacrificially destroyed during the revolt against Spain more than 80 years before Jacob van Ruisdael produced this painting. Landscape specialists like Van Ruisdael invoked Dutch patriotism by selecting sites representative of the republic, including ruins, windmills, and city views. Ruisdael distinguished himself by working on an unusually large scale and by imbuing his scenes with drama through low horizon lines and swollen clouds.\n\nCatalogue information\nRecorded artist or maker: Jacob van Ruisdael (Dutch, 1628/29-1682). Date: 1650–55. Materials and technique: Oil on canvas. Artistic style or school: 17th Century. Place of creation: Holland. Classification: oil on canvas. Physical dimensions: 98 × 130 cm (38 7/8 × 51 3/8 in.); Framed: 101 × 131.5 × 8.6 cm (39 3/4 × 51 3/4 × 3 3/8 in.). Museum catalogue subjects: landscapes, foliage, water, towers, clouds, rivers, trees. Museum credit line: Potter Palmer Collection. Recorded ownership history (excerpt): Possibly Collection of Jean-André Tardieu; sold, Paris, Hôtel Drouot, May 10-11, 1867, lot 51 as Les Ruines du Château de Brederode for 3,650 francs. Baron Etienne Martin de Beurnonville (1789-1876), château de la Chapelle, Labbeville, Val d'Oise, France; sale of his estate, Paris, Hôtel Drouot, May 9, 1881, lot 451 as Ruins of the Castle of Brederode; sold to Charles…. Exhibition record (excerpt): Berlin, Kaiser-Friedrich-Museums-Verein, Palais Redern, Ausstellung von Werken alter Kunst aus dem Privatbesitz der Mitglieder des Kaiser-Friedrich-Museums-Verein, 1906, no. 117, ill. Rotterdam, J. Goudstikker, Collection Goudstikker 36, 22 December 1928 - 6 January 1929….",
@@ -608,31 +640,43 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "hassam-new-england-headlands": {
-    "description": "This panoramic landscape depicts one of Childe Hassam’s favorite destinations: Gloucester, Massachusetts. During the summer months Gloucester was home to many artists, who, like Hassam, chose to emphasize its picturesque aspects, such as its quaint buildings and sailing vessels, rather than its fish-processing plants. The composition exhibits Hassam’s broken brushwork and his use of bare canvas, particularly in the foreground. Bright, saturated blues and crisp whites add to the maritime tenor of the work, while the square canvas highlights its architectural quality and harmoniously organized space.\n\nCatalogue information\nRecorded artist or maker: Childe Hassam (American, 1859–1935). Date: 1899. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: Gloucester. Classification: painting. Physical dimensions: 68.9 × 68.9 cm (27 1/8 × 27 1/8 in.). Museum catalogue subjects: landscapes, weather/seasons, water, Century of Progress, world's fairs, Chicago World's Fairs, architecture. Museum credit line: Walter H. Schulze Memorial Collection. Recorded ownership history (excerpt): Macbeth Galleries, New York City, by 1919; Paul Schulze, Chicago, from 1919 to 1930; given to the Art Institute of Chicago, 1930.. Exhibition record (excerpt): Art Institute of Chicago, A Century of Progress: Exhibition of Paintings and Sculpture , May 23–Oct. 31, 1933, cat. 561. Tucson, University of Arizona Museum of Art, Childe Hassam, 1859-1935 , Feb. 5–Mar. 5, 1972; CA, Santa Barbara Museum of Art, Mar. 26–Apr. 30, 1972, cat. 51.….",
+    "description": "In this panoramic view of Gloucester, Massachusetts, Childe Hassam presents a coastal town favored by artists in summer. Rather than its fish-processing plants, the scene draws attention to the picturesque character of its buildings and sailing vessels. Broken brushwork and areas of bare canvas, especially in the foreground, animate the oil painting; saturated blues and crisp whites reinforce its maritime character. The square canvas gives the composition an architectural quality and a harmoniously organized space.",
+    "descriptionTranslations": {
+      "ja": "夏には多くの芸術家が訪れたマサチューセッツ州グロスターを、ハッサムが広々とした風景として描いている。魚の加工施設ではなく、趣ある建物や帆船に目を向けた構図が、町の絵になる姿を捉える。前景を中心にキャンバス地を残し、筆触を細かく分断する油彩の技法が見られる。鮮やかな青と澄んだ白が海辺の印象を強め、正方形の画面は建築的な構成と調和のとれた空間を際立たせる。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/5349",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/5349",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "hassam-new-york-street": {
-    "description": "After studying painting in Paris, Childe Hassam applied the techniques of French Impressionism to his views of American cities and landscapes. While he also painted coastal and pastoral scenes, Hassam often focused on urban areas such as his hometown of Boston, and New York City, where he lived after returning from Paris. Here the artist rendered New York with short brushstrokes that emphasize the movement and activity of everyday life on Fifth Avenue along Central Park. He incorporated vivid colors, such as the red and yellow of the woman's hat and skirt, into what would otherwise be a predominantly gray and white winter cityscape and captured the light in a natural manner, presenting a picturesque view of a modern metropolis.\n\nCatalogue information\nRecorded artist or maker: Childe Hassam (American, 1859–1935). Date: 1902. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: United States. Classification: oil on canvas. Physical dimensions: 59.7 × 49.5 cm (23 1/2 × 19 1/2 in.). Museum catalogue subjects: landscapes, women, weather/seasons, urban life, leisure. Museum credit line: Bequest of Edna H. Loewenstein. Recorded ownership history (excerpt): Henry Schultheis until June 25, 1928; sold to Macbeth Galleries, New York; sold to Isaac Lowenstein, Charlestown, West Virginia, February 19, 1930; by descent to his widow, Edna Lowenstein, Chicago; bequested to the Art Institute of Chicago, 1980.. Exhibition record (excerpt): (Possibly) New York, Macbeth Gallery, Exhibition of Paintings by Childe Hassam, N.A., Apr. 1929..",
+    "description": "In this 1902 view of Fifth Avenue beside Central Park, Childe Hassam brings the movement of everyday city life into focus with short brushstrokes. The winter scene is predominantly gray and white, enlivened by the vivid red and yellow of a woman’s hat and skirt. After studying in Paris, Hassam adapted French Impressionist techniques to American urban subjects, capturing the light in a natural manner. The oil painting presents New York as a modern metropolis.",
+    "descriptionTranslations": {
+      "ja": "セントラルパーク沿いの五番街を描いた1902年の作品。チャイルド・ハッサムは短い筆触によって、街の日常にある動きを表しています。冬景色は灰色と白を基調とし、女性の帽子とスカートの鮮やかな赤や黄色が印象的です。パリで絵画を学んだハッサムは、フランス印象派の技法をアメリカの都市風景に応用し、自然な光の表現によって近代都市ニューヨークを描きました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/60294",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/60294",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "hassam-the-little-pond-appledore": {
-    "description": "Appledore Island, one of the Isles of Shoals located off the coast of Maine and New Hampshire, was the home of poet Celia Thaxter and attracted numerous artists and writers to its rocky shores during the late 19th century. Childe Hassam painted The Little Pond, Appledore during his first summer visit there. After several years of study in Europe, he applied the bright palette, broken brushwork, and dramatic light effects of Impressionist painting to American landscapes.\n\nCatalogue information\nRecorded artist or maker: Childe Hassam (American, 1859–1935). Date: 1890. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: New Hampshire. Classification: painting. Physical dimensions: 40.6 × 55.8 cm (16 × 22 in.). Museum catalogue subjects: landscapes, weather/seasons, water. Museum credit line: Through prior acquisition of the Friends of American Art and the Walter H. Schulze Memorial collections. Recorded ownership history (excerpt): Private collection, by 1929 [lent to New York 1929]. Lauren Jay Drake Jr. (1880–1954), Chicago, by 1954; by descent to his niece, Theresa Mary Drake (1914–1982), San Francisco, by 1954; by descent to Dr. Gwendolyn Boyd, New Orleans, 1982 [Gwendolyn Boyd’s father, David Boyd, was Theresa Drake's cousin; correspondence from Mr. Andrew Graybar, Dec. 20, 1990, copy in curatorial…. Exhibition record (excerpt): New York, Macbeth Gallery, Exhibition of Paintings by Childe Hassam, N.A. Covering the Period from 1880 to 1919 Together with Etchings, Water Colors and Pastels , Apr. 1929, cat. 4. New Haven, CT, Yale University Art Gallery, Childe Hassam, An Island Garden Revisited , Apr.….",
+    "description": "During his first summer on Appledore Island, Childe Hassam painted this landscape off the coast of Maine and New Hampshire. The island was home to poet Celia Thaxter and drew artists and writers to its rocky shores in the late nineteenth century. After studying in Europe, Hassam brought Impressionism’s bright palette, broken brushwork, and dramatic effects of light to American landscapes.",
+    "descriptionTranslations": {
+      "ja": "メイン州とニューハンプシャー州沖のアプルドア島を初めて夏に訪れた際、チャイルド・ハッサムはこの風景画を描きました。詩人セリア・サクスターの住まいがあった同島の岩がちな海岸には、19世紀後半、多くの芸術家や作家が集まりました。ヨーロッパで学んだハッサムは、明るい色彩、筆触を残す描法、光の劇的な効果を特徴とする印象派の手法を、アメリカの風景画に取り入れています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/105462",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/105462",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "chase-a-city-park": {
     "description": "In the late 1880s, William Merritt Chase painted a series devoted to public parks in Brooklyn and Manhattan, where urban green spaces offered respite and settings for social activity. Inspired by French Impressionism, he explored dramatic spatial effects, open brushwork, and a bright palette. The modest scale of this oil on canvas suggests it was made outdoors with portable materials, on site in New York City.",
@@ -679,26 +723,43 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "gainsborough-sarah-dupont": {
-    "description": "Although Thomas Gainsborough is known best for dazzling and opulent full-length portraits of society figures, the artist’s smaller paintings of his family are notable for their directness and intimacy. The subject of this portrait is the artist’s older sister, who married a carpenter in the siblings’ hometown of Sudbury in Suffolk, England, where Gainsborough established himself as a portrait painter before moving on to the fashionable cities of Bath and London.\n\nCatalogue information\nRecorded artist or maker: Thomas Gainsborough (English, 1727–1788). Date: c. 1777–79. Materials and technique: Oil on canvas. Artistic style or school: 18th Century. Place of creation: England. Classification: oil on canvas. Physical dimensions: 77.2 × 64.5 cm (30 3/8 × 25 3/8 in.); Framed: 95.3 × 84.5 × 8.9 cm (37 1/2 × 33 1/4 × 3 1/2 in.). Museum catalogue subjects: portraits: female subject, white (color), black (color), bows, lace, headdresses, portraits. Museum credit line: Charles H. and Mary F. S. Worcester Collection; through prior gifts of Mr. and Mrs. Denison B. Hull, Mr. and Mrs. William Kimball, and Mrs. Charles McCulloch. Recorded ownership history (excerpt): Presumably painted for Philip Dupont, husband of the sitter and the artist’s brother-in-law (died 1788), Sudbury; by descent to his grandson Richard Gainsborough Dupont (died 1874), also of Sudbury, by 1856 [Fulcher 1856]; sold with his collection, Wheeler and Westoby, Sudbury, May 29, 1874, no. 127, as “Mrs. Philip Dupont, wife of the above [no. 126]”, to J.H. Chance for 36…. Exhibition record (excerpt): Ipswich Fine Art Club, Ipswich, Suffolk, Works by Gainsborough, Constable, and Old Suffolk Artists, 1887, no. 129, as “Mrs. Phillip Dupont, Wife of the Artist’s Nephew [sic]”. Gainsborough’s House, Sudbury, Suffolk, Gainsborough’s House (opening exhibition), 1961, no. 13.….",
+    "description": "In this intimate portrait, Thomas Gainsborough depicts his older sister, Sarah Dupont, whose husband was a carpenter in their hometown of Sudbury, Suffolk. Painted in England around 1777–79, the oil on canvas belongs to the smaller family portraits that contrast with the artist’s celebrated, opulent full-length likenesses of society figures. Gainsborough had established himself as a portrait painter in Sudbury before moving to Bath and London.",
+    "descriptionTranslations": {
+      "ja": "トマス・ゲインズバラは、姉のサラ・デュポンを親密なまなざしで描いています。彼女は、画家の故郷であるイングランド、サフォーク州サドベリーで大工を営む男性と結婚しました。1777〜79年頃の油彩画で、社交界の人々を描いた豪華な全身肖像で知られる画家による、家族を題材とした小ぶりな肖像の一作です。ゲインズバラはバースやロンドンへ移る前、サドベリーで肖像画家として活動していました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/105600",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/105600",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "fantin-latour-still-life-corner-of-a-table": {
-    "description": "This canvas, exhibited at the Salon of 1873, relates to Henri Fantin-Latour’s largest and most famous painting of the decade, The Corner of a Table (1872; Musée d’Orsay, Paris), an immense composition that includes detailed portraits of several young Parisian poets and writers. The table around which they are posed displays many of the still-life elements featured in this work. The delicate rhododendron plant reflects the influence of Japanese prints, from its dramatic silhouette against the neutral backdrop of the white tablecloth to its unusual placement in the foreground, emphasizing the scene’s unorthodox cropping.\n\nCatalogue information\nRecorded artist or maker: Henri Fantin-Latour (French, 1836–1904). Date: 1873. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: oil on canvas. Physical dimensions: 96.4 × 125 cm (37 15/16 × 49 3/16 in.); Framed: 122 × 152.4 × 9.6 cm (48 × 60 × 3 3/4 in.). Museum catalogue subjects: still life, flowers, Frame, French, fruit, glasses, interior. Museum credit line: Ada Turnbull Hertle Endowment. Recorded ownership history (excerpt): Elizabeth Ruth Edwards (c. 1833-1907), Fantin-Latour’s art agent, London. Gustave Tempelaere (died 1904), Paris in 1901 [Tempelaere inventory no. 4679; see letter from Sylvie Brame to Gloria Groom, dated April 10, 2002, in curatorial file]. Antonio Mancini (died 1930), Rome by 1906 until at least 1924 [acc. to Bénédite1906 and Gibson 1924]. Possibly E. Lernoud, Paris [acc. to…. Exhibition record (excerpt): Paris, Palais de Champs-Élysées, Salon de 1873, Explication des Ouvrages de Peinture, Sculpture, Architecture, Gravure et Lithographie, Des Artistes Vivants, May 1873, cat. 557. London, Society of French Artists, Seventh Exhibition, 1873, cat. 83. Paris, Palais des Beaux-Arts….",
+    "description": "Exhibited at the Salon of 1873, this still life relates to Fantin-Latour’s much larger painting The Corner of a Table (1872), whose table bears many of the same still-life elements. Here, a delicate rhododendron stands out against the neutral setting and is placed unusually in the foreground. Its dramatic silhouette and the composition’s unconventional cropping reflect the influence of Japanese prints. Painted in oil on canvas, the work was made in France.",
+    "descriptionTranslations": {
+      "ja": "1873年のサロンに出品された本作は、ファンタン＝ラトゥールの大作《テーブルの一角》（1872年）と関連し、同作のテーブルにも本作と共通する静物の要素が見られます。白いテーブルクロスを背景に、繊細なシャクナゲが前景に置かれ、その大胆な輪郭と独特の切り取り方には日本の版画の影響がうかがえます。フランスで制作された油彩画です。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/75507",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/75507",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "fantin-latour-roses-in-a-bowl": {
-    "description": "Roses in a Bowl is a work attributed in the Art Institute of Chicago catalogue to Henri Fantin-Latour.\n\nCatalogue information\nRecorded artist or maker: Henri Fantin-Latour (French, 1836–1904). Date: 1881. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: oil on canvas. Physical dimensions: 26.2 × 31.4 cm (10 5/16 × 12 3/8 in.). Museum catalogue subjects: still life, France, French, red (color), pink (color), white (color), roses. Museum credit line: Gift of Mrs. Clive Runnells. Recorded ownership history (excerpt): Thomas McLean, London [based on sticker on reverse; McLean, London art dealer, dissolved his partnership in 1902]. Bignou Gallery, Paris [based on Bignou's stamp on reverse]. Lieutenant Colonel James W. Woods (died 1931), Ottawa. Wildenstein and Co., New York; sold to the Art Institute, 1964 with funds provided by Mrs. Clive Runnells (died 1977), who maintained a partial life…. Exhibition record (excerpt): New York, Acquavella Galleries, New York, Flowers by Fantin-Latour, November 2 - December 3, 1966, cat. 1 (ill.)..",
-    "descriptionKind": "metadata_summary"
+    "description": "Henri Fantin-Latour’s *Roses in a Bowl* is a still life painted in France in 1881, in oil on canvas. The Art Institute of Chicago classifies it within Impressionism and records roses among its subjects, with red, pink, and white among its associated colors. The small canvas measures 26.2 by 31.4 centimeters.",
+    "descriptionTranslations": {
+      "ja": "アンリ・ファンタン＝ラトゥールが1881年にフランスで制作した、油彩による静物画です。シカゴ美術館の記録では印象派に分類され、主題はバラとされています。関連する色として赤、ピンク、白が挙げられています。画面の大きさは26.2×31.4センチです。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/20534",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "redon-still-life-with-flowers": {
     "description": "Still Life with Flowers is a work attributed in the Art Institute of Chicago catalogue to Odilon Redon.\n\nCatalogue information\nRecorded artist or maker: Odilon Redon (French, 1840–1916). Date: 1905. Materials and technique: Oil on canvas. Artistic style or school: Post-Impressionism. Place of creation: France. Classification: painting. Physical dimensions: 92.7 × 65.5 cm (36 1/2 × 25 3/4 in.); Framed: 111.2 × 84.2 × 6.7 cm (43 3/4 × 33 1/8 × 2 5/8 in.). Museum catalogue subjects: still life, white (color), vase, red (color), flowers, butterflies, blue (color). Museum credit line: Gift of Mary and Leigh Block. Recorded ownership history (excerpt): Armand Parent, Paris, by 1920 until at least 1926 [Paris 1920 and Paris 1926]. Mrs. Cornelius N. Bliss, Jr. (died 1966; born Zaidee C. Cobb), New York, by 1928 until at least 1938 [New York 1928 and Washington, D.C. 1938]. Probably given to her son, Anthony Addison Bliss (1913–1991), New York [this and the following according to Wildenstein 1966]. Possibly Macbeth Gallery, New…. Exhibition record (excerpt): Galerie Barbazanges, Esposition Retrospective d'oeurves d'Odlon REdon, May–June 1920, cat. 80 as Anemones. Paris, Hotel de la Curiosité et des Beaux-Arts, 1re Exposition de Collectionneurs, Mar. 10–Apr. 10, 1924, cat. 236, as Bouquet. Paris, Musée des Arts Décoratifs, Odilon….",
@@ -761,31 +822,43 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionKind": "metadata_summary"
   },
   "henri-himself": {
-    "description": "Robert Henri painted Himself and Herself (1924.911) (Irish terms of endearment for a husband and wife) during a summer trip to Ireland; the canvases depict the fisherman Johnnie Cummings and his wife, Biddy. The rich hues and thick, lush paint add depth to the works, while the figures’ elusive expressions and informal poses give them a brusque, forthright quality. Each portrait reveals a distinctive character and, according to Henri, was meant to be a dynamic example of “humanity in the making, in the living.”\n\nCatalogue information\nRecorded artist or maker: Robert Henri (American, 1865–1929). Date: 1913. Materials and technique: Oil on canvas. Artistic style or school: Realism. Place of creation: United States. Classification: painting. Physical dimensions: 81.9 × 66.4 cm (32 1/4 × 26 1/8 in.). Museum catalogue subjects: fashion, Century of Progress, world's fairs, Chicago World's Fairs, people, portraits. Museum credit line: Walter H. Schulze Memorial Collection. Recorded ownership history (excerpt): Macbeth Gallery, New York; Mr. and Mrs. Paul Schulze, by 1924; given to the Art Institute of Chicago, 1924.. Exhibition record (excerpt): Pennsylvania Academy of Fine Art, 109th Annual Exhibition, Feb. 8–Mar. 29, 1914, no cat. Washington, DC, Corcoran Gallery of Art, Fifth Exhibition, Oil Paintings by Contemporary American Artists, Dec. 15, 1914–Jan. 24, 1915, cat. 191. Detroit Institute of Arts Museum, Third….",
+    "description": "In this oil portrait, Robert Henri depicts Johnnie Cummings, an Irish fisherman, during a summer trip to Ireland in 1913. Rich color and thick, fluid paint lend the work depth, while Cummings’s informal pose and elusive expression give the portrait a forthright character. Henri described such portraits as dynamic images of humanity in the process of living.",
+    "descriptionTranslations": {
+      "ja": "ロバート・ヘンライは1913年、アイルランド滞在中に漁師ジョニー・カミングズを油彩で描いた。豊かな色彩と厚く伸びやかな筆致が画面に奥行きをもたらし、くつろいだ姿勢と捉えがたい表情が、率直な人物像を形づくる。ヘンライはこうした肖像を、生きる途上にある人間を躍動的に示すものと考えていた。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/13745",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/13745",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "heade-magnolias-on-light-blue-velvet-cloth": {
-    "description": "This sensuous and decorative image dates from the later part of Martin Johnson Heade’s long, varied, and peripatetic career. Traveling through much of the United States, to England and continental Europe, and (three different times) to Brazil, he produced work ranging from pristine views of East Coast salt marshes and lush tropical landscapes to pictures of exotic hummingbirds and orchids. At the age of sixty-four, Heade settled in Saint Augustine, Florida. There he began painting detailed arrangements of native flowers, including the Cherokee rose, orange blossom, and magnolia. Stretched out like an odalisque on blue velvet cloth, the curvaceous magnolia was meticulously rendered in pale, subtle hues and illuminated by a light so sharp that the image evokes the hyperintensity of a dream. The warm, steamy atmosphere is almost palpable, as is the blossom’s heady, pungent scent. The Art Institute’s Magnolias is one of a number of compositions by the artist featuring this dramatic yet delicate white flower.\n\nCatalogue information\nRecorded artist or maker: Martin Johnson Heade (American, 1819–1904). Date: 1885–95. Materials and technique: Oil on canvas. Place of creation: Florida. Classification: painting. Physical dimensions: 38.6 × 61.8 cm (15 1/4 × 24 3/8 in.). Museum catalogue subjects: still life, velvet, cloth, fabric, green (color), white (color), flowers. Museum credit line: Purchased with funds provided by Gloria and Richard Manney; Harold L. Stuart Endowment Fund. Recorded ownership history (excerpt): Private collection, Chestnut Hill, Penn., by 1975; Spanierman Gallery, New York Cit, 1983; sold to the Art Institute of Chicago, 1983.. Exhibition record (excerpt): New York City, M. Knoedler and Company, The American Vision, Paintings 1825–1875, Oct. 8–Nov. 2, 1968, cat. 43..",
+    "description": "Martin Johnson Heade painted this magnolia still life in Florida between 1885 and 1895, during the later years of his career. The white flower rests on blue velvet, its curving form carefully rendered in pale, subtle hues and set off by sharply focused light. Heade settled in Saint Augustine at sixty-four and began painting detailed arrangements of native flowers, including magnolias; this work belongs to a group of compositions devoted to the blossom.",
+    "descriptionTranslations": {
+      "ja": "マーティン・ジョンソン・ヒードは、晩年にあたる1885〜95年、フロリダでこのモクレンの静物画を描きました。青いビロードの布に置かれた白い花は、しなやかな曲線を淡く繊細な色調で丹念に描かれ、鋭い光に照らされています。64歳でセントオーガスティンに定住したヒードは、モクレンをはじめとする地元の花々を細密に描き始めました。本作も、彼が繰り返し取り上げたモクレンの一作です。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/100829",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/100829",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "harnett-just-dessert": {
-    "description": "One of only three works William Michael Harnett painted in the year before his death, Just Dessert offers the viewer a display of foodstuffs sumptuously arranged on a marble surface. The traditional tabletop composition is one that Harnett often employed in his still lifes. In Just Dessert , the exotic clashes with the quotidian—Maraschino liqueur, half a coconut, and Smyrna figs rest alongside a copper pitcher, pewter tankard, and ginger jar. Small crumbs of cork are visible on the grapes and fig seeds are smashed on the side of the wooden box, indicating that the dessert has been eaten, as well as highlighting Harnett’s skillful renderings in trompe l’oeil (fool-the-eye) painting.\n\nCatalogue information\nRecorded artist or maker: William Michael Harnett (American, born Ireland, 1848–1892). Date: 1891. Materials and technique: Oil on canvas. Artistic style or school: Realism. Place of creation: United States. Classification: painting. Physical dimensions: 56.6 × 68 cm (22 1/4 × 26 3/4 in.). Museum catalogue subjects: still life, dining, drinking. Museum credit line: Friends of American Art Collection. Recorded ownership history (excerpt): Private collection, Philadelphia, by 1942. Downtown Gallery, New York City, by 1942; sold to the Art Institute of Chicago, 1942.. Exhibition record (excerpt): WI, Milwaukee Art Institute, Nineteenth Century American Masters , Feb. 20–Mar. 28, 1948, no. 22. New York, Downtown Gallery, Harnett Centennial Exhibition, Apr. 13–May 1, 1948, cat. 18. IL, Durand Art Institute, Lake Forest College, A Century of American Painting: Masterpieces….",
+    "description": "Painted in 1891, one of only three works William Michael Harnett made in the year before his death, this still life gathers food and drink on a marble surface. Maraschino liqueur, coconut, and Smyrna figs appear beside a copper pitcher, pewter tankard, and ginger jar. Cork crumbs on the grapes and crushed fig seeds on a wooden box suggest that the dessert has been eaten, while showcasing Harnett’s trompe-l’oeil technique.",
+    "descriptionTranslations": {
+      "ja": "1891年作。ウィリアム・マイケル・ハーネットが没する前年に描いたわずか三点のうちの一作で、大理石の上に食べ物や酒器を配した静物画である。マラスキーノ酒、ココナツ、スマーナ産のイチジクとともに、銅の水差し、ピューターのジョッキ、陶製の壺が並ぶ。ブドウに残るコルクくずや木箱に押しつぶされたイチジクの種が、食後の情景を伝え、目を欺くトロンプ・ルイユの巧みさを示している。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/44065",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/44065",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "copley-daniel-hubbard": {
     "description": "In this 1764 portrait, John Singleton Copley depicts Daniel Hubbard. By this time, Copley had developed a popular manner marked by individualized faces and sumptuous fabrics. Largely self-taught, he learned to draw by copying English prints and was encouraged by his stepfather, the mezzotint engraver Peter Pelham, to make mezzotints himself. Copley painted hundreds of portraits, chiefly of Bostonians, before leaving Massachusetts for England a decade later amid growing political divisions.",
@@ -836,13 +909,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "guardi-the-grand-canal-venice": {
-    "description": "Although he did not begin to paint views ( vedute ) until he was in his mid-40s, Francesco Guardi soon became an accomplished practitioner in the genre. He was strongly influenced by the precisely rendered Venetian scenes of Canaletto and Michele Marieschi. In this work, one of his most important early cityscapes, Guardi depicted the mouth of the Grand Canal hustling with late-afternoon activity. The church of Santa Maria della Salute and the customhouse are visible on the right. The emotional tenor of Guardi’s vedute—seen here in the brooding, melancholy aura of the sky—distinguishes them from the works of his predecessors.\n\nCatalogue information\nRecorded artist or maker: Francesco Guardi (Italian, 1712–1793). Date: c. 1760. Materials and technique: Oil on canvas. Artistic style or school: 18th Century. Place of creation: Italy. Classification: oil on canvas. Physical dimensions: 73 × 119.4 cm (28 3/4 × 47 in.). Museum catalogue subjects: Venice, Italy, boatman, boats, building, buildings, children, church. Museum credit line: Wirt D. Walker Fund. Recorded ownership history (excerpt): S(amuel) C(harles) Weston, Esq, London by 1840 [according to Graves 1913, p. 452]; by descent to his son, Alexander Anderdon Weston, Esq., London, died 1901 [according to Venice 1993, no. 30, pp. 106-7]; his widow Isabella Frances Weston, died 1922; sold by order of the Trustees of Isabella Frances Weston, Christie’s, London, October 21, 1949, no. 31, to Koetser for £7,200…. Exhibition record (excerpt): London, British Institution, Pictures by Italian, Spanish, Flemish, Dutch, French and English Masters with which the Proprietors have Favoured the Institution, 1840, no. 129. London, Royal Academy of Art, Exhibition of Works by the Old Masters and by Deceased Masters of the….",
+    "description": "Francesco Guardi painted this view of the Grand Canal’s entrance around 1760, in one of his most important early cityscapes. The waterway is alive with late-afternoon activity, while the church of Santa Maria della Salute and the customhouse appear at the right. Though influenced by Canaletto and Michele Marieschi, Guardi gives the scene a distinctively brooding, melancholy mood through the sky. He took up the veduta, or city view, only in his mid-40s, but soon became an accomplished practitioner.",
+    "descriptionTranslations": {
+      "ja": "フランチェスコ・グアルディは、1760年頃、ヴェネツィアの大運河入口を描きました。初期の重要な都市景観の一つで、水路には夕刻の人々の営みが広がり、右手にはサンタ・マリア・デッラ・サルーテ聖堂と税関が見えます。カナレットやミケーレ・マリエスキの精緻な都市景観に学びながらも、空に漂う陰鬱で物悲しい気配が、先行画家たちとは異なるグアルディの表現を際立たせています。画家は40代半ばで都市景観画に取り組み始め、やがてこのジャンルの優れた描き手となりました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/111074",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/111074",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "bellotto-view-of-pirna-with-the-fortress-of-sonnenstein": {
     "description": "Bernardo Bellotto’s view of Pirna presents the fortress of Sonnenstein above the town, its hilltop position emphasized by the artist’s cool, crystalline light. In the left foreground, townspeople gather beside a small obelisk bearing the arms of Saxony. Bellotto, nephew and pupil of Canaletto, became court painter to the elector of Saxony in Dresden in 1746 and was commissioned to depict Pirna; this smaller canvas is an otherwise exact replica of one of his eleven large-scale views of the town.",
@@ -858,29 +935,69 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "hokusai-shower-below-the-summit": {
-    "description": "Katsushika Hokusai (1760-1849) is considered one of the greatest artists in Japanese history, and one of the important masters of the Japanese woodblock print. Hokusai's most famous work is the series Fugaku sanju-rokkei (Thirty-Six Views of Mount Fuji), created between 1830 and 1832, when the artist was over seventy years of age. This brilliant series actually consists of forty-six views of the well-known mountain: the extra ten scenes were added by Hokusai to the initial thirty-six views. The ingenuity of artistic expression and the astonishing variety of vantage points from which Mount Fuji is viewed are a testament to Hokusai's creativity. Mount Fuji, known as \"Fuji-san,\" is the highest mountain in Japan, with a height of 12,385 feet. Once an active volcano, its last great eruption was in 1707. Well before Hokusai's time, Mount Fuji had been worshipped as a sacred mountain, and in his day it was a destination for pilgrims from all over Japan.While known for his novel and dynamic compositions, Hokusai's greatest strength was undoubtedly his remarkable draftsmanship. As a colorist, he was capable of being both bold and sensitive, and much of his success depended on his judicious combination of both exceptional drawing and dazzling color. Here, the mountain is shown with clear skies at its summit and a thunderstorm near its base. The combination of the elegant sloping sides of the volcano and the sharp, jagged lines of lightning at the bottom results in an image of great simplicity and visual force.\n\nCatalogue information\nRecorded artist or maker: Katsushika Hokusai 葛飾 北斎 Japanese, 1760-1849. Date: c. 1830/33. Materials and technique: Color woodblock print; oban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 25.7 × 37.6 cm (10 1/8 × 14 9/16 in.). Museum catalogue subjects: landscapes. Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Yamanaka & Company; sold to Clarence Buckingham (1854–1913), Chicago, Dec. 1905; by descent to his sisters Lucy Maud Buckingham (1870–1920) and Kate Sturges Buckingham (1858–1937), Chicago, 1913; given to the Art Institute of Chicago, 1925.. Exhibition record (excerpt): Tokyo, Japan, Tokyo National Museum, Hokusai the Immortal, November 15– December 4, 2005 AIC, Gallery 107, May 11- June 22, 1995..",
+    "description": "In this view from Thirty-Six Views of Mount Fuji, Hokusai sets the mountain’s clear summit against a thunderstorm near its base. The volcano’s long, elegant slopes contrast with the jagged strokes of lightning, giving the composition its visual force. Made in Japan around 1830–33 as a color woodblock print, the work reflects Hokusai’s inventive approach to depicting Fuji from varied perspectives.",
+    "descriptionTranslations": {
+      "ja": "「富嶽三十六景」の一図で、北斎は山頂を晴天に、山麓を雷雨に描き分けています。火山のなだらかな斜面に、画面下部の稲妻の鋭い稜線が対比され、簡潔で力強い構図を生み出しています。日本で1830〜33年頃に制作された多色木版画で、富士を多様な視点から捉えた北斎の工夫がうかがえます。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/87008",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/87008",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "hokusai-hara": {
-    "description": "Hara is a work attributed in the Art Institute of Chicago catalogue to Katsushika Hokusai.\n\nCatalogue information\nRecorded artist or maker: Katsushika Hokusai 葛飾 北斎 Japanese, 1760-1849. Date: c. 1806. Materials and technique: Color woodblock print; chuban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: Approx: 24 × 18.3 cm (9 1/2 × 7 1/4 in.). Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Kate Sturges Buckingham (1858–1937), Chicago; given to the Art Institute of Chicago, Dec. 12, 1929..",
-    "descriptionKind": "metadata_summary"
+    "description": "Attributed to Katsushika Hokusai, *Hara* is a Japanese color woodblock print dated around 1806. Printed in the chūban format, it measures approximately 24 by 18.3 centimeters. The Art Institute of Chicago records the work as part of the Clarence Buckingham Collection.",
+    "descriptionTranslations": {
+      "ja": "葛飾北斎に帰属する《原》は、1806年頃の日本の多色木版画です。中判で、寸法は約24×18.3センチ。シカゴ美術館の記録では、クラレンス・バッキンガム・コレクションに含まれます。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/2914",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "hiroshige-mitsuke-ferries-crossing-the-tenryu-river": {
-    "description": "Mitsuke: Ferries Crossing the Tenryu River is a work attributed in the Art Institute of Chicago catalogue to Utagawa Hiroshige.\n\nCatalogue information\nRecorded artist or maker: Utagawa Hiroshige 歌川 広重 Japanese, 1797-1858. Date: c. 1837/42. Materials and technique: Color woodblock print; chuban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 16.9 × 22.8 cm (6 5/8 × 8 15/16 in.). Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): J. H. Ballard; sold to Kate Sturges Buckingham (1858–1937), Chicago, Jan. 1930; given to the Art Institute of Chicago, Jan. 17, 1930..",
-    "descriptionKind": "metadata_summary"
+    "description": "Attributed to Utagawa Hiroshige, this Japanese color woodblock print dates to about 1837–42. Its title identifies a ferry crossing the Tenryu River at Mitsuke. Made in the chūban format, the sheet measures 16.9 by 22.8 centimeters.",
+    "descriptionTranslations": {
+      "ja": "歌川広重に帰属される、1837～42年頃の日本の多色木版画。題名は、見附で天竜川を渡る渡し船を示しています。中判の作品で、寸法は16.9×22.8センチです。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/4368",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "hiroshige-mishima-morning-mist": {
-    "description": "Mishima: Morning Mist is a work attributed in the Art Institute of Chicago catalogue to Utagawa Hiroshige.\n\nCatalogue information\nRecorded artist or maker: Utagawa Hiroshige 歌川 広重 Japanese, 1797-1858. Date: c. 1833/34. Materials and technique: Color woodblock print; oban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 24.3 × 37.5 cm (9 9/16 × 14 3/4 in.). Museum credit line: Gift of H. R. Warner. Recorded ownership history (excerpt): Harold Remsen Warner (1880-1938), Santa barbara, CA; given to the Art Institute of Chicago, Mar. 9, 1932..",
-    "descriptionKind": "metadata_summary"
+    "description": "Utagawa Hiroshige’s *Mishima: Morning Mist* is a Japanese color woodblock print made around 1833–34. The oban-format sheet measures 24.3 by 37.5 centimeters. The Art Institute of Chicago catalogue records Japan as its place of creation and identifies it as a woodblock print; it entered the museum as a gift from H. R. Warner in 1932.",
+    "descriptionTranslations": {
+      "ja": "歌川広重による《三島 朝霧》は、1833～34年頃に制作された日本の多色木版画です。大判の紙面は24.3×37.5センチ。シカゴ美術館の記録では日本で制作された木版画とされ、H・R・ワーナーからの寄贈により1932年に収蔵されました。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/10926",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "hiroshige-arai": {
-    "description": "Arai is a work attributed in the Art Institute of Chicago catalogue to Utagawa Hiroshige.\n\nCatalogue information\nRecorded artist or maker: Utagawa Hiroshige 歌川 広重 Japanese, 1797-1858. Date: c. 1837/42. Materials and technique: Color woodblock print; chuban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 17.1 × 22.9 cm (6 11/16 × 9 in.). Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): J. H. Ballard; sold to Kate Sturges Buckingham (1858–1937), Chicago, Jan. 1930; given to the Art Institute of Chicago, Jan. 17, 1930..",
-    "descriptionKind": "metadata_summary"
+    "description": "Attributed to Utagawa Hiroshige, this Japanese color woodblock print was made around 1837–42. The chūban-format sheet measures 17.1 × 22.9 cm and is held by the Art Institute of Chicago as part of the Clarence Buckingham Collection. The catalogue identifies its place of creation as Japan but provides no further description of the image.",
+    "descriptionTranslations": {
+      "ja": "歌川広重に帰属される、1837〜42年頃の日本の多色木版画。中判で、寸法は17.1×22.9センチです。シカゴ美術館のクラレンス・バッキンガム・コレクションに収蔵されています。図像については、館の資料に詳しい記述はありません。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/4378",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "monet-stacks-of-wheat": {
     "description": "The monumental stacks that Claude Monet depicted in his series Stacks of Wheat rose fifteen to twenty feet and stood just outside the artist’s farmhouse at Giverny. Through 1890 and 1891, he worked on this series both in the field, painting simultaneously at several easels, and in the studio, refining pictorial harmonies. In May 1891, Monet hung fifteen of these canvases next to each other in one small room in the Galerie Durand-Ruel in Paris. An unprecedented critical and financial success, the exhibition marked a breakthrough in Monet’s career, as well as in the history of French art. In this view, and in nearly all of the autumn views in the series, the conical tops of the stacks break the horizon and push into the sky. But in most of the winter views, which constitute the core of the series, the stacks seem wrapped by bands of hill and field, as if bedded down for the season. For Monet, the stack was a resonant symbol of sustenance and survival. He followed this group with further series depicting poplars, the facade of Rouen Cathedral, and, later, his own garden at Giverny. The Art Institute has the largest group of Monet’s Stacks of Wheat in the world.\n\nCatalogue information\nRecorded artist or maker: Claude Monet (French, 1840–1926). Date: 1890–91. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: France. Classification: oil on canvas. Physical dimensions: 65.8 × 101 cm (27 7/8 × 39 3/4 in.); Framed: 90.9 × 125.5 × 123.2 cm (35 3/4 × 49 3/8 × 48 1/2 in.). Museum catalogue subjects: seasons, wheat, rural life, pink (color), hills, France, blue. Museum credit line: Mr. and Mrs. Lewis Larned Coburn Memorial Collection. Recorded ownership history (excerpt): The artist (d. 1926); sold to Durand-Ruel, Paris, July 2, 1891, for 3,200 francs [per Durand–Ruel, Paris, stock book for 1891–1901 (no. 1063, as Meules, fin de l’été), and from Brouillard 1888–1891, as confirmed by Paul-Louis Durand-Ruel and Flavie Durand-Ruel, Durand-Ruel Archives, to the Art Institute of Chicago, June 24, 2014, curatorial object file]. Durand-Ruel, New York…. Exhibition record (excerpt): Art Institute of Chicago, Exhibition of the Mrs. L. L. Coburn Collection: Modern Paintings and Watercolors, Apr. 6–Oct. 9, 1932, cat. 24. Toledo (Ohio) Museum of Art, Artists Unappreciated in Their Day, Nov. 5–Dec. 10, 1939, cat. 16 (ill.). Seattle Art Museum, Volunteer Park….",
@@ -892,13 +1009,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "gauguin-day-of-the-god": {
-    "description": "In this tropical paradise of the artist’s invention, a deity presides over figures walking and resting on an embankment. Rhythmically arranged in groups of two and three, the figures appear more as symbolic forms than as portraits of individuals. Pools of water in interlocking, abstract zones of acidic color surround the feet of a bather, who is flanked by two prone figures—or perhaps the same person seen from two angles. Unlike his other Tahitian-inspired landscapes, this painting was produced in Paris shortly after Paul Gauguin’s first trip to the island. Drawn from fantasy and memory, the psychedelic composition is one of the most abstract and avant-garde works of the artist’s career.\n\nCatalogue information\nRecorded artist or maker: Paul Gauguin (French, 1848–1903). Date: 1894. Materials and technique: Oil on linen canvas. Artistic style or school: Post-Impressionism. Place of creation: France. Classification: oil on canvas. Physical dimensions: 68 × 91 cm (26 7/8 × 36 in.); Framed: 87.7 × 110.5 × 6.4 cm (34 1/2 × 43 1/2 × 2 1/2 in.). Museum catalogue subjects: women, abstract, beach, celebrations, clouds, colonialism, figure. Museum credit line: Helen Birch Bartlett Memorial Collection. Recorded ownership history (excerpt): Bought from the artist’s studio exhibition by Edgar Degas (died 1917), Paris in December 1894, for 500 francs [Degas inventory no. 71, see London 1996 and New York 1997-98]; Degas Sale, Paris, Galerie Georges Petit, March 26-27, 1918, lot 43, sold for 12,600 francs as Le Repos au bord de la mer (Tahiti) to Jos Hessel, Paris [according to New York 1997-98]. George Bernheim…. Exhibition record (excerpt): Boston, Art Club, 1925. New York, Museum of Modern Art, Cézanne, Gauguin, Seurat, Van Gogh, November 1929, cat. 46 (ill). The Art Institute of Chicago, Century of Progress Exhibition of Paintings and Sculpture, June 1–November 1, 1933, cat. 355. The Art Institute of Chicago….",
+    "description": "In this imagined tropical setting, a deity presides over figures walking and resting on an embankment. Arranged in groups of two and three, they read as symbolic forms rather than individual portraits; a bather stands amid pools of water in angular zones of vivid, acidic color, flanked by two reclining figures—or perhaps one figure seen from different angles. Gauguin painted this oil on linen in Paris in 1894, after his first journey to Tahiti, drawing on fantasy and memory. Its unusually abstract, avant-garde composition sets it apart among his Tahitian-inspired landscapes.",
+    "descriptionTranslations": {
+      "ja": "熱帯の楽園を思わせる想像上の風景で、神が土手を歩いたり休んだりする人物たちを見守る。二、三人ずつリズミカルに配された人物は、個人の肖像というより象徴的な形として描かれ、水浴する人物の足元には、鮮烈で酸味を帯びた色彩の抽象的な水面が広がる。その両脇に横たわるのは二人なのか、異なる角度から見た同じ人物なのか判然としない。ゴーガンはタヒチへの最初の旅の後、1894年にパリで、記憶と想像をもとに油彩で制作した。タヒチを主題とする風景の中でも、とりわけ抽象性と前衛性が際立つ作品である。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/27943",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/27943",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "vermeer-water-pitcher": {
     "description": "Young Woman with a Water Pitcher is recorded in the Metropolitan Museum of Art collection as a work by Johannes Vermeer.\n\nCatalogue information\nArtist: Johannes Vermeer. Artist background: Dutch, Delft 1632–1675 Delft. Date: ca. 1662. Materials and technique: Oil on canvas. Classification: Paintings. Physical dimensions: 18 x 16 in. (45.7 x 40.6 cm). Department: European Paintings. Catalogue subjects: Interiors, Women, Maps, Pitchers. Acquisition credit: Marquand Collection, Gift of Henry G. Marquand, 1889.",
@@ -917,8 +1038,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionKind": "metadata_summary"
   },
   "hokusai-great-wave": {
-    "description": "The Great Wave off Kanagawa is recorded in the Metropolitan Museum of Art collection as a work by Katsushika Hokusai.\n\nCatalogue information\nArtist: Katsushika Hokusai. Artist background: Japanese, Tokyo (Edo) 1760–1849 Tokyo (Edo). Date: ca. 1830–32. Materials and technique: Woodblock print; ink and color on paper. Classification: Prints. Culture: Japan. Period: Edo period (1615–1868). Physical dimensions: 10 1/8 x 14 15/16 in. (25.7 x 37.9 cm). Department: Asian Art. Catalogue subjects: Waves, Boats. Acquisition credit: H. O. Havemeyer Collection, Bequest of Mrs. H. O. Havemeyer, 1929.",
-    "descriptionKind": "metadata_summary"
+    "description": "Katsushika Hokusai’s *The Great Wave off Kanagawa* is a Japanese woodblock print made around 1830–32, during the Edo period (1615–1868). Printed in ink and color on paper, it is catalogued with the subjects of waves and boats. The Metropolitan Museum of Art records its dimensions as 25.7 by 37.9 centimeters and its provenance as the H. O. Havemeyer Collection, bequeathed in 1929.",
+    "descriptionTranslations": {
+      "ja": "葛飾北斎による《神奈川沖浪裏》は、江戸時代（1615–1868）の1830–32年頃に制作された木版画です。紙に墨と色を用いて刷られ、メトロポリタン美術館の目録では、波と船を主題とする作品として記載されています。寸法は25.7×37.9センチで、1929年にH・O・ヘイヴマイヤー夫人の遺贈により収蔵されました。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.metmuseum.org/art/collection/search/45434",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "degas-dance-class": {
     "description": "Edgar Degas’s *The Dance Class*, dated 1874, is an oil painting on canvas in the Metropolitan Museum of Art’s collection. The catalogue lists girls, men, women, students, dancers, and ballet among its subjects. The work measures 32 7/8 by 30 3/8 inches (83.5 by 77.2 centimeters) and entered the museum through the bequest of Mrs. Harry Payne Bingham in 1986.",
