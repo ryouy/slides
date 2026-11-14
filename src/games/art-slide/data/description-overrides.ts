@@ -951,13 +951,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-27984": {
-    "description": "In the first two decades of the 20th century, Henri Matisse visited exhibitions of Islamic art and traveled to Algeria and Morocco, where he collected pottery, textiles, and tiles. Years later while living in Nice, France, Matisse reflected on these experiences, integrating visual elements he encountered, such as the patterned textile screen, into his paintings. In Woman before an Aquarium , the carefully subdued decorative pattern of the screen contributes to the psychologically rich, contemplative mood of this interior scene.\n\nCatalogue information\nRecorded artist or maker: Henri Matisse French, 1869–1954. Date: 1921–23. Materials and technique: Oil on canvas. Place of creation: France. Classification: painting. Physical dimensions: 81.2 × 100.2 cm (31 15/16 × 39 7/16 in.). Museum catalogue subjects: Century of Progress, world's fairs, Chicago World's Fairs, furniture, fishbowls, aquariums, fish. Museum credit line: Helen Birch Bartlett Memorial Collection. Recorded ownership history (excerpt): The artist; sold to Bernheim-Jeune, Paris, June 12, 1923 [this and the following according to Dauberville 1995]; sold for 11,200 francs to Frederick Clay Bartlett (1873–1953), Chicago, June 14, 1923; given to the Art Institute of Chicago, Jan. 27, 1926.. Exhibition record (excerpt): Art Institute of Chicago, Group of Modern Paintings from the Birch-Bartlett Collection, Sept. 8–Oct. 22, 1923, no cat. Art Institute of Chicago, Birch-Bartlett Collection of Modern European Paintings, Sept. 3–Oct. 22, 1924, no cat. Minneapolis Institute of Arts, Exhibition of….",
+    "description": "Painted in Nice in 1921–23, this oil on canvas brings together Matisse’s experience of Islamic art and his travels in Algeria and Morocco. A patterned textile screen, whose decoration is carefully subdued, contributes to the contemplative mood of the interior scene. The work was sold to Chicago collector Frederick Clay Bartlett in 1923 and given to the Art Institute of Chicago in 1926.",
+    "descriptionTranslations": {
+      "ja": "ニース在住時の1921〜23年に描かれた油彩画。マティスは20世紀初頭、イスラム美術の展覧会を訪れ、アルジェリアとモロッコを旅して陶器や織物、タイルを集めました。本作では、控えめな模様の布製スクリーンが室内の静思的な雰囲気に寄与しています。1923年にシカゴの収集家フレデリック・クレイ・バートレットが購入し、1926年にシカゴ美術館へ寄贈しました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/27984",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/27984",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-16146": {
     "description": "In this circus scene, a trick rider prepares to rise on her speeding horse and leap through a paper hoop held by a clown. Ringmaster Monsieur Loyal urges the horse on with his whip, while rider and ringmaster glare at one another. The rider’s gauze-and-sequin tutu and heavily made-up face heighten the moment’s theatricality. Toulouse-Lautrec may have based her on Suzanne Valadon, a former circus performer, model, and artist with whom he was closely involved. Painted in oil on canvas in 1887–88, the work shows a Montmartre circus.",
@@ -1284,13 +1288,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-27987": {
-    "description": "After receiving artistic training in Italy, the sculptor and painter Amedeo Modigliani moved to the Parisian neighborhood of Montparnasse in 1906. It was there that he met the artist Jacques Lipchitz, who, wanting to help his financially troubled friend, commissioned Modigliani to paint this portrait on the occasion of his marriage to the Russian poet Berthe Kitrosser. According to Lipchitz, the picture took Modigliani only two days to paint, though Lipchitz persuaded him to work on it for another two weeks in an effort to pay him a larger fee. Despite Modigliani’s exceptional talent, his work only found a market after his death in 1920, which was hastened by tuberculosis and his legendary bohemian lifestyle.\n\nCatalogue information\nRecorded artist or maker: Amedeo Modigliani Italian, 1884–1920. Date: 1916. Materials and technique: Oil on canvas. Artistic style or school: Modernism. Place of creation: Italy. Classification: painting. Physical dimensions: 81.3 × 54.3 cm (32 × 21 3/8 in.). Museum catalogue subjects: Century of Progress, world's fairs, Chicago World's Fairs, suits, interiors, couples, portraits. Museum credit line: Helen Birch Bartlett Memorial Collection. Recorded ownership history (excerpt): Jacques Lipchitz (1891-1973), Paris, acquired directly from the artist, 1916 [Lipchitz 1954]; by exchange to Léonce Rosenberg (1879–1947), Galerie de l’Effort Moderne, Paris, c. 1921 [Paris 1920; Lipchitz 1954; Benezra 1986]; sold to Frederick C. (1873–1953) and Helen Birch (1883-1925) Bartlett, Chicago, 1922 [Benezra 1986]; upon her death, given to the Art Institute of…. Exhibition record (excerpt): Paris, Galerie Montaigne, Exposition rétrospective des oeuvres de Modigliani, December 11–29, 1920, cat. 14, as Portrait du sculpteur L. et de sa femme. Chicago, The Art Institute of Chicago, Birch-Bartlett Collection of Modern European Paintings, September 8–October 8, 1925….",
+    "description": "In this 1916 portrait, Amedeo Modigliani depicts his fellow artist, the sculptor Jacques Lipchitz, with his new wife, the Russian poet Berthe Kitrosser. Lipchitz commissioned the oil painting as a wedding portrait, partly to help his financially struggling friend. He later recalled that Modigliani painted it in two days, then continued working for two weeks at Lipchitz’s urging so he could receive a larger fee. Modigliani’s work found a market only after his death in 1920.",
+    "descriptionTranslations": {
+      "ja": "1916年、アメデオ・モディリアーニは、彫刻家で画家のジャック・リプシッツと、その妻となったロシア人詩人ベルテ・キトロセルを描きました。経済的に困窮していた友人を助けるため、リプシッツが結婚を機に依頼した油彩画です。リプシッツによれば、モディリアーニは二日で描き上げたものの、謝礼を増やすためにさらに二週間制作を続けるよう説得されたといいます。モディリアーニの作品が市場で評価されるようになったのは、1920年の死後でした。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/27987",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/27987",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-11434": {
     "description": "Guido Reni depicts Salome receiving the severed head of John the Baptist on a platter, the reward she requested after pleasing her stepfather, Herod, with a dance. This biblical episode, long popular in Italian art, brought together religious subject matter, violence, and eroticism. Made in oil on canvas around 1639–42, the painting remains unfinished; its graceful movement, delicate colors, and transparent application of paint reflect Reni’s late style.",
@@ -1345,13 +1353,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-30709": {
-    "description": "William Sidney Mount specialized in scenes of everyday life known as genre paintings. He was one of the earliest American artists to do so, and his compositions, including Bar-room Scene , are rich in narrative and humor and engage with the complex cultural, political, and racial circumstances that defined antebellum society. Here Mount portrayed a boisterous group of patrons in a New York public tavern. The seated men encourage the drunken dance of the central figure, whose tattered clothes and inebriated state suggest a less fortunate position. The figure in the back corner, likely a free Black man, also frequents the tavern but does not participate fully or equally in this 1830s community.\n\nCatalogue information\nRecorded artist or maker: William Sidney Mount (American, 1807–1868). Date: 1835. Materials and technique: Oil on canvas. Place of creation: Long Island. Classification: painting. Physical dimensions: 57.4 × 69.7 cm (22 5/8 × 27 7/16 in.). Museum catalogue subjects: dining, drinking, people, portraits. Museum credit line: The William Owen Goodman and Erna Sawyer Goodman Collection. Recorded ownership history (excerpt): Gouverneur Kemble, Cold Spring, N.Y., 1835. Ehrich Galleries, New York, by 1911; William Owen and Erna Sawyer Goodman, Chicago, 1911; given to the Art Institute of Chicago, 1939.. Exhibition record (excerpt): New York, National Academy of Design (May–?), Tenth Annual Exhibition, no. 141. Art Institute of Chicago, The Friends of American Art, Loan Exhibition of American Paintings at the Art Institute of Chicago, Jan. 8–28, 1914, no. 49, as The Breakdown. Brooklyn Museum, Exhibition of….",
+    "description": "In this 1835 genre painting, William Sidney Mount depicts a lively group in a New York public tavern. Seated men urge a drunken central figure, dressed in tattered clothes, to dance, while a man in the back corner—likely a free Black man—appears to share the tavern space without participating fully or equally. Mount’s narrative, humorous scenes of everyday life also engage with the cultural, political, and racial circumstances of antebellum society. Painted in oil on canvas, the work was made on Long Island.",
+    "descriptionTranslations": {
+      "ja": "ウィリアム・シドニー・マウントは、1835年のこの風俗画で、ニューヨークの酒場に集う人々を描いている。座った男たちは、ぼろぼろの服を着て酔った中央の人物に踊るよう促す。奥隅の人物は、おそらく自由黒人で、酒場に居合わせながらも、この1830年代の共同体に十分、あるいは対等には加わっていない。日常の情景に物語性とユーモアを盛り込むマウントの作品は、南北戦争前の社会を形づくった文化的・政治的・人種的状況にも向き合っている。ロングアイランドで制作された油彩画。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/30709",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/30709",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-110663": {
     "description": "Inspired by Lord Byron’s poem “The Giaour,” Delacroix depicts the warrior in white drapery, at left, poised to deliver a fatal blow to Hassan, whom he is fighting to avenge his lover’s death. The central figures and their horses echo one another in a turbulent struggle. Shimmering primary colors and loosely handled oil paint heighten the scene’s movement. Completed in France in 1826, the painting reflects Delacroix’s engagement with Orientalism, a nineteenth-century European tradition that often portrayed distant cultures through fantastical or violent imagery and could support colonial ambitions.",
@@ -1483,13 +1495,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-4081": {
-    "description": "One of the most accomplished painters working in the realist tradition of the Lombardy region of Northern Italy, Giovanni Battista Moroni was above all an outstanding portraitist. Here, he depicted Gian Lodovico Madruzzo. Moroni painted this commanding likeness—along with that of the subject’s brother, Gian Federico Madruzzo (National Gallery of Art, Washington, DC)—during the Council of Trent, a meeting to address challenges to the Catholic Church posed by the Protestant Reformation. Gian Lodovico Madruzzo eventually succeeded his uncle as prince-bishop, ruler of the city of Trent, in 1567.\n\nCatalogue information\nRecorded artist or maker: Giovanni Battista Moroni (Italian, 1520/24–1578). Date: 1551–52. Materials and technique: Oil on canvas. Artistic style or school: sixteenth century. Place of creation: Italy. Classification: oil on canvas. Physical dimensions: 199.8 × 116 cm (78 5/8 × 45 5/8 in.); Framed: 237.5 × 152.4 × 7.6 cm (93 1/2 × 60 × 3 in.). Museum catalogue subjects: portraits: male subject, animals, Tile, religious attire, portrait, man, interior. Museum credit line: Charles H. and Mary F. S. Worcester Collection. Recorded ownership history (excerpt): Probably Madruzzo family, Castello del Buon Consiglio, Trent; by descent to Carlo Emanuele Madruzzo (died 1658) [the painting and its pendant, the portrait of his brother Gian Federico Madruzzo now in the National Gallery of Art, Washington D.C., have been identified as the “due quadri de ritratti de Madruzzi” recorded in an inventory of the Castello made between December 1658…. Exhibition record (excerpt): Paris, Galerie Trotti, Tableaux anciens de l’école italienne, 10 January–10 February, 1909, no. 20. Art Institute of Chicago, A Century of Progress, June 1–November 1, 1933, no. 129. Art Institute of Chicago, A Century of Progress, June 1–November 1, 1934, no. 50. The Art….",
+    "description": "Giovanni Battista Moroni, a leading portraitist in the realist tradition of northern Italy’s Lombardy region, painted this likeness of Gian Lodovico Madruzzo in 1551–52. He also portrayed Madruzzo’s brother, Gian Federico, during the Council of Trent, convened to address challenges to the Catholic Church from the Protestant Reformation. In 1567, Gian Lodovico succeeded his uncle as prince-bishop and ruler of Trent.",
+    "descriptionTranslations": {
+      "ja": "北イタリア、ロンバルディア地方の写実主義を代表する肖像画家ジョヴァンニ・バッティスタ・モローニが、1551～52年に描いたジャン・ルドヴィーコ・マドルッツォの肖像です。モローニはトリエント公会議の開催中、弟ジャン・フェデリーコの肖像も手がけました。同会議は、宗教改革によるカトリック教会への挑戦に対処するために開かれました。ジャン・ルドヴィーコは1567年、叔父の後を継いでトリエントの領主司教となりました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/4081",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/4081",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-8958": {
     "description": "James McNeill Whistler created thinly painted compositions with flat, nearly abstract passages, purposefully subtle in character. He called works such as this one an “arrangement,” emphasizing formal elements rather than subject matter. The painting still serves as a portrait—it was commissioned by Chicago attorney Arthur Jerome Eddy, a collector and advocate of modern art. After seeing Whistler’s work at the 1893 World’s Columbian Exposition in the city, Eddy traveled to the artist’s studio in Paris expressly to sit for this portrait. The two became lasting friends, and Eddy published a book on Whistler after the artist’s death in 1903.\n\nCatalogue information\nRecorded artist or maker: James McNeill Whistler (American, 1834–1903). Date: 1894. Materials and technique: Oil on canvas. Artistic style or school: Modernism. Place of creation: Paris. Classification: painting. Physical dimensions: 210.7 × 93.3 cm (82 15/16 × 36 3/4 in.). Museum catalogue subjects: fashion, portraits, men, Chicago, people. Museum credit line: Arthur Jerome Eddy Memorial Collection. Recorded ownership history (excerpt): Commissioned by Arthur Jerome Eddy (1859–1920), Chicago, 1894; by descent to his wife, Lucy “Lulu” Crapo Orrell Eddy (1863–1931), and son, Jerome Orrell Eddy (1891–1951), Chicago, 1920; given to the Art Institute of Chicago, 1931.. Exhibition record (excerpt): Philadelphia, Pennsylvania Academy of the Fine Arts, Seventy-Third Annual Exhibition, Jan. 25–Mar. 5, 1904, cat. 31, as An Arrangement in Flesh Color and Brown. Boston, Copley Hall, Memorial Exhibition of the Works of Mr. J. McNeill Whistler: Oil Paintings, Watercolors, Pastels….",
@@ -1707,13 +1723,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-31285": {
-    "description": "Thomas Eakins aimed to paint the human figure with uncompromising realism, executing likenesses that focus on introspection and psychological depth. A family friend, Mary Adeline Williams sat for this portrait in 1899, a year before she would move into the Philadelphia home of Eakins and his wife, artist Susan MacDowell Eakins. Although the composition presents Addie (as she was known) as straight-laced and severe, she was described by Susan Eakins as active and engaged—riding bicycles, going to art exhibitions, and socializing between the sittings for this work.\n\nCatalogue information\nRecorded artist or maker: Thomas Eakins (American, 1844–1916). Date: 1899. Materials and technique: Oil on canvas. Artistic style or school: Realism. Place of creation: Philadelphia. Classification: painting. Physical dimensions: 61 × 50.8 cm (24 × 20 1/16 in.). Museum catalogue subjects: fashion, people, portraits. Museum credit line: Friends of American Art Collection. Recorded ownership history (excerpt): The artist, Philadelphia; by descent to his estate and to Susan Macdowell Eakins (1851–1938), Philadelphia, 1916; sold to Babcock Galleries, New York, 1939; sold to the Art Institute of Chicago, 1939.. Exhibition record (excerpt): New York City, Kleeman Gallery, Thomas Eakins, Oct. 31–Nov. 25, 1939, cat. 6, as Lady in Black. Milwaukee Art Institute, WI, Six Centuries of Portrait Masterpieces, Oct. 2–Nov. 15, 1942, as Woman in Black, Mary Adeline Williams. IL, Durand Art Institute, Lake Forest College, A….",
+    "description": "In this 1899 portrait, Thomas Eakins depicts Mary Adeline Williams, a family friend who sat for him in Philadelphia. Working in oil on canvas, Eakins pursued the uncompromising realism for which he was known, making likenesses attentive to introspection and psychological depth. The composition presents Williams—known as Addie—as austere and reserved, though Susan Eakins described her as lively and socially active between sittings. A year later, Williams moved into the Philadelphia home of Eakins and his wife, artist Susan MacDowell Eakins.",
+    "descriptionTranslations": {
+      "ja": "トマス・イーキンズは1899年、家族ぐるみの友人メアリー・アデライン・ウィリアムズを、フィラデルフィアで油彩によって描きました。人物を妥協のない写実性で捉え、内省や心理の深みを重んじたイーキンズらしく、画面のウィリアムズ（愛称アディ）は、端正で厳格な印象を与えます。しかしスーザン・イーキンズによれば、彼女は自転車に乗り、展覧会に出かけ、人々と交流する活発な人物でした。翌年、彼女はイーキンズと画家スーザン・マクダウェル・イーキンズ夫妻のフィラデルフィアの家に移り住みました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/31285",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/31285",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-89856": {
     "description": "Almost nothing is known of the life of Tōshūsai Sharaku, whose entire oeuvre of bold portraits of Kabuki actors was produced during a ten-month period in 1794–95. Sharaku’s prints are frank and piercing, combining satire with decorative power. His aggressive style is made all the more dramatic by his use of a dark mica background, which throws the silhouette of the posturing actor into strong relief. Depicted here is the actor Bandō Mitsugorō portraying the character Ishii Genzō at the peak dramatic moment of the play The Iris Sōga of the Bunroku Era (Hanaayame Bunroku Sōga) . With a look of intense fury, Genzō draws his sword to aid his two brothers-in-law in avenging their father’s murder. The play is based on an event that occurred in 1701 that disrupted the civil order of the Tokugawa shogunate and scandalized the population of Edo. Commentary on contemporary issues was discouraged by the Japanese government, however, so the play was disguised as a literary recounting of a famous twelfth-century act of filial revenge that occurred in the Sōga family. Unlike the elite and highly stylized Noh theater, Kabuki was a popular form of drama that reflected and catered to the tastes and pleasures of the emerging merchant class.\n\nCatalogue information\nRecorded artist or maker: Toshusai Sharaku 東洲斎 写楽 Japanese, active 1794-95. Date: 1794. Materials and technique: Color woodblock print; oban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 37.5 × 24.7 cm (14 3/4 × 9 3/4 in.). Museum catalogue subjects: swords, vengeance, murder, kabuki, Japanese, actors (performing artists), men. Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Yamanaka & Company; sold to the Art Institute of Chicago, July 11, 1940..",
@@ -1875,8 +1895,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-27": {
-    "description": "Remembrance of Italy is a work attributed in the Art Institute of Chicago catalogue to Jean Baptiste Camille Corot.\n\nCatalogue information\nRecorded artist or maker: Jean-Baptiste-Camille Corot (French, 1796-1875) printed by Auguste Delâtre (French, 1822-1907) published by Cadart et Chavalier, Editeurs (French, 1801-1900). Date: c. 1866. Materials and technique: Etching on tan laid paper. Place of creation: France. Classification: etching. Physical dimensions: Image: 29.3 × 22 cm (11 9/16 × 8 11/16 in.); Plate: 32 × 24.3 cm (12 5/8 × 9 5/8 in.); Sheet: 42 × 29 cm (16 9/16 × 11 7/16 in.). Museum credit line: Elizabeth Hammond Stickney Collection.",
-    "descriptionKind": "metadata_summary"
+    "description": "Jean-Baptiste-Camille Corot’s *Remembrance of Italy*, made around 1866, is an etching on tan laid paper. The Art Institute of Chicago catalogue records Auguste Delâtre as printer and Cadart et Chavalier as publisher, with France as the place of creation. The catalogue attributes the work to Corot, a French artist who lived from 1796 to 1875.",
+    "descriptionTranslations": {
+      "ja": "ジャン＝バティスト＝カミーユ・コローに帰属する《イタリアの追憶》は、1866年頃にフランスで制作されたエッチングです。黄褐色の簀目紙に刷られ、オーギュスト・ドラートが印刷、カダール・エ・シャヴァリエが出版しました。コローは1796年から1875年まで生きたフランスの画家です。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/27",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-65": {
     "description": "Fishing Craft near the Cliffs at Collioure is a work attributed in the Art Institute of Chicago catalogue to Adolphe Appian.\n\nCatalogue information\nRecorded artist or maker: Adolphe Appian French, 1818-1898. Date: 1878. Materials and technique: Etching on China paper colle laid down on white wove paper. Place of creation: France. Classification: etching. Physical dimensions: Image: 18.6 × 27.2 cm (7 3/8 × 10 3/4 in.); Sheet: 24 × 35.1 cm (9 1/2 × 13 7/8 in.). Museum credit line: Elizabeth Hammond Stickney Collection.",
@@ -1927,13 +1956,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-39691": {
-    "description": "Emil Carlsen combined naturalism with a bright, light-filled palette, creating a seascape that harmonizes academic painting and Impressionism. Blue sky and white clouds fill much of the canvas. The scene portrays a leisurely moment: two figures rest in the sand and look out at the rolling waves while a woman with a parasol walks along the water’s edge. Seaside tourism in New England—a subject portrayed here by Carlsen and, more famously, by Winslow Homer (on view nearby)—increased in popularity during the late 19th century, offering a respite from growing industrialism. Trained in architecture in Copenhagen, Carlsen immigrated in 1872 to Chicago, shifting his focus to painting. After further study in Paris, he relocated to Boston in 1876, the year he executed this work.\n\nCatalogue information\nRecorded artist or maker: Emil Carlsen (American, born Denmark, 1853-1932). Date: 1876. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: United States. Classification: painting. Physical dimensions: 38.7 × 66.8 cm (15 1/4 × 26 5/16 in.). Museum catalogue subjects: landscapes, Chicago. Museum credit line: Friends of American Art Collection. Recorded ownership history (excerpt): The artist, Chicago. George F. Daniels and Mary B. Daniels, Oxford, MA, and Putnam, CT, c. 1884. Edward F. Coffin, Worcester, MA, 1897-1923. Maynard Walker Galleries, New York, 1940; sold to Friends of American Art, Art Institute of Chicago, 1940; given to the Art Institute of Chicago.. Exhibition record (excerpt): Santa Barbara Museum of Art, Painting Today and Yesterday in the United States, June 5–Sept. 1. 1941, cat. 13. San Francisco, California Palace of the Legion of Honor, American Artists Past and Present, Jan–Mar. 1943, no cat. Milwaukee–Downer College, Wisconsin, A Century of….",
+    "description": "Emil Carlsen’s 1876 seascape shows a quiet moment at Nantasket Beach: two people sit in the sand facing the rolling waves, while a woman carrying a parasol walks beside the water. Blue sky and white clouds occupy much of the canvas. Carlsen’s naturalistic approach and bright, light-filled palette bring academic painting into dialogue with Impressionism. The growing popularity of New England seaside tourism in the late nineteenth century offered a respite from industrial life; Carlsen painted this work the year he moved to Boston.",
+    "descriptionTranslations": {
+      "ja": "エミル・カールセンが1876年に描いたナンタスケット・ビーチでは、砂浜に座る二人が波を眺め、パラソルを差した女性が水際を歩いている。画面の多くを青空と白い雲が占める。自然主義的な描写と明るく光に満ちた色調により、アカデミックな絵画と印象派の表現が響き合う。19世紀後半、産業化が進むなか、ニューイングランドの海辺で過ごす余暇は人気を高めた。本作は、カールセンがボストンに移った年に制作された。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/39691",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/39691",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-80499": {
     "description": "Cecilia Beaux explored the line between portraiture and figure painting in Dorothea and Francesca , which focuses less on the individuality of the sitters and more on their coordinated movements. The composition features two children of Beaux’s friends Helena de Kay and Richard Watson Gilder, a prominent couple in New York’s cultural scene. A double portrait of the daughters engaged in a dancing lesson, the work visually evokes the transition from girlhood to adolescence. A female artist competing for portrait commissions in the male-dominated art market of the turn of the 20th century, Beaux fared exceedingly well. She was also an influential teacher, becoming the first woman to secure a faculty position at the Pennsylvania Academy of the Fine Arts.\n\nCatalogue information\nRecorded artist or maker: Cecilia Beaux (American, 1855–1942). Date: 1898. Materials and technique: Oil on canvas. Artistic style or school: Impressionism. Place of creation: Massachusetts. Classification: painting. Physical dimensions: 203.5 × 116.8 cm (80 1/8 × 46 in.). Museum catalogue subjects: fashion, dancers, families, portraits, children, people. Museum credit line: A. A. Munger Collection. Recorded ownership history (excerpt): Cecilia Beaux, New York, and Gloucester, MA, from 1898 to 1922; the Art Institute of Chicago, 1922.. Exhibition record (excerpt): New York, National Academy of Design, Loan Exhibition of Portraits , Dec. 14, 1898–Jan. 14, 1899, cat. 24, as Dorothea and Francesca . Philadelphia, Pennsylvania Academy of the Fine Arts, Sixty–Eighth Annual Exhibition , Jan. 16–Feb. 25, 1899, cat. 92, as Dorothea and Francesca….",
@@ -2243,13 +2276,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-27954": {
-    "description": "This painting dates from the winter of 1887, roughly a year after Vincent van Gogh arrived in Paris to join his brother, the art dealer Theo van Gogh. It is one of a group of landscapes featuring the Butte Montmartre, a short climb from the apartment on the rue Lepic where Vincent and Theo lived. Montmartre was dotted with reminders of its quickly receding rural past—abandoned quarries, kitchen gardens, and three surviving windmills, including the Moulin de Blute-Fin. The nonfunctional mill had become a tourist attraction, affording spectacular panoramic views over Paris from the observation tower erected beside it.\n\nCatalogue information\nRecorded artist or maker: Vincent van Gogh (Dutch, 1853–1890). Date: Early 1887. Materials and technique: Oil on canvas, mounted on pressboard. Artistic style or school: Post-Impressionism. Place of creation: Paris. Classification: oil on canvas. Physical dimensions: 43.6 × 33 cm (17 1/8 × 13 in.); Framed: 61 × 50.8 × 7 cm (24 × 20 × 2 3/4 in.). Museum catalogue subjects: terrace, gray (color), Paris, cities, women, men, figures. Museum credit line: Helen Birch Bartlett Memorial Collection. Recorded ownership history (excerpt): The artist’s sister in law, Johanna van Gogh-Bonger (died 1925), Amsterdam [this and the following according to Van Gogh-Bonger’s account book: \"101/17 1/1924 'landschapje op Montmartre/lantaarn' 2500 [guilders] reproduced in Stolwijk and Veenenbos 2002, 136, 165]; sold to Mrs. Elizabeth Carstairs (née Stebbins, died 1949), London, Dec. 1923 for 2,500 guilders; sold through…. Exhibition record (excerpt): Possibly Amsterdam, Stedelijk Museum, Tentoonstelling van schilderijen en teekeningen door Vincent van Gogh, July 15 - Sep. 1, 1905, cat. 40. [This entry simply reads “Montmartre” and could possibly be another work.] London, Ernest Brown & Philips, The Leicester Galleries….",
+    "description": "Painted in Paris in early 1887, this work belongs to Van Gogh’s group of landscapes of Montmartre, near the apartment he shared with his brother Theo. The Moulin de Blute-Fin, one of three surviving windmills in an area still marked by its rural past, no longer functioned and had become a tourist destination. A tower beside it offered visitors panoramic views across Paris.",
+    "descriptionTranslations": {
+      "ja": "1887年初め、パリで制作された本作は、弟テオと暮らしたアパート近くのモンマルトルを描く風景画群の一作です。かつて農村の面影を残していたこの地域には三基の風車が残り、その一つムーラン・ド・ブリュット＝ファンはすでに稼働を止め、観光名所となっていました。隣接する展望塔からは、パリを一望できました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/27954",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/27954",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-14309": {
     "description": "In this small seascape, Whistler reduces the view to broad horizontal bands of blue and gray that suggest sky, sea, and sand. Light touches of thin pigment give economical form to about a dozen figures on a windswept beach. Painted outdoors in 1884–85, the panel reflects his renewed practice of working en plein air and marks a shift from the studio-made Nocturnes of the previous decade.",
@@ -2625,13 +2662,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-29230": {
-    "description": "Julia Margaret Cameron began photographing at age 48, when her daughter and son-in-law gave her a camera for her amusement. She soon made a name for herself with large-format, often allegorical compositions and portraits that defied the conventions of Victorian photography. A typical commercial portrait of the time presented a small standing figure, sharply focused and evenly lit. By contrast, Cameron's photograph of her niece Julia Jackson concentrates on the subject's head, showing clearly only limited planes of her face and leaving half of it shrouded in shadow. Known as a great beauty, Jackson was a favorite subject for Cameron, who made dozens of photographs of her. In April 1867, a month before Jackson's wedding to her first husband, Herbert Duckworth, Cameron photographed the young bride-to-be. With her hair down and eyes wide, she is unsentimental, looking forward with purpose to her own personal and social transformation.\n\nCatalogue information\nRecorded artist or maker: Julia Margaret Cameron English, 1815–1879. Date: 1867. Materials and technique: Albumen print. Artistic style or school: 19th century. Place of creation: England. Classification: albumen silver print. Physical dimensions: Image: 27.7 × 22 cm (10 15/16 × 8 11/16 in.). Museum catalogue subjects: Collected by Hugh Edwards, portraits: female subject, photography, portraits, portrait, woman. Museum credit line: Harriott A. Fox Endowment. Exhibition record (excerpt): Art Institute of Chicago, \"Distant Relations,\" May 8–July 18, 1993. (David Travis) Art Institute of Chicago, \"Julia Margaret Cameron's Women,\" September 19, 1998 – January 10, 1999; traveled to New York, The Museum of Modern Art, January 27–May 4, 1999; and San Francisco Museum….",
+    "description": "In this 1867 albumen print, Julia Margaret Cameron portrays her niece Julia Jackson, a favorite subject whose wedding to Herbert Duckworth was a month away. Rather than the small, sharply focused, evenly lit figure common in commercial Victorian portraits, Cameron brings Jackson’s head close, rendering only parts of her face clearly and leaving half in shadow. Her loose hair and wide eyes meet the future with purpose.",
+    "descriptionTranslations": {
+      "ja": "ジュリア・マーガレット・キャメロンが1867年に制作したアルビューメン・プリント。姪のジュリア・ジャクソンは、キャメロンが幾度も撮影したお気に入りの被写体で、この写真はハーバート・ダックワースとの結婚を翌月に控えた時期に撮られた。商業写真で一般的だった、全身を鮮明かつ均等な光で見せる肖像とは異なり、顔の一部だけを明瞭に捉え、半面を影に沈めている。髪を下ろし、目を大きく見開いたジャクソンは、まっすぐ前を見据える。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/29230",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/29230",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-110661": {
     "description": "In this direct self-portrait, the young Frédéric Bazille faces the viewer against a dark background; his palette and brushes are the only signs of his profession. The unseen easel and canvas would have stood just before him, to our left. Painted in oil in 1865–66, while Bazille shared an apartment-studio with Claude Monet, the work served both as practice in rendering his mirror image and as an assertion of his choice to leave medicine for art. He was experimenting with techniques that would become central to Impressionism.",
@@ -2692,13 +2733,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-31233": {
-    "description": "Painted in the aftermath of the French Revolution, Désoria’s Portrait of Constance Pipelet typiﬁes the Neoclassical style of portraiture practiced by Jacques-Louis David and his circle. The ﬁgure, placed parallel to the picture plane and silhouetted against the bright blue of the sky, evokes antique relief sculpture. Her white cotton dress was the fashionable attire of middle- and upper-class women in the 1790s, its antique associations reﬂecting Neoclassical ideals and its simplicity echoing the egalitarian spirit of the new French Republic. Constance Pipelet, later Constance de Salm-Dyck, was a noted poet, librettist, and feminist with a salon that attracted the literary and artistic notables of Paris.\n\nCatalogue information\nRecorded artist or maker: Jean-Baptiste-François Desoria (French, 1758–1832). Date: 1797. Materials and technique: Oil on canvas. Artistic style or school: Neoclassicism. Place of creation: France. Classification: oil on canvas. Physical dimensions: 130 × 99.1 cm (51 1/4 × 39 in.). Museum catalogue subjects: portraits: female subject, book, chair, fashion, France, French, landscape. Museum credit line: Simeon B. Williams Fund. Recorded ownership history (excerpt): Jacques Doucet (died 1929), Paris [according to a letter of September 25, 1939, from Paul M. Byk, Seligmann, Rey, and Co, to Daniel Catton Rich in curatorial files]. Arnold Seligmann, Rey, and Co., New York, by 1939; sold to the Art Institute, 1939.. Exhibition record (excerpt): Paris, Salon of 1798 (Year VI of the Republic), Musée central des Arts, no. 118, as Portrait de la citoyenne Pipelet. San Francisco, California Palace of the Legion of Honor, Vanity Fair: An Exhibition of Styles of Women's Headdress and Adornment through the Ages, 1942, no. 33….",
+    "description": "Painted in France in 1797, this portrait presents poet and librettist Constance Pipelet, later known as Constance de Salm-Dyck. Jean-Baptiste-François Désoria places her parallel to the picture plane against a bright blue sky, recalling antique relief sculpture and the Neoclassical style associated with Jacques-Louis David and his circle. Her simple white cotton dress, fashionable among women of the middle and upper classes, reflects both antique ideals and the egalitarian spirit of the new French Republic.",
+    "descriptionTranslations": {
+      "ja": "1797年、フランスでジャン＝バティスト＝フランソワ・デソリアが描いた、詩人・台本作家コンスタンス・ピプレ（後のコンスタンス・ド・サルム＝ディック）の肖像。人物を画面と平行に配し、明るい青空を背景に浮かび上がらせる構成は、古代の浮彫と、ジャック＝ルイ・ダヴィッド一派に連なる新古典主義の肖像画を想起させる。白い木綿のドレスは、当時の中・上流階級の女性に流行した装いで、古代趣味と新共和国の平等主義の精神を反映している。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/31233",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/31233",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-59798": {
     "description": "This female angel is one of many that Abbott Handerson Thayer painted during his career. Originally a painter of animals, Thayer created portraits and then allegorical figures like this example after training in Paris. The artist wrote of his seraphic subjects, “I have put on wings probably more to symbolize an exalted atmosphere . . . where one need not explain the action of his figures.” Other late 19th-century artists such as Augustus Saint-Gaudens also represented angelic female figures to personify what they perceived as the virtues of women. In Winged Figure , Thayer mixed this idealism with a level of naturalism, particularizing the woman’s features and giving her form a sense of mass and gravity.\n\nCatalogue information\nRecorded artist or maker: Abbott Handerson Thayer (American, 1849–1921). Date: 1889. Materials and technique: Oil on canvas. Place of creation: United States. Classification: painting. Physical dimensions: 130.8 × 95.9 cm (51 1/2 × 37 3/4 in.). Museum catalogue subjects: mythology, people, portraits. Museum credit line: Simeon B. Williams Fund. Recorded ownership history (excerpt): Hillyer Art Gallery, Smith College, Northampton, MA, 1889; Gimbel Brothers, New York, 1946; Julius H. Weitzner, New York, 1947; sold by him to the Art Institute of Chicago, 1947.. Exhibition record (excerpt): Buffalo Fine Arts Academy, Albright Art Gallery, Ninth Annual Exhibition of Selected Paintings by American Artists, May 16–Aug. 31, 1914, cat. no. 113. Washington, DC, Corcoran Gallery of Art, Fifth Exhibition of Oil Paintings by Contemporary American Artists, Dec. 15, 1914–Jan.….",
@@ -2851,22 +2896,30 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-270002": {
-    "description": "On September 15, 1898, Vilhelm Hammershøi and his wife Ida moved to an apartment on the upper floor of Strandgade 30 in Copenhagen, where they remained until 1909. This stay coincided with the most productive period of the artist’s career, during which he painted his best-known series of works: ever-evolving variations on the interior of his apartment. Hammershøi regularly depicted this corner of his drawing room, both with and without the figure of Ida. For the artist, the apartment was akin to a stage set, and he used furniture and household objects like props, endlessly positioning and repositioning them not according to their domestic function but rather to their aesthetic effect. In Interior. The Music Room, Strandgade 30 , a minimal arrangement featuring musical instruments is illuminated by soft light filtering through a window just outside the frame. But without a human presence to animate the instruments, the scene evokes only silence. Carefully painted with small, flickering brushstrokes, the picture embodies the poet Rainer Maria Rilke’s observation that “Hammershøi is not one of those about whom one must speak quickly. His work is long and slow, and at whichever moment one apprehends it, it will offer plentiful reasons to speak of what is important and essential in art.” This is one of thirty-five works that comprise the Winterbotham Collection. Click here to learn more about the collection.\n\nCatalogue information\nRecorded artist or maker: Vilhelm Hammershøi (Danish, 1864–1916). Date: 1907. Materials and technique: Oil on canvas. Artistic style or school: 20th Century. Place of creation: Denmark. Classification: painting. Physical dimensions: 70 × 59 cm (27 9/16 × 23 1/4 in.); Framed: 85.5 × 75.3 × 8.9 cm (33 5/8 × 29 5/8 × 3 1/2 in.). Museum catalogue subjects: interior, light, window, chair, instruments, pianos, gray (color). Museum credit line: Joseph Winterbotham Collection. Recorded ownership history (excerpt): Winkel & Magnussen, Copenhagen, October 1910, lot 17. Ole Olsen (1863–1943), Copenhagen, by 1916 [Copenhagen 1916]; with his daughter, Lady Elvira Abrahamsen (born Olsen; 1896–1981), Copenhagen, by 1941 [Copenhagen 1941]; sold, Olsen sale, Winkel & Magnussen, Copenhagen, Feb. 28, 1944, lot 717, to a private collection, Copenhagen; by descent through the family; sold…. Exhibition record (excerpt): Copenhagen, Kunstforeningen, Arbejder af Vilhelm Hammershøi, Apr. - May, 1916, cat. 75. Copenhagen, Statens Museum for Kunst, Mit bedste Kunstværk, Oct. 1941, cat. 74. Oslo, Kunstforening, Vilhelm Hammershøi, 1955, cat. 37 Copenhagen, Kunstforeningen, Vilhelm Hammershøi, Apr.….",
+    "description": "After moving into Strandgade 30 in Copenhagen in 1898, Vilhelm Hammershøi repeatedly painted variations on the apartment’s interiors. In this 1907 view, a spare arrangement of musical instruments occupies a corner of the drawing room, lit by soft light from a window beyond the frame. No person is present; Hammershøi’s small, flickering brushstrokes render the room with quiet precision. He treated its furniture and household objects as elements to arrange for their visual effect, rather than for everyday use.",
+    "descriptionTranslations": {
+      "ja": "1898年、ヴィルヘルム・ハンマースホイは妻イーダとともに、コペンハーゲンのストランドゲーゼ30番地の住居に移り、室内を繰り返し描きました。1907年の本作では、居間の一角に楽器が簡素に配され、画面外の窓から柔らかな光が差し込みます。人物の姿はなく、小刻みで揺らぐ筆致が、静かな室内を描き出しています。家具や日用品を実用ではなく、視覚的な効果を考えて配置した画家の姿勢がうかがえます。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/270002",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/270002",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-258490": {
-    "description": "This ambitious still life conjures the complexities of Dutch colonization and cartography in the 1600s. Casually arranged on a table are a book about seafaring, which includes a map of the Americas copied from a 1660 print; a volume on the history of Holland (Oud Batavia), a clever reference to the Dutch Republic’s new territory in Indonesia (Batavia); and the terrestrial and celestial globes, positioned to show the Pacific Ocean and lands the Dutch had newly reached. While the inscriptions on the globes and the scrap of paper at right are in Latin, the other documents are in Dutch; the Dutch presence is reinforced by the flag in the background. By 1662 the Netherlands had ceded its territory in New Holland (now Brazil) to the Portuguese, and it was also fighting with the British for New Amsterdam (now New York) in North America. The tenuous nature of these conquests is amplified by ephemeral allusions. The extinguished candle, violin with a broken string, pocket watch, and hourglass all represent the biblical passage from Ecclesiastes at far right: Vanitas vanitatum et omnia vanitas (Vanity of vanities, all is vanity). With his striking ability to paint the printed word, Collier raised questions about the permanence of worldly accomplishments and the ambitions of humankind.\n\nCatalogue information\nRecorded artist or maker: Edwaert Collier (Dutch, 1642–1708). Date: 1662. Materials and technique: Oil on canvas. Artistic style or school: 17th Century. Place of creation: Holland. Classification: painting. Physical dimensions: 98 × 129.7 cm (38 1/2 × 51 in.); Framed: 122 × 152.4 cm (48 × 60 in.). Museum catalogue subjects: still life, feathers, candleholder, flags, books, globes, maps. Museum credit line: Through prior bequest of Joseph Winterbotham; Rhoades Foundation and Julius Lewis Acquisition Endowment Fund; European Painting Discretionary Fund. Recorded ownership history (excerpt): Count Edward Raczynski, Warsaw and London, by 1929 [according to Zarnowska 1929]; probably sold to Mr. and Mrs. Fielding Lewis Marshall, Charlottesville, VA, and London, by 1961 [according to Chapel Hill 1961]; sold, Bonhams, London, March 28, 1974, lot 28. Private collector, by 1998; sold, Sotheby’s, London, December 17, 1998, lot 39. Sold, Sotheby’s, New York, January 31…. Exhibition record (excerpt): Chapel Hill, North Carolina, William Ackland Memorial Art Center, The Elizabeth and Fielding Lewis Marshall Collection, March 22–April 23, 1961 (no catalogue). London, Sotheby’s, Exhibition of the Marshall collection : which will be sold by auction by Sotheby & Co. in several….",
+    "description": "In this 1662 oil painting, Edwaert Collier gathers books, maps, a Dutch flag, and terrestrial and celestial globes around a table, alongside writing materials, musical instruments, a candle, a watch, and an hourglass. The documents and globes evoke Dutch seafaring and newly reached territories, while the extinguished candle, broken violin string, watch, and hourglass recall Ecclesiastes’ warning that worldly things are transient. Made amid Dutch territorial losses and conflict over New Amsterdam, the still life questions the durability of conquest and human ambition.",
+    "descriptionTranslations": {
+      "ja": "1662年、エドワールト・コリアーは、書物や地図、オランダの旗、地球儀と天球儀を卓上に配し、筆記用具や楽器、蝋燭、懐中時計、砂時計を取り合わせました。航海やオランダが新たに到達した土地を示す品々に対し、消えた蝋燭、弦の切れたヴァイオリン、時計と砂時計は、『伝道の書』の「すべては空しい」という戒めを響かせます。領土を失い、ニューアムステルダムをめぐって争っていた時代に、征服や人間の野心が永続するのかを問いかける静物画です。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/258490",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/258490",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-65930": {
     "description": "Marsden Hartley turned to still-life painting throughout his career, restlessly using the genre as a means of aesthetic experimentation as he worked out new ideas, styles, and motifs. During the 1910s, influenced by the works of Paul Cézanne, Henri Matisse, and Pablo Picasso, he produced numerous compositions, including Still Life No. 15 , a spare arrangement of a white goblet holding a lone pink flower against a backdrop of cream and blue fabric. Unlike many works by Hartley from this period, which emphasize the two-dimensionality of his canvases, here he conveyed a sense of the shallow dark space behind the arrangement on its skewed tabletop. Using a dry, brushy style, Hartley suggested the volumetric presence of the objects through the shading that accentuates the form of the goblet and the deep folds of the fabric.\n\nCatalogue information\nRecorded artist or maker: Marsden Hartley (American, 1877–1943). Date: c. 1917. Materials and technique: Oil on composition board. Artistic style or school: Modernism. Place of creation: United States. Classification: oil on panel. Physical dimensions: 59.4 × 49.5 cm (23 3/8 × 19 1/2 in.). Museum catalogue subjects: still life. Museum credit line: Alfred Stieglitz Collection. Recorded ownership history (excerpt): Alfred Stieglitz (1864–1946), New York, by 1946; by descent to his estate; permanent loan to the Art Institute of Chicago, 1949..",
@@ -2878,13 +2931,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-36840": {
-    "description": "Leonard Bramer spent most of his professional career traveling throughout the Netherlands, France, and Italy, and he was deeply influenced by the dramatic chiaroscuro paintings of Caravaggio. Although primarily known as a painter and draftsman of history and religious scenes, he created a handful of still lifes, each with a moralizing theme. Here, the overturned wine glass, open trunk, money, and playing cards represent the transience of life. Unlike his peer Rembrandt, Bramer made very few prints; only one signed work survives. This still life, previously thought to have been etched by Bramer, is now believed to be after one of his lost paintings. A print tacked up onto the wall in a haphazard fashion serves to explain why so many prints from the 17th century have not survived to the present day.\n\nCatalogue information\nRecorded artist or maker: attributed to Leonard Bramer (Dutch, 1596-1674) published by Theodor Matham (Dutch, 1605/06-1676). Date: 1640s. Materials and technique: Etching in black on cream laid paper. Place of creation: Netherlands. Classification: etching. Physical dimensions: 13.6 × 18.6 cm (5 3/8 × 7 3/8 in.). Museum credit line: John H. Wrenn Memorial Fund. Exhibition record (excerpt): Milwaukee, WI, Patrick and Beatrice Haggerty Museum of Art, Marquette University, “Leonaert Bramer (1596-1674): A Painter of the Night,” December 4, 1992-February 28, 1993, p. 123, cat. 59 (ill.)..",
+    "description": "This etching shows an overturned wine glass, an open travelling trunk, money, and playing cards—objects the museum interprets as reminders of life’s transience. A print is pinned casually to the wall, a detail that also points to the fragility of prints and their survival. The work was once thought to be etched by Leonard Bramer, but is now considered a print after one of his lost paintings. Made in the Netherlands in the 1640s, it is attributed to Bramer and was published by Theodor Matham.",
+    "descriptionTranslations": {
+      "ja": "横倒しのワイングラス、開いた旅行用トランク、金銭、トランプが描かれ、これらの品々は人生のはかなさを示すものと解釈されています。壁には一枚の版画が無造作に留められ、17世紀の版画が失われてきた事情にも目を向けさせます。かつてブレーマー自身の版画と考えられていましたが、現在は失われた絵画をもとにした版画とされ、彼に帰属されています。1640年代のオランダで制作され、テオドール・マタムが出版しました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/36840",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/36840",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-154496": {
     "description": "This 1879 oil painting, attributed to William A. Mitchell, imitates an old-fashioned bulletin board where letters and other passing documents were held by ribbon. Made for Philadelphia dentist Dr. Samuel Smith Nones, it centers on a letter to him, beside envelopes addressed to medical colleagues and his brother. The carefully rendered papers turn the still life into a portrait of Nones’s professional connections and personal circle; Mitchell was the father of the youngest dentist represented among them.",
@@ -2974,13 +3031,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-264716": {
-    "description": "This seemingly straightforward scene by Maria van Oosterwijck, one of the few known female painters in the Dutch Republic, in fact depicts a fantastical image. The 11 species of flora, accompanied by a single grasshopper and hung from a nail by a ribbon, do not all blossom in the same season. Additionally, several of these varieties are not indigenous to Northern Europe. The arrangement thus reflects the global markets in which the Dutch participated: the sweet sultan (the orange flower at upper left) would have been imported from Turkey, while the bitter orange (beneath the ribbon at center) originated in the Mediterranean. Oosterwijck was renowned for such paintings of suspended bouquets.\n\nCatalogue information\nRecorded artist or maker: Maria van Oosterwijck (Dutch, 1630–1693). Date: c. 1680. Materials and technique: Oil on canvas. Artistic style or school: 17th Century. Place of creation: Netherlands. Classification: still life. Physical dimensions: 36 × 28.3 cm (14 1/4 × 11 1/8 in.); Framed: 49.3 × 41.3 × 6.7 cm (19 3/8 × 16 1/4 × 2 5/8 in.). Museum catalogue subjects: flowers, insects, ribbon, still life. Museum credit line: Rhoades Foundation and Julius Lewis Acquisition Endowment Fund; Josephine and John J. Louis Jr. Endowed Acquisition Fund; C. Harker and Mae Svoboda Rhodes Acquisition Fund; John A. Bross Fund in memory of Louise Smith Bross. Recorded ownership history (excerpt): Probably sold through Jean Chretien Kaller, Frankfurt, Mar. 12, 1764, lot 87 to Benedikt Ludwig Schlund [Schlundt] for 17.3 florins [according to analysis of detailed description in auction catalog and list of known works compiled by McIntosh 2010, cat. 19]. Sold, Hôtel Drouot, Paris, Apr. 24, 1961, lot 122. Sold, Sotheby’s London, Dec. 9, 1992, lot 92, to Salomon Lilian…. Exhibition record (excerpt): Washington, D.C., National Museum of Women in the Arts, Women Artists from Antwerp to Amsterdam, 1600-1750, Sep. 26, 2025–Jan. 11, 2026, cat. 165; Ghent, Belgium, Museum of Fine Arts, Mar. 7–May 31, 2026 (Washington only)..",
+    "description": "Maria van Oosterwijck, one of the few known women painters in the Dutch Republic, was renowned for suspended bouquets such as this oil painting, made around 1680. Eleven kinds of flowers, accompanied by a grasshopper, hang from a nail on a blue ribbon. Their blooms belong to different seasons, and some plants came from beyond Northern Europe: the sweet sultan from Turkey and the bitter orange from the Mediterranean. The imagined gathering evokes the far-reaching markets in which the Dutch participated.",
+    "descriptionTranslations": {
+      "ja": "17世紀のオランダ共和国で活動した数少ない女性画家の一人、マリア・ファン・オーステルウェイクは、吊り下げた花束の静物画で知られます。1680年頃の本作では、青いリボンで釘に掛けられた花々に、バッタが添えられています。11種の植物は開花期が異なり、北ヨーロッパ原産でないものも含まれます。トルコ産のスイートサルタンや地中海産のビターオレンジを組み合わせた幻想的な構成は、オランダが関わった広域交易を映しています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/264716",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/264716",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-62450": {
     "description": "At a time when still life was emerging as a discrete subject (and not just an element of larger narrative works), this artist depicted fruit and vegetables arrayed on a simple tabletop with elegant clarity and naturalism. Louise Moillon trained first under her father and, from 1620, her stepfather. When she executed this still life at the young age of 20, she was already an accomplished painter. Women painters were not uncommon within the European tradition of the family workshop, which provided training, studio space, and clients for successive generations of artists. The system was one of few pro- fessional routes for women in a period when they could not legally take up a career.\n\nCatalogue information\nRecorded artist or maker: Louise Moillon (French, 1610–1696). Date: 1630. Materials and technique: Oil on panel. Artistic style or school: 17th Century. Place of creation: France. Classification: oil on panel. Physical dimensions: 53.3 × 71.3 cm (21 × 28 1/2 in.); Framed: 68 × 85.8 × 8.3 cm (26 3/4 × 33 3/4 × 3 1/4 in.). Museum catalogue subjects: still life, table, shadows, leaves, leaf, grapes, fruit. Museum credit line: Wirt D. Walker Fund. Recorded ownership history (excerpt): Gertrude D. Webster, Mass., probably to 1947 [Kleinberger archives, Metropolitan Museum of Art, New York]. Sold, Plaza Art Galleries, New York, 6–8 November 1947, no. 234, as Dutch School, to Kleinberger, New York [annotated sale cat. in Frick Art Reference Library, New York]; sold by Kleinberger to the Art Institute through the Wirt D. Walker Fund, 1948.. Exhibition record (excerpt): Paris, Galeries Nationales du Grand Palais, La Peinture française du XVIIe siècle dans les collections américaines, Jan. 29 – Apr. 26, 1982, cat. 73; New York, Metropolitan Museum of Art, May 26 – Aug. 22, 1982; Art Institute of Chicago, Sep. 18 – Nov. 28, 1982. Baltimore Museum….",
@@ -2992,13 +3053,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-265263": {
-    "description": "In this exquisite still life, Mélanie de Comoléra skillfully depicted a variety of flowers, fruits, and other luxury objects. On a marble ledge sits a wide bowl, overflowing with grapes and plums. Behind it, a glass pitcher holds a mix of colorful flowers. In the foreground, key limes and jalapeño peppers, botanical species that are not indigenous to Europe, evoke themes of colonialism and global trade. Mélanie de Comoléra studied and worked in France before moving to London, where she made this painting. The artist established a successful career there and became the official painter to the Duchess of Clarence (later Queen Adelaide) and Queen Victoria.\n\nCatalogue information\nRecorded artist or maker: Mélanie de Comoléra (French, 1789-1854). Date: c. 1827. Materials and technique: Oil on canvas. Artistic style or school: 19th century. Place of creation: France. Classification: painting. Physical dimensions: 40.7 × 32.7 cm (16 1/16 × 12 7/8 in.); Framed: 52.4 × 45.1 × 8.3 cm (20 5/8 × 17 3/4 × 3 1/4 in.). Museum catalogue subjects: still life, flowers, fruit, vegetables. Museum credit line: Through prior purchase with funds provided by Eugene and Helen Huang in memory of Ada and Wilfred Polkinghorne, Justin K. Thannhauser, A. A. Munger Collection, bequest of Celia Schmidt Estate. Recorded ownership history (excerpt): Julian Simmons (born 1952), UK, c. 2005 [according to sticker on the verso and correspondence with Guillermo Pinilla, Aug. 11, 2023; copy in curatorial file]. Private collection (probably Steve Case and Jean Villanueva), Merrywood Estate, McClean, VA; sold, Potomack Company, Merrywood Estate Collection, Jan. 26, 2022, lot 500, to Sahen Fine Art, Paris; sold to the Art….",
+    "description": "Mélanie de Comoléra arranges fruit, vegetables, and flowers in this oil painting, made around 1827. On a marble ledge, a broad bowl brims with grapes and plums; a glass pitcher behind it holds colorful blooms. Key limes and jalapeño peppers in the foreground—plants not native to Europe—point to colonialism and global trade. Comoléra studied and worked in France before moving to London, where she built a successful career and became painter to the Duchess of Clarence, later Queen Adelaide, and Queen Victoria.",
+    "descriptionTranslations": {
+      "ja": "メラニー・ド・コモレラは、ブドウやプラム、花、野菜を配した静物を、1827年頃に油彩で描きました。大理石の台には果実を盛った幅広の鉢が置かれ、その後ろのガラスのピッチャーには色鮮やかな花々が生けられています。前景のライムとハラペーニョはヨーロッパ原産ではなく、植民地主義や世界貿易を想起させます。フランスで学び制作した後、ロンドンに移った画家は、クラレンス公爵夫人（後のアデレード王妃）とヴィクトリア女王の御用画家としても活躍しました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/265263",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/265263",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-21682": {
     "description": "Pieter Claesz’s oil-on-panel still life, painted around 1625, belongs to the Dutch “banquet piece” tradition, which presented sumptuous food and costly serving objects on a richly set table. Here, lemon, olives, sweetmeats, and a lace-edged damask cloth appear well preserved. Rather than hinting at decay, the arrangement celebrates the wealth and lavish display that such still lifes offered to prosperous Dutch viewers.",
@@ -3111,13 +3176,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-38666": {
-    "description": "The Water Fan depicts a young black man intently searching for coral using a glass-bottomed bucket. Referred to as a “water glass” or “sponge glass,” this device was used to stabilize the surface of moving water in order to improve visibility. Homer may have been attracted to the subject because it draws attention to the constantly moving surface of the water as well as its transparency, aspects of the sea that especially intrigued him in the Bahamas. Like The Sponge Diver (1898/99; MFA Boston), this work originally had more visible red washes in the water, hinting at the pink coral beneath the surface. While these areas have faded, the fluid strokes of darker blue over layers of transparent turquoise are effective in suggesting the play of light, both direct and reflected, over water. Homer depicted light shimmering on the ocean using watercolor paper with a heavy twill texture in The Water Fan . The diagonal pattern of the sheet, which runs from top right to lower left, was imparted during manufacture by the papermaker’s woven wire screen that supported the paper pulp during sheet formation. The opposite side is relatively smooth. A truncated watermark reading “J WHAT,” for J Whatman , the manufacturer, reads from the textured side, indicating the side intended for painting.\n\nCatalogue information\nRecorded artist or maker: Winslow Homer American, 1836-1910. Date: 1898/99. Materials and technique: Watercolor, with blotting and touches of scraping, over graphite, on thick, rough twill-textured, ivory wove paper. Artistic style or school: Realism. Place of creation: United States. Classification: watercolor. Physical dimensions: 37.4 × 53.4 cm (14 3/4 × 21 1/16 in.). Museum catalogue subjects: seascapes, work, weather/seasons, water, children, people, boats. Museum credit line: Gift of Dorothy A., John A., Jr., and Christopher Holabird in memory of William and Mary Holabird. Recorded ownership history (excerpt): The artist to James W. Young, Chicago, 1907; sold by J.W. Young Galleries, Chicago, to William (1854–1923) and Mary (Mrs. William) Holabird, c. 1908 [according to correspondence from Abigail Booth Gerdts to the Art Institute, February 10, 2007]; by descent to their son, John A. Holabird (1886–1945); by descent to his wife, Dorothy (1897–1988); given to the Art Institute, 1972.. Exhibition record (excerpt): Chicago, J.W. Young Galleries, \"Ten Watercolors by Winslow Homer,\" opened January 11, 1908, no. 8, no cat. Tucson, Ariz., The University of Arizona Art Gallery, \"Yankee Painter: A Retrospective Exhibition of Oils, Water Colors, and Graphics by Winslow Homer,\" October 1–December….",
+    "description": "Winslow Homer’s watercolor shows a young Black man searching for coral through a glass-bottomed bucket, which steadies the view beneath the moving sea. Transparent turquoise layers and fluid strokes of darker blue convey light shimmering across the water; blotting and touches of scraping shape the surface. Originally, red washes hinted at coral below, but they have faded. Homer painted on thick paper with a pronounced twill texture, using its diagonal pattern as part of the image.",
+    "descriptionTranslations": {
+      "ja": "ウィンスロー・ホーマーは、ガラス底の桶を通してサンゴを探す若い黒人男性を描いている。水面を安定させて水中を見やすくするこの道具を通じ、作家が関心を寄せた海の揺らぎと透明感が主題となる。透明感のあるターコイズの層に流れるような濃青の筆致を重ね、反射する光を表現した。水彩にぼかしや部分的な削りを加え、斜めの綾織り模様が際立つ厚手の紙の質感も画面に生かしている。かつて水中のサンゴを示唆した赤い色面は、現在では退色している。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/38666",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/38666",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-16823": {
     "description": "In this 1894 watercolor, Winslow Homer joins fishing and logging in a seemingly tranquil Adirondack river scene. Long black strokes laid over blue suggest the water’s depth and speed, while scraping exposes bright paper for the bubbling rapids. Clean-cut logs on the far bank hint at logging, and a leaping fish and a knife-drawn fishing line imply an unseen angler. Homer’s observations of the region’s changing forests and rivers inform the work without explicit judgment.",
@@ -3398,22 +3467,30 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-4288": {
-    "description": "Andrea Mantegna’s Battle of the Sea Gods may be the first print with a unified composition occupying more than one sheet. Unlike the Andrea Andreani Triumph of Caesar (1926.452.2–9) and the engravings after the same Mantegna paintings by his own workshop, this mythological frieze has only one seam and no disguising columns. Albrecht Dürer drew a copy of the right half of the frieze in 1494, already establishing the seminal importance of the work in the Renaissance.\n\nCatalogue information\nRecorded artist or maker: Workshop of Andrea Mantegna Italian, 1431-1506. Date: 1470/1500. Materials and technique: Engraving in black on ivory laid paper, discolored to grayish brown. Place of creation: Italy. Classification: engraving. Physical dimensions: Image/sheet: 28.1 × 39.4 cm (11 1/8 × 15 9/16 in.); Composite approx: 28.3 × 80.9 cm (11 3/16 × 31 7/8 in.). Museum credit line: Bequest of Mrs. Potter Palmer, Jr..",
+    "description": "This engraving is the right half of Andrea Mantegna’s mythological Battle of the Sea Gods, a frieze made to span more than one sheet. The two-part composition has a single join and no columns to conceal it; its unusually unified design may make it the earliest print to carry a continuous composition across multiple sheets. Albrecht Dürer copied this half in 1494, evidence of the work’s early importance in the Renaissance. It was engraved in black on ivory laid paper, now discolored grayish brown.",
+    "descriptionTranslations": {
+      "ja": "アンドレア・マンテーニャの神話画《海神の戦い》を構成する、版画の右半分。複数の紙にまたがるフリーズ形式で、二枚の接合部は一か所のみ、継ぎ目を隠す柱もありません。複数紙面に統一された構図を展開する版画として、最初期の作例と考えられています。1494年にはアルブレヒト・デューラーがこの右半分を模写しており、ルネサンス期における作品の早くからの重要性を示します。象牙色の紙に黒で銅版印刷され、紙は現在、灰褐色に変色しています。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/4288",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/4288",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-4285": {
-    "description": "Andrea Mantegna’s Battle of the Sea Gods may be the first print with a unified composition occupying more than one sheet. Unlike the Andrea Andreani Triumph of Caesar (1926.452.2–9) and the engravings after the same Mantegna paintings by his own workshop, this mythological frieze has only one seam and no disguising columns. Albrecht Dürer drew a copy of the right half of the frieze in 1494, already establishing the seminal importance of the work in the Renaissance.\n\nCatalogue information\nRecorded artist or maker: Workshop of Andrea Mantegna Italian, 1431-1506. Date: 1470/1500. Materials and technique: Engraving in black on ivory laid paper, discolored to grayish brown. Place of creation: Italy. Classification: engraving. Physical dimensions: 28.3 × 41.5 cm (11 3/16 × 16 3/8 in.). Museum credit line: Bequest of Mrs. Potter Palmer, Jr..",
+    "description": "This print presents the left half of Andrea Mantegna’s mythological Battle of the Sea Gods, conceived as a frieze extending across more than one sheet. The composition is joined by a single seam, without columns to conceal the join. Engraved in black on ivory laid paper, now discolored to grayish brown, the work was made in Italy around 1470–1500. Albrecht Dürer copied the frieze’s right half in 1494, an early sign of its importance in the Renaissance.",
+    "descriptionTranslations": {
+      "ja": "神話主題の《海神たちの戦い》を、複数の紙葉にまたがるフリーズとして表した版画の左半分。継ぎ目は一か所のみで、それを隠す柱は設けられていない。イタリアで1470～1500年頃に制作され、象牙色の簀目紙に黒で銅版を刻んだ。紙は現在、灰褐色に変色している。1494年にはアルブレヒト・デューラーが右半分を模写しており、ルネサンス期における本作の早い評価を示す。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/4285",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/4285",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-214353": {
     "description": "In this small color etching, Theodore Roussel depicts the sky, sea, and shore at Bognor Regis on England’s southern coast, a view he also painted. A pioneer of color etching in Britain, he developed the work through trial proofs; for many, colored ink was applied to the plate and apparently printed without a press. This soft-ground etching, made in 1895, was included in a group of nine color prints first exhibited in 1899.",
@@ -3459,8 +3536,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionKind": "metadata_summary"
   },
   "aic-3015": {
-    "description": "Sailboats on Sea is a work attributed in the Art Institute of Chicago catalogue to Unknown artist.\n\nCatalogue information\nRecorded artist or maker: Unknown artist Dutch, 16th century. Date: n.d.. Materials and technique: Brush and black ink, with brush and gray wash, over traces of graphite, on ivory laid paper. Place of creation: Netherlands. Classification: ink or chalk wash. Physical dimensions: 13.2 × 18.6 cm (5 1/4 × 7 3/8 in.). Museum credit line: The Leonora Hall Gurley Memorial Collection.",
-    "descriptionKind": "metadata_summary"
+    "description": "This small drawing, made in the Netherlands by an unidentified Dutch artist of the sixteenth century, depicts sailboats at sea. Brushwork in black ink and gray wash is layered over faint traces of graphite on ivory laid paper. The catalogue does not provide a date.",
+    "descriptionTranslations": {
+      "ja": "16世紀オランダの作者不詳による、海上の帆船を描いた小品です。象牙色の簀目紙に残る鉛筆の痕跡の上から、筆による黒インクと灰色の淡彩を重ねています。制作年は記録されていません。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/3015",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-108583": {
     "description": "Attributed to Claude Monet in the Art Institute of Chicago catalogue, this landscape dates to about 1864 and depicts cliffs and sea at Sainte-Adresse. Monet made it in France with black chalk on ivory laid paper. The sheet measures 20.6 by 31.4 centimeters and is part of the Clarence Buckingham Collection.",
@@ -3476,12 +3562,30 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-28216": {
-    "description": "The Sea Monster is a work attributed in the Art Institute of Chicago catalogue to Albrecht Dürer.\n\nCatalogue information\nRecorded artist or maker: Albrecht Dürer German, 1471-1528. Date: c. 1498. Materials and technique: Engraving in black on ivory laid paper. Place of creation: Germany. Classification: engraving. Physical dimensions: Image/sheet: 25 × 18.7 cm (9 7/8 × 7 3/8 in.). Museum credit line: Clarence Buckingham Collection.",
-    "descriptionKind": "metadata_summary"
+    "description": "Attributed in the Art Institute of Chicago catalogue to Albrecht Dürer, this engraving is dated about 1498 and was made in Germany. Its image is printed in black on ivory laid paper; the sheet measures 25 × 18.7 cm. The catalogue identifies the medium and subject in the title but provides no further description of the scene. The work entered the museum through the Clarence Buckingham Collection.",
+    "descriptionTranslations": {
+      "ja": "シカゴ美術館のカタログでアルブレヒト・デューラー作とされる本作は、ドイツで1498年頃に制作された版画です。象牙色の簀目紙に黒で刷られ、紙寸法は25×18.7センチ。題名は海の怪物を示しますが、カタログには画面の詳しい説明はありません。クラレンス・バッキンガム・コレクションから収蔵されました。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/28216",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-3819": {
-    "description": "Andromeda and the Sea-Monster is a work attributed in the Art Institute of Chicago catalogue to Circle of Charles Le Brun.\n\nCatalogue information\nRecorded artist or maker: circle of Charles Le Brun French, 1619-1690. Date: n.d.. Materials and technique: Charcoal, with touches of stumping, heightened with traces of white chalk, on buff laid paper with blue and brown fibers. Place of creation: France. Classification: charcoal. Physical dimensions: 53.2 × 39.2 cm (21 × 15 7/16 in.). Museum credit line: The Leonora Hall Gurley Memorial Collection.",
-    "descriptionKind": "metadata_summary"
+    "description": "This drawing, attributed to the circle of the French artist Charles Le Brun, depicts Andromeda and a sea-monster. It is made in charcoal, with areas softened by stumping and traces of white chalk for highlights, on buff laid paper containing blue and brown fibers. The catalogue records France as its place of creation; its date is unknown.",
+    "descriptionTranslations": {
+      "ja": "フランスの画家シャルル・ル・ブランの周辺に帰属される、アンドロメダと海の怪物を描いた素描。バフ色の紙には青と茶色の繊維が見られ、木炭を用い、一部を擦って調子をなじませ、白チョークの痕跡で明部を加えています。制作地はフランスと記録されていますが、年代は不明です。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/3819",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-153969": {
     "description": "Made in Germany in 1887, this large etching and aquatint is attributed to Max Klinger after the Swiss artist Arnold Böcklin. The image is printed on ivory wove paper and laid down on a second sheet of the same paper. The catalogue identifies the work’s makers, date, medium, and support but provides no description of the scene.",
@@ -3517,8 +3621,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionKind": "metadata_summary"
   },
   "aic-3406": {
-    "description": "The Reappearance of the Tritons of the Sea, plate 412 from Actualités is a work attributed in the Art Institute of Chicago catalogue to Honoré-Victorin Daumier.\n\nCatalogue information\nRecorded artist or maker: Honoré Victorin Daumier French, 1808-1879. Date: 1857. Materials and technique: Lithograph in black on ivory wove paper, with letterpress verso. Place of creation: France. Classification: lithograph. Physical dimensions: Image: 21.5 × 27.3 cm (8 1/2 × 10 3/4 in.); Sheet: 25.2 × 35.7 cm (9 15/16 × 14 1/16 in.). Museum credit line: Gift of Charles H. Worcester.",
-    "descriptionKind": "metadata_summary"
+    "description": "Honoré-Victorin Daumier’s *The Reappearance of the Tritons of the Sea* is a lithograph made in France in 1857 and issued as plate 412 in the series *Actualités*. Printed in black on ivory wove paper, the sheet also carries letterpress on its reverse. The catalogue records an image measuring 21.5 by 27.3 centimeters, on a sheet measuring 25.2 by 35.7 centimeters.",
+    "descriptionTranslations": {
+      "ja": "オノレ＝ヴィクトラン・ドーミエによる本作は、1857年にフランスで制作された『アクチュアリテ』第412番のリトグラフです。象牙色のウーヴ紙に黒で印刷され、裏面には活版印刷があります。図版の寸法は21.5×27.3センチ、紙全体は25.2×35.7センチと記録されています。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/3406",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-47398": {
     "description": "This frightening print illustrates the story of Kohada Koheiji, a Kabuki actor who was drowned by his wife’s lover but later came back to haunt the couple. The tale was popular in the 18th century, eventually inspiring a novel and several Kabuki plays. Here, the skeletal ghost of Kohada Koheiji pulls down the mosquito net and eerily peers at the sleeping couple in their bed. The Art Institute’s collection boasts one of the most well-preserved and appreciated editions of Katsushika Hok usa i’s One Hundred Ghost Tales series (1831–32). The artist apparently planned to produce a full hundred images, but the series was not completed and only five prints are known. The title refers to a game in which people would gather at night to tell scary stories, putting out a candle after each tale until the room was completely dark. These small-format works feature a bright-blue color made possible by Berlin blue pigment (often called “Prussian blue”), which had become affordable shortly before their production. Although this hue may seem cheery to us, Hokusai’s original audience would have associated it with death and the occult.\n\nCatalogue information\nRecorded artist or maker: Katsushika Hokusai 葛飾 北斎 (Japanese, 1760-1849). Date: 1831-32. Materials and technique: Color woodblock print; chuban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: 25.6 × 18.1 cm (10 1/8 × 7 3/16 in.). Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Charles Hibbard Chandler (1859–1946), Evanston, IL; sold to the Art Institute of Chicago, Mar. 22, 1943.Purchased by the Art Institute from Charles H. Chandler.. Exhibition record (excerpt): March 4- May 14, 2006, Sackler Gallery, Washington DC, Hokusal the Immortal.",
@@ -3716,8 +3829,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-2906": {
-    "description": "Odawara, from the series \"Fifty-three Stations of the Tokaido (Tokaido gojusan tsugi)\" is a work attributed in the Art Institute of Chicago catalogue to Katsushika Hokusai.\n\nCatalogue information\nRecorded artist or maker: Katsushika Hokusai 葛飾 北斎 Japanese, 1760-1849. Date: c. 1806. Materials and technique: Color woodblock print; chuban. Artistic style or school: Japanese (culture or style). Place of creation: Japan. Classification: woodblock print. Physical dimensions: Approx: 24 × 18.3 cm (9 1/2 × 7 1/4 in.). Museum credit line: Clarence Buckingham Collection. Recorded ownership history (excerpt): Kate Sturges Buckingham (1858–1937), Chicago; given to the Art Institute of Chicago, Dec. 12, 1929..",
-    "descriptionKind": "metadata_summary"
+    "description": "Attributed to Katsushika Hokusai, this color woodblock print depicts Odawara as part of the series “Fifty-three Stations of the Tokaido.” Made in Japan around 1806, it is printed in the chūban format, measuring approximately 24 × 18.3 cm. The catalogue identifies it as a Japanese woodblock print and records its place of creation as Japan.",
+    "descriptionTranslations": {
+      "ja": "葛飾北斎に帰属する、東海道五十三次を題材とした色摺木版画の一図。日本で制作された約1806年頃の作で、中判に分類される。寸法は約24×18.3センチ。作品の視覚的な細部については、所蔵館の記録に記載がない。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/2906",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-20994": {
     "description": "Suzuki Harunobu’s print belongs to the series *Beauties of the Floating World Compared to Flowers* and identifies its subject as Motoura of the Minami Yamasakiya, paired in the title with the double-flowered cherry. Made in Japan around 1768–69, it is a color woodblock print in the chūban format, measuring 29.3 by 21.3 centimeters. The Art Institute of Chicago records it as part of the Clarence Buckingham Collection.",
@@ -3781,13 +3903,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
   },
   "aic-3818": {
-    "description": "Ornament prints with mischievous tiny figures were in such demand in late-15th- and early-16th-century Europe that engravers like Israhel van Meckenem frequently borrowed imagery and entire compositions from other artists. The flower stalk that the naked wild men and women scale comes from a print by an earlier artist, the Master E. S. This print bears an inscription that translates to “The noble bees draw honey from the beautiful flower; from this one however, the frivolous vermin extract a stronger potion.” The ripe blossom thus symbolizes sexual consummation, and the print simultaneously tempts and warns the viewer about “the birds and bees.”\n\nCatalogue information\nRecorded artist or maker: Israhel van Meckenem the Younger German, c. 1440/45-1503. Date: 1490/1500. Materials and technique: Engraving in black on cream laid paper. Place of creation: Germany. Classification: engraving. Physical dimensions: 20.5 × 13.6 cm (8 1/8 × 5 3/8 in.). Museum credit line: Bequest of Mrs. Potter Palmer, Jr..",
+    "description": "In this engraving, naked wild men and women climb a flowering stalk, an image Israhel van Meckenem borrowed from a print by the earlier artist known as the Master E. S. An inscription compares bees drawing honey from the flower with vermin extracting a stronger potion. The ripe blossom carries a sexual meaning, making the image both alluring and cautionary. Ornament prints featuring playful tiny figures were widely sought in late-fifteenth- and early-sixteenth-century Europe.",
+    "descriptionTranslations": {
+      "ja": "花の茎を裸の野人たちがよじ登るこの版画は、先行する版画家、E・Sの親方の図像をイスラヘル・ファン・メッケネムが取り入れたものです。銘文は、蜂が花から蜜を集める一方、害虫はそこからより強い薬酒を得ると対比します。熟した花は性的な成就を象徴し、誘惑と警告を同時に伝えます。小さな人物が戯れる装飾版画は、15世紀末から16世紀初頭のヨーロッパで人気を博しました。"
+    },
     "descriptionKind": "museum_text",
-    "descriptionSourceUrl": "https://www.artic.edu/artworks/3818",
+    "descriptionVersion": "openai-bilingual-v1",
     "descriptionAttribution": "Art Institute of Chicago",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/3818",
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "descriptionModifications": "Museum text converted to plain text; catalogue facts added; abridged if necessary."
+    "descriptionModifications": "Museum text summarized and translated into Japanese using OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-111059": {
     "description": "Once attributed to Francisco de Zurbarán, this still life is now considered the work of his son Juan, who specialized in such compositions during his brief career. Painted around 1645, it combines flowers and fruit with an imported Chinese porcelain bowl, an object that would have appealed to the wealthy patrons of Juan’s refined yet exuberant works. Precise, sensuous paint handling and dramatic lighting are characteristic of his style.",
@@ -3850,8 +3976,17 @@ export const DESCRIPTION_OVERRIDES: Record<string, Partial<Artwork>> = {
     "descriptionKind": "metadata_summary"
   },
   "aic-25752": {
-    "description": "Flowers is a work attributed in the Art Institute of Chicago catalogue to Anne Allen.\n\nCatalogue information\nRecorded artist or maker: Anne Allen (English, born 1750) after Jean Baptiste Pillement (French, 1728-1808). Date: 1796/1808. Materials and technique: Color etching from two plates inked à la poupée on blue-green laid paper. Place of creation: United Kingdom. Classification: print. Physical dimensions: Plate: 19.6 × 14 cm (7 3/4 × 5 9/16 in.); Sheet: 23.2 × 17.2 cm (9 3/16 × 6 13/16 in.). Museum credit line: Purchased with funds provided by Mrs. Edith H. Manierre in memory of Frank Ogden Magie.",
-    "descriptionKind": "metadata_summary"
+    "description": "Attributed to Anne Allen and made after Jean Baptiste Pillement, this print is dated 1796/1808 and was created in the United Kingdom. It is a color etching printed from two plates, each inked à la poupée, on blue-green laid paper. The catalogue records the plate as 19.6 by 14 centimeters and the sheet as 23.2 by 17.2 centimeters.",
+    "descriptionTranslations": {
+      "ja": "ジャン＝バティスト・ピルマンに倣い、アン・アレン作とされる英国の版画で、制作年は1796／1808年と記録されています。青緑色の簀目紙に、二枚の版をそれぞれ手彩色して刷った多色エッチングです。版面は19.6×14センチ、紙寸法は23.2×17.2センチです。"
+    },
+    "descriptionKind": "metadata_summary",
+    "descriptionVersion": "openai-bilingual-v1",
+    "descriptionAttribution": "",
+    "descriptionSourceUrl": "https://www.artic.edu/artworks/25752",
+    "descriptionLicense": "",
+    "descriptionLicenseUrl": "",
+    "descriptionModifications": "Museum catalogue data rewritten as English and Japanese short labels with OpenAI (gpt-6-luna; openai-bilingual-v1)."
   },
   "aic-70134": {
     "description": "Mrs. Freeman Flower is a work attributed in the Art Institute of Chicago catalogue to Joseph Highmore.\n\nCatalogue information\nRecorded artist or maker: Joseph Highmore (English, 1692–1780). Date: 1747. Materials and technique: Oil on canvas. Artistic style or school: 18th Century. Place of creation: England. Classification: oil on canvas. Physical dimensions: 91.5 × 71.1 cm (36 × 28 in.); Framed: 109.9 × 89.8 × 6.7 cm (43 1/4 × 35 3/8 × 2 5/8 in.). Museum catalogue subjects: portraits: female subject, clouds, fashion, jewelry, lace, landscape, luxury. Museum credit line: Bequest of John and Dorothy Estabrook. Recorded ownership history (excerpt): Freeman Flower (died 1794) from 1747; by descent to his daughter, Lydia, Mrs. Samuel Shore; bequeathed by her to her second cousin Dr. Whittaker, \"Whittaker of Belmount\" [according to label on back of stretcher]. Sold Pearson's, Winchester, December 13 , 1977, no. 570 (as one of a pair with 1987.262.4) to Thomas Agnew and Sons, London [letter from Gabriel Naughton, Agnew’s, 19…. Exhibition record (excerpt): London, Thomas Agnew and Sons, \"Three Centuries of British Paintings,\" 1978, no. 48..",
