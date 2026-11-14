@@ -27,27 +27,40 @@ export function ArtHome() {
   const done = !!data.dailyHistory[today];
   return (
     <div className="screen home art-home">
-      <h1 className="art-home-title">ART SLIDE</h1>
+      <header className="art-home-head">
+        <h1 className="art-home-title">ART SLIDE</h1>
+      </header>
       <Link to="/art-slide/daily" className="exhibit-card" data-testid="exhibit">
         <img src={exhibit.thumbnailUrl} alt="" width={96} height={96} />
         <span className="ex-text">
-          <small>{t('art.exhibitN', { n: dailyNumber(today) })}{done ? ' ✓' : ''}{streak > 0 ? ` · 🔥 ${streak}` : ''}</small>
+          <small>{t('art.exhibitN', { n: dailyNumber(today) })}{done ? ' ✓' : ''}{streak > 0 ? ` · ${t('home.streak', { n: streak })}` : ''}</small>
           <b>{exhibit.title}</b>
           <span>{exhibit.artist}, {exhibit.year}</span>
+          <span className="ex-enter">{t('art.openExhibit')} <ChevronRight size={14} /></span>
         </span>
       </Link>
-      <nav className="menu art-home-menu">
+      <nav className="menu art-home-menu" aria-label={t('home.explore')}>
         <button className="btn big" data-testid="art-gallery" onClick={() => go('gallery')}>{t('art.gallery')}</button>
         <button className="btn big" data-testid="art-random" onClick={() => go(`play/${pickRandomArtwork().id}`)}>{t('art.random')}</button>
         {resumable && <button className="btn big" data-testid="art-resume" onClick={() => go('play')}>{t('art.resume')}</button>}
       </nav>
-      <HomeLinks items={[{ label: t('home.howTo'), to: 'how' }, { label: t('home.stats'), to: 'stats' }, { label: t('home.credits'), to: 'credits' }, { label: t('home.settings'), to: 'settings' }]} />
-      <section className="other-games" aria-label={t('home.more')}>
-        <h2>{t('home.more')}</h2>
-        <Link to="/big-slide" className="og-row" data-testid="more-big"><b>BIG SLIDE</b><ChevronRight size={18} className="og-chev" /></Link>
-        <Link to="/word-slide" className="og-row" data-testid="more-word"><b>WORD SLIDE</b><ChevronRight size={18} className="og-chev" /></Link>
-      </section>
-      <Footer />
+      <details className="art-more" data-testid="art-more">
+        <summary>{t('home.other')}</summary>
+        <div className="art-more-content">
+          <HomeLinks items={[
+            { label: t('home.howTo'), to: 'how' },
+            { label: t('home.stats'), to: 'stats' },
+            { label: t('home.credits'), to: 'credits' },
+          ]} />
+          <section className="other-games" aria-label={t('home.more')}>
+            <h2>{t('home.more')}</h2>
+            <Link to="/big-slide" className="og-row" data-testid="more-big"><b>BIG SLIDE</b><ChevronRight size={18} className="og-chev" /></Link>
+            <Link to="/word-slide" className="og-row" data-testid="more-word"><b>WORD SLIDE</b><ChevronRight size={18} className="og-chev" /></Link>
+          </section>
+          <Footer />
+          <HomeLinks items={[{ label: t('home.settings'), to: 'settings' }]} />
+        </div>
+      </details>
     </div>
   );
 }
