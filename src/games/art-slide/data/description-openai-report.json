@@ -1,12 +1,12 @@
 {
   "model": "gpt-6-luna",
   "recipeVersion": "openai-bilingual-v1",
-  "generatedAt": "2026-11-14T09:49:55.035687+00:00",
+  "generatedAt": "2026-11-14T09:51:56.578947+00:00",
   "totalArtworks": 404,
-  "processed": 225,
-  "remaining": 179,
-  "medianEnglishCharacters": 471,
-  "medianJapaneseCharacters": 187,
+  "processed": 250,
+  "remaining": 154,
+  "medianEnglishCharacters": 467.5,
+  "medianJapaneseCharacters": 186.0,
   "records": {
     "aic-102131": {
       "id": "aic-102131",
@@ -2031,6 +2031,231 @@
       "rawSourceCharacters": 1644,
       "englishCharacters": 466,
       "japaneseCharacters": 212,
+      "apiWarning": null
+    },
+    "aic-68792": {
+      "id": "aic-68792",
+      "title": "A Marine",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1527,
+      "englishCharacters": 549,
+      "japaneseCharacters": 230,
+      "apiWarning": null
+    },
+    "aic-69003": {
+      "id": "aic-69003",
+      "title": "Self-Portrait",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1987,
+      "englishCharacters": 407,
+      "japaneseCharacters": 171,
+      "apiWarning": null
+    },
+    "aic-69109": {
+      "id": "aic-69109",
+      "title": "Tankard (Hanap) with Tulips, Hyacinths, Roses, and Carnations",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1928,
+      "englishCharacters": 511,
+      "japaneseCharacters": 206,
+      "apiWarning": null
+    },
+    "aic-69538": {
+      "id": "aic-69538",
+      "title": "Point Breeze, the Estate of Joseph Napoleon Bonaparte at Bordentown, New Jersey",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1345,
+      "englishCharacters": 452,
+      "japaneseCharacters": 198,
+      "apiWarning": null
+    },
+    "aic-70134": {
+      "id": "aic-70134",
+      "title": "Mrs. Freeman Flower",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1151,
+      "englishCharacters": 368,
+      "japaneseCharacters": 162,
+      "apiWarning": null
+    },
+    "aic-70135": {
+      "id": "aic-70135",
+      "title": "Freeman Flower",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1142,
+      "englishCharacters": 359,
+      "japaneseCharacters": 137,
+      "apiWarning": null
+    },
+    "aic-71573": {
+      "id": "aic-71573",
+      "title": "A Holiday",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1518,
+      "englishCharacters": 445,
+      "japaneseCharacters": 149,
+      "apiWarning": null
+    },
+    "aic-71971": {
+      "id": "aic-71971",
+      "title": "Mist Rising at Sunset in the Catskills",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1606,
+      "englishCharacters": 458,
+      "japaneseCharacters": 177,
+      "apiWarning": null
+    },
+    "aic-72180": {
+      "id": "aic-72180",
+      "title": "Still Life with Flowers",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1228,
+      "englishCharacters": 363,
+      "japaneseCharacters": 142,
+      "apiWarning": null
+    },
+    "aic-72183": {
+      "id": "aic-72183",
+      "title": "Still Life with Fruit and Wine Jug",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1852,
+      "englishCharacters": 480,
+      "japaneseCharacters": 174,
+      "apiWarning": null
+    },
+    "aic-72320": {
+      "id": "aic-72320",
+      "title": "Elaine",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1852,
+      "englishCharacters": 595,
+      "japaneseCharacters": 239,
+      "apiWarning": null
+    },
+    "aic-72801": {
+      "id": "aic-72801",
+      "title": "Icebound",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1876,
+      "englishCharacters": 481,
+      "japaneseCharacters": 177,
+      "apiWarning": null
+    },
+    "aic-74193": {
+      "id": "aic-74193",
+      "title": "Head of a Sea God",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 903,
+      "englishCharacters": 322,
+      "japaneseCharacters": 116,
+      "apiWarning": null
+    },
+    "aic-7503": {
+      "id": "aic-7503",
+      "title": "The Annunciation",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1532,
+      "englishCharacters": 486,
+      "japaneseCharacters": 201,
+      "apiWarning": null
+    },
+    "aic-7536": {
+      "id": "aic-7536",
+      "title": "The Death of Dido",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 486,
+      "englishCharacters": 338,
+      "japaneseCharacters": 119,
+      "apiWarning": null
+    },
+    "aic-75957": {
+      "id": "aic-75957",
+      "title": "Mount Washington",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1885,
+      "englishCharacters": 446,
+      "japaneseCharacters": 180,
+      "apiWarning": null
+    },
+    "aic-76295": {
+      "id": "aic-76295",
+      "title": "Self-Portrait in a Fur Cap",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2085,
+      "englishCharacters": 447,
+      "japaneseCharacters": 186,
+      "apiWarning": null
+    },
+    "aic-76395": {
+      "id": "aic-76395",
+      "title": "Flower Clouds",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2321,
+      "englishCharacters": 501,
+      "japaneseCharacters": 203,
+      "apiWarning": null
+    },
+    "aic-76779": {
+      "id": "aic-76779",
+      "title": "Crouching Woman",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2400,
+      "englishCharacters": 527,
+      "japaneseCharacters": 216,
+      "apiWarning": null
+    },
+    "aic-76816": {
+      "id": "aic-76816",
+      "title": "The Young Emperor Akbar Arrests the Insolent Shah Abu’l-Maali, Page from a Manuscript of the Akbarnama",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2368,
+      "englishCharacters": 608,
+      "japaneseCharacters": 207,
+      "apiWarning": null
+    },
+    "aic-76869": {
+      "id": "aic-76869",
+      "title": "Royal Horse Inspection",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2263,
+      "englishCharacters": 531,
+      "japaneseCharacters": 214,
+      "apiWarning": null
+    },
+    "aic-76877": {
+      "id": "aic-76877",
+      "title": "Beauty Holding a Flower",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 523,
+      "englishCharacters": 276,
+      "japaneseCharacters": 107,
+      "apiWarning": null
+    },
+    "aic-79000": {
+      "id": "aic-79000",
+      "title": "The Triumph of the Sea-Gods",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 529,
+      "englishCharacters": 327,
+      "japaneseCharacters": 138,
+      "apiWarning": null
+    },
+    "aic-79349": {
+      "id": "aic-79349",
+      "title": "The Drinkers",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1943,
+      "englishCharacters": 423,
+      "japaneseCharacters": 212,
+      "apiWarning": null
+    },
+    "aic-79507": {
+      "id": "aic-79507",
+      "title": "Pillars of the Country",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2160,
+      "englishCharacters": 504,
+      "japaneseCharacters": 171,
       "apiWarning": null
     }
   },
