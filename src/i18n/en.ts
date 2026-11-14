@@ -262,6 +262,10 @@ const en = {
   "gal.columnsAuto": "Auto",
   "gal.reshuffle": "Shuffle again",
   "art.englishInfo": "Detailed information (English)",
+  "gal.randomize": "Random",
+  "art.descriptionLanguage": "Description language",
+  "art.descriptionJapanese": "Show Japanese description",
+  "art.descriptionEnglish": "Show English description",
 } as const;
 
 export type Key = keyof typeof en;
