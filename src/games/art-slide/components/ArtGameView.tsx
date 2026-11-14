@@ -10,14 +10,13 @@ import { artShareUrl } from '../../../utils/share';
 import { ART_LEVELS, canMove, neighbors, type ArtDirection, type ArtLevel } from '../logic/board';
 import { artReducer, dimsOf, type ArtState } from '../logic/game';
 import { aspectOf, gridFor } from '../logic/grid';
+import { visibleShuffleStepMs } from '../logic/generator';
 import { planReshuffle } from '../logic/reshuffle';
 import type { Artwork } from '../types';
 import { ArtBoard } from './ArtBoard';
 import { ArtPreview } from './ArtPreview';
 
 const KEY_DIR: Record<string, ArtDirection> = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' };
-/** Time between two slides of a shuffle (each slide itself takes a little less than this to glide). */
-const SHUFFLE_STEP_MS = 63;
 const DELTA: Record<ArtDirection, number> = { up: -1, down: 1, left: -1, right: 1 }; // sign only; rows use cols
 
 interface Props {
@@ -51,6 +50,7 @@ export function ArtGameView(p: Props) {
   const stateRef = useRef(initial);
   const recorded = useRef(initial.status === 'cleared');
   const dims = dimsOf(state.puzzle);
+  const shuffleStepMs = visibleShuffleStepMs(dims);
   const cleared = state.status === 'cleared';
   const img = useImageStatus(artwork.imageUrl);
   stateRef.current = state;
@@ -123,13 +123,13 @@ export function ArtGameView(p: Props) {
     }
     shufflingRef.current = true;
     setShuffling(true);
-    plan.clicks.forEach((cell, i) => timers.current.push(window.setTimeout(() => dispatch({ type: 'slideStep', cell }), 60 + i * SHUFFLE_STEP_MS)));
+    plan.clicks.forEach((cell, i) => timers.current.push(window.setTimeout(() => dispatch({ type: 'slideStep', cell }), 60 + i * shuffleStepMs)));
     timers.current.push(
       window.setTimeout(() => {
         shufflingRef.current = false;
         dispatch({ type: 'reshuffled', puzzle: plan.puzzle });
         setShuffling(false);
-      }, 60 + plan.clicks.length * SHUFFLE_STEP_MS + 260),
+      }, 60 + plan.clicks.length * shuffleStepMs + Math.max(80, shuffleStepMs * 2)),
     );
   };
 
@@ -202,7 +202,7 @@ export function ArtGameView(p: Props) {
           </div>
         </div>
       ) : (
-        <div className="aboard-wrap" ref={boardRef} style={{ ['--aspect' as string]: aspect }}>
+        <div className="aboard-wrap" ref={boardRef} style={{ ['--aspect' as string]: aspect, ['--shuffle-tile-ms' as string]: `${Math.max(18, Math.round(shuffleStepMs * 0.8))}ms` }}>
           <ArtBoard board={state.board} dims={dims} artwork={artwork} showNumbers={p.showNumbers} disabled={locked} complete={cleared} shuffling={shuffling} onTap={(cell) => dispatch({ type: 'move', cell })} onSwipe={swipe} />
           {img.status === 'loading' && <div className="art-loading" role="status">{t('art.loading')}</div>}
         </div>
