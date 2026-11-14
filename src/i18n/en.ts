@@ -126,12 +126,12 @@ const en = {
   'share.copy': 'Copy',
   'share.copied': 'Copied!',
   'share.copyFailed': 'Could not copy',
-  'share.artDaily': 'I rebuilt “{title}” by {artist} in {time} with {moves} moves 🧩 ART SLIDE Daily #{n}. Can you beat it?',
-  'share.artFree': 'I rebuilt “{title}” by {artist} ({grid}) in {time} with {moves} moves 🧩 Can you beat it?',
-  'share.big': 'BIG SLIDE {size}×{size}: solved in {time} with {moves} moves 🧩 Can you beat it?',
-  'share.bigDaily': 'BIG SLIDE Daily #{n}: solved in {time} with {moves} moves 🧩 Can you beat it?',
-  'share.word': 'WORD SLIDE: solved in {time} with {moves} moves and {checks} checks 🧩 Can you beat it?',
-  'share.wordDaily': 'WORD SLIDE Daily #{n}: solved in {time} with {moves} moves and {checks} checks 🧩 Can you beat it?',
+ 'share.artDaily': 'I rebuilt “{title}” by {artist} in {time} with {moves} moves ART SLIDE Daily #{n}. Can you beat it?',
+ 'share.artFree': 'I rebuilt “{title}” by {artist} ({grid}) in {time} with {moves} moves Can you beat it?',
+ 'share.big': 'BIG SLIDE {size}×{size}: solved in {time} with {moves} moves Can you beat it?',
+ 'share.bigDaily': 'BIG SLIDE Daily #{n}: solved in {time} with {moves} moves Can you beat it?',
+ 'share.word': 'WORD SLIDE: solved in {time} with {moves} moves and {checks} checks Can you beat it?',
+ 'share.wordDaily': 'WORD SLIDE Daily #{n}: solved in {time} with {moves} moves and {checks} checks Can you beat it?',
 
   // BIG / WORD in-game labels
   'big.bigMoves': 'BLOCK MOVES',
