@@ -1900,3 +1900,26 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
     display: inline-flex;
   }
 }
+
+
+/* Emphasize the empty sliding-puzzle cell without covering or intercepting tiles.
+   --fg follows the site's light/dark theme, including the device preference. */
+.aboard .art-empty-outline {
+  position: absolute;
+  z-index: 2;
+  padding: var(--gap);
+  pointer-events: none;
+  transition: left .26s var(--ease), top .26s var(--ease);
+}
+.aboard .art-empty-outline::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--fg);
+  border-radius: 2px;
+  box-sizing: border-box;
+}
+.aboard.shuffling .art-empty-outline {
+  transition-duration: var(--shuffle-tile-ms, 36ms);
+}
