@@ -36,7 +36,7 @@ export function ArtHome() {
           <span>{exhibit.artist}, {exhibit.year}</span>
         </span>
       </Link>
-      <nav className="menu">
+      <nav className="menu art-home-menu">
         <button className="btn big" data-testid="art-gallery" onClick={() => go('gallery')}>{t('art.gallery')}</button>
         <button className="btn big" data-testid="art-random" onClick={() => go(`play/${pickRandomArtwork().id}`)}>{t('art.random')}</button>
         {resumable && <button className="btn big" data-testid="art-resume" onClick={() => go('play')}>{t('art.resume')}</button>}
