@@ -1,4 +1,4 @@
-import { BackButton, ChevronRight } from '../../../components/Icons';
+import { BackButton } from '../../../components/Icons';
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { AdSlot } from '../../../ads/AdSlot';
 import { ResultModal } from '../../../components/ResultModal';
