@@ -1,12 +1,12 @@
 {
   "model": "gpt-6-luna",
   "recipeVersion": "openai-bilingual-v1",
-  "generatedAt": "2026-11-14T09:57:30.885636+00:00",
+  "generatedAt": "2026-11-14T09:59:30.567317+00:00",
   "totalArtworks": 404,
-  "processed": 300,
-  "remaining": 104,
-  "medianEnglishCharacters": 474.5,
-  "medianJapaneseCharacters": 188.0,
+  "processed": 325,
+  "remaining": 79,
+  "medianEnglishCharacters": 475,
+  "medianJapaneseCharacters": 187,
   "records": {
     "aic-102131": {
       "id": "aic-102131",
@@ -2706,6 +2706,231 @@
       "rawSourceCharacters": 1748,
       "englishCharacters": 519,
       "japaneseCharacters": 211,
+      "apiWarning": null
+    },
+    "bellotto-view-of-pirna-with-the-fortress-of-sonnenstein": {
+      "id": "bellotto-view-of-pirna-with-the-fortress-of-sonnenstein",
+      "title": "View of Pirna with the Fortress of Sonnenstein",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1759,
+      "englishCharacters": 499,
+      "japaneseCharacters": 200,
+      "apiWarning": null
+    },
+    "bierstadt-mountain-brook": {
+      "id": "bierstadt-mountain-brook",
+      "title": "Mountain Brook",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1943,
+      "englishCharacters": 432,
+      "japaneseCharacters": 168,
+      "apiWarning": null
+    },
+    "caillebotte-paris-street": {
+      "id": "caillebotte-paris-street",
+      "title": "Paris Street; Rainy Day",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2567,
+      "englishCharacters": 514,
+      "japaneseCharacters": 195,
+      "apiWarning": null
+    },
+    "cassatt-childs-bath": {
+      "id": "cassatt-childs-bath",
+      "title": "The Child's Bath",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1930,
+      "englishCharacters": 502,
+      "japaneseCharacters": 187,
+      "apiWarning": null
+    },
+    "cassatt-on-a-balcony": {
+      "id": "cassatt-on-a-balcony",
+      "title": "On a Balcony",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1795,
+      "englishCharacters": 434,
+      "japaneseCharacters": 188,
+      "apiWarning": null
+    },
+    "cezanne-auvers-panoramic-view": {
+      "id": "cezanne-auvers-panoramic-view",
+      "title": "Auvers, Panoramic View",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1792,
+      "englishCharacters": 494,
+      "japaneseCharacters": 186,
+      "apiWarning": null
+    },
+    "cezanne-basket-of-apples": {
+      "id": "cezanne-basket-of-apples",
+      "title": "The Basket of Apples",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2459,
+      "englishCharacters": 475,
+      "japaneseCharacters": 193,
+      "apiWarning": null
+    },
+    "cezanne-the-bay-of-marseille-seen-from-l-estaque": {
+      "id": "cezanne-the-bay-of-marseille-seen-from-l-estaque",
+      "title": "The Bay of Marseille, Seen from L'Estaque",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2596,
+      "englishCharacters": 549,
+      "japaneseCharacters": 176,
+      "apiWarning": null
+    },
+    "chase-a-city-park": {
+      "id": "chase-a-city-park",
+      "title": "A City Park",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1586,
+      "englishCharacters": 413,
+      "japaneseCharacters": 186,
+      "apiWarning": null
+    },
+    "chase-wind-swept-sands": {
+      "id": "chase-wind-swept-sands",
+      "title": "Wind-Swept Sands",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1666,
+      "englishCharacters": 405,
+      "japaneseCharacters": 188,
+      "apiWarning": null
+    },
+    "church-view-of-cotopaxi": {
+      "id": "church-view-of-cotopaxi",
+      "title": "View of Cotopaxi",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1873,
+      "englishCharacters": 571,
+      "japaneseCharacters": 225,
+      "apiWarning": null
+    },
+    "cole-distant-view-of-niagara-falls": {
+      "id": "cole-distant-view-of-niagara-falls",
+      "title": "Distant View of Niagara Falls",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1715,
+      "englishCharacters": 543,
+      "japaneseCharacters": 174,
+      "apiWarning": null
+    },
+    "cole-new-england-scenery": {
+      "id": "cole-new-england-scenery",
+      "title": "New England Scenery",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1521,
+      "englishCharacters": 392,
+      "japaneseCharacters": 151,
+      "apiWarning": null
+    },
+    "constable-stoke-by-nayland": {
+      "id": "constable-stoke-by-nayland",
+      "title": "Stoke-by-Nayland",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2860,
+      "englishCharacters": 486,
+      "japaneseCharacters": 211,
+      "apiWarning": null
+    },
+    "copley-daniel-hubbard": {
+      "id": "copley-daniel-hubbard",
+      "title": "Daniel Hubbard",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1862,
+      "englishCharacters": 494,
+      "japaneseCharacters": 209,
+      "apiWarning": null
+    },
+    "corot-interrupted-reading": {
+      "id": "corot-interrupted-reading",
+      "title": "Interrupted Reading",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2618,
+      "englishCharacters": 499,
+      "japaneseCharacters": 173,
+      "apiWarning": null
+    },
+    "corot-wounded-eurydice": {
+      "id": "corot-wounded-eurydice",
+      "title": "Wounded Eurydice",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1318,
+      "englishCharacters": 329,
+      "japaneseCharacters": 121,
+      "apiWarning": null
+    },
+    "courbet-mere-gregoire": {
+      "id": "courbet-mere-gregoire",
+      "title": "Mère Grégoire",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 3197,
+      "englishCharacters": 481,
+      "japaneseCharacters": 185,
+      "apiWarning": null
+    },
+    "courbet-the-rock-of-hautepierre": {
+      "id": "courbet-the-rock-of-hautepierre",
+      "title": "The Rock of Hautepierre",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 1355,
+      "englishCharacters": 399,
+      "japaneseCharacters": 135,
+      "apiWarning": null
+    },
+    "daubigny-the-marsh": {
+      "id": "daubigny-the-marsh",
+      "title": "The Marsh",
+      "source": "AIC metadata only",
+      "rawSourceCharacters": 867,
+      "englishCharacters": 391,
+      "japaneseCharacters": 156,
+      "apiWarning": null
+    },
+    "david-madame-de-pastoret-and-her-son": {
+      "id": "david-madame-de-pastoret-and-her-son",
+      "title": "Madame de Pastoret and Her Son",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2569,
+      "englishCharacters": 584,
+      "japaneseCharacters": 200,
+      "apiWarning": null
+    },
+    "degas-dance-class": {
+      "id": "degas-dance-class",
+      "title": "The Dance Class",
+      "source": "Met metadata only",
+      "rawSourceCharacters": 491,
+      "englishCharacters": 359,
+      "japaneseCharacters": 146,
+      "apiWarning": null
+    },
+    "degas-degas-and-his-niece-lucie": {
+      "id": "degas-degas-and-his-niece-lucie",
+      "title": "Degas and His Niece Lucie",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2695,
+      "englishCharacters": 484,
+      "japaneseCharacters": 165,
+      "apiWarning": null
+    },
+    "degas-the-millinery-shop": {
+      "id": "degas-the-millinery-shop",
+      "title": "The Millinery Shop",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 2409,
+      "englishCharacters": 537,
+      "japaneseCharacters": 197,
+      "apiWarning": null
+    },
+    "degas-yellow-dancers-in-the-wings": {
+      "id": "degas-yellow-dancers-in-the-wings",
+      "title": "Yellow Dancers (In the Wings)",
+      "source": "AIC museum prose",
+      "rawSourceCharacters": 1890,
+      "englishCharacters": 423,
+      "japaneseCharacters": 187,
       "apiWarning": null
     }
   },
