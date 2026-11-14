@@ -46,16 +46,22 @@ describe('multi-tile straight-line sliding', () => {
     expect(lineSlideCells(b, d, 4)).toEqual([]);
   });
 
-  it('counts each automated tile as one move and preserves the complete blank path', () => {
+  it('updates all aligned tiles atomically, counts each, and preserves the blank path', () => {
     const puzzle = generateArtFree('not-an-artwork', 3, 'line-slide-test');
     const initial = newArtGame(puzzle);
     // Start from a known solvable position so the demonstration is reproducible.
     const first = { ...initial, board: solvedBoard({ cols: 3, rows: 3 }), blankPath: [8] };
-    const afterOne = artReducer(first, { type: 'lineStep', cell: 5 });
-    const afterTwo = artReducer(afterOne, { type: 'lineStep', cell: 2 });
-    expect(afterTwo.moves).toBe(2);
-    expect(afterTwo.started).toBe(true);
-    expect(afterTwo.blankPath).toEqual([8, 5, 2]);
-    expect(afterTwo.board).toEqual([0, 1, null, 3, 4, 2, 6, 7, 5]);
+    const after = artReducer(first, { type: 'lineMove', cell: 2 });
+    expect(after.moves).toBe(2);
+    expect(after.started).toBe(true);
+    expect(after.blankPath).toEqual([8, 5, 2]);
+    expect(after.board).toEqual([0, 1, null, 3, 4, 2, 6, 7, 5]);
+
+    // One action returns the final positions immediately, so the two DOM tiles
+    // receive new positions in the same React render/CSS transition.
+    const back = artReducer(after, { type: 'lineMove', cell: 8 });
+    expect(back.board).toEqual(first.board);
+    expect(back.moves).toBe(4);
+    expect(back.blankPath).toEqual([8, 5, 2, 5, 8]);
   });
 });
