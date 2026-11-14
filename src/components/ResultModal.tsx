@@ -1,34 +1,40 @@
 import { useState, type ReactNode } from 'react';
 import { useT } from '../i18n';
-import { shareLinks } from '../utils/share';
 
 interface Props {
   stats: { label: string; value: string | number }[];
-  /** The message with the player's result worked into it (the link is added separately). */
+  /** Human-readable result text. The URL is supplied separately to the native share sheet. */
   shareText: string;
   shareUrl: string;
   onClose: () => void;
   onNext: () => void;
   onHome: () => void;
   nextLabel: string;
-  /** Game-specific content shown above the stats (e.g. the found words). */
   children?: ReactNode;
-  /** Game-specific content shown below the stats. */
   footer?: ReactNode;
-  /** Heading (default: "CLEARED!"). */
   heading?: string;
-  /** An extra button between SHARE and the main action. */
   secondary?: { label: string; onClick: () => void };
 }
 
-/** Shared result screen used by all games. */
+/** Shared result screen used by all games, with a single native share action. */
 export function ResultModal({ stats, shareText, shareUrl, onClose, onNext, onHome, nextLabel, children, footer, heading, secondary }: Props) {
   const t = useT();
-  const [panel, setPanel] = useState(false);
   const [msg, setMsg] = useState('');
-  const links = shareLinks(shareText, shareUrl);
-  async function copy() {
+
+  async function share() {
+    setMsg('');
+    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+      try {
+        // A user gesture invokes iOS/Android/Web Share. Do not embed the URL in text.
+        await navigator.share({ text: shareText, url: shareUrl });
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+        // Some browsers expose share() but reject it; fall through to Copy.
+      }
+    }
     try {
+      // Desktop browsers without Web Share get the same content via clipboard.
       await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
       setMsg(t('share.copied'));
     } catch {
@@ -52,19 +58,11 @@ export function ResultModal({ stats, shareText, shareUrl, onClose, onNext, onHom
         </div>
         {footer}
         <div className="actions result-actions">
-          <button className="btn" data-testid="share-toggle" aria-controls="result-share-panel" aria-expanded={panel} onClick={() => setPanel((o) => !o)}>{t('share.share')}</button>
+          <button className="btn" type="button" data-testid="share-toggle" onClick={share}>{t('share.share')}</button>
           {secondary && <button className="btn" onClick={secondary.onClick}>{secondary.label}</button>}
           <button className="btn primary" onClick={onNext}>{nextLabel}</button>
         </div>
-        <div className="share-panel" id="result-share-panel" data-open={panel} aria-hidden={!panel} data-testid="share-panel">
-          <p className="share-text" data-testid="share-text">{shareText}</p>
-          <div className="share-row">
-            <a className="btn" href={links.x} target="_blank" rel="noopener noreferrer" data-testid="share-x">X</a>
-            <a className="btn" href={links.line} target="_blank" rel="noopener noreferrer" data-testid="share-line">LINE</a>
-            <button className="btn" type="button" data-testid="share-copy" onClick={copy}>{t('share.copy')}</button>
-          </div>
-          {msg && <p className="share-msg" role="status">{msg}</p>}
-        </div>
+        {msg && <p className="share-msg result-share-status" role="status">{msg}</p>}
         <button className="link-btn result-home" onClick={onHome}>{t('art.backHome')}</button>
       </div>
     </div>
