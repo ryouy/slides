@@ -1411,6 +1411,33 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   font-weight: 400;
 }
 .artgame .art-level-options .art-level-option[aria-selected="true"] { font-weight: 600; }
+@media (max-width: 899px) {
+  .artgame .art-mobile-level .art-level-menu-wrap { display: inline-flex; }
+  .artgame .art-mobile-level .art-level-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: max-content;
+    min-width: 0;
+    min-height: 27px;
+    height: 27px;
+    padding: 2px 0;
+    gap: 3px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--fg);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .artgame .art-mobile-level .art-level-options {
+    left: auto;
+    right: 0;
+    min-width: 118px;
+  }
+}
 
 .artgame .art-description-language {
   display: flex;
