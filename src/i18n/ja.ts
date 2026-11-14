@@ -150,5 +150,9 @@ const ja: Partial<Dict> = {
   "art.textSource": "解説文",
   "art.textAdjusted": "HTMLをプレーンテキストに整形",
   "art.englishDetail": "美術館による詳しい解説（英語）",
+  "sort.random": "ランダム",
+  "gal.columns": "1行の枚数",
+  "gal.columnsAuto": "自動",
+  "gal.reshuffle": "もう一度シャッフル",
 };
 export default ja;
