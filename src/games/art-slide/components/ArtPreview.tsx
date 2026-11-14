@@ -96,15 +96,19 @@ export function ArtPreview({
           // The mobile preview is a readable sheet: interactions inside it must not close it.
           if (window.matchMedia('(max-width: 899px)').matches) event.stopPropagation();
         }}>
-        <img src={artwork.imageUrl} alt={`${artwork.title} – ${artwork.artist}`} width={artwork.width} height={artwork.height} draggable={false} />
+        <div className="preview-image">
+          <img src={artwork.imageUrl} alt={`${artwork.title} – ${artwork.artist}`} width={artwork.width} height={artwork.height} draggable={false} />
+        </div>
         <figcaption>
           <span className="pv-title">{artwork.title} <i>{artwork.artist}, {artwork.year}</i></span>
           <span className="pv-credit">{artwork.museum} · CC0</span>
         </figcaption>
         <div className="preview-description" data-testid="preview-description">
-          <p className="ap-desc" lang={descriptionLang} data-testid="preview-description-text">
-            {descriptionLang === 'ja' ? artwork.descriptionTranslations?.ja ?? artwork.description : artwork.description}
-          </p>
+          <div className="preview-description-scroll" data-testid="preview-description-scroll">
+            <p className="ap-desc" lang={descriptionLang} data-testid="preview-description-text">
+              {descriptionLang === 'ja' ? artwork.descriptionTranslations?.ja ?? artwork.description : artwork.description}
+            </p>
+          </div>
           <div className="art-description-language" role="group" aria-label={descriptionLanguageLabel}>
             <button type="button" aria-pressed={descriptionLang === 'ja'}
               aria-label={japaneseLabel} className={descriptionLang === 'ja' ? 'on' : ''}
