@@ -245,7 +245,6 @@ export function ArtGameView(p: Props) {
         </p>
         {!daily && (
           <div className="art-quiet">
-            <button className="quiet-link" data-testid="change-artwork" onClick={p.onChangeArtwork}>{t('art.change')} <ChevronRight size={14} /></button>
             <button className="quiet-link" data-testid="next-artwork" onClick={p.onNextArtwork}>{t('art.nextArtwork')} <ChevronRight size={14} /></button>
           </div>
         )}
