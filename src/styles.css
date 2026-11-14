@@ -555,3 +555,35 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 
 /* very narrow phones: let the 300px ad use the page gutter, so it never forces a horizontal scroll */
 @media (max-width: 331px) { .ad-box { margin-inline: -16px; } }
+
+/* Art Slide: fixed viewport sizing prevents the puzzle from growing when mobile browser chrome collapses. */
+.artgame .aboard-wrap { width: min(100%, calc((100svh - 248px) * var(--aspect, 1)), 900px); }
+.artgame .stats { margin: 5px 0 7px; }
+.artgame .stats .stat { padding: 5px 4px 4px; }
+.artgame .stat-value { font-size: 21px; line-height: 1.2; }
+.artgame .stat-label { font-size: 9px; }
+.artgame .art-actions { margin: 8px 0 4px; gap: 6px; }
+.artgame .art-actions .btn { min-height: 40px; padding: 7px 5px; font-size: 11px; }
+.artgame .art-actions.daily-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.art-gallery-heading { text-align: center; margin: 0 0 22px; }
+.art-gallery-eyebrow { display: block; font-size: 10px; letter-spacing: .3em; color: var(--muted); margin-bottom: 15px; }
+.art-gallery-heading .art-home-title { margin-bottom: 10px; }
+.art-gallery-heading p { font-size: 12px; letter-spacing: .08em; color: var(--muted); margin: 0; }
+.art-home .exhibit-card { padding: 14px; gap: 18px; }
+.art-home .exhibit-card img { width: 106px; height: 106px; }
+.art-home .exhibit-card .ex-text b { font-size: 18px; }
+@media (max-width: 899px) {
+  .artgame .aboard-wrap { width: min(100%, calc((100svh - 248px) * var(--aspect, 1)), 900px); min-width: 0; }
+  .artgame .aboard { min-width: 0; }
+  .artgame .art-top { min-height: 48px; }
+  .artgame .stats { margin: 4px 0 6px; }
+  .artgame .stat-value { font-size: 19px; }
+}
+@media (min-width: 900px) {
+  .screen.artgame { grid-template-columns: minmax(0, 1fr) minmax(210px, 250px); column-gap: 18px; padding-left: 18px; padding-right: 18px; }
+  .artgame > .aboard-wrap, .artgame > .aboard { width: min(100%, calc((100svh - 80px) * var(--aspect, 1))); }
+  .artgame .stats { margin: 4px 0 6px; }
+  .artgame .art-actions .btn { min-height: 38px; font-size: 10px; }
+  .artgame .art-extra { margin-top: 6px; }
+  .artgame .ap-desc { font-size: 13px; line-height: 1.4; }
+}
