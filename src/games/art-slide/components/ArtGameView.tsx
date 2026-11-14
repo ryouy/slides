@@ -232,28 +232,9 @@ export function ArtGameView(p: Props) {
             theme: t(`theme.${artwork.theme}` as Key),
           })}
         </p>
-        {lang !== 'en' && !translatedDescription && (
-          <div className="art-original-desc">
-            <span className="ap-original-caption">{t('art.englishInfo')}</span>
-            <p className="ap-desc" lang="en">{artwork.description}</p>
-          </div>
-        )}
         <p className="ap-credit">
           {artwork.museum} · <a href={artwork.licenseUrl} target="_blank" rel="noopener noreferrer">CC0</a> · <a href={artwork.sourceUrl} target="_blank" rel="noopener noreferrer">{t('art.source')}</a>
         </p>
-        {artwork.descriptionLicenseUrl && (
-          <p className="ap-credit art-text-credit">
-            {t('art.textSource')} · <a href={artwork.descriptionSourceUrl ?? artwork.sourceUrl} target="_blank" rel="noopener noreferrer">{artwork.descriptionAttribution ?? artwork.museum}</a>
-            {' · '}<a href={artwork.descriptionLicenseUrl} target="_blank" rel="noopener noreferrer">{artwork.descriptionLicense ?? 'CC BY 4.0'}</a>
-            {' · '}{t('art.textAdjusted')}
-          </p>
-        )}
-        {lang !== 'en' && !!translatedDescription && artwork.descriptionKind === 'museum_text' && (
-          <details className="art-museum-text">
-            <summary>{t('art.englishDetail')}</summary>
-            <p lang="en">{artwork.description}</p>
-          </details>
-        )}
         {!daily && (
           <div className="art-quiet">
             <button className="quiet-link" data-testid="change-artwork" onClick={p.onChangeArtwork}>{t('art.change')} <ChevronRight size={14} /></button>
