@@ -1088,7 +1088,7 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 @media (min-width: 640px) {
   .gallery-screen .gallery { grid-template-columns: repeat(var(--gallery-cols, 3), minmax(0, 1fr)); }
 }
-@media (min-width: 700px) {
+@media (min-width: 820px) {
   .gallery-screen .gal-controls {
     grid-template-columns: minmax(190px, 1fr) auto minmax(115px, 150px) minmax(150px, 190px) 100px;
     gap: 9px;
