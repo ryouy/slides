@@ -1,4 +1,4 @@
-import { ART_LEVELS, isSolved, isValidBoard, moveTile, tileForDirection, type ArtBoard, type ArtDirection, type Dims } from './board';
+import { ART_LEVELS, isSolved, isValidBoard, lineSlideCells, moveTile, tileForDirection, type ArtBoard, type ArtDirection, type Dims } from './board';
 import type { ArtPuzzle } from './generator';
 
 export interface ArtState {
@@ -15,8 +15,8 @@ export interface ArtState {
 
 export type ArtAction =
   | { type: 'move'; cell: number }
-  /** One step in an automatic row/column slide sequence (can finish after a transient solved board). */
-  | { type: 'lineStep'; cell: number }
+  /** Move every aligned tile at once, counting each tile as one move. */
+  | { type: 'lineMove'; cell: number }
   | { type: 'dir'; dir: ArtDirection }
   | { type: 'restart' }
   /** SHUFFLE: slide one tile as part of the shuffle (not counted, works even on a finished board). */
@@ -37,13 +37,27 @@ export function artReducer(s: ArtState, a: ArtAction): ArtState {
     if (!board) return s;
     return { ...s, board, status: 'playing', blankPath: [...(s.blankPath ?? []), a.cell] };
   }
-  if (s.status === 'cleared' && a.type !== 'lineStep') return s; // no user input after clearing
+  if (s.status === 'cleared') return s; // no input after clearing
   const d = dimsOf(s.puzzle);
+  if (a.type === 'lineMove') {
+    const cells = lineSlideCells(s.board, d, a.cell);
+    if (!cells.length) return s;
+    let board = s.board;
+    for (const cell of cells) {
+      const moved = moveTile(board, d, cell);
+      if (!moved) return s;
+      board = moved;
+    }
+    return {
+      ...s, board, moves: s.moves + cells.length, started: true,
+      status: isSolved(board) ? 'cleared' : 'playing',
+      blankPath: [...(s.blankPath ?? []), ...cells],
+    };
+  }
   switch (a.type) {
     case 'tick':
       return s.started ? { ...s, elapsedMs: s.elapsedMs + a.ms } : s;
     case 'move':
-    case 'lineStep':
     case 'dir': {
       const cell = a.type === 'dir' ? tileForDirection(s.board, d, a.dir) : a.cell;
       if (cell === null) return s;
