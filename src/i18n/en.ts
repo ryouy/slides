@@ -210,6 +210,9 @@ const en = {
   "legal.termsNote": "Site operator: review these terms before publication.",
   "legal.contact": "Questions, bug reports and suggestions are welcome.",
   "legal.contactNote": "Site operator: publish your contact email address or inquiry form here.",
+  "art.summary": "{artist}, {year}. A work in the {theme} collection.",
+  "level.6": "Very hard",
+  "level.7": "Expert",
 } as const;
 
 export type Key = keyof typeof en;
