@@ -7,6 +7,35 @@
 
 ---
 
+## 0. 【重要】初回デプロイの前に必ずやること：Variable を Secret に作り直す
+
+Cloudflare のダッシュボードで **「Variable」として登録した値は、`npx wrangler deploy` のたびに削除されます**（設定ファイル `wrangler.jsonc` に書かれていない Variable は消える仕様です。**「Secret」は消えません**）。
+現在 **Variable** として登録されている次の 3 つが、最初のデプロイで消えます。
+
+| 名前 | 現在 | 対処 |
+|---|---|---|
+| `GOOGLE_CLIENT_ID` | Variable | **Secret に作り直す**（同じ名前・同じ値） |
+| `STRIPE_PRICE_ID` | Variable | **Secret に作り直す**（値は `price_…`。`prod_…` ではない） |
+| `STRIPE_PUBLISHABLE_KEY` | Variable | **削除してよい**（使いません） |
+
+**手順（初心者向け）**
+1. Cloudflare → Workers & Pages → `slides` → Settings → **Variables and Secrets**
+2. `GOOGLE_CLIENT_ID` の値をコピーして控える → その行を削除 → 「Add」→ 種類 **Secret**、名前 `GOOGLE_CLIENT_ID`、値を貼って保存
+3. `STRIPE_PRICE_ID` も同じ手順で Secret に作り直す。**値が `price_` で始まることを確認**（`prod_` で始まるものは「商品 ID」で、使えません。Stripe の商品ページの「価格」の行にある ID です。前後に空白が入らないよう注意）
+4. `STRIPE_PUBLISHABLE_KEY` は削除
+
+（別の方法として、Deploy command を `npx wrangler deploy --keep-vars` に変えると Variable が残ります。ただし、設定が画面と二重管理になるので、Secret への作り直しをおすすめします。）
+
+**もし作り直さずにデプロイしてしまっても大丈夫です。** 値が消えるとログイン・購入の API が「未設定（503）」に戻るだけで、**サイトは今までどおり動きます**（ローカルで再現して確認済み）。Secret に作り直してから再デプロイすれば復旧します。
+
+`STRIPE_WEBHOOK_SECRET` は未登録で構いません。未登録のあいだは、ログインは使え、購入は無効のまま、Webhook の受信口は 503（閉じた状態）になります（これも確認済み）。
+
+### Stripe の値の確認（設定ミスの安全装置）
+- `STRIPE_PRICE_ID` が `price_…` の形でない（`prod_…` など）、`STRIPE_SECRET_KEY` が `sk_…`／`rk_…` でない（`pk_…` など）場合、**Checkout を開始せず**、`503`（`invalid_price_id` または `invalid_stripe_key`）を返して Stripe には何も送りません。`/api/config` の `purchases` も `false` のままです。
+- 公開可能キー（`pk_…`）は、どの処理でも使いません。
+
+---
+
 ## 1. 本番デプロイ前に必要な設定項目の最終一覧
 
 ### 1-A. Cloudflare（デプロイを通すために必須）
@@ -18,7 +47,7 @@
 | 3 | Git 連携のビルド設定 | Build command `npm run build`／Deploy command `npx wrangler deploy`／Root `/`（確認済みとのことなので変更不要） | Settings → Build | — |
 | 4 | D1 のテーブル | `migrations/0001_init.sql` を `slides-db` に適用（**手順は 2 章**） | D1 → `slides-db` → Console | ログイン開始（`/api/auth/google`）が 500 になる。サイトは影響なし |
 
-### 1-B. Secrets（Cloudflare の Settings → Variables and Secrets に **Secret** として登録）
+### 1-B. Secrets（Cloudflare の Settings → Variables and Secrets に **Secret** として登録。**Variable ではなく必ず Secret**）
 
 | 名前 | 何の値か | 入手先 | 必要になる段階 |
 |---|---|---|---|
@@ -29,7 +58,9 @@
 | `STRIPE_PRICE_ID` | 月額 ¥200 の価格 ID（`price_...`） | Stripe → 商品カタログ | 段階 1 |
 | `STRIPE_WEBHOOK_SECRET` | Webhook の署名シークレット（`whsec_...`） | Stripe → 開発者 → Webhook（**デプロイ後**に作成） | 段階 1 |
 
-`STRIPE_PUBLISHABLE_KEY`（`pk_...`）は**不要**です（購入は Stripe の画面へ移動する方式のため）。
+`STRIPE_PUBLISHABLE_KEY`（`pk_...`）は**不要**です（購入は Stripe の画面へ移動する方式のため。コードは一切読みません）。
+
+**現在の登録状況（ご連絡いただいた内容）:** `GOOGLE_CLIENT_SECRET`・`SESSION_SECRET`・`STRIPE_SECRET_KEY` は Secret として登録済み（OK）。`GOOGLE_CLIENT_ID`・`STRIPE_PRICE_ID` は Variable（**0 章のとおり Secret に作り直す**）。`STRIPE_WEBHOOK_SECRET` は未登録（デプロイ後に作成。それまでは購入が無効なだけ）。
 
 ### 1-C. 変数・フラグ（課金を有効にするまで**触らない**）
 
@@ -59,6 +90,7 @@
 | 段階 | 状態 | サイトの見た目 | `/api/config` |
 |---|---|---|---|
 | 0 | 初回デプロイ直後（テーブルも Secrets も無し） | **変わらない** | `{"auth":false,"billing":false,"purchases":false}` |
+| 1a | テーブル作成済み + `STRIPE_WEBHOOK_SECRET` **以外**の Secrets 5 つ登録済み（**今の予定の状態**） | **変わらない** | `{"auth":true,"billing":false,"purchases":false,"googleClientId":"…"}` |
 | 1 | テーブル作成済み + Secrets 6 つ登録済み。`PURCHASES_ENABLED="false"`、`VITE_PREMIUM_ENABLED` 未設定 | **変わらない**（画面にログインや Premium は出ない） | `{"auth":true,"billing":true,"purchases":false,"googleClientId":"…"}` |
 | 2 | 最終公開（運営者情報入力・`PURCHASES_ENABLED="true"`・`VITE_PREMIUM_ENABLED=true`） | Free/Premium の制限・購入導線が出る | `purchases` が `true` |
 
@@ -96,15 +128,16 @@
 
 ```
 node scripts/check-deploy.mjs https://slides.ryouy.workers.dev --stage 0    # デプロイ直後
-node scripts/check-deploy.mjs https://slides.ryouy.workers.dev --stage 1    # テーブル作成 + Secrets 登録のあと
+node scripts/check-deploy.mjs https://slides.ryouy.workers.dev --stage 1 --before-webhook   # Webhook の Secret 以外を登録した状態（段階 1a）
+node scripts/check-deploy.mjs https://slides.ryouy.workers.dev --stage 1    # Webhook の Secret も登録したあと
 ```
 
 全項目に ✓ が付き `All checks passed` と出れば合格です。✗ が出た項目には原因のヒントが表示されます。
 
 | ✗ の項目 | 主な原因 |
 |---|---|
-| `/api/config auth = true` が ✗ | Secrets が足りない（`SESSION_SECRET` / `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` のどれか）か、D1 の接続がない |
-| `billing = true` が ✗ | Stripe の 3 つの Secret のどれかが足りない |
+| `/api/config auth = true` が ✗ | Secrets が足りない（`SESSION_SECRET` / `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` のどれか。**`GOOGLE_CLIENT_ID` を Variable のまま登録していると、デプロイで消えます**＝0 章）か、D1 の接続がない |
+| `billing = true` が ✗ | Stripe の 3 つの Secret のどれかが足りない（`--before-webhook` を付けて実行していれば `STRIPE_WEBHOOK_SECRET` は不要）。`STRIPE_PRICE_ID` を Variable のままにしていると消えます＝0 章 |
 | `purchases = false` が ✗ | `PURCHASES_ENABLED` が `"true"` になっている（**まだ早い**） |
 | `/api/auth/google → redirect` が ✗（500） | D1 のテーブルが未作成（2 章を実施） |
 | `redirect_uri is exactly …` が ✗ | `SITE_URL` が実際の URL と違う（Google Cloud の登録と一致させる） |

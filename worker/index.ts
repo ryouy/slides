@@ -1,4 +1,4 @@
-import { authConfigured, billingConfigured, type Env } from './env';
+import { authConfigured, billingConfigured, checkoutConfigError, type Env } from './env';
 import { currentUser, finishLogin, logout, startLogin } from './auth';
 import { createCheckout, createPortal, deleteAccount, handleWebhook, planFor } from './billing';
 import { allow } from './db';
@@ -15,7 +15,7 @@ export async function handle(request: Request, env: Env, deps: Deps = {}): Promi
 
   if (path === '/api/config') {
     if (method !== 'GET') return err(405, 'method');
-    return json({ auth: authConfigured(env), billing: billingConfigured(env), purchases: billingConfigured(env) && env.PURCHASES_ENABLED === 'true', ...(authConfigured(env) ? { googleClientId: env.GOOGLE_CLIENT_ID } : {}) });
+    return json({ auth: authConfigured(env), billing: billingConfigured(env), purchases: billingConfigured(env) && !checkoutConfigError(env) && env.PURCHASES_ENABLED === 'true', ...(authConfigured(env) ? { googleClientId: env.GOOGLE_CLIENT_ID } : {}) });
   }
   if (path === '/api/stripe/webhook') {
     if (method !== 'POST') return err(405, 'method');
@@ -51,7 +51,15 @@ export async function handle(request: Request, env: Env, deps: Deps = {}): Promi
   if (!user) return err(401, 'signin_required');
   if (path === '/api/account/delete') return deleteAccount(env, user, deps.fetchFn);
   if (!billingConfigured(env)) return err(503, 'not_configured');
-  if (path === '/api/billing/checkout') return env.PURCHASES_ENABLED === 'true' ? createCheckout(env, user, deps.fetchFn) : err(503, 'purchases_disabled');
+  if (path === '/api/billing/checkout') {
+    if (env.PURCHASES_ENABLED !== 'true') return err(503, 'purchases_disabled');
+    const bad = checkoutConfigError(env);
+    if (bad) {
+      console.error(`checkout refused: ${bad} (check STRIPE_PRICE_ID / STRIPE_SECRET_KEY)`); // a setup mistake: nothing is sent to Stripe
+      return err(503, bad);
+    }
+    return createCheckout(env, user, deps.fetchFn);
+  }
   return createPortal(env, user, deps.fetchFn);
 }
 

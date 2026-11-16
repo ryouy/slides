@@ -4,6 +4,7 @@
  * it never signs in, never creates a customer and never starts a purchase.
  *
  *   node scripts/check-deploy.mjs https://slides.ryouy.workers.dev --stage 0
+ *   node scripts/check-deploy.mjs https://slides.ryouy.workers.dev --stage 1 --before-webhook   (Stripe webhook secret not registered yet)
  *   node scripts/check-deploy.mjs https://slides.ryouy.workers.dev --stage 1
  *   node scripts/check-deploy.mjs http://localhost:8787 --stage 1
  *
@@ -15,10 +16,11 @@
  */
 const args = process.argv.slice(2);
 const base = (args.find((a) => /^https?:\/\//.test(a)) ?? '').replace(/\/+$/, '');
+const beforeWebhook = args.includes('--before-webhook');
 const stageArg = args.indexOf('--stage');
 const stage = stageArg >= 0 ? Number(args[stageArg + 1]) : NaN;
 if (!base || ![0, 1, 2].includes(stage)) {
-  console.error('usage: node scripts/check-deploy.mjs <base-url> --stage <0|1|2>');
+  console.error('usage: node scripts/check-deploy.mjs <base-url> --stage <0|1|2> [--before-webhook]');
   process.exit(2);
 }
 
@@ -59,7 +61,8 @@ ok('/api/config is not cacheable', /no-store/.test(cfgRes.headers.get('cache-con
 
 const wantAuth = stage >= 1;
 ok(`/api/config auth = ${wantAuth}`, cfg?.auth === wantAuth, `got ${JSON.stringify(cfg)}`);
-ok(`/api/config billing = ${wantAuth}`, cfg?.billing === wantAuth, `got ${JSON.stringify(cfg)}`);
+const wantBilling = wantAuth && !beforeWebhook;
+ok(`/api/config billing = ${wantBilling}`, cfg?.billing === wantBilling, `got ${JSON.stringify(cfg)}${wantBilling ? '   ← a Stripe Secret is missing (STRIPE_SECRET_KEY / STRIPE_PRICE_ID / STRIPE_WEBHOOK_SECRET)' : '   ← STRIPE_WEBHOOK_SECRET is already registered: run without --before-webhook'}`);
 ok(`/api/config purchases = ${stage === 2}`, cfg?.purchases === (stage === 2), `got ${JSON.stringify(cfg)}   ← must be false until go-live`);
 if (wantAuth) ok('/api/config includes the PUBLIC Google client id (ends .apps.googleusercontent.com)', /\.apps\.googleusercontent\.com$/.test(cfg?.googleClientId ?? ''), `got ${cfg?.googleClientId}`);
 else ok('/api/config exposes no client id while unconfigured', !cfg?.googleClientId);
@@ -107,10 +110,11 @@ if (!wantAuth) {
   const get405 = await get('/api/billing/checkout');
   ok('checkout via GET → not allowed', get405.status === 405 || get405.status === 401, `got ${get405.status}`);
 
+  const want = wantBilling ? 400 : 503; // without the webhook secret the endpoint is closed (503), never open
   const wh = await get('/api/stripe/webhook', { method: 'POST', body: '{"id":"evt_check","type":"x"}' });
-  ok('webhook without a Stripe signature → 400', wh.status === 400, `got ${wh.status}`);
+  ok(`webhook without a Stripe signature → ${want}`, wh.status === want, `got ${wh.status}`);
   const wh2 = await get('/api/stripe/webhook', { method: 'POST', body: '{}', headers: { 'stripe-signature': 't=1,v1=00' } });
-  ok('webhook with a wrong signature → 400', wh2.status === 400, `got ${wh2.status}`);
+  ok(`webhook with a wrong signature → ${want}`, wh2.status === want, `got ${wh2.status}`);
   const whGet = await get('/api/stripe/webhook');
   ok('webhook via GET → 405', whGet.status === 405, `got ${whGet.status}`);
 }

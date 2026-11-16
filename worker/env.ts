@@ -30,4 +30,16 @@ export interface Env {
 }
 
 export const authConfigured = (e: Env): boolean => !!(e.DB && e.GOOGLE_CLIENT_ID && e.GOOGLE_CLIENT_SECRET && e.SESSION_SECRET && e.SITE_URL);
+/** A Stripe PRICE id looks like price_… . A product id (prod_…) or anything else is a setup mistake, never sent to Stripe. */
+export const validPriceId = (id: string | undefined): boolean => !!id && /^price_[A-Za-z0-9]{6,}$/.test(id);
+/** Secret keys: sk_… or restricted rk_… (never a publishable pk_… key, which cannot create sessions). */
+export const validStripeKey = (k: string | undefined): boolean => !!k && /^(sk|rk)_(test|live)_[A-Za-z0-9]{8,}$/.test(k);
+
+/** Why Checkout cannot start although everything is "set": a wrong value (shown in the API answer and the log, never the value itself). */
+export function checkoutConfigError(e: Env): 'invalid_price_id' | 'invalid_stripe_key' | null {
+  if (!validPriceId(e.STRIPE_PRICE_ID)) return 'invalid_price_id';
+  if (!validStripeKey(e.STRIPE_SECRET_KEY)) return 'invalid_stripe_key';
+  return null;
+}
+
 export const billingConfigured = (e: Env): boolean => !!(authConfigured(e) && e.STRIPE_SECRET_KEY && e.STRIPE_WEBHOOK_SECRET && e.STRIPE_PRICE_ID);

@@ -77,7 +77,7 @@ Checkout 完了画面を根拠に解放はしません。解放は Webhook（ま
 | `SESSION_SECRET` | Secret | 自分で作る長いランダム文字列（Mac のターミナルで `openssl rand -base64 48`） |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Secret | Google Cloud（手順 2） |
 | `STRIPE_SECRET_KEY` | Secret | Stripe（手順 3）。**テストは `sk_test_...`、本番は `sk_live_...`** |
-| `STRIPE_PRICE_ID` | Secret | 月額 ¥200 の価格 ID（`price_...`） |
+| `STRIPE_PRICE_ID` | Secret | 月額 ¥200 の価格 ID（**`price_...`**。`prod_...` は商品 ID で不可。不可の値は Checkout が拒否します） |
 | `STRIPE_WEBHOOK_SECRET` | Secret | Webhook の署名シークレット（`whsec_...`。API のデプロイ後に作成） |
 | `VITE_PREMIUM_ENABLED` | **ビルド時**の環境変数 | `true` で Free/Premium の制限と購入導線を有効化（**最後に**設定） |
 

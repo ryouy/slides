@@ -69,9 +69,9 @@ const baseEnv = (d1: D1Database): Env => ({
   GOOGLE_CLIENT_ID: 'gid',
   GOOGLE_CLIENT_SECRET: 'gsecret',
   SESSION_SECRET: 'session-secret',
-  STRIPE_SECRET_KEY: 'sk_test_x',
+  STRIPE_SECRET_KEY: 'sk_test_x1234567890',
   STRIPE_WEBHOOK_SECRET: 'whsec_test',
-  STRIPE_PRICE_ID: 'price_1',
+  STRIPE_PRICE_ID: 'price_1Abc23DEF',
   PURCHASES_ENABLED: 'true',
 });
 const sub = (over: Record<string, unknown> = {}) => ({ id: 'sub_1', status: 'active', customer: 'cus_1', cancel_at_period_end: false, current_period_end: NOW() + 20 * 86400, metadata: { user_id: '' }, ...over });
@@ -171,6 +171,41 @@ describe('configuration', () => {
     expect((await call('/api/auth/google')).status).toBe(503);
     expect((await call('/api/stripe/webhook', { method: 'POST', body: '{}', origin: null })).status).toBe(503);
     expect((await call('/api/nope')).status).toBe(404);
+  });
+});
+
+describe('setup mistakes never reach Stripe', () => {
+  it('a product id (prod_…) or any non-price value in STRIPE_PRICE_ID refuses Checkout and says so', async () => {
+    const cookie = await login();
+    for (const bad of ['prod_ABC123xyz', 'plink_123456', 'price_', 'pk_test_abcdefgh', '', ' price_1Abc23DEF']) {
+      env = { ...env, STRIPE_PRICE_ID: bad };
+      fake.calls.length = 0;
+      const res = await call('/api/billing/checkout', { method: 'POST', cookie });
+      expect(res.status, bad).toBe(503);
+      expect(await res.json()).toEqual({ error: bad === '' ? 'not_configured' : 'invalid_price_id' });
+      expect(fake.calls.filter((c) => c.includes('stripe.com')), bad).toEqual([]); // nothing was sent to Stripe
+      expect(raw.prepare('SELECT stripe_customer_id FROM users').get()).toEqual({ stripe_customer_id: null }); // no customer was created either
+    }
+  });
+  it('a publishable key in place of the secret key is refused too, and /api/config then reports purchases off', async () => {
+    const cookie = await login();
+    env = { ...env, STRIPE_SECRET_KEY: 'pk_test_abcdefgh1234' };
+    expect((await (await call('/api/billing/checkout', { method: 'POST', cookie })).json())).toEqual({ error: 'invalid_stripe_key' });
+    expect(await (await call('/api/config')).json()).toMatchObject({ purchases: false });
+    env = { ...env, STRIPE_SECRET_KEY: 'sk_test_x1234567890', STRIPE_PRICE_ID: 'prod_ABC123xyz' };
+    expect(await (await call('/api/config')).json()).toMatchObject({ billing: true, purchases: false }); // set, but not usable
+  });
+  it('a missing webhook secret keeps purchases off, while sign-in and the site keep working', async () => {
+    env = { ...env, STRIPE_WEBHOOK_SECRET: undefined };
+    expect(await (await call('/api/config')).json()).toMatchObject({ auth: true, billing: false, purchases: false });
+    const cookie = await login();
+    expect((await me(cookie)).signedIn).toBe(true);
+    expect((await call('/api/billing/checkout', { method: 'POST', cookie })).status).toBe(503);
+    expect((await call('/api/stripe/webhook', { method: 'POST', body: '{}', origin: null })).status).toBe(503);
+  });
+  it('the publishable key is never needed or read', async () => {
+    env = { ...env, STRIPE_PUBLISHABLE_KEY: undefined } as Env;
+    expect(await (await call('/api/config')).json()).toMatchObject({ billing: true, purchases: true });
   });
 });
 
