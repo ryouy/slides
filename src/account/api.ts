@@ -29,8 +29,27 @@ async function getJson<T>(path: string): Promise<T | null> {
   }
 }
 
-export const fetchConfig = () => getJson<Config>('/api/config');
-export const fetchMe = (refresh = false) => getJson<Me>(refresh ? '/api/billing/status?refresh=1' : '/api/me');
+/**
+ * Dev server only (never in a production build): `localStorage['slides:dev-account']` = {"config": {...}, "me": {...}}
+ * stands in for the server's answers, so every kind of visitor can be looked at without any backend.
+ */
+function devAccount(): { config?: Config; me?: Me } | null {
+  if (!import.meta.env?.DEV) return null;
+  try {
+    return JSON.parse(localStorage.getItem('slides:dev-account') ?? 'null');
+  } catch {
+    return null;
+  }
+}
+
+export const fetchConfig = () => {
+  const d = devAccount();
+  return d?.config ? Promise.resolve(d.config) : getJson<Config>('/api/config');
+};
+export const fetchMe = (refresh = false) => {
+  const d = devAccount();
+  return d?.me ? Promise.resolve(d.me) : getJson<Me>(refresh ? '/api/billing/status?refresh=1' : '/api/me');
+};
 
 export const signInUrl = (returnTo: string): string => `/api/auth/google?return=${encodeURIComponent(returnTo)}`;
 

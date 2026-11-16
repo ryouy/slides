@@ -1,6 +1,7 @@
 import { BackButton, ChevronRight, LockIcon } from '../../../components/Icons';
 import { PremiumPanel } from '../../../premium/PremiumPage';
-import { FREE_MAX_LEVEL, isArtworkLocked, useEntitlement } from '../../../premium/entitlement';
+import { FREE_MAX_LEVEL, isArtworkLocked, isCustomArtwork, isLevelLocked, useEntitlement } from '../../../premium/entitlement';
+import { loadCustomArtwork } from '../../../custom/loader';
 import { useEffect, useLayoutEffect, useMemo, useState, type KeyboardEvent } from 'react';
 import { AdSlot } from '../../../ads/AdSlot';
 import { Link } from '../../../components/Link';
@@ -55,6 +56,7 @@ export function ArtHome() {
               <Link to="/art-slide/how">{t('home.howTo')}</Link>
               <Link to="/art-slide/stats">{t('home.stats')}</Link>
               <Link to="/art-slide/credits">{t('home.credits')}</Link>
+              {gating && <Link to="/art-slide/photos" data-testid="more-photos">{t('home.photos')}</Link>}
               {gating && <Link to="/art-slide/premium" data-testid="more-premium">{t('home.premium')}</Link>}
               {gating && <Link to="/art-slide/account" data-testid="more-account">{t('home.account')}</Link>}
             </nav>
@@ -259,8 +261,40 @@ export function ArtDaily() {
 export function ArtPlay({ artworkId }: { artworkId?: string }) {
   const { premium, gating, loading } = useEntitlement();
   // wait for the plan of a returning signed-in visitor; start over if it changes (e.g. Premium arrives after sign-in)
+  const { getData } = useArtSave();
   if (gating && loading) return <div className="screen" aria-busy="true" />;
+  // the visitor's own photos (also when resuming one) are loaded from this device first
+  const saved = getData().inProgress.free;
+  const customId = artworkId?.startsWith('custom:') ? artworkId : !artworkId && saved && isCustomArtwork(saved.puzzle.artworkId) ? saved.puzzle.artworkId : undefined;
+  if (customId) return <CustomPlay key={`${customId}-${gating}-${premium}`} artworkId={customId} />;
   return <ArtPlayInner key={`${gating}-${premium}`} artworkId={artworkId} />;
+}
+
+/** A photo of the visitor's own: Premium only; read from this device, then played like any painting. */
+function CustomPlay({ artworkId }: { artworkId: string }) {
+  const t = useT();
+  const { premium, gating } = useEntitlement();
+  const locked = gating && !premium;
+  const [status, setStatus] = useState<'loading' | 'ready' | 'missing'>(getArtwork(artworkId) ? 'ready' : 'loading');
+  useEffect(() => {
+    if (locked) return;
+    let alive = true;
+    loadCustomArtwork(artworkId).then((a) => alive && setStatus(a ? 'ready' : 'missing')).catch(() => alive && setStatus('missing'));
+    return () => { alive = false; };
+  }, [artworkId, locked]);
+  if (locked || status !== 'ready') {
+    return (
+      <div className="screen" data-testid="custom-play">
+        <header className="topbar">
+          <BackButton onClick={() => go('photos')} label={t('common.back')} />
+          <h1>{t('photos.title')}</h1>
+          <div className="top-right" />
+        </header>
+        {locked ? <PremiumPanel reason="photos" /> : status === 'missing' ? <p className="muted" data-testid="photo-missing">{t('photos.missing')}</p> : <p className="muted" aria-busy="true">…</p>}
+      </div>
+    );
+  }
+  return <ArtPlayInner artworkId={artworkId} />;
 }
 
 function ArtPlayInner({ artworkId }: { artworkId?: string }) {
@@ -270,10 +304,13 @@ function ArtPlayInner({ artworkId }: { artworkId?: string }) {
   const [numbers, setNumbers] = useNumbers();
   const [game, setGame] = useState<{ key: number; state: ArtState } | null>(() => {
     const saved = getData().inProgress.free;
-    if (saved && getArtwork(saved.puzzle.artworkId) && !isArtworkLocked(saved.puzzle.artworkId, premium, gating) && (!artworkId || saved.puzzle.artworkId === artworkId)) return { key: 0, state: saved };
-    const art = artworkId ? getArtwork(artworkId) : undefined;
+    const ok = !!saved && !!getArtwork(saved.puzzle.artworkId) && !isArtworkLocked(saved.puzzle.artworkId, premium, gating) && (!artworkId || saved.puzzle.artworkId === artworkId);
+    // a game saved at a level that is Premium-only (e.g. the contract has ended since) is not resumed: it starts again at the highest free level
+    if (ok && !isLevelLocked(saved!.puzzle.size, premium, gating)) return { key: 0, state: saved! };
+    const art = artworkId ? getArtwork(artworkId) : ok ? getArtwork(saved!.puzzle.artworkId) : undefined;
     if (!art || isArtworkLocked(art.id, premium, gating)) return null;
-    const state = newArtGame(generateArtFree(art.id, gating && !premium ? (Math.min(getData().lastSize, FREE_MAX_LEVEL) as ArtLevel) : getData().lastSize));
+    const lvl = (gating && !premium ? Math.min(getData().lastSize, FREE_MAX_LEVEL) : getData().lastSize) as ArtLevel;
+    const state = newArtGame(generateArtFree(art.id, lvl));
     setProgress('free', state);
     return { key: 0, state };
   });
@@ -313,6 +350,7 @@ function ArtPlayInner({ artworkId }: { artworkId?: string }) {
   const art = getArtwork(game.state.puzzle.artworkId)!;
   const start = (artId: string, level: ArtLevel) => {
     update((d) => ({ ...d, lastSize: level }));
+    if (isLevelLocked(level, premium, gating)) return go('premium'); // never starts a Premium size for a Free visitor
     const state = newArtGame(generateArtFree(artId, level));
     setProgress('free', state);
     setGame((g) => ({ key: (g?.key ?? 0) + 1, state }));
@@ -331,8 +369,8 @@ function ArtPlayInner({ artworkId }: { artworkId?: string }) {
       onProgress={(s) => setProgress('free', s)}
       onCleared={(s) => { update((d) => recordArtClear(d, { state: s, dateKey: jstDateKey() })); scheduleSync(); }}
       onLevel={(l) => start(art.id, l)}
-      onChangeArtwork={() => go('gallery')}
-      onNextArtwork={() => start(nextArtwork(art.id, premium, gating).id, level)}
+      onChangeArtwork={() => go(isCustomArtwork(art.id) ? 'photos' : 'gallery')}
+      onNextArtwork={() => (isCustomArtwork(art.id) ? go('photos') : start(nextArtwork(art.id, premium, gating).id, level))}
     />
   );
 }

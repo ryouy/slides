@@ -193,6 +193,7 @@ export function PrivacyPage() {
       <p>{t('privacy.storage')}</p>
       <p>{t('privacy.accounts')}</p>
       <p>{t('privacy.premium')}</p>
+      <p>{t('privacy.photos')}</p>
       <p>{t('privacy.ads')}</p>
       <p>{t('privacy.choice')}</p>
       <p>{t('privacy.admax')}</p>

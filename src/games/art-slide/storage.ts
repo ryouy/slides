@@ -44,6 +44,15 @@ export interface ArtSave {
   counters: Record<string, number>;
   /** Best time, fewest moves and clears per painting AND board size ("<artworkId>:<size>"). */
   records: Record<string, KeyRecord>;
+  /** Best time / fewest moves / clears of the visitor's own photos ("<custom:id>:<size>"). Kept apart from the paintings and never synced. */
+  customRecords: Record<string, CustomRecord>;
+}
+
+export interface CustomRecord {
+  bestTimeMs?: number;
+  bestMoves?: number;
+  clears: number;
+  lastClearedAt?: number;
 }
 
 const newDeviceId = (): string => (typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `d${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`);
@@ -61,6 +70,7 @@ export const defaultArtSave = (): ArtSave => ({
   deviceId: newDeviceId(),
   counters: {},
   records: {},
+  customRecords: {},
 });
 
 export function migrateArt(raw: unknown): ArtSave {
@@ -97,6 +107,7 @@ export function migrateArt(raw: unknown): ArtSave {
   out.counters = isCounts(r.counters) ? { ...r.counters } : completed > 0 ? { [out.deviceId]: completed } : {};
   out.completed = Math.max(completed, Object.values(out.counters).reduce((a, b) => a + b, 0));
   out.records = isRecords(r.records) ? r.records : recordsFromHistory(out.history, out.deviceId);
+  out.customRecords = isObj(r.customRecords) ? (r.customRecords as Record<string, CustomRecord>) : {};
   return out;
 }
 
@@ -148,6 +159,23 @@ function bumpRecord(data: ArtSave, artworkId: string, size: number, timeMs: numb
 
 export function recordArtClear(data: ArtSave, r: { state: ArtState; dateKey: string }): ArtSave {
   const p = r.state.puzzle;
+  if (p.artworkId.startsWith('custom:')) {
+    // the visitor's own photo: its own small record, nothing in the painting records, counters, history or Drive sync
+    const k = `${p.artworkId}:${p.size}`;
+    const old = data.customRecords[k];
+    return {
+      ...data,
+      customRecords: {
+        ...data.customRecords,
+        [k]: {
+          bestTimeMs: old?.bestTimeMs === undefined ? r.state.elapsedMs : Math.min(old.bestTimeMs, r.state.elapsedMs),
+          bestMoves: old?.bestMoves === undefined ? r.state.moves : Math.min(old.bestMoves, r.state.moves),
+          clears: (old?.clears ?? 0) + 1,
+          lastClearedAt: Date.now(),
+        },
+      },
+    };
+  }
   const next: ArtSave = {
     ...data,
     completed: data.completed + 1,

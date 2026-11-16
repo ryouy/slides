@@ -1,6 +1,7 @@
 import { authConfigured, billingConfigured, checkoutConfigError, type Env } from './env';
 import { currentUser, finishLogin, logout, startLogin } from './auth';
 import { createCheckout, createPortal, deleteAccount, handleWebhook, planFor } from './billing';
+import { serveArtwork } from './artwork';
 import { allow } from './db';
 import { err, json, sameOrigin } from './http';
 import type { FetchFn } from './stripe';
@@ -65,7 +66,16 @@ export async function handle(request: Request, env: Env, deps: Deps = {}): Promi
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    if (!new URL(request.url).pathname.startsWith('/api/')) return env.ASSETS.fetch(request);
+    const path = new URL(request.url).pathname;
+    if (path.startsWith('/artworks/')) {
+      try {
+        return await serveArtwork(request, env);
+      } catch (e) {
+        console.error('artwork error', e);
+        return env.PREMIUM_ENFORCED === 'true' ? new Response('Unavailable', { status: 503 }) : env.ASSETS.fetch(request); // never break the images while enforcement is off
+      }
+    }
+    if (!path.startsWith('/api/')) return env.ASSETS.fetch(request);
     try {
       return await handle(request, env);
     } catch (e) {

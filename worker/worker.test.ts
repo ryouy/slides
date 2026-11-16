@@ -6,7 +6,10 @@ import { hmacHex } from './crypto';
 import type { D1Database, D1PreparedStatement, Env } from './env';
 import { hasPremium, RENEWAL_GRACE_SECONDS } from './entitlement';
 import { safeReturnPath } from './http';
-import { handle } from './index';
+import worker, { handle } from './index';
+import { fullImageId, isDailyImage } from './artwork';
+import { ARTWORKS } from '../src/games/art-slide/data';
+import { FREE_ARTWORK_IDS } from '../src/premium/freeList';
 import { formEncode, verifyStripeSignature, type FetchFn } from './stripe';
 
 // ---- an in-memory D1 (SQLite) running the real migration ----
@@ -528,6 +531,77 @@ describe('Checkout safety: price, mode and double purchase', () => {
     expect(raw.prepare('SELECT stripe_subscription_id AS id FROM subscriptions').get()).toEqual({ id: 'sub_1' }); // the first one stays
     expect(spy.some((m) => m.startsWith('duplicate_subscription'))).toBe(true);
     expect((await me(cookie)).premium).toBe(true);
+  });
+});
+
+describe('full-size paintings (Premium enforcement)', () => {
+  const locked = () => ARTWORKS.find((a) => !FREE_ARTWORK_IDS.includes(a.id) && !isDailyImage(a.id))!.id;
+  const img = (id: string, cookie?: string, suffix = '') => worker.fetch(new Request(`${SITE}/artworks/${id}${suffix}.webp`, { headers: cookie ? { cookie } : {} }), env);
+
+  async function premiumCookie() {
+    const cookie = await login();
+    await call('/api/billing/checkout', { method: 'POST', cookie });
+    const uid = (raw.prepare("SELECT id FROM users WHERE google_sub = 'google-sub-1'").get() as { id: string }).id;
+    fake.sub = sub({ metadata: { user_id: uid } });
+    await webhook(subEvent('evt_img'));
+    return cookie;
+  }
+
+  it('recognises full-size images only (not thumbnails or other files)', () => {
+    expect(fullImageId('/artworks/van-gogh-bedroom.webp')).toBe('van-gogh-bedroom');
+    expect(fullImageId('/artworks/van-gogh-bedroom-thumb.webp')).toBeNull();
+    expect(fullImageId('/artworks/../api/me.webp')).toBeNull();
+    expect(fullImageId('/artworks/x.png')).toBeNull();
+    expect(fullImageId('/og/van-gogh-bedroom.jpg')).toBeNull();
+  });
+
+  it('while enforcement is OFF every image passes straight through (the site as it is today)', async () => {
+    env = { ...env, PREMIUM_ENFORCED: undefined };
+    const res = await img(locked());
+    expect(res.status).toBe(200);
+    expect(await res.text()).toBe('asset');
+  });
+
+  it('when ON: Free paintings and today\'s daily are open to everyone; Premium paintings are not', async () => {
+    env = { ...env, PREMIUM_ENFORCED: 'true' };
+    expect((await img(FREE_ARTWORK_IDS[0])).status).toBe(200);
+    const todayId = (await import('../src/games/art-slide/logic/dailyPick')).dailyArtworkId((await import('../src/utils/date')).jstDateKey());
+    expect((await img(todayId)).status).toBe(200);
+    const res = await img(locked());
+    expect(res.status).toBe(403);
+    expect(res.headers.get('cache-control')).toBe('no-store');
+    expect(await res.text()).not.toBe('asset');
+  });
+
+  it('when ON: a signed-in Free account is refused, a Premium account gets the image, privately cached', async () => {
+    env = { ...env, PREMIUM_ENFORCED: 'true' };
+    const freeCookie = await login('free-sub', 'Free Person');
+    expect((await img(locked(), freeCookie)).status).toBe(403);
+    const cookie = await premiumCookie();
+    const ok = await img(locked(), cookie);
+    expect(ok.status).toBe(200);
+    expect(await ok.text()).toBe('asset');
+    expect(ok.headers.get('cache-control')).toBe('private, no-store');
+    expect((await img(locked())).status).toBe(403); // and still not without the cookie
+  });
+
+  it('when ON: an ended contract loses access; an unconfigured backend never hands out Premium images', async () => {
+    env = { ...env, PREMIUM_ENFORCED: 'true' };
+    const cookie = await premiumCookie();
+    expect((await img(locked(), cookie)).status).toBe(200);
+    fake.sub = { ...fake.sub, status: 'canceled', current_period_end: NOW() + 100000 };
+    await webhook(subEvent('evt_img2', 'customer.subscription.deleted'));
+    expect((await img(locked(), cookie)).status).toBe(403);
+    env = { ASSETS: env.ASSETS, PREMIUM_ENFORCED: 'true' };
+    expect((await img(locked(), cookie)).status).toBe(403);
+  });
+
+  it('when ON and the database fails, it fails closed (503), never open', async () => {
+    env = { ...env, PREMIUM_ENFORCED: 'true' };
+    const cookie = await login();
+    env = { ...env, DB: { prepare: () => { throw new Error('d1 down'); }, batch: async () => [] } as never };
+    const res = await img(locked(), cookie);
+    expect(res.status).toBe(503);
   });
 });
 

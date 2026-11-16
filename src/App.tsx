@@ -5,6 +5,7 @@ import { BigSaveProvider } from './games/big-slide/storage';
 import { ArtCreditsPage, ArtDaily, ArtGallery, ArtHome, ArtHowPage, ArtPlay, ArtStatsPage } from './games/art-slide/pages/ArtPages';
 import { ArtSaveProvider } from './games/art-slide/storage';
 import { AccountPage } from './account/AccountPage';
+import { PhotosPage } from './custom/PhotosPage';
 import { initAccount } from './account/store';
 import { initSync } from './sync/state';
 import { CommercePage } from './legal/CommercePage';
@@ -42,7 +43,7 @@ function ArtRoutes({ sub }: { sub: string }) {
   return (
     <ArtSaveProvider>
       <div className="art-theme">
-      {head === 'daily' ? <ArtDaily /> : head === 'gallery' ? <ArtGallery /> : head === 'play' ? <ArtPlay key={id ?? ''} artworkId={id} /> : head === 'how' ? <ArtHowPage /> : head === 'stats' ? <ArtStatsPage /> : head === 'credits' ? <ArtCreditsPage /> : head === 'premium' ? <PremiumPage /> : head === 'account' ? <AccountPage /> : <ArtHome />}
+      {head === 'daily' ? <ArtDaily /> : head === 'gallery' ? <ArtGallery /> : head === 'play' ? <ArtPlay key={id ?? ''} artworkId={id} /> : head === 'how' ? <ArtHowPage /> : head === 'stats' ? <ArtStatsPage /> : head === 'credits' ? <ArtCreditsPage /> : head === 'premium' ? <PremiumPage /> : head === 'account' ? <AccountPage /> : head === 'photos' ? <PhotosPage /> : <ArtHome />}
       </div>
     </ArtSaveProvider>
   );

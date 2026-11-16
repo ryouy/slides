@@ -47,6 +47,7 @@ for (const p of ['/', '/art-slide', '/art-slide/gallery', '/art-slide/play/van-g
     const js = await (await get(src)).text();
     const leak = js.match(/sk_(live|test)_[A-Za-z0-9]{8,}|whsec_[A-Za-z0-9]{8,}|GOCSPX-[A-Za-z0-9_-]{8,}|rk_(live|test)_[A-Za-z0-9]{8,}/);
     ok('no secret-looking value in the site JavaScript', !leak, leak ? `found ${leak[0].slice(0, 12)}…` : '');
+    ok('no developer switch (slides:dev-…) in the site JavaScript: Premium cannot be unlocked from the browser console', !/slides:dev-/.test(js));
   }
   const ads = await get('/ads/desktop.html');
   ok('ad frame page is served (unchanged feature)', ads.status === 200 || ads.status === 307 || ads.status === 308, `got ${ads.status}`);

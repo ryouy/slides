@@ -20,6 +20,8 @@ interface Props {
   englishLabel: string;
   sourceLabel: string;
   closeLabel: string;
+  /** The visitor's own photo: only the picture (no description, credit or source). */
+  plain?: boolean;
 }
 
 /**
@@ -29,7 +31,7 @@ interface Props {
 export function ArtPreview({
   artwork, rect, label, onClosed,
   descriptionLang, onDescriptionLanguageChange,
-  descriptionLanguageLabel, japaneseLabel, englishLabel, sourceLabel, closeLabel,
+  descriptionLanguageLabel, japaneseLabel, englishLabel, sourceLabel, closeLabel, plain = false,
 }: Props) {
   const [closing, setClosing] = useState(false);
   const timer = useRef<number | null>(null);
@@ -104,9 +106,10 @@ export function ArtPreview({
           <img src={artwork.imageUrl} alt={`${artwork.title} – ${artwork.artist}`} width={artwork.width} height={artwork.height} draggable={false} />
         </div>
         <figcaption>
-          <span className="pv-title">{artwork.title} <i>{artwork.artist}, {artwork.year}</i></span>
-          <span className="pv-credit">{artwork.museum} · CC0</span>
+          <span className="pv-title">{artwork.title}{!plain && <> <i>{artwork.artist}, {artwork.year}</i></>}</span>
+          {!plain && <span className="pv-credit">{artwork.museum} · CC0</span>}
         </figcaption>
+        {!plain && (
         <div className="preview-description" data-testid="preview-description">
           <div className="preview-description-scroll" data-testid="preview-description-scroll">
             <p className="ap-desc" lang={descriptionLang} data-testid="preview-description-text">
@@ -128,6 +131,7 @@ export function ArtPreview({
             <a href={artwork.sourceUrl} target="_blank" rel="noopener noreferrer">{sourceLabel}</a>
           </p>
         </div>
+        )}
         <button type="button" className="preview-close" data-testid="preview-close"
           aria-label={closeLabel} onClick={close}>×</button>
       </figure>

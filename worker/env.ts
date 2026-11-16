@@ -27,6 +27,8 @@ export interface Env {
   STRIPE_PRICE_ID?: string;
   /** "true" lets visitors start a purchase. Stays "false" until the commercial-law notice and the tests are done. */
   PURCHASES_ENABLED?: string;
+  /** "true" makes full-size Premium paintings need a Premium account (set together with VITE_PREMIUM_ENABLED). */
+  PREMIUM_ENFORCED?: string;
   /** "true" allows a LIVE Stripe key (real money). Absent/anything else: only test keys can start a Checkout. */
   ALLOW_LIVE_PAYMENTS?: string;
 }

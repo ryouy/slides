@@ -1,5 +1,5 @@
 import { BackButton } from '../../../components/Icons';
-import { isLevelLocked, useEntitlement } from '../../../premium/entitlement';
+import { isCustomArtwork, isLevelLocked, useEntitlement } from '../../../premium/entitlement';
 import { go } from '../../../router';
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { AdSlot } from '../../../ads/AdSlot';
@@ -62,6 +62,7 @@ export function ArtGameView(p: Props) {
   stateRef.current = state;
   const locked = !!preview || cleared || shuffling || lineMoving || img.status !== 'ready';
   const aspect = aspectOf(artwork);
+  const own = isCustomArtwork(artwork.id); // the visitor's own photo: no painting details, no sharing
 
   useGameTimer((ms) => dispatch({ type: 'tick', ms }));
 
@@ -174,7 +175,7 @@ export function ArtGameView(p: Props) {
         <div className="top-titles">
           {daily && <small className="top-kicker">{t('art.dailyTitle', { n: state.puzzle.number ?? '' })}</small>}
           <h1 data-testid="art-title">{artwork.title}</h1>
-          <span className="top-sub">{artwork.artist}, {artwork.year}</span>
+          {!own && <span className="top-sub">{artwork.artist}, {artwork.year}</span>}
         </div>
         <div className="art-header-controls">
           <div className="stats art-mobile-stats" aria-live="polite">
@@ -264,6 +265,8 @@ export function ArtGameView(p: Props) {
             <Stat label={t('common.moves')} value={String(state.moves)} id="moves-desktop" />
           </div>
         </div>
+        {!own && (
+          <>
         <p className="ap-desc" data-testid="art-desc" lang={descriptionLang}>
           {descriptionLang === 'ja' ? artwork.descriptionTranslations?.ja ?? artwork.description : artwork.description}
         </p>
@@ -279,7 +282,8 @@ export function ArtGameView(p: Props) {
         <p className="ap-credit">
           {artwork.museum} · <a href={artwork.licenseUrl} target="_blank" rel="noopener noreferrer">CC0</a> · <a href={artwork.sourceUrl} target="_blank" rel="noopener noreferrer">{t('art.source')}</a>
         </p>
-
+          </>
+        )}
       </div>
       <AdSlot side />
 
@@ -296,6 +300,7 @@ export function ArtGameView(p: Props) {
           englishLabel={t('art.descriptionEnglish')}
           sourceLabel={t('art.source')}
           closeLabel={t('common.close')}
+          plain={own}
         />
       )}
 
@@ -307,7 +312,8 @@ export function ArtGameView(p: Props) {
             { label: t('common.moves'), value: state.moves },
           ]}
           shareText={shareText}
-          shareUrl={artShareUrl(artwork.id, daily)}
+          shareUrl={own ? '' : artShareUrl(artwork.id, daily)}
+          noShare={own}
           onClose={() => setShowResult(false)}
           onNext={daily ? p.onChangeArtwork : p.onNextArtwork}
           onHome={p.onBack}
@@ -318,7 +324,7 @@ export function ArtGameView(p: Props) {
             <img src={artwork.thumbnailUrl} alt={artwork.title} />
             <figcaption>
               <b>{artwork.title}</b>
-              <span>{artwork.artist} · {artwork.year}</span>
+              {!own && <span>{artwork.artist} · {artwork.year}</span>}
             </figcaption>
           </figure>
         </ResultModal>

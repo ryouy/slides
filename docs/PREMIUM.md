@@ -147,6 +147,13 @@ stripe listen --forward-to localhost:8787/api/stripe/webhook   # Stripe CLI（We
 
 テスト: `npx vitest run`（`worker/worker.test.ts` は SQLite 上で本物のマイグレーションを実行し、Google・Stripe は偽の応答で検証）。`npx playwright test` の `e2e/premium.spec.ts` / `e2e/sync.spec.ts` は API・Google・Drive を偽物に差し替えて画面の挙動を検証します。
 
-## 設計上の限界
+## 制限のしくみと、設計上の限界
 
-画像とゲームのコードは静的ファイルなので、制限は画面と操作の上での制限です。URL を直接たたけば Premium 作品の画像ファイルは取得できます。厳密に守るには、Premium 画像を Worker 経由（ログイン・契約確認つき）で配信する構成が別途必要です。
+| 守るもの | どう守るか | 限界 |
+|---|---|---|
+| Premium 作品（Free 以外の 364 点）の**高解像度画像** | Worker が `/artworks/<id>.webp` を配信し、`PREMIUM_ENFORCED=true` のとき、契約が有効なアカウント（D1 の記録）にだけ返す。Free 作品・今日のデイリー・サムネイル・共有画像は誰でも取得可。エラー時は拒否側（503） | **サムネイル（約 480px）は公開**です（ギャラリーに表示するため）。小さな画像でパズルを作ることは技術的に可能です |
+| 盤面レベル 6・7 | 画面と操作の制限（ゲームのコードは静的ファイル） | ブラウザの開発者ツールで改造すれば遊べます（画像の保護とは別の話で、サーバー側では止められません） |
+| 広告の非表示・自分の写真 | 画面側の制限 | 同上。ただし写真は端末内だけの機能で、サーバーの資源を使いません |
+| Premium の判定そのもの | サーバーの記録だけ。ブラウザに保存した値や、開発用の切り替えスイッチ（`slides:dev-…`）は**本番ビルドに含まれません**（`check-deploy.mjs` が確認） | — |
+
+`PREMIUM_ENFORCED` は **Secret**（ダッシュボード）で、未設定なら画像は従来どおり全員に配信されます。`VITE_PREMIUM_ENABLED`（ビルド変数）・`PURCHASES_ENABLED`（Secret）と**同時に**有効にしてください（先に画像だけ保護すると、制限を知らない Free 利用者の画面で画像が出なくなります）。

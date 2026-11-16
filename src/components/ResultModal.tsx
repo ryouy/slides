@@ -14,10 +14,12 @@ interface Props {
   footer?: ReactNode;
   heading?: string;
   secondary?: { label: string; onClick: () => void };
+  /** No Share button (e.g. the visitor's own photo, which has no public page). */
+  noShare?: boolean;
 }
 
 /** Shared result screen used by all games, with a single native share action. */
-export function ResultModal({ stats, shareText, shareUrl, onClose, onNext, onHome, nextLabel, children, footer, heading, secondary }: Props) {
+export function ResultModal({ stats, shareText, shareUrl, onClose, onNext, onHome, nextLabel, children, footer, heading, secondary, noShare }: Props) {
   const t = useT();
   const [msg, setMsg] = useState('');
 
@@ -58,7 +60,7 @@ export function ResultModal({ stats, shareText, shareUrl, onClose, onNext, onHom
         </div>
         {footer}
         <div className="actions result-actions">
-          <button className="btn" type="button" data-testid="share-toggle" onClick={share}>{t('share.share')}</button>
+          {!noShare && <button className="btn" type="button" data-testid="share-toggle" onClick={share}>{t('share.share')}</button>}
           {secondary && <button className="btn" onClick={secondary.onClick}>{secondary.label}</button>}
           <button className="btn primary" onClick={onNext}>{nextLabel}</button>
         </div>

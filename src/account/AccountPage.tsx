@@ -8,6 +8,9 @@ import { postJson, signInUrl } from './api';
 import { DriveSync } from '../sync/DriveSync';
 import { refreshAccount, useAccount } from './store';
 
+/** Contract states in which the portal (payment method, cancel) is what the visitor needs. */
+const OPEN = new Set(['active', 'trialing', 'past_due', 'unpaid', 'incomplete', 'paused']);
+
 /** Account: Google sign-in, plan and subscription management. Shown only when the paid plan is switched on. */
 export function AccountPage() {
   const t = useT();
@@ -55,9 +58,10 @@ export function AccountPage() {
                 ? t(me.cancelAtPeriodEnd ? 'acct.premiumEnds' : 'acct.premiumRenews', { date: date(me.currentPeriodEnd) })
                 : t('acct.free')}
             </p>
-            {premium || me.status ? (
+            {premium || OPEN.has(me.status ?? '') ? (
               <button className="btn wide" data-testid="manage" disabled={busy} onClick={() => run(openPortal)}>{t('acct.manage')}</button>
             ) : (
+              // no contract, or one that has ended: subscribing (again) is offered
               canSubscribe(config) && <button className="btn primary wide" data-testid="account-subscribe" disabled={busy} onClick={() => run(startCheckout)}>{t('premium.subscribe')}</button>
             )}
             <DriveSync />

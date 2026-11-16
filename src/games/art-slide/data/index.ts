@@ -12,7 +12,11 @@ export const ARTWORKS: Artwork[] = [...BASE_ARTWORKS, ...NEW_ARTWORKS].map((artw
 }));
 
 const byId = new Map(ARTWORKS.map((a) => [a.id, a]));
-export const getArtwork = (id: string): Artwork | undefined => byId.get(id);
+/** Artworks that exist only on this device (the visitor's own photos), added at run time. */
+const extra = new Map<string, Artwork>();
+export const registerArtwork = (a: Artwork): void => void extra.set(a.id, a);
+export const unregisterArtwork = (id: string): void => void extra.delete(id);
+export const getArtwork = (id: string): Artwork | undefined => byId.get(id) ?? extra.get(id);
 
 /** The paintings a visitor may play right now (everything while the paid plan is not live). */
 export const playableArtworks = (premium: boolean, gating?: boolean): Artwork[] => ARTWORKS.filter((a) => !isArtworkLocked(a.id, premium, gating));
