@@ -605,3 +605,58 @@ test('dark theme keeps the art UI readable', async ({ page }) => {
   await page.goto('/art-slide/play/degas-dance-class');
   await expect(tiles(page).first()).toBeVisible();
 });
+
+test.describe('Free / Premium gating (dev switch)', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('slides:dev-gating', '1'));
+  });
+
+  test('gallery marks Premium paintings with a lock; a locked painting opens the offer, not the game', async ({ page }) => {
+    await page.goto('/art-slide/gallery');
+    await expect(page.locator('[data-testid^="art-"]')).toHaveCount(104);
+    await expect(page.locator('[data-testid^="lock-"]')).toHaveCount(74); // 104 - 30 free
+    await expect(page.getByTestId('lock-van-gogh-bedroom')).toHaveCount(0); // a free painting
+    await page.locator('[data-testid^="lock-"]').first().locator('xpath=..').click();
+    await expect(page.getByTestId('premium-reason')).toBeVisible();
+    await expect(page.locator('.aboard')).toHaveCount(0);
+  });
+
+  test('typing a locked URL directly shows the offer', async ({ page }) => {
+    await page.goto('/art-slide/play/monet-stacks-of-wheat-end-of-summer');
+    await expect(page.getByTestId('premium')).toBeVisible();
+    await expect(page.locator('.aboard')).toHaveCount(0);
+    await page.goto('/art-slide/play/van-gogh-bedroom');
+    await expect(page.locator('.aboard')).toBeVisible();
+  });
+
+  test('boards above level 6 are locked and open the offer', async ({ page }) => {
+    await page.goto('/art-slide/play/van-gogh-bedroom');
+    await expect(page.getByTestId('asize-6')).toBeVisible();
+    await expect(page.getByTestId('asize-7')).toHaveClass(/locked/);
+    await page.getByTestId('asize-6').click();
+    await expect(page.locator('.aboard')).toBeVisible();
+    await page.getByTestId('asize-7').click();
+    await expect(page.getByTestId('premium')).toBeVisible();
+  });
+
+  test('Premium (dev flag) opens everything', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('slides:dev-premium', '1'));
+    await page.goto('/art-slide/gallery');
+    await expect(page.locator('[data-testid^="lock-"]')).toHaveCount(0);
+    await page.goto('/art-slide/play/monet-stacks-of-wheat-end-of-summer');
+    await expect(page.locator('.aboard')).toBeVisible();
+    await expect(page.getByTestId('asize-8')).not.toHaveClass(/locked/);
+    await page.getByTestId('asize-8').click();
+    await expect(page.locator('.atile').first()).toBeVisible();
+  });
+
+  test('the offer shows price, features and renewal terms', async ({ page }) => {
+    await page.goto('/art-slide/premium');
+    const text = await page.getByTestId('premium').innerText();
+    expect(text).toContain('¥200 / month');
+    expect(text).toMatch(/All artworks/);
+    expect(text).toMatch(/No ads/);
+    expect(text).toMatch(/Renews automatically/);
+    await expect(page.getByTestId('premium-subscribe')).toBeDisabled(); // not purchasable until the paid plan is live
+  });
+});

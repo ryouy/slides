@@ -17,6 +17,8 @@ function Svg({ size = 20, className, children }: IconProps & { children: ReactNo
 export const ChevronLeft = (p: IconProps) => <Svg {...p}><path d="M14.5 5.5 8 12l6.5 6.5" /></Svg>;
 export const ChevronRight = (p: IconProps) => <Svg {...p}><path d="M9.5 5.5 16 12l-6.5 6.5" /></Svg>;
 
+export const LockIcon = (p: IconProps) => <Svg {...p}><rect x="5.5" y="11" width="13" height="9" rx="2" /><path d="M8.5 11V8.5a3.5 3.5 0 0 1 7 0V11" /></Svg>;
+
 /** Round, quiet back button used in every top bar. */
 export function BackButton({ onClick, label }: { onClick: () => void; label: string }) {
   return (
