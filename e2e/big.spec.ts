@@ -37,17 +37,25 @@ async function solve(page: Page, mode: 'daily' | 'endless') {
   for (const m of await readSolution(page, mode)) await playMove(page, m);
 }
 
+/** The other games sit in the folded "More" section of the main page. */
+const openMore = async (page: Page) => {
+  const d = page.getByTestId('art-more');
+  if (!(await d.evaluate((e) => (e as HTMLDetailsElement).open))) await d.locator('summary').click();
+};
+
 test('the main page is ART SLIDE; BIG and WORD are reached from it and lead back', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('.art-home-title')).toHaveText('ART SLIDE');
   await expect(page.getByTestId('exhibit')).toBeVisible();
   await expect(page).toHaveTitle(/ART SLIDE/);
   await expect(page.getByTestId('to-main')).toHaveCount(0); // nothing "above" the main page
+  await openMore(page);
   await page.getByTestId('more-big').click();
   await expect(page).toHaveURL(/\/big-slide$/);
   await expect(page.getByTestId('big-daily')).toBeVisible();
   await page.getByTestId('to-main').click();
   await expect(page).toHaveURL(/\/$/);
+  await openMore(page);
   await page.getByTestId('more-word').click();
   await expect(page).toHaveURL(/\/word-slide$/);
   await expect(page.getByTestId('daily')).toBeVisible();
@@ -70,7 +78,7 @@ test('direct URLs and legacy hash URLs work', async ({ page }) => {
   await page.goto('/#/how');
   await expect(page).toHaveURL(/\/word-slide\/how$/);
   await page.goto('/privacy');
-  await expect(page.locator('.topbar h1')).toHaveText('PRIVACY POLICY');
+  await expect(page.locator('.topbar h1')).toHaveText('Privacy');
 });
 
 test('BIG SLIDE daily: 4x4 with one big tile, 10 numbers and a goal picture', async ({ page }) => {
@@ -162,6 +170,7 @@ test('WORD SLIDE progress is untouched by visiting BIG SLIDE; theme applies to b
   await page.getByTestId('theme-dark').click();
   await page.getByRole('button', { name: 'Back' }).click(); // a fresh load of Settings leads back to the main page (ART SLIDE)
   await expect(page).toHaveURL(/\/art-slide$/);
+  await openMore(page);
   await page.getByTestId('more-big').click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.getByTestId('big-daily').click();
@@ -215,7 +224,7 @@ test('variant choice is remembered and shown in the title', async ({ page }) => 
   await page.getByTestId('variant-duo').click();
   await page.getByTestId('size-5').click();
   await page.getByTestId('bdiff-normal').click();
-  await expect(page.locator('.topbar h1')).toContainText('DUO');
+  await expect(page.locator('.topbar h1')).toContainText('Duo');
   await expect(page.locator('.topbar h1')).toContainText('5×5');
   await page.reload();
   await expect(page.locator('.bboard .bpiece[data-kind="big"]')).toHaveCount(2); // resumed in progress

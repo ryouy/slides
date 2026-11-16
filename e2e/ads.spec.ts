@@ -244,6 +244,6 @@ test('privacy policy covers the ad network and the opt-out', async ({ page }) =>
   expect(text).toMatch(/AdMax/);
   expect(text).not.toMatch(/Adsterra/);
   expect(text).toMatch(/cookies/i);
-  expect(text).toMatch(/EU|EEA|Switzerland/);
+  expect(text).toMatch(/consent is required/i); // consent first where the law requires it
   expect(text).toMatch(/Settings/);
 });

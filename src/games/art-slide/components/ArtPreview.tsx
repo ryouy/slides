@@ -83,11 +83,15 @@ export function ArtPreview({
   // a little larger than the board, but always fully on screen
   const vw = window.innerWidth;
   const vh = window.innerHeight;
-  const s = Math.max(0.5, Math.min(GROW, (vw - 8) / rect.width, (vh - 8) / rect.height));
+  // The card stays centred on the board: near a screen edge it simply grows less, so it is never cut off.
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  const fit = (centre: number, extent: number, size: number) => (2 * Math.min(centre - 4, extent - centre - 4)) / size;
+  const s = Math.max(0.5, Math.min(GROW, (vw - 8) / rect.width, (vh - 8) / rect.height, fit(cx, vw, rect.width), fit(cy, vh, rect.height)));
   const w = rect.width * s;
   const h = rect.height * s;
-  const left = rect.left + rect.width / 2 - w / 2;
-  const top = rect.top + rect.height / 2 - h / 2;
+  const left = cx - w / 2;
+  const top = cy - h / 2;
 
   return createPortal(
     <div className={`preview-layer${closing ? ' closing' : ''}`} role="dialog" aria-modal="true" aria-label={label} data-testid="preview-layer" data-state={closing ? 'closing' : 'open'} onClick={close}>

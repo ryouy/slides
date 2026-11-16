@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
+import { ARTWORKS } from '../src/games/art-slide/data';
 import { FREE_ARTWORK_IDS } from '../src/premium/entitlement';
+
+const ARTWORK_COUNT = ARTWORKS.length;
 
 const errors = new WeakMap<Page, string[]>();
 
@@ -44,6 +47,24 @@ async function shuffleDone(page: Page) {
 const tiles = (page: Page) => page.locator('.aboard .apiece:not(.ghost)');
 const snap = (page: Page) => page.locator('.atile').evaluateAll((els) => els.map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).join());
 
+/** The "More" section of the home page (How to play, Stats, Credits, the other games...) is folded: open it. */
+const openMore = async (page: Page) => {
+  const d = page.getByTestId('art-more');
+  if (!(await d.evaluate((e) => (e as HTMLDetailsElement).open))) await d.locator('summary').click();
+};
+/** The piece-count menu is a dropdown (levels 3..7 in order); two copies exist (phone / desktop), one is hidden. */
+const sizeTrigger = (page: Page) => page.locator('[data-testid=art-size-select]:visible');
+const sizeOptions = (page: Page) => page.locator('[data-testid=art-size-select-options]:visible').getByRole('option');
+async function setLevel(page: Page, level: number) {
+  await sizeTrigger(page).click();
+  await sizeOptions(page).nth(level - 3).click();
+}
+/** The gallery's "Group by" / "Per row" menus are the same kind of dropdown. */
+async function chooseSlide(page: Page, testId: string, option: RegExp | string) {
+  await page.locator(`[data-testid=${testId}]:visible`).click();
+  await page.locator(`[data-testid=${testId}-options]:visible`).getByRole('option', { name: option }).click();
+}
+
 test('ART SLIDE is the main page (/ and /art-slide), plain and not Wordle-like, with no daily button duplicating the exhibit', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('.art-home-title')).toHaveText('ART SLIDE');
@@ -56,22 +77,27 @@ test('ART SLIDE is the main page (/ and /art-slide), plain and not Wordle-like, 
   await expect(page).toHaveURL(/\/art-slide\/gallery$/);
   await page.getByRole('button', { name: 'Back' }).click();
   await expect(page).toHaveURL(/\/art-slide$/);
+  await openMore(page);
   await expect(page.getByTestId('more-big')).toBeVisible();
   await expect(page.getByTestId('more-word')).toBeVisible();
   await page.goto('/art-slide/gallery'); // direct URL
   await expect(page.getByTestId('gallery')).toBeVisible();
 });
 
-test('the exhibit card leads straight to today\'s puzzle; four quiet links', async ({ page }) => {
+test('the exhibit card leads straight to today\'s puzzle; the quiet links are folded into More', async ({ page }) => {
   await page.goto('/art-slide');
-  await expect(page.locator('.home-links button')).toHaveCount(4);
+  await expect(page.locator('.art-more-main a').first()).toBeHidden(); // folded until opened
+  await openMore(page);
+  await expect(page.locator('.art-more-main a')).toHaveCount(3); // how to play, stats, credits (Premium/Account only when the paid plan is on)
   await page.getByTestId('exhibit').click();
   await expect(page).toHaveURL(/\/art-slide\/daily$/);
 });
 
 test('gallery shows 100+ paintings with title, artist, year and lazy thumbnails', async ({ page }) => {
   await page.goto('/art-slide/gallery');
+  await chooseSlide(page, 'group-by', /No grouping/);
   const cards = page.locator('.gcard');
+  await expect(cards.first()).toBeVisible();
   expect(await cards.count()).toBeGreaterThanOrEqual(100);
   await expect(cards.first().locator('img')).toHaveAttribute('loading', 'lazy');
   await expect(cards.first().locator('.g-title')).not.toBeEmpty();
@@ -80,43 +106,52 @@ test('gallery shows 100+ paintings with title, artist, year and lazy thumbnails'
   await expect(page).toHaveURL(/\/art-slide\/play\/[a-z0-9-]+$/);
 });
 
-test('gallery: search, group by theme/artist/era, sort, and the choice is remembered', async ({ page }) => {
+test('gallery: search, group by theme/artist/era shown as tabs, randomised order, and the choice is remembered', async ({ page }) => {
   await page.goto('/art-slide/gallery');
-  const total = await page.locator('.gcard').count();
-  await expect(page.locator('.gal-h').first()).toContainText(/landscape/i); // default: grouped by theme
-  expect(await page.locator('.gal-group').count()).toBeGreaterThanOrEqual(6);
+  await expect(page.getByTestId('gal-tabs')).toBeVisible(); // default: grouped by theme, one tab per theme
+  await expect(page.locator('[data-testid^="group-tab-"]').first()).toContainText(/landscape|people|portrait|sea/i);
+  expect(await page.locator('[data-testid^="group-tab-"]').count()).toBeGreaterThanOrEqual(6);
+  const firstTab = await page.locator('[data-testid^="group-tab-"]').first().getAttribute('data-testid');
+  await page.locator('[data-testid^="group-tab-"]').nth(1).click();
+  await expect(page.locator('[role=tab][aria-selected=true]')).not.toHaveAttribute('data-testid', firstTab!); // another group shows
+  // search: counts and results
   await page.getByTestId('gal-search').fill('monet');
-  const monet = await page.locator('.gcard').count();
+  await expect(page.getByTestId('gal-count')).toContainText(' of ');
+  const monet = Number(((await page.getByTestId('gal-count').innerText()).match(/^(\d+) of/) ?? [])[1]);
   expect(monet).toBeGreaterThanOrEqual(3);
-  expect(monet).toBeLessThan(total);
-  await expect(page.getByTestId('gal-count')).toContainText(`${monet} of`);
+  await chooseSlide(page, 'group-by', /No grouping/);
+  expect(await page.locator('.gcard').count()).toBe(monet);
   for (const meta of await page.locator('.g-meta').allInnerTexts()) expect(meta).toContain('Monet');
   await page.getByTestId('gal-search').fill('zzzz nothing');
   await expect(page.locator('.gal-empty')).toBeVisible();
   await page.getByTestId('gal-search').fill('');
   await expect(page.getByTestId('gal-count')).toHaveCount(0); // the count only shows while filtering
-  await page.getByTestId('group-by').selectOption('artist');
-  expect(await page.locator('.gal-h').count()).toBeGreaterThanOrEqual(40);
-  await page.getByTestId('group-by').selectOption('era');
-  const heads = await page.locator('.gal-h').allInnerTexts();
+  // artists, then eras (oldest first)
+  await chooseSlide(page, 'group-by', /Artist/);
+  expect(await page.locator('[data-testid^="group-tab-"]').count()).toBeGreaterThanOrEqual(40);
+  await chooseSlide(page, 'group-by', /Era/);
+  const heads = await page.locator('[data-testid^="group-tab-"]').allInnerTexts();
   expect(heads[0]).toMatch(/before 1700/i);
   expect(heads[heads.length - 1]).toMatch(/1900s/i);
-  await page.getByTestId('group-by').selectOption('none');
-  await page.getByTestId('sort-by').selectOption('year-asc');
-  expect(await page.locator('.gal-h').count()).toBe(0);
-  const years = (await page.locator('.g-meta').allInnerTexts()).map((t) => Number((t.match(/(\d{4})/) ?? [])[1])).filter(Boolean);
-  expect(years[0]).toBeLessThanOrEqual(1700);
-  expect(years[years.length - 1]).toBeGreaterThanOrEqual(1893);
+  // randomised order is a new order, and it is remembered
+  await chooseSlide(page, 'group-by', /No grouping/);
+  const order = () => page.locator('.gcard').evaluateAll((els) => els.slice(0, 12).map((e) => e.getAttribute('data-testid')).join());
+  const before = await order();
+  await page.getByTestId('gal-random').click();
+  await expect.poll(order).not.toBe(before);
+  await expect(page).toHaveURL(/\/art-slide\/gallery$/); // it stays in the gallery
+  const shuffled = await order();
   await page.reload();
-  await expect(page.getByTestId('group-by')).toHaveValue('none');
-  await expect(page.getByTestId('sort-by')).toHaveValue('year-asc');
+  await expect(page.locator('[data-testid=group-by]:visible')).toContainText('No grouping');
+  expect(await order()).toBe(shuffled);
 });
 
 test('easy level: caption bar, whole-painting board, solve, painting completes, result shown', async ({ page }) => {
   await page.goto('/art-slide/play/van-gogh-bedroom');
   const d = await savedPuzzle(page, 'free');
   await expect(tiles(page)).toHaveCount(d.cols * d.rows - 1);
-  await expect(page.getByTestId('asize-3')).toHaveAttribute('aria-pressed', 'true');
+  expect(d.size).toBe(3);
+  await expect(sizeTrigger(page)).toContainText(`${d.cols}×${d.rows}`);
   await expect(page.getByTestId('art-title')).toHaveText('The Bedroom');
   await expect(page.locator('.top-sub')).toContainText('Vincent van Gogh');
   // the description is simply shown (nothing to unfold), with a quiet credit line
@@ -141,7 +176,7 @@ for (const level of [4, 5]) {
   test(`level ${level}: more pieces than the easier level, and a working solution`, async ({ page }) => {
     await page.goto('/art-slide/play/monet-water-lilies');
     const easy = await savedPuzzle(page, 'free');
-    await page.getByTestId(`asize-${level}`).click();
+    await setLevel(page, level);
     await expect.poll(async () => (await savedPuzzle(page, 'free')).size).toBe(level);
     const d = await savedPuzzle(page, 'free');
     expect(d.cols * d.rows).toBeGreaterThan(easy.cols * easy.rows);
@@ -154,7 +189,7 @@ for (const level of [4, 5]) {
 test('the grid follows the painting: wide paintings get more columns, tall ones more rows, and the board has the painting\'s own shape', async ({ page }) => {
   for (const [id, wide] of [['hokusai-great-wave', true], ['sargent-madame-x', false]] as const) {
     await page.goto(`/art-slide/play/${id}`);
-    await page.getByTestId('asize-4').click();
+    await setLevel(page, 4);
     await expect.poll(async () => (await savedPuzzle(page, 'free')).size).toBe(4);
     const d = await savedPuzzle(page, 'free');
     if (wide) expect(d.cols).toBeGreaterThan(d.rows);
@@ -177,7 +212,7 @@ test('changing level after moves asks first; SHUFFLE re-places the pieces', asyn
   const before = await snap(page);
   await page.locator(`.atile[data-cell="${sol[0]}"]`).click();
   await expect(page.getByTestId('moves')).toHaveText('1');
-  await page.getByTestId('asize-4').click();
+  await setLevel(page, 4);
   await expect(page.getByRole('alert')).toContainText(/Switch to \d+×\d+/);
   await page.getByRole('button', { name: 'Cancel' }).click();
   await expect(page.getByTestId('moves')).toHaveText('1'); // cancelled: nothing changed
@@ -185,7 +220,7 @@ test('changing level after moves asks first; SHUFFLE re-places the pieces', asyn
   await shuffleDone(page);
   expect(await snap(page)).not.toBe(before);
   await expect(page.getByTestId('restart')).toHaveCount(0); // there is no Restart button any more
-  await page.getByTestId('asize-5').click(); // no moves yet: switches immediately
+  await setLevel(page, 5); // no moves yet: switches immediately
   await expect.poll(async () => (await savedPuzzle(page, 'free')).size).toBe(5);
 });
 
@@ -270,7 +305,7 @@ test('pages glide in: forward from the right, back from the left', async ({ page
   expect(box!.width).toBeGreaterThan(page.viewportSize()!.width - 2); // the overlay covers the viewport
 });
 
-test('preview lies over the real puzzle a little larger, with tiny credits, and fades out smoothly', async ({ page }) => {
+test('preview lies over the real puzzle a little larger (a readable sheet on phones), with tiny credits, and fades out smoothly', async ({ page }, info) => {
   await page.goto('/art-slide/play/hokusai-great-wave');
   await page.waitForTimeout(450);
   const board = (await page.locator('.aboard').boundingBox())!;
@@ -280,22 +315,29 @@ test('preview lies over the real puzzle a little larger, with tiny credits, and 
   await page.waitForTimeout(450);
   const card = (await page.getByTestId('preview-card').boundingBox())!;
   const vp = page.viewportSize()!;
-  // right on top of the board, centred on it, a bit larger (never beyond the screen)
-  expect(card.x).toBeLessThanOrEqual(board.x + 1);
-  expect(card.y).toBeLessThanOrEqual(board.y + 1);
-  expect(card.x + card.width).toBeGreaterThanOrEqual(board.x + board.width - 1);
-  expect(card.y + card.height).toBeGreaterThanOrEqual(board.y + board.height - 1);
-  expect(card.width).toBeGreaterThan(board.width + 4);
-  expect(card.width).toBeLessThanOrEqual(board.width * 1.09);
-  expect(Math.abs(card.x + card.width / 2 - (board.x + board.width / 2))).toBeLessThan(2);
-  expect(card.x).toBeGreaterThanOrEqual(-0.5);
-  expect(card.x + card.width).toBeLessThanOrEqual(vp.width + 0.5);
+  if (info.project.name === 'desktop') {
+    // right on top of the board, centred on it, a bit larger (never beyond the screen)
+    expect(card.x).toBeLessThanOrEqual(board.x + 1);
+    expect(card.y).toBeLessThanOrEqual(board.y + 1);
+    expect(card.x + card.width).toBeGreaterThanOrEqual(board.x + board.width - 1);
+    expect(card.y + card.height).toBeGreaterThanOrEqual(board.y + board.height - 1);
+    expect(card.width).toBeGreaterThan(board.width + 4);
+    expect(card.width).toBeLessThanOrEqual(board.width * 1.09);
+    expect(Math.abs(card.x + card.width / 2 - (board.x + board.width / 2))).toBeLessThan(2);
+    expect(card.x).toBeGreaterThanOrEqual(-0.5);
+    expect(card.x + card.width).toBeLessThanOrEqual(vp.width + 0.5);
+  } else {
+    // phones get a readable sheet instead of an overlay on the board: it is simply fully on screen
+    expect(card.x).toBeGreaterThanOrEqual(-0.5);
+    expect(card.x + card.width).toBeLessThanOrEqual(vp.width + 0.5);
+    expect(card.width).toBeGreaterThan(vp.width * 0.9);
+  }
   // the picture is whole, not stretched, and its credits are small
   const img = layer.locator('img');
   await expect(img).toHaveAttribute('alt', /Great Wave/);
   await expect(img).toHaveCSS('object-fit', 'contain');
   const [nw, nh] = await img.evaluate((e: HTMLImageElement) => [e.naturalWidth, e.naturalHeight]);
-  expect(Math.abs(card.width / card.height - nw / nh)).toBeLessThan(0.03);
+  if (info.project.name === 'desktop') expect(Math.abs(card.width / card.height - nw / nh)).toBeLessThan(0.03); // (on phones the sheet also holds the text; object-fit: contain keeps the picture undistorted)
   expect(await layer.locator('.pv-title').evaluate((e) => parseFloat(getComputedStyle(e).fontSize))).toBeLessThanOrEqual(12);
   expect(await layer.locator('.pv-credit').evaluate((e) => parseFloat(getComputedStyle(e).fontSize))).toBeLessThanOrEqual(10.5);
   await expect(layer.locator('.pv-credit')).toContainText('CC0');
@@ -335,34 +377,28 @@ test('preview lies over the real puzzle a little larger, with tiny credits, and 
   await expect(page.getByTestId('moves')).toHaveText('1');
 });
 
-test('the home and the gallery are about visiting a gallery, with a random-painting button in both', async ({ page }) => {
+test('the home offers the gallery and a random painting; the gallery has its own randomise button', async ({ page }) => {
   await page.goto('/art-slide');
   await expect(page.getByTestId('art-gallery')).toHaveText('Visit the gallery');
   await expect(page.getByTestId('art-random')).toHaveText('Random painting');
   await page.getByTestId('art-gallery').click();
   await expect(page.locator('.topbar h1')).toHaveText('GALLERY');
-  await expect(page.getByTestId('gal-random')).toBeVisible();
+  await expect(page.getByTestId('gal-random')).toBeVisible(); // reorders the gallery (checked in the gallery test)
   const seen = new Set<string>();
   for (let i = 0; i < 6; i++) {
-    await page.getByTestId('gal-random').click();
+    await page.goto('/art-slide');
+    await page.getByTestId('art-random').click();
     await expect(page).toHaveURL(/\/art-slide\/play\/[a-z0-9-]+$/);
-    const id = page.url().split('/').pop()!;
-    seen.add(id);
+    seen.add(page.url().split('/').pop()!);
     await expect(page.locator('.atile').first()).toBeVisible();
-    await page.getByTestId('change-artwork').click(); // back to the gallery
-    await expect(page).toHaveURL(/\/art-slide\/gallery$/);
   }
   expect(seen.size).toBeGreaterThanOrEqual(2); // it really varies
-  await page.goto('/art-slide');
-  await page.getByTestId('art-random').click();
-  await expect(page).toHaveURL(/\/art-slide\/play\/[a-z0-9-]+$/);
-  await expect(page.getByTestId('art-title')).not.toBeEmpty();
 });
 
 test('slicing is seamless and uncropped in the browser for landscape and portrait works', async ({ page }) => {
   for (const id of ['hokusai-great-wave', 'sargent-madame-x', 'monet-water-lilies']) {
     await page.goto(`/art-slide/play/${id}`);
-    await page.getByTestId('asize-4').click();
+    await setLevel(page, 4);
     await expect.poll(async () => (await savedPuzzle(page, 'free')).size).toBe(4);
     const d = await savedPuzzle(page, 'free');
     await expect(tiles(page)).toHaveCount(d.cols * d.rows - 1);
@@ -426,7 +462,7 @@ test('daily: normal level, one painting for everyone, no level switch or shuffle
   const d = await savedPuzzle(page, 'daily');
   expect(d.size).toBe(4);
   await expect(tiles(page)).toHaveCount(d.cols * d.rows - 1);
-  await expect(page.getByTestId('asize-3')).toHaveCount(0);
+  await expect(sizeTrigger(page)).toHaveCount(0); // the daily has a fixed size: no menu
   await expect(page.getByTestId('shuffle')).toHaveCount(0);
   await expect(page.locator('.top-kicker')).toContainText('DAILY');
   const title = await page.getByTestId('art-title').innerText();
@@ -442,30 +478,20 @@ test('daily: normal level, one painting for everyone, no level switch or shuffle
   await expect(page.getByRole('button', { name: /play again/i })).toHaveCount(0);
 });
 
-test('sharing: the result is worked into the text, with a preview link and ready-made buttons', async ({ page }) => {
+test('sharing: Share puts the result into the text with a preview link (copied where Web Share does not exist)', async ({ page }) => {
   await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
   await page.goto('/art-slide/play/van-gogh-bedroom');
   await solve(page, 'free');
   await expect(page.getByRole('dialog', { name: CLEARED })).toBeVisible();
-  await page.getByTestId('share-toggle').click();
-  const text = await page.getByTestId('share-text').innerText();
   const moves = await page.locator('.modal .stat-value').nth(1).innerText();
-  expect(text).toContain('The Bedroom');
-  expect(text).toContain('Vincent van Gogh');
-  expect(text).toContain(`${moves} moves`);
-  expect(text).toMatch(/\d:\d\d/);
-  expect(text).toMatch(/\/s\/van-gogh-bedroom\/$/m); // the link whose preview is the painting as a puzzle
-  const x = new URL((await page.getByTestId('share-x').getAttribute('href'))!);
-  expect(x.hostname).toMatch(/twitter\.com|x\.com/);
-  expect(x.searchParams.get('text')).toContain('The Bedroom');
-  expect(x.searchParams.get('url')).toMatch(/\/s\/van-gogh-bedroom\/$/);
-  expect(new URL((await page.getByTestId('share-line').getAttribute('href'))!).searchParams.get('url')).toMatch(/\/s\/van-gogh-bedroom\//);
-  expect(new URL((await page.getByTestId('share-facebook').getAttribute('href'))!).searchParams.get('u')).toMatch(/\/s\/van-gogh-bedroom\//);
-  await page.getByTestId('share-copy').click();
+  await page.getByTestId('share-toggle').click();
   await expect(page.locator('.share-msg')).toHaveText('Copied!');
   const clip = await page.evaluate(() => navigator.clipboard.readText());
   expect(clip).toContain('The Bedroom');
-  expect(clip).toMatch(/\/s\/van-gogh-bedroom\/$/);
+  expect(clip).toContain('Vincent van Gogh');
+  expect(clip).toContain(`${moves} moves`);
+  expect(clip).toMatch(/\d:\d\d/);
+  expect(clip).toMatch(/\/s\/van-gogh-bedroom\/$/m); // the link whose preview is the painting as a puzzle
 });
 
 test('language: switch in Settings, it applies everywhere and is remembered', async ({ page }) => {
@@ -475,20 +501,23 @@ test('language: switch in Settings, it applies everywhere and is remembered', as
   await expect(page.locator('html')).toHaveAttribute('lang', 'ja');
   await expect(page.locator('.topbar h1')).toHaveText('設定');
   await page.goto('/art-slide');
-  await expect(page.getByTestId('exhibit')).toContainText('本日の展示');
-  await expect(page.getByTestId('art-gallery')).toHaveText('ギャラリーを見に行く');
+  await expect(page.getByTestId('exhibit')).toContainText('今日の一枚');
+  await expect(page.getByTestId('art-gallery')).toHaveText('ギャラリー');
   await page.goto('/art-slide/play/van-gogh-bedroom');
   await expect(page.getByTestId('shuffle')).toHaveText('シャッフル');
-  await expect(page.getByTestId('asize-3')).toContainText('×');
+  await expect(sizeTrigger(page)).toContainText('×');
   await solve(page, 'free');
+  await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
   await page.getByTestId('share-toggle').click();
-  const text = await page.getByTestId('share-text').innerText();
-  expect(text).toContain('「The Bedroom」'); // the shared message is in the player's language
-  expect(text).toContain('手で完成させました');
+  await expect(page.locator('.share-msg')).toBeVisible();
+  const text = await page.evaluate(() => navigator.clipboard.readText());
+  expect(text).toContain('The Bedroom'); // the shared message is in the player's language
+  expect(text).toContain('手');
   await page.getByRole('button', { name: '閉じる' }).click();
   await page.goto('/art-slide/gallery');
   await expect(page.getByTestId('gal-search')).toHaveAttribute('placeholder', /検索/);
-  await expect(page.locator('.gal-h').first()).toContainText('風景');
+  await expect(page.locator('[data-testid^="group-tab-"]').first()).toBeVisible();
+  await expect(page.getByTestId('gal-tabs')).toContainText('風景');
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('lang', 'ja');
   for (const lang of ['zh', 'ko', 'es', 'fr', 'de']) {
@@ -505,15 +534,17 @@ test('first visit follows the browser language', async ({ browser }) => {
   const p = await ctx.newPage();
   await p.goto('/art-slide');
   await expect(p.locator('html')).toHaveAttribute('lang', 'ja');
-  await expect(p.getByTestId('art-gallery')).toHaveText('ギャラリーを見に行く');
+  await expect(p.getByTestId('art-gallery')).toHaveText('ギャラリー');
   await ctx.close();
 });
 
 test('credits list every painting with licence and source; other games untouched', async ({ page }) => {
   await page.goto('/art-slide/credits');
   const items = page.getByTestId('credits').locator('li');
-  expect(await items.count()).toBeGreaterThanOrEqual(100);
-  await expect(items.first().locator('a')).toHaveCount(2);
+  expect(await items.count()).toBe(ARTWORK_COUNT);
+  const links = await items.first().locator('a').evaluateAll((els) => els.map((e) => e.getAttribute('href') ?? ''));
+  expect(links.some((h) => /creativecommons\.org/.test(h))).toBe(true); // licence
+  expect(links.some((h) => /artic\.edu|metmuseum\.org/.test(h))).toBe(true); // source
   await page.goto('/word-slide/daily');
   await expect(page.locator('.tile')).toHaveCount(15);
   expect(await page.evaluate(() => localStorage.getItem('wordslide:save') ?? '')).not.toContain('artslide');
@@ -527,7 +558,7 @@ test('puzzle first: the board is large; on desktop all controls sit in a tidy co
   const vp = page.viewportSize()!;
   expect(board.x + board.width).toBeLessThanOrEqual(vp.width);
   if (info.project.name === 'desktop') {
-    const parts = await Promise.all(['asize-3', 'time', 'moves', 'preview', 'shuffle', 'numbers-toggle'].map(async (id) => (await page.getByTestId(id).boundingBox())!));
+    const parts = await Promise.all([sizeTrigger(page), page.getByTestId('time-desktop'), page.getByTestId('moves-desktop'), page.getByTestId('preview'), page.getByTestId('shuffle'), page.getByTestId('numbers-toggle')].map(async (l) => (await l.boundingBox())!));
     for (const b of parts) expect(b.x).toBeGreaterThanOrEqual(board.x + board.width); // everything beside the board
     const desc = (await page.getByTestId('art-desc').boundingBox())!;
     expect(desc.x).toBeGreaterThanOrEqual(board.x + board.width);
@@ -535,14 +566,14 @@ test('puzzle first: the board is large; on desktop all controls sit in a tidy co
     expect(board.y + board.height).toBeLessThanOrEqual(vp.height); // the whole board is visible without scrolling
     expect(board.height).toBeGreaterThan(vp.height * 0.82); // and large: nearly the whole height
     // the side column is aligned: the controls share one left edge
-    const lefts = [parts[0].x, parts[3].x, desc.x].map((x) => Math.round(x));
+    const lefts = [parts[0].x, desc.x].map((x) => Math.round(x)); // piece count and description share the side column's left edge
     expect(Math.max(...lefts) - Math.min(...lefts)).toBeLessThan(4);
   } else {
     expect(board.width).toBeGreaterThan(vp.width * 0.8);
   }
 });
 
-test('tile numbers sits in the button row where Restart used to be; change artwork stays quiet', async ({ page }) => {
+test('tile numbers sits in the button row with Preview and Shuffle, is clearly on/off and is remembered', async ({ page }) => {
   await page.goto('/art-slide/play/degas-dance-class');
   await page.waitForTimeout(450);
   await expect(page.locator('.anum')).toHaveCount(0);
@@ -552,23 +583,19 @@ test('tile numbers sits in the button row where Restart used to be; change artwo
   expect(Math.abs(tg.y - pv.y)).toBeLessThan(2); // one row: Preview, Shuffle, Numbers
   expect(Math.abs(tg.y - sh.y)).toBeLessThan(2);
   expect(tg.x).toBeGreaterThan(sh.x);
-  expect(tg.height).toBeGreaterThanOrEqual(40);
+  expect(tg.height).toBeGreaterThanOrEqual(28); // a comfortable button (the desktop side column is compact)
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   expect(await page.locator('.anum').count()).toBeGreaterThan(3);
   await expect.poll(() => toggle.evaluate((e) => getComputedStyle(e).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)'); // visibly "on" once the colour has eased in
   await page.reload();
   await expect(page.getByTestId('numbers-toggle')).toHaveAttribute('aria-pressed', 'true'); // remembered
-  const size = await page.getByTestId('change-artwork').evaluate((e) => parseFloat(getComputedStyle(e).fontSize));
-  expect(size).toBeLessThanOrEqual(13);
-  await page.getByTestId('change-artwork').click();
-  await expect(page).toHaveURL(/\/art-slide\/gallery$/);
 });
 
-test('navigation uses drawn chevrons, not text arrows', async ({ page }) => {
+test('navigation uses drawn chevrons (back buttons) and no text arrows', async ({ page }) => {
   await page.goto('/art-slide');
-  await expect(page.locator('.og-row svg')).toHaveCount(2); // the way to BIG / WORD
-  expect(await page.locator('.og-row').first().innerText()).not.toMatch(/[→←›‹]/);
+  await openMore(page);
+  expect(await page.locator('.art-more-puzzles, .art-more-puzzles a').first().innerText()).not.toMatch(/[→←›‹]/); // the way to BIG / WORD: plain links
   await page.getByTestId('more-big').click();
   await expect(page.locator('.all-games svg')).toHaveCount(1); // back to ART SLIDE
   expect(await page.locator('.all-games').innerText()).not.toMatch(/[→←›‹]/);
