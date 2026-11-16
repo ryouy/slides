@@ -1,4 +1,4 @@
-import { BackButton, LockIcon } from '../../../components/Icons';
+import { BackButton, ChevronRight, LockIcon } from '../../../components/Icons';
 import { PremiumPanel } from '../../../premium/PremiumPage';
 import { FREE_MAX_LEVEL, isArtworkLocked, useEntitlement } from '../../../premium/entitlement';
 import { useEffect, useLayoutEffect, useMemo, useState, type KeyboardEvent } from 'react';
@@ -43,9 +43,9 @@ export function ArtHome() {
         </span>
       </Link>
       <nav className="menu art-home-menu" aria-label={t('home.explore')}>
-        <button className="btn big" data-testid="art-gallery" onClick={() => go('gallery')}>{t('art.gallery')}</button>
-        <button className="btn big" data-testid="art-random" onClick={() => go(`play/${pickRandomArtwork(undefined, Math.random, premium, gating).id}`)}>{t('art.random')}</button>
-        {resumable && <button className="btn big" data-testid="art-resume" onClick={() => go('play')}>{t('art.resume')}</button>}
+        <button className="btn big" data-testid="art-gallery" onClick={() => go('gallery')}>{t('art.gallery')}<ChevronRight size={26} className="btn-chev" /></button>
+        <button className="btn big" data-testid="art-random" onClick={() => go(`play/${pickRandomArtwork(undefined, Math.random, premium, gating).id}`)}>{t('art.random')}<ChevronRight size={26} className="btn-chev" /></button>
+        {resumable && <button className="btn big" data-testid="art-resume" onClick={() => go('play')}>{t('art.resume')}<ChevronRight size={26} className="btn-chev" /></button>}
       </nav>
       <div className="art-home-secondary">
         <details className="art-more" data-testid="art-more">

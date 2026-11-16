@@ -696,7 +696,7 @@ test.describe('Free / Premium gating (dev switch)', () => {
 test.describe('home on wide screens', () => {
   test('desktop: two columns and a row of six paintings fill the page, with no scroll and no overflow', async ({ page }, info) => {
     test.skip(info.project.name !== 'desktop', 'wide screens only');
-    for (const [w, h] of [[1440, 900], [1366, 768], [1280, 720], [1920, 1080]] as const) {
+    for (const [w, h] of [[1440, 900], [1366, 768], [1280, 800], [1920, 1080]] as const) {
       await page.setViewportSize({ width: w, height: h });
       await page.goto('/art-slide');
       await page.waitForTimeout(600);
@@ -715,6 +715,48 @@ test.describe('home on wide screens', () => {
       expect(m.bottom).toBeGreaterThan(h * 0.65); // the page is filled, not a thin column in a blank screen
       expect(m.menu.x).toBeGreaterThan(m.exhibit.x + m.exhibit.width); // the buttons sit beside today's exhibit
     }
+  });
+
+  test('desktop: More and Settings sit under the paintings row; in a window too short for it, under today\'s exhibit (left) and the two links (right)', async ({ page }, info) => {
+    test.skip(info.project.name !== 'desktop', 'wide screens only');
+    const boxes = () => page.evaluate(() => {
+      const r = (sel: string) => document.querySelector(sel)!.getBoundingClientRect().toJSON();
+      return { exhibit: r('[data-testid=exhibit]'), gallery: r('[data-testid=art-gallery]'), random: r('[data-testid=art-random]'), strip: r('[data-testid=home-picks]'), more: r('.art-more summary'), settings: r('[data-testid=art-settings]') };
+    });
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/art-slide');
+    await page.waitForTimeout(600);
+    const tall = await boxes();
+    expect(tall.more.y).toBeGreaterThanOrEqual(tall.strip.y + tall.strip.height - 1); // below the paintings
+    expect(tall.settings.y).toBeGreaterThanOrEqual(tall.strip.y + tall.strip.height - 1);
+    expect(tall.more.x).toBeLessThan(tall.settings.x); // More left, Settings right
+    await page.setViewportSize({ width: 1280, height: 650 });
+    await page.waitForTimeout(300);
+    await expect(page.getByTestId('home-picks')).toBeHidden();
+    const m = await page.evaluate(() => {
+      const r = (sel: string) => document.querySelector(sel)!.getBoundingClientRect().toJSON();
+      return { exhibit: r('[data-testid=exhibit]'), random: r('[data-testid=art-random]'), more: r('.art-more summary'), settings: r('[data-testid=art-settings]') };
+    });
+    expect(m.more.y).toBeGreaterThanOrEqual(m.exhibit.y + m.exhibit.height - 1); // under today's exhibit...
+    expect(m.more.x).toBeLessThan(m.exhibit.x + m.exhibit.width / 2); // ...at its left
+    expect(m.settings.y).toBeGreaterThanOrEqual(m.random.y + m.random.height - 1); // under the two links...
+    expect(m.settings.x + m.settings.width).toBeGreaterThan(m.random.x + m.random.width - 40); // ...at their right
+  });
+
+  test('desktop: the two links are frameless lines of type with a drawn chevron', async ({ page }, info) => {
+    test.skip(info.project.name !== 'desktop', 'wide screens only');
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/art-slide');
+    for (const id of ['art-gallery', 'art-random']) {
+      const b = page.getByTestId(id);
+      await expect(b).toHaveCSS('border-left-width', '0px'); // no box: only hairlines between the lines
+      await expect(b).toHaveCSS('border-right-width', '0px');
+      await expect(b).toHaveCSS('border-radius', '0px');
+      await expect(b.locator('svg.btn-chev')).toBeVisible();
+      expect(await b.innerText()).not.toMatch(/[→›>]/); // the arrow is drawn, not a character
+    }
+    await page.getByTestId('art-gallery').click();
+    await expect(page).toHaveURL(/\/art-slide\/gallery$/);
   });
 
   test('desktop: a picked painting opens its puzzle; the picks are the same all day', async ({ page }, info) => {
