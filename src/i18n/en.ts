@@ -309,6 +309,7 @@ const en = {
   'sync.useDevice': 'Use this device’s records for this account',
   'sync.newer': 'Your Drive holds records from a newer version of ART SLIDE. Nothing was changed.',
   'sync.offNote': 'Turning sync off keeps your records on this device and the file in your Drive.',
+  'home.fromGallery': 'From the gallery',
 } as const;
 
 export type Key = keyof typeof en;

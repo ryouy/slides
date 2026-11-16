@@ -1,4 +1,5 @@
 import type { Artwork } from '../types';
+import { rngFromString } from '../../../utils/rng';
 
 export type GroupBy = 'none' | 'artist' | 'era' | 'theme';
 export type SortBy = 'artist' | 'title' | 'year-asc' | 'year-desc' | 'random';
@@ -85,4 +86,26 @@ export function groupArtworks(list: readonly Artwork[], groupBy: GroupBy, sortBy
     keys = keys.sort((x, y) => (order.indexOf(x) + 1 || 99) - (order.indexOf(y) + 1 || 99) || byText(x, y));
   }
   return keys.map((k) => ({ key: k, label: k, items: map.get(k)! }));
+}
+
+/**
+ * A few paintings for the home page of wide screens: the same for everyone on a given day, a different set the next day,
+ * each by a different artist. `pool` is what the visitor may play (so a locked painting is never offered).
+ */
+export function homePicks(pool: readonly Artwork[], dateKey: string, count = 6): Artwork[] {
+  const rng = rngFromString(`home-picks|${dateKey}`);
+  const order = [...pool].sort((a, b) => (a.id < b.id ? -1 : 1)); // stable start, whatever order the pool came in
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  const seen = new Set<string>();
+  const out: Artwork[] = [];
+  for (const a of order) {
+    if (seen.has(a.artist)) continue;
+    seen.add(a.artist);
+    out.push(a);
+    if (out.length === count) break;
+  }
+  return out;
 }

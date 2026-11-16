@@ -41,6 +41,7 @@ const ko: Partial<Dict> = {
   'acct.deleteConfirm': '계정을 삭제할까요? 구독이 즉시 종료되고 계정 데이터가 삭제됩니다. 이 기기와 Google 드라이브의 플레이 기록은 유지됩니다.',
   'premium.signIn': '구독하려면 Google로 로그인하세요.',
   'home.account': '계정',
+  'home.fromGallery': '갤러리에서',
   'privacy.premium': 'Premium 및 로그인 안내. 로그인을 선택하면 Google 로그인을 사용하며, Google 계정 ID와 표시 이름만 저장합니다. 구독하는 경우 결제는 전적으로 Stripe가 처리합니다. 카드 정보는 보거나 저장하지 않으며, Stripe 고객 ID, 구독 상태, 결제한 기간의 종료일만 보관합니다. 플레이하는 데 로그인은 필요하지 않습니다. 계정은 언제든지 \'계정\'에서 삭제할 수 있으며, 기기와 본인의 Google 드라이브에 있는 플레이 기록은 삭제되지 않습니다.',
   'legal.premium': 'ART SLIDE Premium은 월 ¥200(세금 포함)의 정기 구독으로, \'계정 → 구독 관리\'에서 해지할 때까지 자동으로 갱신됩니다. 해지 후에도 결제한 기간이 끝날 때까지 Premium을 이용할 수 있으며, 남은 기간에 대한 부분 환불은 하지 않습니다. 결제에 실패하면 이미 결제한 기간 동안만 Premium이 유지됩니다. Premium은 하나의 Google 계정에서 사용할 수 있습니다.',
   'sync.title': 'Google 드라이브 동기화',

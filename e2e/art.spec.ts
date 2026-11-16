@@ -692,3 +692,62 @@ test.describe('Free / Premium gating (dev switch)', () => {
     await expect(page.getByTestId('premium-subscribe')).toBeDisabled(); // not purchasable until the paid plan is live
   });
 });
+
+test.describe('home on wide screens', () => {
+  test('desktop: two columns and a row of six paintings fill the page, with no scroll and no overflow', async ({ page }, info) => {
+    test.skip(info.project.name !== 'desktop', 'wide screens only');
+    for (const [w, h] of [[1440, 900], [1366, 768], [1280, 720], [1920, 1080]] as const) {
+      await page.setViewportSize({ width: w, height: h });
+      await page.goto('/art-slide');
+      await page.waitForTimeout(600);
+      const strip = page.getByTestId('home-picks');
+      await expect(strip).toBeVisible();
+      await expect(strip.locator('a')).toHaveCount(6);
+      const m = await page.evaluate(() => ({
+        over: document.documentElement.scrollHeight - innerHeight,
+        sw: document.documentElement.scrollWidth - innerWidth,
+        bottom: document.querySelector('[data-testid=home-picks]')!.getBoundingClientRect().bottom,
+        exhibit: document.querySelector('[data-testid=exhibit]')!.getBoundingClientRect().toJSON(),
+        menu: document.querySelector('[data-testid=art-gallery]')!.getBoundingClientRect().toJSON(),
+      }));
+      expect(m.over, `${w}x${h}`).toBeLessThanOrEqual(0);
+      expect(m.sw).toBeLessThanOrEqual(0);
+      expect(m.bottom).toBeGreaterThan(h * 0.65); // the page is filled, not a thin column in a blank screen
+      expect(m.menu.x).toBeGreaterThan(m.exhibit.x + m.exhibit.width); // the buttons sit beside today's exhibit
+    }
+  });
+
+  test('desktop: a picked painting opens its puzzle; the picks are the same all day', async ({ page }, info) => {
+    test.skip(info.project.name !== 'desktop', 'wide screens only');
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/art-slide');
+    const ids = () => page.locator('[data-testid^="pick-"]').evaluateAll((els) => els.map((e) => e.getAttribute('data-testid')));
+    const first = await ids();
+    await page.reload();
+    expect(await ids()).toEqual(first);
+    await page.locator('[data-testid^="pick-"]').first().click();
+    await expect(page).toHaveURL(/\/art-slide\/play\/[a-z0-9-]+$/);
+    await expect(page.locator('.aboard')).toBeVisible();
+  });
+
+  test('phones keep the old home: no strip, and its images are never loaded', async ({ page }, info) => {
+    test.skip(info.project.name !== 'mobile', 'phones only');
+    const images: string[] = [];
+    page.on('request', (r) => /\/artworks\/.*-thumb\.webp/.test(r.url()) && images.push(r.url()));
+    await page.goto('/art-slide');
+    await page.waitForTimeout(600);
+    await expect(page.getByTestId('home-picks')).toBeHidden();
+    expect(images.length).toBeLessThanOrEqual(1); // only today's exhibit
+    expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
+  });
+
+  test('with the paid plan switched on, Free visitors are only offered paintings they can play', async ({ page }, info) => {
+    test.skip(info.project.name !== 'desktop', 'wide screens only');
+    await page.addInitScript(() => localStorage.setItem('slides:dev-gating', '1'));
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/art-slide');
+    const ids = (await page.locator('[data-testid^="pick-"]').evaluateAll((els) => els.map((e) => e.getAttribute('data-testid')!.slice(5))));
+    expect(ids.length).toBe(6);
+    for (const id of ids) expect(FREE_ARTWORK_IDS).toContain(id);
+  });
+});

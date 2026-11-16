@@ -41,6 +41,7 @@ const fr: Partial<Dict> = {
   'acct.deleteConfirm': 'Supprimer votre compte ? Votre abonnement prend fin maintenant et les données du compte sont supprimées. Les scores de cet appareil et de votre Google Drive sont conservés.',
   'premium.signIn': 'Connectez-vous avec Google pour vous abonner.',
   'home.account': 'Compte',
+  'home.fromGallery': 'Depuis la galerie',
   'privacy.premium': 'Premium et connexion. Si vous choisissez de vous connecter, nous utilisons la connexion Google et ne conservons que l’identifiant de votre compte Google et votre nom affiché. Si vous vous abonnez, le paiement est entièrement géré par Stripe : nous ne voyons ni ne stockons jamais vos données de carte ; nous ne gardons que l’identifiant client Stripe, l’état de votre abonnement et la fin de la période payée. La connexion n’est jamais nécessaire pour jouer. Vous pouvez supprimer votre compte à tout moment dans Compte ; vos scores sur votre appareil et dans votre propre Google Drive ne sont pas supprimés.',
   'legal.premium': 'ART SLIDE Premium est un abonnement mensuel (¥200 par mois, taxes comprises) qui se renouvelle automatiquement jusqu’à ce que vous le résiliez dans Compte → Gérer l’abonnement. Après la résiliation, vous conservez Premium jusqu’à la fin de la période payée ; aucun remboursement partiel n’est effectué pour le reste de la période. En cas d’échec de paiement, Premium ne continue que pour la période déjà payée. Premium fonctionne avec un seul compte Google.',
   'sync.title': 'Synchronisation Google Drive',

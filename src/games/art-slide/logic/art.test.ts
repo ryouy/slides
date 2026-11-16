@@ -8,7 +8,7 @@ import { planReshuffle, reduceBlankPath } from './reshuffle';
 import { tileBackground, tileRegion } from './tiles';
 import { ARTWORKS, getArtwork, nextArtwork, pickRandomArtwork } from '../data';
 import { DAILY_POOL_V2, DAILY_POOL_V3 } from '../data/daily-pools';
-import { ERA_ORDER, THEME_ORDER, filterArtworks, groupArtworks, sortArtworks } from './gallery';
+import { ERA_ORDER, THEME_ORDER, filterArtworks, groupArtworks, homePicks, sortArtworks } from './gallery';
 import { rngFromString } from '../../../utils/rng';
 import { dailyNumber } from '../../../utils/date';
 
@@ -450,5 +450,22 @@ describe('gallery: search, sort and grouping', () => {
   it('grouping respects the search filter', () => {
     const groups = groupArtworks(filterArtworks(ARTWORKS, 'van gogh'), 'theme', 'year-asc');
     expect(groups.flatMap((g) => g.items).every((a) => /van gogh/i.test(a.artist))).toBe(true);
+  });
+});
+
+describe('home picks (wide screens)', () => {
+  it('are 6 paintings by different artists, the same all day and different on another day', () => {
+    const a = homePicks(ARTWORKS, '2026-11-16');
+    expect(a).toHaveLength(6);
+    expect(new Set(a.map((x) => x.artist)).size).toBe(6);
+    expect(homePicks(ARTWORKS, '2026-11-16').map((x) => x.id)).toEqual(a.map((x) => x.id));
+    expect(homePicks([...ARTWORKS].reverse(), '2026-11-16').map((x) => x.id)).toEqual(a.map((x) => x.id)); // not tied to list order
+    expect(homePicks(ARTWORKS, '2026-11-17').map((x) => x.id)).not.toEqual(a.map((x) => x.id));
+  });
+  it('only offer what the visitor may play, and cope with a small pool', () => {
+    const pool = ARTWORKS.slice(0, 3);
+    const picks = homePicks(pool, '2026-11-16', 6);
+    expect(picks.length).toBeLessThanOrEqual(3);
+    for (const p of picks) expect(pool).toContain(p);
   });
 });

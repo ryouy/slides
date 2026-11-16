@@ -41,6 +41,7 @@ const de: Partial<Dict> = {
   'acct.deleteConfirm': 'Konto löschen? Dein Abo endet sofort und die Kontodaten werden gelöscht. Spielstände auf diesem Gerät und in deinem Google Drive bleiben erhalten.',
   'premium.signIn': 'Melde dich mit Google an, um zu abonnieren.',
   'home.account': 'Konto',
+  'home.fromGallery': 'Aus der Galerie',
   'privacy.premium': 'Premium und Anmeldung. Wenn du dich anmeldest, nutzen wir die Google-Anmeldung und speichern nur deine Google-Konto-ID und deinen Anzeigenamen. Wenn du abonnierst, wickelt Stripe die Zahlung vollständig ab: Wir sehen und speichern deine Kartendaten nie, sondern nur die Stripe-Kunden-ID, den Abostatus und das Ende des bezahlten Zeitraums. Zum Spielen ist nie eine Anmeldung nötig. Du kannst dein Konto jederzeit unter Konto löschen; deine Spielstände auf deinem Gerät und in deinem eigenen Google Drive werden nicht gelöscht.',
   'legal.premium': 'ART SLIDE Premium ist ein monatliches Abo (¥200 pro Monat, inklusive Steuern), das sich automatisch verlängert, bis du unter Konto → Abo verwalten kündigst. Nach der Kündigung behältst du Premium bis zum Ende des bezahlten Zeitraums; für den Rest eines Zeitraums erfolgt keine anteilige Erstattung. Schlägt eine Zahlung fehl, läuft Premium nur für den bereits bezahlten Zeitraum weiter. Premium funktioniert mit einem einzigen Google-Konto.',
   'sync.title': 'Google-Drive-Synchronisierung',

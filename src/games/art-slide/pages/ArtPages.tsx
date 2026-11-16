@@ -10,9 +10,9 @@ import { currentDailyStreak, formatTime, maxDailyStreak } from '../../../storage
 import { dailyNumber, jstDateKey } from '../../../utils/date';
 import { Page } from '../../../ui/Pages';
 import { ArtGameView } from '../components/ArtGameView';
-import { ARTWORKS, getArtwork, nextArtwork, pickRandomArtwork } from '../data';
+import { ARTWORKS, getArtwork, nextArtwork, pickRandomArtwork, playableArtworks } from '../data';
 import { ART_LEVELS, type ArtLevel } from '../logic/board';
-import { GALLERY_COLUMN_OPTIONS, GROUP_OPTIONS, filterArtworks, groupArtworks, type GalleryColumns, type GroupBy } from '../logic/gallery';
+import { GALLERY_COLUMN_OPTIONS, GROUP_OPTIONS, filterArtworks, groupArtworks, homePicks, type GalleryColumns, type GroupBy } from '../logic/gallery';
 import { SlideSelect } from '../components/SlideSelect';
 import { dailyArtworkId, generateArtDaily, generateArtFree } from '../logic/generator';
 import { newArtGame, type ArtState } from '../logic/game';
@@ -28,6 +28,7 @@ export function ArtHome() {
   const exhibit = getArtwork(dailyArtworkId(today)) ?? ARTWORKS[0];
   const resumable = data.inProgress.free && data.inProgress.free.status === 'playing';
   const done = data.dailyHistory[today]?.artworkId === exhibit.id;
+  const picks = useMemo(() => homePicks(playableArtworks(premium, gating), today), [premium, gating, today]);
   return (
     <div className="screen home art-home">
       <header className="art-home-head">
@@ -73,6 +74,21 @@ export function ArtHome() {
           <span>{t('home.settings')}</span>
         </Link>
       </div>
+      {/* wide screens only (hidden by CSS on phones, where the images are then never loaded) */}
+      <section className="art-home-strip" aria-label={t('home.fromGallery')} data-testid="home-picks">
+        <h2>{t('home.fromGallery')}</h2>
+        <ul>
+          {picks.map((a) => (
+            <li key={a.id}>
+              <Link to={`/art-slide/play/${a.id}`} data-testid={`pick-${a.id}`}>
+                <img src={a.thumbnailUrl} alt="" loading="lazy" decoding="async" width={Math.round(a.width / 4)} height={Math.round(a.height / 4)} />
+                <span className="pk-title" title={a.title}>{a.title}</span>
+                <span className="pk-artist">{a.artist}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }

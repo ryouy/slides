@@ -41,6 +41,7 @@ const zh: Partial<Dict> = {
   'acct.deleteConfirm': '要删除账户吗？订阅将立即结束，账户数据将被删除。本设备和 Google 云端硬盘中的游戏记录会保留。',
   'premium.signIn': '请使用 Google 登录后订阅。',
   'home.account': '账户',
+  'home.fromGallery': '画廊精选',
   'privacy.premium': '关于 Premium 与登录。如果你选择登录，我们使用 Google 登录，只保存你的 Google 账户 ID 和显示名称。如果你订阅，付款完全由 Stripe 处理：我们不会看到也不会保存你的银行卡信息，只保存 Stripe 客户 ID、订阅状态和已付费期限的结束时间。玩游戏无需登录。你可以随时在“账户”中删除账户；你设备上和你自己的 Google 云端硬盘中的游戏记录不会被删除。',
   'legal.premium': 'ART SLIDE Premium 是每月 ¥200（含税）的订阅，会自动续订，直到你在“账户 → 管理订阅”中取消。取消后，在已付费期限结束前你仍可使用 Premium；期间剩余部分不予部分退款。若付款失败，Premium 仅在已付费期限内继续有效。Premium 仅限一个 Google 账户使用。',
   'sync.title': 'Google 云端硬盘同步',
