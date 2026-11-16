@@ -25,7 +25,7 @@ const zh: Partial<Dict> = {
   'premium.soon': 'Premium 暂未开放。',
   'premium.lockedArt': '这幅画属于 Premium。',
   'premium.lockedSize': '此棋盘尺寸属于 Premium。',
-  'premium.free': '免费版包含 30 幅画作，以及最高 6 级的棋盘。',
+  'premium.free': '免费版包含 40 幅画作，以及最高 5 级的棋盘。',
   'premium.lock': 'Premium',
   'home.premium': 'Premium',
   'acct.title': '账户',

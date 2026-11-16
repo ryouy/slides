@@ -277,7 +277,7 @@ const en = {
   'premium.soon': 'Premium is not available yet.',
   'premium.lockedArt': 'This painting is part of Premium.',
   'premium.lockedSize': 'This board size is part of Premium.',
-  'premium.free': 'Free includes 30 paintings and board sizes up to level 6.',
+  'premium.free': 'Free includes 40 paintings and board sizes up to level 5.',
   'premium.lock': 'Premium',
   'home.premium': 'Premium',
   'acct.title': 'Account',

@@ -82,7 +82,7 @@ async function runOnce(local: LocalStore = localStore()): Promise<SyncOutcome | 
   running = true;
   set({ status: 'syncing' });
   try {
-    const out = await syncOnce({ drive: driveClient(), getToken: () => getDriveToken(clientId()!, false), local });
+    const out = await syncOnce({ drive: driveClient(), getToken: () => getDriveToken(clientId()!, false, getAccount().me?.googleSub), local });
     if (out.status === 'ok') {
       backoff = 0;
       set({ status: 'ok', lastSyncAt: Date.now() });
@@ -124,7 +124,7 @@ export async function enableSync(): Promise<boolean> {
   const me = getAccount().me;
   const id = clientId();
   if (!me?.signedIn || !me.id || !id) return false;
-  const t = await getDriveToken(id, true);
+  const t = await getDriveToken(id, true, me.googleSub);
   if (!t) {
     set({ status: 'needs-consent' });
     return false;
@@ -139,7 +139,7 @@ export async function enableSync(): Promise<boolean> {
 export async function reconnectSync(): Promise<boolean> {
   const id = clientId();
   if (!id) return false;
-  const t = await getDriveToken(id, true);
+  const t = await getDriveToken(id, true, getAccount().me?.googleSub);
   if (!t) return false;
   await runOnce();
   return true;

@@ -25,7 +25,7 @@ const es: Partial<Dict> = {
   'premium.soon': 'Premium aún no está disponible.',
   'premium.lockedArt': 'Esta obra es parte de Premium.',
   'premium.lockedSize': 'Este tamaño de tablero es parte de Premium.',
-  'premium.free': 'Gratis incluye 30 obras y tableros hasta el nivel 6.',
+  'premium.free': 'Gratis incluye 40 obras y tableros hasta el nivel 5.',
   'premium.lock': 'Premium',
   'home.premium': 'Premium',
   'acct.title': 'Cuenta',

@@ -25,7 +25,7 @@ const ja: Partial<Dict> = {
   'premium.soon': 'Premiumはまだ利用できません。',
   'premium.lockedArt': 'この絵画はPremium限定です。',
   'premium.lockedSize': 'この盤面サイズはPremium限定です。',
-  'premium.free': '無料プランは30点の絵画と、レベル6までの盤面が遊べます。',
+  'premium.free': '無料プランは40点の絵画と、レベル5までの盤面が遊べます。',
   'premium.lock': 'Premium',
   'home.premium': 'Premium',
   'acct.title': 'アカウント',

@@ -11,7 +11,10 @@ import { useSyncExternalStore } from 'react';
  * can still reach a locked painting. Real content protection would need Premium images served by the Worker.
  */
 
-/** 30 fixed paintings for Free: spread over every theme and era, at most one per artist except where a theme is small. */
+/**
+ * 40 fixed paintings for Free: spread over every theme and era. The list never changes by itself: paintings added
+ * to the collection later are NOT in it, so they belong to Premium (which has every painting, present and future).
+ */
 export const FREE_ARTWORK_IDS: readonly string[] = [
   'bierstadt-mountain-brook', // Albert Bierstadt · Landscape · 1850–1879
   'chase-wind-swept-sands', // William Merritt Chase · Landscape · 1880–1899
@@ -43,11 +46,21 @@ export const FREE_ARTWORK_IDS: readonly string[] = [
   'hiroshige-arai', // Utagawa Hiroshige · Japanese Prints · 1800–1849
   'hokusai-great-wave', // Katsushika Hokusai · Japanese Prints · 1800–1849
   'hokusai-shower-below-the-summit', // Katsushika Hokusai · Japanese Prints · 1800–1849
+  'aic-217536', // Neapolitan · Myth & Religion · 1700s
+  'aic-105073', // Giovanni Benedetto Castiglione · Myth & Religion · Before 1700
+  'aic-111559', // Francisco José de Goya y Lucientes · Still Life & Flowers · 1700s
+  'aic-105466', // Joachim Antonisz. Wtewael · Myth & Religion · Before 1700
+  'aic-13405', // Kitagawa Utamaro · City & Street · 1700s
+  'hiroshige-mishima-morning-mist', // Utagawa Hiroshige · Japanese Prints · 1800–1849
+  'aic-100489', // William Bradford · Sea & Water · 1850–1879
+  'aic-14310', // Paula Modersohn-Becker · Still Life & Flowers · 1900s
+  'aic-110881', // Master of the Housebook · Myth & Religion · Before 1700
+  'aic-61603', // Hilaire Germain Edgar Degas · City & Street · 1850–1879
 ];
 const FREE = new Set(FREE_ARTWORK_IDS);
 
-/** Free plays up to the 6th board level (about 6×6 pieces); Premium gets the larger ones. */
-export const FREE_MAX_LEVEL = 6;
+/** Free plays up to board level 5; Premium also gets levels 6 and 7 (the largest the game has). */
+export const FREE_MAX_LEVEL = 5;
 
 /** Is the paid plan live in this build? */
 export function gatingOn(): boolean {

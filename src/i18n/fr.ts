@@ -25,7 +25,7 @@ const fr: Partial<Dict> = {
   'premium.soon': 'Premium n’est pas encore disponible.',
   'premium.lockedArt': 'Cette œuvre fait partie de Premium.',
   'premium.lockedSize': 'Cette taille de plateau fait partie de Premium.',
-  'premium.free': 'Gratuit : 30 œuvres et des plateaux jusqu’au niveau 6.',
+  'premium.free': 'Gratuit : 40 œuvres et des plateaux jusqu’au niveau 5.',
   'premium.lock': 'Premium',
   'home.premium': 'Premium',
   'acct.title': 'Compte',

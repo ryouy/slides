@@ -10,6 +10,8 @@ const REFRESH_AFTER = 600; // seconds: how old a row may be before an expired pe
 export interface PlanInfo {
   signedIn: true;
   id: string;
+  /** The visitor's own Google id: only used as a hint so Google offers the same account for Drive access. */
+  googleSub: string;
   name: string | null;
   premium: boolean;
   status: string | null;
@@ -55,6 +57,7 @@ export async function planFor(env: Env, user: UserRow, opts: { refresh?: boolean
   return {
     signedIn: true,
     id: user.id,
+    googleSub: user.google_sub,
     name: user.name,
     premium: hasPremium(sub, nowSec()),
     status: sub?.status ?? null,

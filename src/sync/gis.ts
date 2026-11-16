@@ -9,7 +9,7 @@ import { DRIVE_SCOPE } from './drive';
 interface TokenResponse { access_token?: string; expires_in?: number | string; error?: string }
 interface TokenClient { requestAccessToken(overrides?: { prompt?: string }): void }
 interface GoogleOAuth2 {
-  initTokenClient(c: { client_id: string; scope: string; callback: (r: TokenResponse) => void; error_callback?: (e: { type?: string }) => void }): TokenClient;
+  initTokenClient(c: { client_id: string; scope: string; hint?: string; callback: (r: TokenResponse) => void; error_callback?: (e: { type?: string }) => void }): TokenClient;
   revoke(token: string, done?: () => void): void;
 }
 declare global {
@@ -34,7 +34,7 @@ function loadGis(): Promise<GoogleOAuth2 | null> {
 }
 
 /** A valid token, or null when the visitor must be asked: `interactive` may open Google's consent popup (needs a click). */
-export async function getDriveToken(clientId: string, interactive: boolean): Promise<string | null> {
+export async function getDriveToken(clientId: string, interactive: boolean, hint?: string): Promise<string | null> {
   if (token && token.expiresAt - Date.now() > 60_000) return token.value;
   const oauth2 = await loadGis();
   if (!oauth2) return null;
@@ -42,6 +42,7 @@ export async function getDriveToken(clientId: string, interactive: boolean): Pro
     const client = oauth2.initTokenClient({
       client_id: clientId,
       scope: DRIVE_SCOPE,
+      ...(hint ? { hint } : {}), // the account signed in on this site, so Drive access is asked of the same account
       callback: (r) => {
         if (r.access_token) {
           token = { value: r.access_token, expiresAt: Date.now() + Number(r.expires_in ?? 3600) * 1000 };

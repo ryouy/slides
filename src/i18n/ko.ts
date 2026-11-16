@@ -25,7 +25,7 @@ const ko: Partial<Dict> = {
   'premium.soon': 'Premium은 아직 이용할 수 없습니다.',
   'premium.lockedArt': '이 작품은 Premium 전용입니다.',
   'premium.lockedSize': '이 퍼즐 크기는 Premium 전용입니다.',
-  'premium.free': '무료 플랜은 작품 30점과 6단계까지의 퍼즐을 제공합니다.',
+  'premium.free': '무료 플랜은 작품 40점과 5단계까지의 퍼즐을 제공합니다.',
   'premium.lock': 'Premium',
   'home.premium': 'Premium',
   'acct.title': '계정',

@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "e2e": "playwright test",
+    "check:deploy": "node scripts/check-deploy.mjs",
     "share-assets": "vite-node scripts/make-share-assets.ts --dir public"
   },
   "dependencies": {

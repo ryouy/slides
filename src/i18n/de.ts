@@ -25,7 +25,7 @@ const de: Partial<Dict> = {
   'premium.soon': 'Premium ist noch nicht verfügbar.',
   'premium.lockedArt': 'Dieses Gemälde gehört zu Premium.',
   'premium.lockedSize': 'Diese Spielfeldgröße gehört zu Premium.',
-  'premium.free': 'Kostenlos: 30 Gemälde und Spielfelder bis Stufe 6.',
+  'premium.free': 'Kostenlos: 40 Gemälde und Spielfelder bis Stufe 5.',
   'premium.lock': 'Premium',
   'home.premium': 'Premium',
   'acct.title': 'Konto',

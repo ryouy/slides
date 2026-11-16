@@ -195,7 +195,7 @@ describe('Google sign-in', () => {
   it('completes the login, sets a Secure HttpOnly session cookie and stores only a hash of it', async () => {
     const cookie = await login();
     expect(cookie).toMatch(/^__Host-slides_session=/);
-    expect(await me(cookie)).toMatchObject({ signedIn: true, premium: false, name: 'Ann Example' });
+    expect(await me(cookie)).toMatchObject({ signedIn: true, premium: false, name: 'Ann Example', googleSub: 'google-sub-1' });
     const stored = raw.prepare('SELECT id FROM sessions').all() as { id: string }[];
     expect(stored).toHaveLength(1);
     expect(cookie).not.toContain(stored[0].id);

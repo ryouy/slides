@@ -10,6 +10,8 @@ export interface Me {
   signedIn: boolean;
   /** Our own account id (not the Google id). */
   id?: string;
+  /** Hint for Google's Drive consent: offer the account that is signed in here. */
+  googleSub?: string;
   premium: boolean;
   name?: string | null;
   status?: string | null;

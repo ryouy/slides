@@ -2,7 +2,7 @@ import { expect, test, type BrowserContext, type Page } from '@playwright/test';
 
 /** Google Drive sync against a fake Google (sign-in script + Drive). No real Google or Drive is touched. */
 const GIS = `window.google = { accounts: { oauth2: {
-  initTokenClient: (c) => ({ requestAccessToken: () => setTimeout(() => (window.__tokenFails ? c.error_callback && c.error_callback({}) : c.callback({ access_token: 'fake-token', expires_in: 3600 })), 5) }),
+  initTokenClient: (c) => (window.__hint = c.hint, { requestAccessToken: () => setTimeout(() => (window.__tokenFails ? c.error_callback && c.error_callback({}) : c.callback({ access_token: 'fake-token', expires_in: 3600 })), 5) }),
   revoke: (t, done) => { window.__revoked = (window.__revoked || 0) + 1; done && done(); } } } };`;
 
 const LEGACY = {
@@ -47,7 +47,7 @@ async function setup(ctxOrPage: Page, drive: ReturnType<typeof fakeDrive>, me: o
     return route.fulfill({ status: 404, body: '{}' });
   });
 }
-const ME = { signedIn: true, id: 'user-1', premium: false, name: 'Ann Example', status: null };
+const ME = { signedIn: true, id: 'user-1', googleSub: 'google-sub-1', premium: false, name: 'Ann Example', status: null };
 const readSave = (page: Page) => page.evaluate(() => JSON.parse(localStorage.getItem('artslide:save') ?? '{}'));
 
 test('turning sync on uploads the existing records to Drive and keeps every local one', async ({ page }) => {
@@ -65,6 +65,7 @@ test('turning sync on uploads the existing records to Drive and keeps every loca
   expect(doc.records['monet-water-lilies:3']).toMatchObject({ bestTimeMs: 50000, bestMoves: 80 });
   expect(JSON.stringify(doc)).not.toMatch(/premium|stripe|subscription|status/i); // records only, never the plan
   expect(d.st.tokens.every((t) => t === 'Bearer fake-token')).toBe(true);
+  expect(await page.evaluate(() => (window as unknown as { __hint?: string }).__hint)).toBe('google-sub-1'); // Google is asked about the account signed in here
   const local = await readSave(page);
   expect(local.completed).toBe(7);
   expect(local.bests['3']).toEqual({ timeMs: 50000, moves: 80 });

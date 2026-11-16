@@ -660,12 +660,13 @@ test.describe('Free / Premium gating (dev switch)', () => {
     await expect(page.locator('.aboard')).toBeVisible();
   });
 
-  test('boards above level 6 are locked and open the offer', async ({ page }) => {
+  test('boards above level 5 are locked and open the offer', async ({ page }) => {
     await page.goto('/art-slide/play/van-gogh-bedroom');
     await page.locator('[data-testid=art-size-select]:visible').click();
     const opts = page.locator('[data-testid=art-size-select-options]:visible').getByRole('option');
-    await expect(opts.last().getByTestId('size-lock')).toHaveCount(1);
-    await expect(opts.first().getByTestId('size-lock')).toHaveCount(0);
+    await expect(opts).toHaveCount(5); // levels 3..7
+    for (const i of [0, 1, 2]) await expect(opts.nth(i).getByTestId('size-lock')).toHaveCount(0); // Free: up to level 5
+    for (const i of [3, 4]) await expect(opts.nth(i).getByTestId('size-lock')).toHaveCount(1); // levels 6 and 7: Premium
     await opts.last().click();
     await expect(page.getByTestId('premium')).toBeVisible();
   });
