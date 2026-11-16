@@ -1,6 +1,6 @@
 // Cloudflare Worker for the site: static files from ./dist plus the /api/* routes (Google sign-in, Stripe, plan lookup).
 // The Worker runs ONLY for /api/*; every other request is served straight from the static assets, as before.
-// Setup (D1, Google, Stripe, secrets): see README "Premium: setup".
+// The D1 database "slides-db" must have migrations/0001_init.sql applied BEFORE the secrets are set (README "Premium: setup").
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "slides",
@@ -13,18 +13,21 @@
     "run_worker_first": ["/api/*"]
   },
   "vars": {
-    "SITE_URL": "https://slides.ryouy.workers.dev"
+    "SITE_URL": "https://slides.ryouy.workers.dev",
+    // Keep "false" until the 特定商取引法 details are filled in (src/legal/operator.ts) and Stripe test-mode checks are done.
+    "PURCHASES_ENABLED": "false"
   },
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "slides-db",
+      "database_id": "477ac683-93d6-4d57-a8e9-18d699c57ab7",
+      "migrations_dir": "migrations"
+    }
+  ]
 
-  // The D1 database is NOT bound yet, on purpose: without it every account/billing API answers 503 and the
-  // site works exactly as before. After `npx wrangler d1 create slides`, add the block below with the REAL id
-  // (never a placeholder: a wrong id makes the deploy fail), then apply migrations/0001_init.sql.
-  //
-  // ,"d1_databases": [
-  //   { "binding": "DB", "database_name": "slides", "database_id": "<REAL id printed by wrangler d1 create>", "migrations_dir": "migrations" }
-  // ]
-  //
-  // Secrets (set with `npx wrangler secret put <NAME>`, never committed):
+  // Secrets (set with `npx wrangler secret put <NAME>` or in the dashboard, never committed). Until they are all set,
+  // every account/billing API answers 503 and the site works exactly as before:
   //   SESSION_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRICE_ID
 }

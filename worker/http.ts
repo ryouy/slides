@@ -1,7 +1,7 @@
 import type { Env } from './env';
 
 export const json = (data: unknown, status = 200, headers: Record<string, string> = {}): Response =>
-  new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...headers } });
+  new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', ...headers } });
 
 export const err = (status: number, code: string): Response => json({ error: code }, status);
 

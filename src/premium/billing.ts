@@ -1,12 +1,17 @@
 import { postJson, signInUrl } from '../account/api';
 import { getAccount } from '../account/store';
+import { operatorReady } from '../legal/operator';
 import { gatingOn } from './entitlement';
 
-/** Can a visitor buy Premium here? Needs the paid plan on in this build AND the backend (Google + Stripe) configured. */
-export const billingAvailable = (): boolean => gatingOn() && getAccount().config.billing;
+/**
+ * Can a visitor buy Premium here? All of: the paid plan is on in this build, the backend (Google + Stripe) is set up,
+ * the server has purchases switched on (PURCHASES_ENABLED), and the operator details for the commercial-law notice are filled in.
+ */
+export const canSubscribe = (config = getAccount().config): boolean => gatingOn() && config.billing && config.purchases && operatorReady();
 
 /** Subscribe: sign in first (Premium belongs to a Google account), then Stripe Checkout. */
 export async function startCheckout(): Promise<boolean> {
+  if (!canSubscribe()) return false;
   const me = getAccount().me;
   if (!me?.signedIn) {
     location.assign(signInUrl('/art-slide/premium'));

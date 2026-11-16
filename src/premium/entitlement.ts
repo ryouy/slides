@@ -88,7 +88,8 @@ function hasHint(): boolean {
 let current: Entitlement = devPremium() ? { premium: true, loading: false } : { premium: false, loading: gatingOn() && hasHint() };
 const listeners = new Set<() => void>();
 
-function devPremium(): boolean {
+/** Dev server only (tests): act as Premium. Always false in a production build. */
+export function devPremium(): boolean {
   try {
     return !!import.meta.env?.DEV && localStorage.getItem('slides:dev-premium') === '1';
   } catch {

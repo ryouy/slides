@@ -22,3 +22,7 @@
 - `notebooks/` — GitHubへ作品を直接追加するColabノートブック
 
 新しい作品はギャラリーへ自動反映されます。
+
+## Premium・ログイン・Googleドライブ同期
+
+月額プラン、Google ログイン、Stripe 決済、Google ドライブ同期、Cloudflare Worker / D1 の構成と**設定手順（初心者向け）**は [docs/PREMIUM.md](docs/PREMIUM.md) にあります。`VITE_PREMIUM_ENABLED` を設定しない限り、サイトは従来どおり動き、API も呼びません。

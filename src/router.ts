@@ -53,7 +53,7 @@ export const GAMES: { id: GameId; label: string }[] = [
 ];
 
 /** Pages shared by both games (not under a game prefix). */
-export const SHARED = ['settings', 'about', 'privacy', 'terms', 'contact'];
+export const SHARED = ['settings', 'about', 'privacy', 'terms', 'contact', 'commerce'];
 
 export function parsePath(path: string): { game: GameId | null; sub: string } {
   const [first, ...rest] = path.replace(/^\/+|\/+$/g, '').split('/');

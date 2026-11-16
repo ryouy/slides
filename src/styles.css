@@ -580,8 +580,8 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   .artgame .stat-value { font-size: 19px; }
 }
 @media (min-width: 900px) {
-  .screen.artgame { grid-template-columns: minmax(0, 1fr) minmax(210px, 250px); column-gap: 18px; padding-left: 18px; padding-right: 18px; }
-  .artgame > .aboard-wrap, .artgame > .aboard { width: min(100%, calc((100svh - 80px) * var(--aspect, 1))); }
+  .screen.artgame { grid-template-columns: minmax(0, 1fr) minmax(300px, 340px); /* the 300px ad must fit the column */ column-gap: 18px; padding-left: 18px; padding-right: 18px; }
+  .artgame > .aboard-wrap, .artgame > .aboard { width: min(100%, calc((100svh - 88px) * var(--aspect, 1))); } /* leaves room for the header and margins: no 6px page scroll */
   .artgame .stats { margin: 4px 0 6px; }
   .artgame .art-actions .btn { min-height: 38px; font-size: 10px; }
   .artgame .art-extra { margin-top: 6px; }
@@ -1941,3 +1941,13 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .premium-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; text-align: center; }
 .premium-list li::before { content: '✓ '; color: var(--muted); }
 .premium-note { margin: 0; font-size: 12px; text-align: center; }
+
+.commerce { margin: 0; display: grid; gap: 0; }
+.commerce-row { display: grid; grid-template-columns: minmax(7em, 11em) 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.commerce dt { color: var(--muted); font-size: 13px; }
+.commerce dd { margin: 0; font-size: 14px; }
+@media (max-width: 480px) { .commerce-row { grid-template-columns: 1fr; gap: 2px; } }
+
+.drive-sync { display: grid; gap: 8px; margin: 6px 0 2px; padding-top: 10px; border-top: 1px solid var(--line); }
+.drive-sync h3 { margin: 0; font-size: 14px; }
+.drive-sync p { margin: 0; }

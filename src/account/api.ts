@@ -1,7 +1,15 @@
 /** Thin client for the Worker API (same origin; the session lives in an HttpOnly cookie the page cannot read). */
-export interface Config { auth: boolean; billing: boolean }
+export interface Config {
+  auth: boolean;
+  billing: boolean;
+  purchases: boolean;
+  /** Public OAuth client id (not a secret): lets the browser ask for Google Drive access. */
+  googleClientId?: string;
+}
 export interface Me {
   signedIn: boolean;
+  /** Our own account id (not the Google id). */
+  id?: string;
   premium: boolean;
   name?: string | null;
   status?: string | null;

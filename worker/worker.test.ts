@@ -72,6 +72,7 @@ const baseEnv = (d1: D1Database): Env => ({
   STRIPE_SECRET_KEY: 'sk_test_x',
   STRIPE_WEBHOOK_SECRET: 'whsec_test',
   STRIPE_PRICE_ID: 'price_1',
+  PURCHASES_ENABLED: 'true',
 });
 const sub = (over: Record<string, unknown> = {}) => ({ id: 'sub_1', status: 'active', customer: 'cus_1', cancel_at_period_end: false, current_period_end: NOW() + 20 * 86400, metadata: { user_id: '' }, ...over });
 
@@ -157,11 +158,15 @@ describe('pure rules', () => {
 
 describe('configuration', () => {
   it('reports what is set up, and answers 503 for sign-in without it; the site itself is untouched', async () => {
-    expect(await (await call('/api/config')).json()).toEqual({ auth: true, billing: true });
-    env = { ...env, STRIPE_SECRET_KEY: undefined };
-    expect(await (await call('/api/config')).json()).toEqual({ auth: true, billing: false });
+    expect(await (await call('/api/config')).json()).toEqual({ auth: true, billing: true, purchases: true, googleClientId: 'gid' }); // the public client id only, never a secret
+    env = { ...env, PURCHASES_ENABLED: 'false' };
+    expect(await (await call('/api/config')).json()).toEqual({ auth: true, billing: true, purchases: false, googleClientId: 'gid' });
+    const cookie = await login();
+    expect((await call('/api/billing/checkout', { method: 'POST', cookie })).status).toBe(503); // switched off on the server
+    env = { ...env, PURCHASES_ENABLED: 'true', STRIPE_SECRET_KEY: undefined };
+    expect(await (await call('/api/config')).json()).toEqual({ auth: true, billing: false, purchases: false, googleClientId: 'gid' });
     env = { ASSETS: env.ASSETS };
-    expect(await (await call('/api/config')).json()).toEqual({ auth: false, billing: false });
+    expect(await (await call('/api/config')).json()).toEqual({ auth: false, billing: false, purchases: false });
     expect((await call('/api/me')).status).toBe(503);
     expect((await call('/api/auth/google')).status).toBe(503);
     expect((await call('/api/stripe/webhook', { method: 'POST', body: '{}', origin: null })).status).toBe(503);
@@ -210,6 +215,14 @@ describe('Google sign-in', () => {
     fake.googleClaims.nonce = 'other';
     expect(await bad(`code=c&state=${loc.searchParams.get('state')}`, oauth)).toBe('/?auth=invalid');
     expect(raw.prepare('SELECT COUNT(*) AS n FROM sessions').get()).toEqual({ n: 0 });
+  });
+
+  it('limits login attempts per address', async () => {
+    const codes: number[] = [];
+    for (let i = 0; i < 42; i++) codes.push((await call('/api/auth/google', { headers: { 'cf-connecting-ip': '203.0.113.9' } })).status);
+    expect(codes.slice(0, 40).every((c) => c === 302)).toBe(true);
+    expect(codes.slice(40)).toEqual([429, 429]);
+    expect((await call('/api/auth/google', { headers: { 'cf-connecting-ip': '203.0.113.10' } })).status).toBe(302); // others are unaffected
   });
 
   it('logout needs a request from our own site and ends the session', async () => {
@@ -339,6 +352,14 @@ describe('Stripe webhook', () => {
     expect((await webhook(subEvent('evt_r'))).status).toBe(200);
     expect((await me(cookie)).premium).toBe(true);
     expect((await webhook({ id: 'evt_x', type: 'charge.refunded', data: { object: {} } })).status).toBe(200);
+  });
+
+  it('never attaches a subscription of another Stripe customer to an account', async () => {
+    const { cookie, uid } = await subscribed();
+    fake.sub = sub({ metadata: { user_id: uid }, customer: 'cus_someone_else' });
+    expect((await webhook(subEvent('evt_m'))).status).toBe(200);
+    expect(raw.prepare('SELECT COUNT(*) AS n FROM subscriptions').get()).toEqual({ n: 0 });
+    expect((await me(cookie)).premium).toBe(false);
   });
 
   it('ignores a subscription that belongs to nobody here', async () => {

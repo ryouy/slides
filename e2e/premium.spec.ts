@@ -2,14 +2,14 @@ import { expect, test, type Page } from '@playwright/test';
 
 /** The Worker API is replaced by in-page mocks: these tests are about what the site does with its answers. */
 type Me = { signedIn: boolean; premium: boolean; name?: string; status?: string | null; currentPeriodEnd?: number | null; cancelAtPeriodEnd?: boolean };
-async function mockApi(page: Page, opts: { config?: { auth: boolean; billing: boolean } | null; me?: Me; meDelayMs?: number } = {}) {
+async function mockApi(page: Page, opts: { config?: { auth: boolean; billing: boolean; purchases: boolean } | null; me?: Me; meDelayMs?: number } = {}) {
   const calls: string[] = [];
   await page.route('**/api/**', async (route) => {
     const req = route.request();
     const path = new URL(req.url()).pathname;
     calls.push(`${req.method()} ${path}${new URL(req.url()).search}`);
     const ok = (body: unknown) => route.fulfill({ contentType: 'application/json', body: JSON.stringify(body) });
-    if (path === '/api/config') return opts.config === null ? route.fulfill({ status: 503, body: '{}' }) : ok(opts.config ?? { auth: true, billing: true });
+    if (path === '/api/config') return opts.config === null ? route.fulfill({ status: 503, body: '{}' }) : ok(opts.config ?? { auth: true, billing: true, purchases: true });
     if (path === '/api/me' || path === '/api/billing/status') {
       if (opts.meDelayMs) await new Promise((r) => setTimeout(r, opts.meDelayMs));
       return ok(opts.me ?? { signedIn: false, premium: false });
@@ -21,7 +21,7 @@ async function mockApi(page: Page, opts: { config?: { auth: boolean; billing: bo
   });
   return calls;
 }
-const gating = (page: Page) => page.addInitScript(() => localStorage.setItem('slides:dev-gating', '1'));
+const gating = (page: Page) => page.addInitScript(() => { localStorage.setItem('slides:dev-gating', '1'); localStorage.setItem('slides:dev-operator', '1'); });
 const PREMIUM: Me = { signedIn: true, premium: true, name: 'Ann Example', status: 'active', currentPeriodEnd: Math.floor(Date.now() / 1000) + 20 * 86400, cancelAtPeriodEnd: false };
 const LOCKED = 'monet-stacks-of-wheat-end-of-summer';
 
@@ -138,4 +138,34 @@ test('a locked painting opens for a Premium account but not for a Free one', asy
   await mockApi(page, { me: PREMIUM });
   await page.goto('/art-slide/play/' + LOCKED);
   await expect(page.locator('.aboard')).toBeVisible();
+});
+
+test('purchases stay off while the operator details are missing or the server has them switched off', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('slides:dev-gating', '1')); // no dev-operator flag: details are empty
+  await mockApi(page);
+  await page.goto('/art-slide/premium');
+  await expect(page.getByTestId('premium-subscribe')).toBeDisabled();
+  await expect(page.getByTestId('premium-soon')).toBeVisible();
+
+  const p2 = await page.context().newPage();
+  await p2.addInitScript(() => { localStorage.setItem('slides:dev-gating', '1'); localStorage.setItem('slides:dev-operator', '1'); });
+  await mockApi(p2, { config: { auth: true, billing: true, purchases: false } });
+  await p2.goto('/art-slide/premium');
+  await expect(p2.getByTestId('premium-subscribe')).toBeDisabled();
+});
+
+test('the commercial-law notice page exists and says what is still missing', async ({ page }) => {
+  await page.goto('/commerce');
+  await expect(page.getByTestId('commerce')).toContainText('月額 200円（税込）');
+  await expect(page.getByTestId('commerce')).toContainText('解約');
+  await expect(page.getByTestId('commerce-incomplete')).toBeVisible(); // details not supplied yet
+  await expect(page.getByTestId('commerce')).toContainText('（未設定）');
+});
+
+test('the daily puzzle is open to everyone, also when its painting is a Premium one', async ({ page }) => {
+  await gating(page);
+  await mockApi(page);
+  await page.goto('/art-slide/daily');
+  await expect(page.locator('.aboard')).toBeVisible();
+  await expect(page.getByTestId('premium')).toHaveCount(0);
 });

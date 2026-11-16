@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useLang, useT } from '../i18n';
 import { go } from '../router';
-import { openPortal, startCheckout } from '../premium/billing';
+import { canSubscribe, openPortal, startCheckout } from '../premium/billing';
 import { useEntitlement } from '../premium/entitlement';
 import { Page } from '../ui/Pages';
 import { postJson, signInUrl } from './api';
+import { DriveSync } from '../sync/DriveSync';
 import { refreshAccount, useAccount } from './store';
 
 /** Account: Google sign-in, plan and subscription management. Shown only when the paid plan is switched on. */
@@ -57,8 +58,9 @@ export function AccountPage() {
             {premium || me.status ? (
               <button className="btn wide" data-testid="manage" disabled={busy} onClick={() => run(openPortal)}>{t('acct.manage')}</button>
             ) : (
-              config.billing && <button className="btn primary wide" data-testid="account-subscribe" disabled={busy} onClick={() => run(startCheckout)}>{t('premium.subscribe')}</button>
+              canSubscribe(config) && <button className="btn primary wide" data-testid="account-subscribe" disabled={busy} onClick={() => run(startCheckout)}>{t('premium.subscribe')}</button>
             )}
+            <DriveSync />
             <button className="btn wide" data-testid="signout" disabled={busy} onClick={signOut}>{t('acct.signOut')}</button>
             <button className="link-quiet" data-testid="delete-account" disabled={busy} onClick={deleteAccount}>{t('acct.delete')}</button>
           </>

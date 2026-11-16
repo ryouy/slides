@@ -9,6 +9,7 @@ const REFRESH_AFTER = 600; // seconds: how old a row may be before an expired pe
 
 export interface PlanInfo {
   signedIn: true;
+  id: string;
   name: string | null;
   premium: boolean;
   status: string | null;
@@ -25,6 +26,8 @@ export async function syncSubscription(env: Env, sub: StripeSubscription, hintUs
   if (metaId) user = await userById(db, metaId);
   if (!user) user = await userByCustomer(db, cust);
   if (!user) return false; // not ours (e.g. a test event for another product)
+  // a customer is tied to one account for good: a subscription of a different customer never lands on this account
+  if (user.stripe_customer_id && user.stripe_customer_id !== cust) return false;
   if (!user.stripe_customer_id) await setStripeCustomer(db, user.id, cust);
   await saveSubscription(db, user.id, { stripe_subscription_id: sub.id, status: sub.status, current_period_end: periodEnd(sub), cancel_at_period_end: !!sub.cancel_at_period_end }, (r: SubscriptionRow) => hasPremium(r, nowSec()));
   return true;
@@ -51,6 +54,7 @@ export async function planFor(env: Env, user: UserRow, opts: { refresh?: boolean
   }
   return {
     signedIn: true,
+    id: user.id,
     name: user.name,
     premium: hasPremium(sub, nowSec()),
     status: sub?.status ?? null,

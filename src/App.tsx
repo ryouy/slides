@@ -6,6 +6,8 @@ import { ArtCreditsPage, ArtDaily, ArtGallery, ArtHome, ArtHowPage, ArtPlay, Art
 import { ArtSaveProvider } from './games/art-slide/storage';
 import { AccountPage } from './account/AccountPage';
 import { initAccount } from './account/store';
+import { initSync } from './sync/state';
+import { CommercePage } from './legal/CommercePage';
 import { PremiumPage } from './premium/PremiumPage';
 import { parsePath, usePath } from './router';
 import { SaveProvider, useSave } from './storage/SaveContext';
@@ -54,6 +56,7 @@ function Shell() {
 
   useEffect(() => {
     void initAccount(); // only does anything when the paid plan is switched on in this build
+    initSync(); // Google Drive sync: waits for sign-in, and for the visitor to switch it on
   }, []);
 
   useEffect(() => {
@@ -83,6 +86,7 @@ function Shell() {
       case 'privacy': page = <PrivacyPage />; break;
       case 'terms': page = <TermsPage />; break;
       case 'contact': page = <ContactPage />; break;
+      case 'commerce': page = <CommercePage />; break;
       default: page = <ArtRoutes sub="" />; // the main page is ART SLIDE
     }
   // pages glide in (from the right going forward, from the left going back); the key is the page, not the artwork id

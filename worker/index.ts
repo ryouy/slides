@@ -1,6 +1,7 @@
 import { authConfigured, billingConfigured, type Env } from './env';
 import { currentUser, finishLogin, logout, startLogin } from './auth';
 import { createCheckout, createPortal, deleteAccount, handleWebhook, planFor } from './billing';
+import { allow } from './db';
 import { err, json, sameOrigin } from './http';
 import type { FetchFn } from './stripe';
 
@@ -14,7 +15,7 @@ export async function handle(request: Request, env: Env, deps: Deps = {}): Promi
 
   if (path === '/api/config') {
     if (method !== 'GET') return err(405, 'method');
-    return json({ auth: authConfigured(env), billing: billingConfigured(env) });
+    return json({ auth: authConfigured(env), billing: billingConfigured(env), purchases: billingConfigured(env) && env.PURCHASES_ENABLED === 'true', ...(authConfigured(env) ? { googleClientId: env.GOOGLE_CLIENT_ID } : {}) });
   }
   if (path === '/api/stripe/webhook') {
     if (method !== 'POST') return err(405, 'method');
@@ -24,8 +25,13 @@ export async function handle(request: Request, env: Env, deps: Deps = {}): Promi
   if (!path.startsWith('/api/auth/') && !['/api/me', '/api/billing/status', '/api/billing/checkout', '/api/billing/portal', '/api/account/delete'].includes(path)) return err(404, 'not_found');
   if (!authConfigured(env)) return err(503, 'not_configured');
 
-  if (path === '/api/auth/google') return method === 'GET' ? startLogin(request, env) : err(405, 'method');
-  if (path === '/api/auth/callback') return method === 'GET' ? finishLogin(request, env, deps.fetchFn) : err(405, 'method');
+  if (path === '/api/auth/google' || path === '/api/auth/callback') {
+    if (method !== 'GET') return err(405, 'method');
+    // a visitor can start a login now and then, not thousands of times: per address, 40 per 10 minutes
+    const ip = request.headers.get('cf-connecting-ip') ?? 'unknown';
+    if (!(await allow(env.DB!, `auth:${ip}`, 40, 600))) return err(429, 'rate_limited');
+    return path === '/api/auth/google' ? startLogin(request, env) : finishLogin(request, env, deps.fetchFn);
+  }
   if (path === '/api/auth/logout') {
     if (method !== 'POST') return err(405, 'method');
     if (!sameOrigin(request, env)) return err(403, 'forbidden');
@@ -45,7 +51,7 @@ export async function handle(request: Request, env: Env, deps: Deps = {}): Promi
   if (!user) return err(401, 'signin_required');
   if (path === '/api/account/delete') return deleteAccount(env, user, deps.fetchFn);
   if (!billingConfigured(env)) return err(503, 'not_configured');
-  if (path === '/api/billing/checkout') return createCheckout(env, user, deps.fetchFn);
+  if (path === '/api/billing/checkout') return env.PURCHASES_ENABLED === 'true' ? createCheckout(env, user, deps.fetchFn) : err(503, 'purchases_disabled');
   return createPortal(env, user, deps.fetchFn);
 }
 

@@ -295,6 +295,20 @@ const en = {
   'home.account': 'Account',
   'privacy.premium': 'Premium and sign-in. If you choose to sign in, we use Google sign-in and keep only your Google account id and display name. If you subscribe, payment is handled entirely by Stripe: we never see or store your card details, and we keep only the Stripe customer id, your subscription status and the end of the paid period. Signing in is never required to play. You can delete your account at any time in Account; your play records on your device and in your own Google Drive are not deleted.',
   'legal.premium': 'ART SLIDE Premium is a monthly subscription (¥200 per month, tax included) that renews automatically until you cancel in Account → Manage subscription. After cancelling you keep Premium until the end of the period you have paid for; no partial refunds are made for the rest of a period. If a payment fails, Premium continues only for the period already paid. Premium works with a single Google account.',
+  'sync.title': 'Google Drive sync',
+  'sync.desc': 'Back up your play records to a private, hidden area of your own Google Drive and share them between your devices. Only play records are stored there; Google asks for Drive access separately.',
+  'sync.enable': 'Turn on sync',
+  'sync.disable': 'Turn off sync',
+  'sync.now': 'Sync now',
+  'sync.syncing': 'Syncing…',
+  'sync.ok': 'Synced {time}',
+  'sync.error': 'Sync did not work. Your records on this device are safe; it will try again.',
+  'sync.consent': 'Reconnect to Google Drive to keep syncing.',
+  'sync.reconnect': 'Reconnect',
+  'sync.other': 'The records on this device were synced with a different account, so they are not uploaded.',
+  'sync.useDevice': 'Use this device’s records for this account',
+  'sync.newer': 'Your Drive holds records from a newer version of ART SLIDE. Nothing was changed.',
+  'sync.offNote': 'Turning sync off keeps your records on this device and the file in your Drive.',
 } as const;
 
 export type Key = keyof typeof en;

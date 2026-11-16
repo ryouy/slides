@@ -1,9 +1,12 @@
-import { createContext, createElement, useCallback, useContext, useMemo, useReducer, useRef, type ReactNode } from 'react';
+import { createContext, createElement, useCallback, useContext, useEffect, useMemo, useReducer, useRef, type ReactNode } from 'react';
 import { isValidArtState, type ArtState } from './logic/game';
 import { ART_LEVELS, type ArtLevel } from './logic/board';
 import { GALLERY_COLUMN_OPTIONS, GROUP_OPTIONS, type GalleryColumns, type GroupBy } from './logic/gallery';
 import { updateBest } from '../../storage/stats';
 import type { Best } from '../../storage/storage';
+import type { KeyRecord } from '../../sync/doc';
+import { recordKey } from '../../sync/doc';
+import type { LocalStore } from '../../sync/engine';
 
 /** Separate localStorage key: ART SLIDE data never mixes with the other games. */
 export const ART_KEY = 'artslide:save';
@@ -35,7 +38,15 @@ export interface ArtSave {
   showNumbers: boolean;
   /** Grouping, grid density, and randomized order (legacy sort preference is discarded). */
   gallery: { groupBy: GroupBy; columns: GalleryColumns; randomSeed: number; randomized: boolean };
+  /** Random id of THIS browser: counts are kept per device so syncing never counts a clear twice. */
+  deviceId: string;
+  /** Total clears per device (this device + the others seen through Google Drive sync). */
+  counters: Record<string, number>;
+  /** Best time, fewest moves and clears per painting AND board size ("<artworkId>:<size>"). */
+  records: Record<string, KeyRecord>;
 }
+
+const newDeviceId = (): string => (typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `d${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`);
 
 export const defaultArtSave = (): ArtSave => ({
   version: ART_SAVE_VERSION,
@@ -47,6 +58,9 @@ export const defaultArtSave = (): ArtSave => ({
   lastSize: 3,
   showNumbers: false,
   gallery: { groupBy: 'theme', columns: 'auto', randomSeed: 0, randomized: false },
+  deviceId: newDeviceId(),
+  counters: {},
+  records: {},
 });
 
 export function migrateArt(raw: unknown): ArtSave {
@@ -77,6 +91,29 @@ export function migrateArt(raw: unknown): ArtSave {
   };
   if (r.inProgress?.daily && isValidArtState(r.inProgress.daily)) out.inProgress.daily = r.inProgress.daily;
   if (r.inProgress?.free && isValidArtState(r.inProgress.free)) out.inProgress.free = r.inProgress.free;
+  // records for Drive sync: older saves get them from what they already hold (nothing is dropped)
+  out.deviceId = typeof r.deviceId === 'string' && r.deviceId ? r.deviceId : d.deviceId;
+  const completed = typeof r.completed === 'number' && r.completed >= 0 ? r.completed : 0;
+  out.counters = isCounts(r.counters) ? { ...r.counters } : completed > 0 ? { [out.deviceId]: completed } : {};
+  out.completed = Math.max(completed, Object.values(out.counters).reduce((a, b) => a + b, 0));
+  out.records = isRecords(r.records) ? r.records : recordsFromHistory(out.history, out.deviceId);
+  return out;
+}
+
+const isObj = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v);
+const isCounts = (v: unknown): v is Record<string, number> => isObj(v) && Object.values(v).every((n) => typeof n === 'number' && Number.isFinite(n) && n >= 0);
+const isRecords = (v: unknown): v is Record<string, KeyRecord> => isObj(v) && Object.values(v).every((x) => isObj(x) && isCounts(x.clears));
+
+/** Per painting and size records built from the play history of a save that predates them. */
+export function recordsFromHistory(history: ArtPlayRecord[], deviceId: string): Record<string, KeyRecord> {
+  const out: Record<string, KeyRecord> = {};
+  for (const h of history) {
+    const k = recordKey(h.artworkId, h.size);
+    const r = (out[k] ??= { clears: {} });
+    r.clears[deviceId] = (r.clears[deviceId] ?? 0) + 1;
+    r.bestTimeMs = r.bestTimeMs === undefined ? h.timeMs : Math.min(r.bestTimeMs, h.timeMs);
+    r.bestMoves = r.bestMoves === undefined ? h.moves : Math.min(r.bestMoves, h.moves);
+  }
   return out;
 }
 
@@ -97,11 +134,25 @@ function persistArt(d: ArtSave) {
   }
 }
 
+function bumpRecord(data: ArtSave, artworkId: string, size: number, timeMs: number, moves: number): Record<string, KeyRecord> {
+  const k = recordKey(artworkId, size);
+  const old = data.records[k];
+  const rec: KeyRecord = {
+    bestTimeMs: old?.bestTimeMs === undefined ? timeMs : Math.min(old.bestTimeMs, timeMs),
+    bestMoves: old?.bestMoves === undefined ? moves : Math.min(old.bestMoves, moves),
+    lastClearedAt: Date.now(),
+    clears: { ...(old?.clears ?? {}), [data.deviceId]: (old?.clears?.[data.deviceId] ?? 0) + 1 },
+  };
+  return { ...data.records, [k]: rec };
+}
+
 export function recordArtClear(data: ArtSave, r: { state: ArtState; dateKey: string }): ArtSave {
   const p = r.state.puzzle;
   const next: ArtSave = {
     ...data,
     completed: data.completed + 1,
+    counters: { ...data.counters, [data.deviceId]: (data.counters[data.deviceId] ?? 0) + 1 },
+    records: bumpRecord(data, p.artworkId, p.size, r.state.elapsedMs, r.state.moves),
     history: [...data.history, { date: r.dateKey, mode: p.mode, size: p.size, artworkId: p.artworkId, timeMs: r.state.elapsedMs, moves: r.state.moves }].slice(-200),
   };
   if (p.mode === 'daily') {
@@ -137,8 +188,19 @@ export function ArtSaveProvider({ children }: { children: ReactNode }) {
   }, []);
   const getData = useCallback(() => ref.current, []);
   const value = useMemo(() => ({ data: ref.current, getData, update, setProgress }), [tick, getData, update, setProgress]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    bridge = { getData, update };
+    return () => { if (bridge?.getData === getData) bridge = null; };
+  }, [getData, update]);
   return createElement(ArtCtx.Provider, { value }, children);
 }
+
+/** What the Drive sync works on: the mounted game store when there is one, else the stored save itself. */
+let bridge: Pick<Ctx, 'getData' | 'update'> | null = null;
+export const artLocalStore: LocalStore = {
+  get: () => bridge?.getData() ?? loadArt(),
+  update: (fn) => (bridge ? bridge.update(fn) : persistArt(fn(loadArt()))),
+};
 
 export function useArtSave(): Ctx {
   const c = useContext(ArtCtx);

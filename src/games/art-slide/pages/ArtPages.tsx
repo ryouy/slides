@@ -17,6 +17,7 @@ import { SlideSelect } from '../components/SlideSelect';
 import { dailyArtworkId, generateArtDaily, generateArtFree } from '../logic/generator';
 import { newArtGame, type ArtState } from '../logic/game';
 import { recordArtClear, useArtSave } from '../storage';
+import { scheduleSync } from '../../../sync/state';
 
 export function ArtHome() {
   const t = useT();
@@ -231,7 +232,7 @@ export function ArtDaily() {
       onToggleNumbers={setNumbers}
       onBack={() => go('')}
       onProgress={(s) => setProgress('daily', s)}
-      onCleared={(s) => update((d) => recordArtClear(d, { state: s, dateKey }))}
+      onCleared={(s) => { update((d) => recordArtClear(d, { state: s, dateKey })); scheduleSync(); }}
       onChangeArtwork={() => go('gallery')}
       onNextArtwork={() => go('gallery')}
     />
@@ -312,7 +313,7 @@ function ArtPlayInner({ artworkId }: { artworkId?: string }) {
       onToggleNumbers={setNumbers}
       onBack={() => go('')}
       onProgress={(s) => setProgress('free', s)}
-      onCleared={(s) => update((d) => recordArtClear(d, { state: s, dateKey: jstDateKey() }))}
+      onCleared={(s) => { update((d) => recordArtClear(d, { state: s, dateKey: jstDateKey() })); scheduleSync(); }}
       onLevel={(l) => start(art.id, l)}
       onChangeArtwork={() => go('gallery')}
       onNextArtwork={() => start(nextArtwork(art.id, premium, gating).id, level)}

@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react';
 import { fetchConfig, fetchMe, type Config, type Me } from './api';
-import { SIGNED_IN_HINT, gatingOn, setEntitlement } from '../premium/entitlement';
+import { SIGNED_IN_HINT, devPremium, gatingOn, setEntitlement } from '../premium/entitlement';
 
 /**
  * Account + plan as the server reports them. Nothing is requested unless the paid plan is switched on in
@@ -15,7 +15,7 @@ export interface AccountState {
 }
 
 const HINT = SIGNED_IN_HINT;
-let state: AccountState = { config: { auth: false, billing: false }, me: null, ready: false };
+let state: AccountState = { config: { auth: false, billing: false, purchases: false }, me: null, ready: false };
 const listeners = new Set<() => void>();
 const set = (next: AccountState) => {
   state = next;
@@ -37,8 +37,11 @@ export async function refreshAccount(afterCheckout = false): Promise<void> {
   const me = await fetchMe(afterCheckout);
   if (me) hint(me.signedIn);
   set({ ...state, me, ready: true });
-  setEntitlement({ premium: !!me?.signedIn && me.premium, loading: false });
+  setEntitlement({ premium: devPremium() || (!!me?.signedIn && me.premium), loading: false });
 }
+
+/** Subscribers outside React (Drive sync) that need to know when the account or plan was re-read. */
+export const subscribeAccount = (cb: () => void): (() => void) => (listeners.add(cb), () => listeners.delete(cb));
 
 let started = false;
 export async function initAccount(): Promise<void> {
@@ -48,7 +51,7 @@ export async function initAccount(): Promise<void> {
   const config = await fetchConfig();
   if (!config?.auth) {
     set({ config: config ?? state.config, me: null, ready: true });
-    setEntitlement({ premium: false, loading: false });
+    setEntitlement({ premium: devPremium(), loading: false });
     return;
   }
   set({ ...state, config });

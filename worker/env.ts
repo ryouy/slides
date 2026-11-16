@@ -25,6 +25,8 @@ export interface Env {
   STRIPE_SECRET_KEY?: string;
   STRIPE_WEBHOOK_SECRET?: string;
   STRIPE_PRICE_ID?: string;
+  /** "true" lets visitors start a purchase. Stays "false" until the commercial-law notice and the tests are done. */
+  PURCHASES_ENABLED?: string;
 }
 
 export const authConfigured = (e: Env): boolean => !!(e.DB && e.GOOGLE_CLIENT_ID && e.GOOGLE_CLIENT_SECRET && e.SESSION_SECRET && e.SITE_URL);
