@@ -45,7 +45,7 @@
 |---|---|
 | `active` / `trialing` | 利用可（更新の通知が遅れても 2 日は猶予） |
 | `past_due`（支払い失敗） | すでに支払い済みの期間が残っている間だけ |
-| `canceled` | 支払い済みの期間が残っている間だけ（ポータルで解約すると、期間の終わりまでは `active` + `cancel_at_period_end`＝「解約予約」。期間が終わると `canceled`＝「契約終了」） |
+| `canceled` | **契約終了**＝利用不可（ポータルで解約すると、支払い済みの期間の終わりまでは `active` + `cancel_at_period_end`＝「解約予約」で利用でき、期間が終わって初めて `canceled` になります。運営者が即時解約した場合は、その時点で終了します） |
 | `unpaid` / `incomplete` / `incomplete_expired` / `paused` | 利用不可 |
 
 Checkout 完了画面を根拠に解放はしません。解放は Webhook（または `refresh=1` による Stripe への再確認）で D1 に記録された契約状態だけが根拠です。Webhook は常に Stripe から最新の契約を取得し直して保存するため、順序が入れ替わった通知でも古い状態を上書きしません。Stripe の顧客はログインユーザーと 1 対 1 で固定され、別の顧客の契約が別のアカウントに付くことはありません。処理に失敗したときは 500 を返し（Stripe が再送）、成功するまで「処理済み」に記録しません。
@@ -73,7 +73,8 @@ Checkout 完了画面を根拠に解放はしません。解放は Webhook（ま
 | 名前 | 種類 | 取得元 |
 |---|---|---|
 | `SITE_URL` | 変数（`wrangler.jsonc` の `vars`、設定済み） | `https://slides.ryouy.workers.dev` |
-| `PURCHASES_ENABLED` | 変数（`wrangler.jsonc` の `vars`、既定 `"false"`） | 購入を受け付けるときだけ `"true"` |
+| `PURCHASES_ENABLED` | **Secret**（ダッシュボード。未設定＝無効） | 購入を受け付けるときだけ `true`（[STRIPE-TEST.md](STRIPE-TEST.md)） |
+| `ALLOW_LIVE_PAYMENTS` | Secret（未設定＝実決済は不可） | 本番の実際の決済を始めるときだけ `true` |
 | `SESSION_SECRET` | Secret | 自分で作る長いランダム文字列（Mac のターミナルで `openssl rand -base64 48`） |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Secret | Google Cloud（手順 2） |
 | `STRIPE_SECRET_KEY` | Secret | Stripe（手順 3）。**テストは `sk_test_...`、本番は `sk_live_...`** |
@@ -131,7 +132,7 @@ D1 `slides-db` は作成済みで、`wrangler.jsonc` に接続済みです。
 2. 手順 1（テーブル作成）→ 手順 4（Secrets）。`/api/config` が `{"auth":true,"billing":true,"purchases":false,"googleClientId":"..."}` になれば OK。**この時点でもサイトの見た目は変わりません**
 3. 手順 3 の 5 番（Webhook）を作成し、`STRIPE_WEBHOOK_SECRET` を登録
 4. ローカルで通しテスト（下記）。テストカード `4242 4242 4242 4242`（成功）、`4000 0000 0000 0341`（支払い失敗）
-5. `src/legal/operator.ts` に運営者情報を入力、`wrangler.jsonc` の `PURCHASES_ENABLED` を `"true"`、Cloudflare の「Settings → Build → Variables and secrets」に **ビルド変数** `VITE_PREMIUM_ENABLED=true` を追加して再デプロイ
+5. `src/legal/operator.ts` に運営者情報を入力、Cloudflare の Secret `PURCHASES_ENABLED` を `true`（本番のキーを使うなら `ALLOW_LIVE_PAYMENTS` も `true`）、Cloudflare の「Settings → Build → Variables and secrets」に **ビルド変数** `VITE_PREMIUM_ENABLED=true` を追加して再デプロイ
 6. Stripe を本番モードに切り替え、本番の `sk_live_...`・価格 ID・Webhook（本番用に作り直し）の値に差し替える
 
 ## ローカルで動かす（購入テスト）

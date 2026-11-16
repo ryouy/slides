@@ -66,7 +66,8 @@ Cloudflare のダッシュボードで **「Variable」として登録した値�
 
 | 名前 | 既定 | 場所 | 有効にする時 |
 |---|---|---|---|
-| `PURCHASES_ENABLED` | `"false"` | `wrangler.jsonc` の `vars`（コードで管理） | 最終公開の直前だけ `"true"` |
+| `PURCHASES_ENABLED` | 未設定（= 購入は無効）または `false` | Cloudflare の **Secret**（Settings → Variables and Secrets。`wrangler.jsonc` には書かない＝名前の衝突と、コード変更なしの即時切り替えのため） | テスト購入のあいだと最終公開のとき `true`。手順は [STRIPE-TEST.md](STRIPE-TEST.md) |
+| `ALLOW_LIVE_PAYMENTS` | 未設定 | Cloudflare の Secret | **本番の決済（実際の請求）を始めるときだけ** `true`。未設定なら `sk_live_…` のキーでは Checkout を開始しません |
 | `VITE_PREMIUM_ENABLED` | 未設定 | Cloudflare の **ビルド変数**（Settings → Build → Variables and secrets） | 最終公開の直前だけ `true` |
 | `src/legal/operator.ts`（運営者情報 5 項目） | 空欄 | コード | 運営者が入力するまで購入ボタンは使えない |
 

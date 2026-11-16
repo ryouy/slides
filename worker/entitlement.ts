@@ -4,8 +4,9 @@
  * Stripe statuses -> access:
  *  - active, trialing ........ Premium
  *  - past_due ................ Premium only while the period already paid for is still running
- *  - canceled ................ Premium only until the end of the period already paid for
- *                              (cancelling in the portal keeps status "active" with cancel_at_period_end until then)
+ *  - canceled ................ the contract has ENDED: Free. (Cancelling in the portal keeps the status "active" with
+ *                              cancel_at_period_end until the paid period is over, and only then becomes "canceled",
+ *                              so paid time is never lost. An immediate cancellation, e.g. by the operator, ends access now.)
  *  - unpaid, incomplete, incomplete_expired, paused, anything else ... Free
  */
 export interface SubscriptionRow {
@@ -25,7 +26,6 @@ export function hasPremium(sub: SubscriptionRow | null | undefined, nowSec: numb
     case 'trialing':
       return end === 0 || nowSec < end + RENEWAL_GRACE_SECONDS;
     case 'past_due':
-    case 'canceled':
       return nowSec < end;
     default:
       return false;

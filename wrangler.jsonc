@@ -13,9 +13,9 @@
     "run_worker_first": ["/api/*"]
   },
   "vars": {
-    "SITE_URL": "https://slides.ryouy.workers.dev",
-    // Keep "false" until the 特定商取引法 details are filled in (src/legal/operator.ts) and Stripe test-mode checks are done.
-    "PURCHASES_ENABLED": "false"
+    "SITE_URL": "https://slides.ryouy.workers.dev"
+    // PURCHASES_ENABLED is deliberately NOT here: it is a Secret set in the dashboard (Settings → Variables and Secrets),
+    // so it can be switched on/off instantly without a deploy. Absent or anything but "true" = purchases are OFF.
   },
   "observability": { "enabled": true },
   "d1_databases": [

@@ -27,6 +27,8 @@ export interface Env {
   STRIPE_PRICE_ID?: string;
   /** "true" lets visitors start a purchase. Stays "false" until the commercial-law notice and the tests are done. */
   PURCHASES_ENABLED?: string;
+  /** "true" allows a LIVE Stripe key (real money). Absent/anything else: only test keys can start a Checkout. */
+  ALLOW_LIVE_PAYMENTS?: string;
 }
 
 export const authConfigured = (e: Env): boolean => !!(e.DB && e.GOOGLE_CLIENT_ID && e.GOOGLE_CLIENT_SECRET && e.SESSION_SECRET && e.SITE_URL);
@@ -36,9 +38,10 @@ export const validPriceId = (id: string | undefined): boolean => !!id && /^price
 export const validStripeKey = (k: string | undefined): boolean => !!k && /^(sk|rk)_(test|live)_[A-Za-z0-9]{8,}$/.test(k);
 
 /** Why Checkout cannot start although everything is "set": a wrong value (shown in the API answer and the log, never the value itself). */
-export function checkoutConfigError(e: Env): 'invalid_price_id' | 'invalid_stripe_key' | null {
+export function checkoutConfigError(e: Env): 'invalid_price_id' | 'invalid_stripe_key' | 'live_key_not_allowed' | null {
   if (!validPriceId(e.STRIPE_PRICE_ID)) return 'invalid_price_id';
   if (!validStripeKey(e.STRIPE_SECRET_KEY)) return 'invalid_stripe_key';
+  if (/^(sk|rk)_live_/.test(e.STRIPE_SECRET_KEY!) && e.ALLOW_LIVE_PAYMENTS !== 'true') return 'live_key_not_allowed'; // real money needs a deliberate second switch
   return null;
 }
 

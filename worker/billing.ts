@@ -3,6 +3,7 @@ import { billingConfigured } from './env';
 import { allow, deleteUser, eventSeen, getSubscription, markEvent, nowSec, saveSubscription, setStripeCustomer, userByCustomer, userById, type UserRow } from './db';
 import { hasPremium, isOpenSubscription, type SubscriptionRow } from './entitlement';
 import { err, json } from './http';
+import { priceProblem } from './priceCheck';
 import { customerId, periodEnd, StripeError, stripeClient, verifyStripeSignature, type FetchFn, type StripeClient, type StripeSubscription } from './stripe';
 
 const REFRESH_AFTER = 600; // seconds: how old a row may be before an expired period is re-checked with Stripe
@@ -31,7 +32,13 @@ export async function syncSubscription(env: Env, sub: StripeSubscription, hintUs
   // a customer is tied to one account for good: a subscription of a different customer never lands on this account
   if (user.stripe_customer_id && user.stripe_customer_id !== cust) return false;
   if (!user.stripe_customer_id) await setStripeCustomer(db, user.id, cust);
-  await saveSubscription(db, user.id, { stripe_subscription_id: sub.id, status: sub.status, current_period_end: periodEnd(sub), cancel_at_period_end: !!sub.cancel_at_period_end }, (r: SubscriptionRow) => hasPremium(r, nowSec()));
+  const saved = await saveSubscription(
+    db,
+    user.id,
+    { stripe_subscription_id: sub.id, status: sub.status, current_period_end: periodEnd(sub), cancel_at_period_end: !!sub.cancel_at_period_end || typeof sub.cancel_at === 'number' },
+    (r: SubscriptionRow) => hasPremium(r, nowSec()),
+  );
+  if (!saved) console.error(`duplicate_subscription: ${sub.id} ignored, the account already has an active one (cancel/refund it in Stripe)`);
   return true;
 }
 
@@ -75,12 +82,41 @@ async function ensureCustomer(env: Env, stripe: StripeClient, user: UserRow): Pr
 
 const site = (env: Env) => (env.SITE_URL ?? '').replace(/\/+$/, '');
 
+/** price id -> checked at (ms): a price is re-read from Stripe at most every 5 minutes per Worker instance. */
+const priceChecked = new Map<string, number>();
+const PRICE_TTL_MS = 5 * 60_000;
+const BLOCKING = new Set(['active', 'trialing', 'past_due', 'unpaid', 'incomplete']);
+
 export async function createCheckout(env: Env, user: UserRow, fetchFn?: FetchFn): Promise<Response> {
   if (!(await allow(env.DB!, `billing:${user.id}`, 10, 3600))) return err(429, 'rate_limited');
   const existing = await getSubscription(env.DB!, user.id);
   if (isOpenSubscription(existing, nowSec())) return err(409, 'already_subscribed'); // one contract per account
   const stripe = stripeClient(env.STRIPE_SECRET_KEY!, fetchFn);
+
+  // the price must be exactly ¥200/month in the same mode (test/live) as the key, or nothing is created
+  const cacheKey = `${env.STRIPE_SECRET_KEY!.slice(0, 8)}|${env.STRIPE_PRICE_ID}`;
+  if (!priceChecked.has(cacheKey) || Date.now() - priceChecked.get(cacheKey)! > PRICE_TTL_MS) {
+    const problem = priceProblem(await stripe.getPrice(env.STRIPE_PRICE_ID!), env.STRIPE_SECRET_KEY!);
+    if (problem) {
+      console.error(`checkout refused: ${problem} (STRIPE_PRICE_ID does not match what is sold, or the key is of the other mode)`);
+      return err(503, problem);
+    }
+    priceChecked.set(cacheKey, Date.now());
+  }
+
   const customer = await ensureCustomer(env, stripe, user);
+
+  // Stripe is the truth: an unpaid/just-paid contract the webhook has not delivered yet still blocks a second one
+  const live = await stripe.listSubscriptions(customer);
+  const held = live.data.find((s) => BLOCKING.has(s.status));
+  if (held) {
+    await syncSubscription(env, held, user.id).catch(() => false); // bring D1 up to date meanwhile
+    return err(409, held.status === 'incomplete' ? 'payment_pending' : 'already_subscribed');
+  }
+
+  // only one payment page may be open at a time (two tabs paying twice would mean two subscriptions)
+  for (const open of (await stripe.listOpenSessions(customer)).data) await stripe.expireSession(open.id).catch(() => undefined);
+
   const session = await stripe.createCheckout({
     customer,
     userId: user.id,

@@ -1,4 +1,5 @@
 import { hmacHex, safeEqual } from './crypto';
+import type { StripePrice } from './priceCheck';
 
 /** A tiny Stripe REST client (no SDK: fewer dependencies, and `fetch` can be replaced in tests). */
 export type FetchFn = (input: string, init?: RequestInit) => Promise<Response>;
@@ -20,6 +21,8 @@ export interface StripeSubscription {
   status: string;
   customer: string | { id: string };
   cancel_at_period_end?: boolean;
+  /** A scheduled end date (set instead of cancel_at_period_end by some portal/API flows). */
+  cancel_at?: number | null;
   current_period_end?: number;
   items?: { data?: { current_period_end?: number }[] };
   metadata?: Record<string, string>;
@@ -61,6 +64,9 @@ export function stripeClient(secretKey: string, fetchFn: FetchFn = (i, init) => 
     createPortal: (customer: string, returnUrl: string) => call<{ url: string }>('POST', '/billing_portal/sessions', { customer, return_url: returnUrl }),
     getSubscription: (id: string) => call<StripeSubscription>('GET', `/subscriptions/${encodeURIComponent(id)}`),
     listSubscriptions: (customer: string) => call<{ data: StripeSubscription[] }>('GET', `/subscriptions?customer=${encodeURIComponent(customer)}&status=all&limit=10`),
+    getPrice: (id: string) => call<StripePrice>('GET', `/prices/${encodeURIComponent(id)}`),
+    listOpenSessions: (customer: string) => call<{ data: { id: string }[] }>('GET', `/checkout/sessions?customer=${encodeURIComponent(customer)}&status=open&limit=10`),
+    expireSession: (id: string) => call<{ id: string }>('POST', `/checkout/sessions/${encodeURIComponent(id)}/expire`, {}),
     cancelSubscription: (id: string) => call<StripeSubscription>('DELETE', `/subscriptions/${encodeURIComponent(id)}`),
   };
 }

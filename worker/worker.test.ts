@@ -37,7 +37,8 @@ function makeDb(): { d1: D1Database; raw: DatabaseSync } {
 // ---- a fake Google + Stripe ----
 const SITE = 'https://slides.example';
 const jwt = (claims: object) => `x.${btoa(JSON.stringify(claims)).replace(/=+$/, '')}.y`;
-interface Fake { sub: Record<string, unknown>; calls: string[]; googleClaims: Record<string, unknown>; failStripe: boolean }
+interface Fake { sub: Record<string, unknown>; calls: string[]; googleClaims: Record<string, unknown>; failStripe: boolean; price: Record<string, unknown>; openSessions: { id: string }[]; createdSessions: number }
+const goodPrice = { id: 'price_1Abc23DEF', active: true, livemode: false, currency: 'jpy', unit_amount: 200, type: 'recurring', recurring: { interval: 'month', interval_count: 1 } };
 function makeFetch(f: Fake): FetchFn {
   return async (input, init) => {
     const method = init?.method ?? 'GET';
@@ -46,7 +47,10 @@ function makeFetch(f: Fake): FetchFn {
     if (input.startsWith('https://oauth2.googleapis.com/token')) return ok({ id_token: jwt(f.googleClaims) });
     if (f.failStripe) return new Response('{"error":"boom"}', { status: 500 });
     if (input.endsWith('/v1/customers') && method === 'POST') return ok({ id: 'cus_1' });
-    if (input.endsWith('/v1/checkout/sessions')) return ok({ id: 'cs_1', url: 'https://checkout.stripe.test/c/1' });
+    if (input.includes('/v1/prices/')) return ok({ ...f.price, id: decodeURIComponent(input.split('/v1/prices/')[1]) });
+    if (input.includes('/v1/checkout/sessions?customer=')) return ok({ data: f.openSessions });
+    if (input.includes('/expire') && method === 'POST') { f.openSessions = f.openSessions.filter((x) => !input.includes(x.id)); return ok({ id: 'expired' }); }
+    if (input.endsWith('/v1/checkout/sessions')) { f.createdSessions++; return ok({ id: 'cs_1', url: 'https://checkout.stripe.test/c/1' }); }
     if (input.endsWith('/v1/billing_portal/sessions')) return ok({ url: 'https://billing.stripe.test/p/1' });
     if (input.includes('/v1/subscriptions?customer=')) return ok({ data: f.sub.id ? [f.sub] : [] });
     if (input.includes('/v1/subscriptions/sub_1')) {
@@ -109,7 +113,7 @@ beforeEach(() => {
   const m = makeDb();
   raw = m.raw;
   env = baseEnv(m.d1);
-  fake = { sub: {}, calls: [], googleClaims: {}, failStripe: false };
+  fake = { sub: {}, calls: [], googleClaims: {}, failStripe: false, price: { ...goodPrice }, openSessions: [], createdSessions: 0 };
   fetchFn = makeFetch(fake);
 });
 
@@ -134,8 +138,9 @@ describe('pure rules', () => {
     expect(hasPremium(row('active', n - RENEWAL_GRACE_SECONDS - 1), n)).toBe(false);
     expect(hasPremium(row('past_due', n + 100), n)).toBe(true); // already-paid period still runs
     expect(hasPremium(row('past_due', n - 1), n)).toBe(false);
-    expect(hasPremium(row('canceled', n + 100), n)).toBe(true); // paid period remains
+    expect(hasPremium(row('canceled', n + 100), n)).toBe(false); // an ended contract (e.g. cancelled at once) gives no access
     expect(hasPremium(row('canceled', n - 1), n)).toBe(false);
+    expect(hasPremium({ ...row('active', n + 100), cancel_at_period_end: 1 }, n)).toBe(true); // cancelled in the portal: paid time is kept until it ends
     for (const s of ['unpaid', 'incomplete', 'incomplete_expired', 'paused']) expect(hasPremium(row(s, n + 100), n)).toBe(false);
     expect(hasPremium(null, n)).toBe(false);
   });
@@ -419,6 +424,124 @@ describe('Stripe webhook', () => {
     expect((await me(cookie)).premium).toBe(false); // nothing stored yet
     const r = await call('/api/billing/status?refresh=1', { cookie });
     expect(await r.json()).toMatchObject({ premium: true, status: 'active' });
+  });
+});
+
+describe('Checkout safety: price, mode and double purchase', () => {
+  const co = (cookie: string) => call('/api/billing/checkout', { method: 'POST', cookie });
+  const posted = () => fake.calls.filter((c) => c.startsWith('POST https://api.stripe.com'));
+
+  it.each([
+    ['another amount', { unit_amount: 500 }, 'price_wrongAmt01'],
+    ['another currency', { currency: 'usd' }, 'price_wrongCur01'],
+    ['yearly', { recurring: { interval: 'year', interval_count: 1 } }, 'price_yearly0001'],
+    ['one-time', { type: 'one_time', recurring: null }, 'price_onetime001'],
+    ['archived', { active: false }, 'price_archived01'],
+    ['a LIVE price with a test key', { livemode: true }, 'price_livemode01'],
+  ])('%s: refused before anything is created', async (_n, over, id) => {
+    const cookie = await login();
+    env = { ...env, STRIPE_PRICE_ID: id };
+    fake.price = { ...goodPrice, ...over };
+    const res = await co(cookie);
+    expect(res.status).toBe(503);
+    expect(((await res.json()) as { error: string }).error).toMatch(/^price_/);
+    expect(posted()).toEqual([]); // no customer, no Checkout session
+    expect(fake.createdSessions).toBe(0);
+  });
+
+  it('the exact ¥200/month price in the key\'s mode works', async () => {
+    const cookie = await login();
+    env = { ...env, STRIPE_PRICE_ID: 'price_exactGood01' };
+    expect((await co(cookie)).status).toBe(200);
+    expect(fake.createdSessions).toBe(1);
+  });
+
+  it('a live key is refused unless real payments were switched on separately', async () => {
+    const cookie = await login();
+    env = { ...env, STRIPE_SECRET_KEY: 'sk_live_abcdefghijk1', STRIPE_PRICE_ID: 'price_liveGood001' };
+    fake.price = { ...goodPrice, livemode: true };
+    expect(await (await co(cookie)).json()).toEqual({ error: 'live_key_not_allowed' });
+    expect(await (await call('/api/config')).json()).toMatchObject({ purchases: false });
+    expect(fake.calls).toEqual(expect.not.arrayContaining([expect.stringContaining('/v1/prices/')]));
+    env = { ...env, ALLOW_LIVE_PAYMENTS: 'true' };
+    expect((await co(cookie)).status).toBe(200);
+    expect(await (await call('/api/config')).json()).toMatchObject({ purchases: true });
+  });
+
+  it('an existing subscription at Stripe blocks a second Checkout even before the webhook reached D1', async () => {
+    const cookie = await login();
+    env = { ...env, STRIPE_PRICE_ID: 'price_lagGood0001' };
+    await co(cookie); // creates the Stripe customer
+    const uid = (raw.prepare('SELECT id FROM users').get() as { id: string }).id;
+    fake.sub = sub({ metadata: { user_id: uid } }); // paid at Stripe; no webhook yet
+    expect(raw.prepare('SELECT COUNT(*) AS n FROM subscriptions').get()).toEqual({ n: 0 });
+    fake.createdSessions = 0;
+    const res = await co(cookie);
+    expect(res.status).toBe(409);
+    expect(await res.json()).toEqual({ error: 'already_subscribed' });
+    expect(fake.createdSessions).toBe(0);
+    expect((await me(cookie)).premium).toBe(true); // and D1 was brought up to date on the way
+  });
+
+  it('a payment still pending (3-D Secure not finished) blocks a second Checkout', async () => {
+    const cookie = await login();
+    env = { ...env, STRIPE_PRICE_ID: 'price_pendGood001' };
+    await co(cookie);
+    fake.sub = sub({ status: 'incomplete' });
+    expect(await (await co(cookie)).json()).toEqual({ error: 'payment_pending' });
+  });
+
+  it('only one payment page can be open: an earlier open one is expired first', async () => {
+    const cookie = await login();
+    env = { ...env, STRIPE_PRICE_ID: 'price_openGood0001' };
+    fake.openSessions = [{ id: 'cs_old_1' }, { id: 'cs_old_2' }];
+    expect((await co(cookie)).status).toBe(200);
+    expect(fake.calls.filter((c) => c.includes('/expire')).length).toBe(2);
+    expect(fake.openSessions).toEqual([]);
+    expect(fake.createdSessions).toBe(1);
+  });
+
+  it('a second subscription (paid twice by mistake) never replaces the first and is reported', async () => {
+    const cookie = await login();
+    env = { ...env, STRIPE_PRICE_ID: 'price_dupGood00001' };
+    await co(cookie);
+    const uid = (raw.prepare('SELECT id FROM users').get() as { id: string }).id;
+    fake.sub = sub({ id: 'sub_1', metadata: { user_id: uid } });
+    await webhook(subEvent('evt_first'));
+    const first = raw.prepare('SELECT stripe_subscription_id AS id FROM subscriptions').get();
+    expect(first).toEqual({ id: 'sub_1' });
+    // a second one appears at Stripe
+    const second = sub({ id: 'sub_2', metadata: { user_id: uid } });
+    const spy: string[] = [];
+    const orig = console.error;
+    console.error = (...a: unknown[]) => { spy.push(String(a[0])); };
+    const saved = fake.sub;
+    fake.sub = second;
+    const f2: FetchFn = async (input, init) => (String(input).includes('/subscriptions/sub_2') ? new Response(JSON.stringify(second)) : fetchFn(input, init));
+    const body = JSON.stringify({ id: 'evt_second', type: 'customer.subscription.created', data: { object: { id: 'sub_2', customer: 'cus_1' } } });
+    const t = NOW();
+    const sig = `t=${t},v1=${await hmacHex('whsec_test', `${t}.${body}`)}`;
+    const res = await handle(new Request(`${SITE}/api/stripe/webhook`, { method: 'POST', body, headers: { 'stripe-signature': sig } }), env, { fetchFn: f2 });
+    console.error = orig;
+    fake.sub = saved;
+    expect(res.status).toBe(200);
+    expect(raw.prepare('SELECT stripe_subscription_id AS id FROM subscriptions').get()).toEqual({ id: 'sub_1' }); // the first one stays
+    expect(spy.some((m) => m.startsWith('duplicate_subscription'))).toBe(true);
+    expect((await me(cookie)).premium).toBe(true);
+  });
+});
+
+describe('contract end', () => {
+  it('an immediate cancellation (e.g. by the operator) ends Premium at once; a scheduled end keeps it and is shown as cancelling', async () => {
+    const cookie = await login();
+    await call('/api/billing/checkout', { method: 'POST', cookie });
+    const uid = (raw.prepare('SELECT id FROM users').get() as { id: string }).id;
+    fake.sub = sub({ metadata: { user_id: uid }, cancel_at: NOW() + 10 * 86400 }); // scheduled end, no cancel_at_period_end flag
+    await webhook(subEvent('evt_s1'));
+    expect(await (await call('/api/me', { cookie })).json()).toMatchObject({ premium: true, cancelAtPeriodEnd: true });
+    fake.sub = { ...fake.sub, status: 'canceled', cancel_at: null }; // cancelled right now, a paid period would still remain
+    await webhook(subEvent('evt_s2', 'customer.subscription.deleted'));
+    expect(await me(cookie)).toMatchObject({ premium: false, status: 'canceled' });
   });
 });
 

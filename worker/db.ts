@@ -60,13 +60,13 @@ export interface SubscriptionInput {
   current_period_end: number | null;
   cancel_at_period_end: boolean;
 }
-/** One contract per account: a different, older subscription never overwrites one that still gives access. */
-export async function saveSubscription(db: D1Database, userId: string, s: SubscriptionInput, hasAccess: (row: SubscriptionRow) => boolean): Promise<void> {
+/**
+ * One contract per account. A different subscription never replaces one that still gives access (a second payment by
+ * mistake must not hide the first); returns false when it was not saved for that reason.
+ */
+export async function saveSubscription(db: D1Database, userId: string, s: SubscriptionInput, hasAccess: (row: SubscriptionRow) => boolean): Promise<boolean> {
   const current = await getSubscription(db, userId);
-  if (current && current.stripe_subscription_id !== s.stripe_subscription_id && hasAccess(current)) {
-    const incoming = { status: s.status, current_period_end: s.current_period_end, cancel_at_period_end: s.cancel_at_period_end ? 1 : 0 };
-    if (!hasAccess(incoming)) return;
-  }
+  if (current && current.stripe_subscription_id !== s.stripe_subscription_id && hasAccess(current)) return false;
   await db
     .prepare(
       `INSERT INTO subscriptions (user_id, stripe_subscription_id, status, current_period_end, cancel_at_period_end, updated_at)
@@ -76,6 +76,7 @@ export async function saveSubscription(db: D1Database, userId: string, s: Subscr
     )
     .bind(userId, s.stripe_subscription_id, s.status, s.current_period_end, s.cancel_at_period_end ? 1 : 0, nowSec())
     .run();
+  return true;
 }
 
 /** Removes the account's own data. The Stripe customer record itself stays with Stripe (billing records). */
