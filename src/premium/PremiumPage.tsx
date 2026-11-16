@@ -3,14 +3,16 @@ import { Link } from '../components/Link';
 import { useT } from '../i18n';
 import { go } from '../router';
 import { Page } from '../ui/Pages';
-import { billingAvailable, startCheckout } from './billing';
-import { useEntitlement } from './entitlement';
+import { useAccount } from '../account/store';
+import { startCheckout } from './billing';
+import { gatingOn, useEntitlement } from './entitlement';
 
 /** The Premium offer: price, what it includes and how it renews. `reason` explains a lock the visitor just ran into. */
 export function PremiumPanel({ reason }: { reason?: 'art' | 'size' }) {
   const t = useT();
   const { premium } = useEntitlement();
-  const available = billingAvailable();
+  const { config, me } = useAccount();
+  const available = gatingOn() && config.billing;
   return (
     <div className="premium" data-testid="premium">
       {reason && <p className="premium-reason" data-testid="premium-reason"><LockIcon size={16} /> {t(reason === 'art' ? 'premium.lockedArt' : 'premium.lockedSize')}</p>}
@@ -27,6 +29,7 @@ export function PremiumPanel({ reason }: { reason?: 'art' | 'size' }) {
         <button className="btn primary wide" data-testid="premium-subscribe" disabled={!available} onClick={() => void startCheckout()}>{t('premium.subscribe')}</button>
       )}
       {!available && !premium && <p className="muted" data-testid="premium-soon">{t('premium.soon')}</p>}
+      {available && !premium && !me?.signedIn && <p className="muted" data-testid="premium-signin">{t('premium.signIn')}</p>}
       <p className="muted premium-note">{t('premium.note')}</p>
       <p className="muted premium-note">{t('premium.free')}</p>
       <p className="muted premium-note"><Link to="/terms">{t('common.terms')}</Link> · <Link to="/privacy">{t('common.privacy')}</Link></p>

@@ -1,7 +1,26 @@
-/** Is the paid plan purchasable in this build? Needs the Worker API (Stripe + Google sign-in) to be configured. */
-export const billingAvailable = (): boolean => import.meta.env?.VITE_PREMIUM_ENABLED === 'true';
+import { postJson, signInUrl } from '../account/api';
+import { getAccount } from '../account/store';
+import { gatingOn } from './entitlement';
 
-/** Opens Stripe Checkout through the Worker (wired up together with the account layer). */
-export async function startCheckout(): Promise<void> {
-  /* implemented with the account/billing API */
+/** Can a visitor buy Premium here? Needs the paid plan on in this build AND the backend (Google + Stripe) configured. */
+export const billingAvailable = (): boolean => gatingOn() && getAccount().config.billing;
+
+/** Subscribe: sign in first (Premium belongs to a Google account), then Stripe Checkout. */
+export async function startCheckout(): Promise<boolean> {
+  const me = getAccount().me;
+  if (!me?.signedIn) {
+    location.assign(signInUrl('/art-slide/premium'));
+    return true;
+  }
+  const res = await postJson<{ url: string }>('/api/billing/checkout');
+  if (!res?.url) return false;
+  location.assign(res.url);
+  return true;
+}
+
+export async function openPortal(): Promise<boolean> {
+  const res = await postJson<{ url: string }>('/api/billing/portal');
+  if (!res?.url) return false;
+  location.assign(res.url);
+  return true;
 }

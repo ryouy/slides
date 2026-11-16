@@ -75,7 +75,17 @@ export interface Entitlement {
   /** True while the plan is still being looked up for a returning signed-in visitor (no ads, no lock flicker). */
   loading: boolean;
 }
-let current: Entitlement = devPremium() ? { premium: true, loading: false } : { premium: false, loading: false };
+/** Set by the account layer once a visitor has signed in on this device: the plan is then looked up before anything is judged. */
+export const SIGNED_IN_HINT = 'slides:signed-in';
+function hasHint(): boolean {
+  try {
+    return localStorage.getItem(SIGNED_IN_HINT) === '1';
+  } catch {
+    return false;
+  }
+}
+// decided before the first render: a returning signed-in visitor starts in "loading" (no ads, no lock decisions yet)
+let current: Entitlement = devPremium() ? { premium: true, loading: false } : { premium: false, loading: gatingOn() && hasHint() };
 const listeners = new Set<() => void>();
 
 function devPremium(): boolean {

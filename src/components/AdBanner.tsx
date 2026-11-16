@@ -1,6 +1,7 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import { adFits, adFrameUrl, adsEnabled, chooseAdUnit } from '../ads/admax';
 import { useAdConsent } from '../ads/consent';
+import { useEntitlement } from '../premium/entitlement';
 import { useT } from '../i18n';
 
 /** In the dev server real ads are never requested; `?ads=live` (dev only) lets tests exercise the iframe with mocked scripts. */
@@ -70,9 +71,11 @@ export const AdBanner = memo(function AdBanner({ side = false, gallery = false }
   }, [gallery]);
   const width = useViewportWidth();
   const { allowed } = useAdConsent();
+  const { premium, loading } = useEntitlement();
   const unit = chooseAdUnit(width); // PC tag on wide screens, phone tag below; both 300x250
   const live = adsEnabled() || adsForcedLive();
 
+  if (premium || loading) return null; // Premium: no ad slot, no ad script, no leftover space
   if ((!gallery && !ownsSingle) || !adFits(width)) return null; // too narrow for the smallest unit: no ad, no overflow
   const placeholder = import.meta.env.DEV && !adsForcedLive();
   if (!placeholder && !(live && allowed)) return null;

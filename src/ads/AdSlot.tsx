@@ -1,6 +1,7 @@
 import { Link } from '../components/Link';
 import { adsForcedLive } from '../components/AdBanner';
 import { useT } from '../i18n';
+import { useEntitlement } from '../premium/entitlement';
 import { adsEnabled } from './admax';
 import { useAdConsent } from './consent';
 
@@ -10,7 +11,8 @@ export { AdBanner as AdSlot } from '../components/AdBanner';
 export function ConsentBanner() {
   const t = useT();
   const { required, consent, set } = useAdConsent();
-  if (!(adsEnabled() || adsForcedLive()) || !required || consent !== null) return null;
+  const { premium, loading } = useEntitlement();
+  if (premium || loading || !(adsEnabled() || adsForcedLive()) || !required || consent !== null) return null;
   return (
     <div className="consent" role="dialog" aria-label={t('consent.text')}>
       <p>{t('consent.text')} <Link to="/privacy">{t('common.privacy')}</Link></p>

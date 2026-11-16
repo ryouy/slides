@@ -53,6 +53,8 @@ export function ArtHome() {
               <Link to="/art-slide/how">{t('home.howTo')}</Link>
               <Link to="/art-slide/stats">{t('home.stats')}</Link>
               <Link to="/art-slide/credits">{t('home.credits')}</Link>
+              {gating && <Link to="/art-slide/premium" data-testid="more-premium">{t('home.premium')}</Link>}
+              {gating && <Link to="/art-slide/account" data-testid="more-account">{t('home.account')}</Link>}
             </nav>
             <nav className="art-more-puzzles" aria-label={t('home.more')}>
               <Link to="/big-slide" data-testid="more-big">BIG SLIDE</Link>
@@ -238,6 +240,13 @@ export function ArtDaily() {
 
 /** Free play: `/art-slide/play/<artwork id>` starts (or resumes) a puzzle; `/art-slide/play` resumes the saved one. */
 export function ArtPlay({ artworkId }: { artworkId?: string }) {
+  const { premium, gating, loading } = useEntitlement();
+  // wait for the plan of a returning signed-in visitor; start over if it changes (e.g. Premium arrives after sign-in)
+  if (gating && loading) return <div className="screen" aria-busy="true" />;
+  return <ArtPlayInner key={`${gating}-${premium}`} artworkId={artworkId} />;
+}
+
+function ArtPlayInner({ artworkId }: { artworkId?: string }) {
   const t = useT();
   const { getData, setProgress, update } = useArtSave();
   const { premium, gating } = useEntitlement();

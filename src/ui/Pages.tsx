@@ -192,6 +192,7 @@ export function PrivacyPage() {
     <Page title={t('common.privacy')}>
       <p>{t('privacy.storage')}</p>
       <p>{t('privacy.accounts')}</p>
+      <p>{t('privacy.premium')}</p>
       <p>{t('privacy.ads')}</p>
       <p>{t('privacy.choice')}</p>
       <p>{t('privacy.admax')}</p>
@@ -206,6 +207,7 @@ export function TermsPage() {
   return (
     <Page title={t('common.terms')}>
       <p>{t('legal.terms')}</p>
+      <p>{t('legal.premium')}</p>
       <p className="muted">{t('legal.termsNote')}</p>
     </Page>
   );

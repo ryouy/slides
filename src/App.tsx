@@ -4,6 +4,8 @@ import { BigDaily, BigEndless, BigHome, BigHowPage, BigStatsPage } from './games
 import { BigSaveProvider } from './games/big-slide/storage';
 import { ArtCreditsPage, ArtDaily, ArtGallery, ArtHome, ArtHowPage, ArtPlay, ArtStatsPage } from './games/art-slide/pages/ArtPages';
 import { ArtSaveProvider } from './games/art-slide/storage';
+import { AccountPage } from './account/AccountPage';
+import { initAccount } from './account/store';
 import { PremiumPage } from './premium/PremiumPage';
 import { parsePath, usePath } from './router';
 import { SaveProvider, useSave } from './storage/SaveContext';
@@ -38,7 +40,7 @@ function ArtRoutes({ sub }: { sub: string }) {
   return (
     <ArtSaveProvider>
       <div className="art-theme">
-      {head === 'daily' ? <ArtDaily /> : head === 'gallery' ? <ArtGallery /> : head === 'play' ? <ArtPlay key={id ?? ''} artworkId={id} /> : head === 'how' ? <ArtHowPage /> : head === 'stats' ? <ArtStatsPage /> : head === 'credits' ? <ArtCreditsPage /> : head === 'premium' ? <PremiumPage /> : <ArtHome />}
+      {head === 'daily' ? <ArtDaily /> : head === 'gallery' ? <ArtGallery /> : head === 'play' ? <ArtPlay key={id ?? ''} artworkId={id} /> : head === 'how' ? <ArtHowPage /> : head === 'stats' ? <ArtStatsPage /> : head === 'credits' ? <ArtCreditsPage /> : head === 'premium' ? <PremiumPage /> : head === 'account' ? <AccountPage /> : <ArtHome />}
       </div>
     </ArtSaveProvider>
   );
@@ -49,6 +51,10 @@ function Shell() {
   const { game, sub } = parsePath(path);
   const { data } = useSave();
   const lang = useLang();
+
+  useEffect(() => {
+    void initAccount(); // only does anything when the paid plan is switched on in this build
+  }, []);
 
   useEffect(() => {
     const el = document.documentElement;
