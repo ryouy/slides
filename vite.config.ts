@@ -22,5 +22,5 @@ function adFrames(): Plugin {
 
 export default defineConfig({
   plugins: [react(), adFrames()],
-  test: { include: ['src/**/*.test.ts', 'scripts/**/*.test.ts'], environment: 'node' },
+  test: { include: ['src/**/*.test.ts', 'scripts/**/*.test.ts', 'worker/**/*.test.ts'], environment: 'node' },
 });

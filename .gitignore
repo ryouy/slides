@@ -6,3 +6,5 @@ playwright-report
 .vercel
 public/og/
 public/s/
+.dev.vars
+.wrangler/
