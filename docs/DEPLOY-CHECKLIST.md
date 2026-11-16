@@ -94,6 +94,16 @@ Cloudflare のダッシュボードで **「Variable」として登録した値�
 | 1 | テーブル作成済み + Secrets 6 つ登録済み。`PURCHASES_ENABLED="false"`、`VITE_PREMIUM_ENABLED` 未設定 | **変わらない**（画面にログインや Premium は出ない） | `{"auth":true,"billing":true,"purchases":false,"googleClientId":"…"}` |
 | 2 | 最終公開（運営者情報入力・`PURCHASES_ENABLED="true"`・`VITE_PREMIUM_ENABLED=true`） | Free/Premium の制限・購入導線が出る | `purchases` が `true` |
 
+
+### `/api/config` が `auth:false` のままのとき（Secrets を登録したのに）
+`auth:true` になる条件は、`DB`・`SITE_URL`（どちらも `wrangler.jsonc` で設定済み）に加えて、ランタイムの **Secret** `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` / `SESSION_SECRET` の 3 つがすべて空でないことです（Stripe の値は関係しません）。次を順に確認してください。
+
+1. 登録したあとで **「Deploy」** を押したか（保存しただけでは新しい版に入らないことがあります）。Deployments で最新の版に Secret が含まれているか確認
+2. 登録した場所が **Settings → Variables and Secrets（ランタイム）** か。Settings → **Build** の Variables and secrets（ビルド時だけ）では Worker から見えません
+3. 名前が完全に一致しているか（前後の空白、全角、綴り）
+4. 名前が `slides` の Worker に登録したか
+5. ターミナルで確認する場合: `npx wrangler login` のあと `npx wrangler secret list`（名前だけが表示され、値は見えません）
+
 ---
 
 ## 2. `migrations/0001_init.sql` の安全性と再実行時の挙動
