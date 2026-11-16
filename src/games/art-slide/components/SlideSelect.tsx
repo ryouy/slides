@@ -3,6 +3,8 @@ import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
 export interface SlideOption<T extends string | number> {
   value: T;
   label: string;
+  /** Shown with a small lock (Premium); choosing it still calls onChange. */
+  locked?: boolean;
 }
 
 interface Props<T extends string | number> {
@@ -139,6 +141,7 @@ export function SlideSelect<T extends string | number>({
             onKeyDown={optionKeyDown}
           >
             <span>{option.label}</span>
+            {option.locked && <svg className="slide-select-lock" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" data-testid="size-lock"><rect x="5.5" y="11" width="13" height="9" rx="2" /><path d="M8.5 11V8.5a3.5 3.5 0 0 1 7 0V11" /></svg>}
             {option.value === value && (
               <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="m3.2 8.3 3.2 3.1 6.5-6.7" />

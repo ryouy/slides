@@ -7,11 +7,12 @@ interface Props {
   ariaLabel: string;
   onSelect: (level: ArtLevel) => void;
   disabled?: boolean;
+  isLocked?: (level: ArtLevel) => boolean;
 }
 
 /** Large piece count, compact chevron, sliding checked choices below it. */
-export function ArtLevelMenu({ current, getLabel, ariaLabel, onSelect, disabled = false }: Props) {
-  const options = ART_LEVELS.map((level) => ({ value: level, label: getLabel(level) }));
+export function ArtLevelMenu({ current, getLabel, ariaLabel, onSelect, disabled = false, isLocked }: Props) {
+  const options = ART_LEVELS.map((level) => ({ value: level, label: getLabel(level), locked: isLocked?.(level) ?? false }));
   return (
     <SlideSelect
       value={current}

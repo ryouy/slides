@@ -1,5 +1,4 @@
 import { useSyncExternalStore } from 'react';
-import { ART_LEVELS, type ArtLevel } from '../games/art-slide/logic/board';
 
 /**
  * Free / Premium rules for ART SLIDE (one place for every check).
@@ -59,9 +58,6 @@ export function gatingOn(): boolean {
     return false;
   }
 }
-
-/** Board levels on offer: until the paid plan is live the site keeps its original three. */
-export const visibleLevels = (gating: boolean = gatingOn()): readonly ArtLevel[] => (gating ? ART_LEVELS : ART_LEVELS.filter((l) => l <= 5));
 
 export const isFreeArtwork = (id: string): boolean => FREE.has(id);
 /** User photos ("custom:<id>") are Premium-only. */

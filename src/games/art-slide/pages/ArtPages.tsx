@@ -1,4 +1,6 @@
-import { BackButton } from '../../../components/Icons';
+import { BackButton, LockIcon } from '../../../components/Icons';
+import { PremiumPanel } from '../../../premium/PremiumPage';
+import { FREE_MAX_LEVEL, isArtworkLocked, useEntitlement } from '../../../premium/entitlement';
 import { useEffect, useLayoutEffect, useMemo, useState, type KeyboardEvent } from 'react';
 import { AdSlot } from '../../../ads/AdSlot';
 import { Link } from '../../../components/Link';
@@ -19,6 +21,7 @@ import { recordArtClear, useArtSave } from '../storage';
 export function ArtHome() {
   const t = useT();
   const { data } = useArtSave();
+  const { premium, gating } = useEntitlement();
   const today = jstDateKey();
   const streak = currentDailyStreak(data.dailyHistory, today);
   const exhibit = getArtwork(dailyArtworkId(today)) ?? ARTWORKS[0];
@@ -39,7 +42,7 @@ export function ArtHome() {
       </Link>
       <nav className="menu art-home-menu" aria-label={t('home.explore')}>
         <button className="btn big" data-testid="art-gallery" onClick={() => go('gallery')}>{t('art.gallery')}</button>
-        <button className="btn big" data-testid="art-random" onClick={() => go(`play/${pickRandomArtwork().id}`)}>{t('art.random')}</button>
+        <button className="btn big" data-testid="art-random" onClick={() => go(`play/${pickRandomArtwork(undefined, Math.random, premium, gating).id}`)}>{t('art.random')}</button>
         {resumable && <button className="btn big" data-testid="art-resume" onClick={() => go('play')}>{t('art.resume')}</button>}
       </nav>
       <div className="art-home-secondary">
@@ -76,6 +79,7 @@ const slugId = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 export function ArtGallery() {
   const t = useT();
   const { data, update } = useArtSave();
+  const { premium, gating } = useEntitlement();
   const { groupBy, columns, randomSeed, randomized } = data.gallery;
   const [query, setQuery] = useState('');
   const [selectedGroup, setSelectedGroup] = useState('');
@@ -180,7 +184,8 @@ export function ArtGallery() {
               style={columns === 'auto' ? undefined : { ['--gallery-cols' as string]: columns }}>
               {activeGroup.items.flatMap((a, i) => [
                 <li key={a.id} style={{ ['--i' as string]: Math.min(i, 12) }}>
-                  <Link to={`/art-slide/play/${a.id}`} className="gcard" data-testid={`art-${a.id}`}>
+                  <Link to={`/art-slide/play/${a.id}`} className={`gcard${isArtworkLocked(a.id, premium, gating) ? ' locked' : ''}`} data-testid={`art-${a.id}`}>
+                    {isArtworkLocked(a.id, premium, gating) && <span className="g-lock" data-testid={`lock-${a.id}`} role="img" aria-label={t('premium.lock')}><LockIcon size={15} /></span>}
                     <img src={a.thumbnailUrl} alt={`${a.title} – ${a.artist}`}
                       loading="lazy" decoding="async"
                       width={Math.round(a.width / 4)} height={Math.round(a.height / 4)} />
@@ -235,13 +240,14 @@ export function ArtDaily() {
 export function ArtPlay({ artworkId }: { artworkId?: string }) {
   const t = useT();
   const { getData, setProgress, update } = useArtSave();
+  const { premium, gating } = useEntitlement();
   const [numbers, setNumbers] = useNumbers();
   const [game, setGame] = useState<{ key: number; state: ArtState } | null>(() => {
     const saved = getData().inProgress.free;
-    if (saved && getArtwork(saved.puzzle.artworkId) && (!artworkId || saved.puzzle.artworkId === artworkId)) return { key: 0, state: saved };
+    if (saved && getArtwork(saved.puzzle.artworkId) && !isArtworkLocked(saved.puzzle.artworkId, premium, gating) && (!artworkId || saved.puzzle.artworkId === artworkId)) return { key: 0, state: saved };
     const art = artworkId ? getArtwork(artworkId) : undefined;
-    if (!art) return null;
-    const state = newArtGame(generateArtFree(art.id, getData().lastSize));
+    if (!art || isArtworkLocked(art.id, premium, gating)) return null;
+    const state = newArtGame(generateArtFree(art.id, gating && !premium ? (Math.min(getData().lastSize, FREE_MAX_LEVEL) as ArtLevel) : getData().lastSize));
     setProgress('free', state);
     return { key: 0, state };
   });
@@ -251,6 +257,19 @@ export function ArtPlay({ artworkId }: { artworkId?: string }) {
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, [game?.state.puzzle.artworkId]);
+
+  if (artworkId && isArtworkLocked(artworkId, premium, gating)) {
+    return (
+      <div className="screen">
+        <header className="topbar">
+          <BackButton onClick={() => go('gallery')} label={t('common.back')} />
+          <h1>{getArtwork(artworkId)?.title ?? 'ART SLIDE'}</h1>
+          <div className="top-right" />
+        </header>
+        <PremiumPanel reason="art" />
+      </div>
+    );
+  }
 
   if (!game) {
     return (
@@ -287,7 +306,7 @@ export function ArtPlay({ artworkId }: { artworkId?: string }) {
       onCleared={(s) => update((d) => recordArtClear(d, { state: s, dateKey: jstDateKey() }))}
       onLevel={(l) => start(art.id, l)}
       onChangeArtwork={() => go('gallery')}
-      onNextArtwork={() => start(nextArtwork(art.id).id, level)}
+      onNextArtwork={() => start(nextArtwork(art.id, premium, gating).id, level)}
     />
   );
 }

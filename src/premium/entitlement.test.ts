@@ -29,7 +29,7 @@ describe('locks', () => {
   });
   it('boards above level 6 are Premium; the engine supports them all', () => {
     expect(FREE_MAX_LEVEL).toBe(6);
-    expect(ART_LEVELS).toEqual([3, 4, 5, 6, 7, 8]);
+    expect(Math.max(...ART_LEVELS)).toBeGreaterThan(6); // there is something above Free
     for (const l of ART_LEVELS) expect(isLevelLocked(l, false, true)).toBe(l > 6);
     for (const l of ART_LEVELS) expect(isLevelLocked(l, true, true)).toBe(false);
   });

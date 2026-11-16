@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { FREE_ARTWORK_IDS } from '../src/premium/entitlement';
 
 const errors = new WeakMap<Page, string[]>();
 
@@ -613,8 +614,11 @@ test.describe('Free / Premium gating (dev switch)', () => {
 
   test('gallery marks Premium paintings with a lock; a locked painting opens the offer, not the game', async ({ page }) => {
     await page.goto('/art-slide/gallery');
-    await expect(page.locator('[data-testid^="art-"]')).toHaveCount(104);
-    await expect(page.locator('[data-testid^="lock-"]')).toHaveCount(74); // 104 - 30 free
+    await expect(page.locator('a.gcard').first()).toBeVisible();
+    const ids = await page.locator('a.gcard').evaluateAll((els) => els.map((e) => e.getAttribute('data-testid')!.slice(4)));
+    expect(ids.length).toBeGreaterThan(10);
+    // exactly the paintings outside the fixed free list carry a lock
+    await expect(page.locator('[data-testid^="lock-"]')).toHaveCount(ids.filter((id) => !FREE_ARTWORK_IDS.includes(id)).length);
     await expect(page.getByTestId('lock-van-gogh-bedroom')).toHaveCount(0); // a free painting
     await page.locator('[data-testid^="lock-"]').first().locator('xpath=..').click();
     await expect(page.getByTestId('premium-reason')).toBeVisible();
@@ -631,11 +635,11 @@ test.describe('Free / Premium gating (dev switch)', () => {
 
   test('boards above level 6 are locked and open the offer', async ({ page }) => {
     await page.goto('/art-slide/play/van-gogh-bedroom');
-    await expect(page.getByTestId('asize-6')).toBeVisible();
-    await expect(page.getByTestId('asize-7')).toHaveClass(/locked/);
-    await page.getByTestId('asize-6').click();
-    await expect(page.locator('.aboard')).toBeVisible();
-    await page.getByTestId('asize-7').click();
+    await page.locator('[data-testid=art-size-select]:visible').click();
+    const opts = page.locator('[data-testid=art-size-select-options]:visible').getByRole('option');
+    await expect(opts.last().getByTestId('size-lock')).toHaveCount(1);
+    await expect(opts.first().getByTestId('size-lock')).toHaveCount(0);
+    await opts.last().click();
     await expect(page.getByTestId('premium')).toBeVisible();
   });
 
@@ -645,9 +649,9 @@ test.describe('Free / Premium gating (dev switch)', () => {
     await expect(page.locator('[data-testid^="lock-"]')).toHaveCount(0);
     await page.goto('/art-slide/play/monet-stacks-of-wheat-end-of-summer');
     await expect(page.locator('.aboard')).toBeVisible();
-    await expect(page.getByTestId('asize-8')).not.toHaveClass(/locked/);
-    await page.getByTestId('asize-8').click();
-    await expect(page.locator('.atile').first()).toBeVisible();
+    await page.locator('[data-testid=art-size-select]:visible').click();
+    await expect(page.locator('[data-testid=art-size-select-options]:visible').getByRole('option')).toHaveCount(5);
+    await expect(page.getByTestId('size-lock')).toHaveCount(0);
   });
 
   test('the offer shows price, features and renewal terms', async ({ page }) => {

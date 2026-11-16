@@ -1,4 +1,6 @@
 import { BackButton } from '../../../components/Icons';
+import { isLevelLocked, useEntitlement } from '../../../premium/entitlement';
+import { go } from '../../../router';
 import { useEffect, useReducer, useRef, useState } from 'react';
 import { AdSlot } from '../../../ads/AdSlot';
 import { ResultModal } from '../../../components/ResultModal';
@@ -124,7 +126,10 @@ export function ArtGameView(p: Props) {
     const g = gridFor(aspect, level);
     return `${g.cols}×${g.rows}`;
   };
+  const { premium, gating } = useEntitlement();
+  const levelLocked = (level: ArtLevel) => isLevelLocked(level, premium, gating);
   const chooseLevel = (level: ArtLevel) => {
+    if (levelLocked(level)) return go('premium'); // Premium sizes: the offer opens, nothing else changes
     if (level === state.puzzle.size) return setPending(null);
     if (state.moves === 0 || cleared) return p.onLevel?.(level);
     setPending(level);
@@ -184,6 +189,7 @@ export function ArtGameView(p: Props) {
                 getLabel={gridLabel}
                 ariaLabel={t('big.size')}
                 onSelect={chooseLevel}
+                isLocked={levelLocked}
                 disabled={shuffling}
               />
             </div>
@@ -249,6 +255,7 @@ export function ArtGameView(p: Props) {
               getLabel={gridLabel}
               ariaLabel={t('big.size')}
               onSelect={chooseLevel}
+                isLocked={levelLocked}
               disabled={shuffling}
             />
           )}

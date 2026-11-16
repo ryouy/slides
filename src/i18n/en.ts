@@ -266,6 +266,20 @@ const en = {
   "art.descriptionLanguage": "Description language",
   "art.descriptionJapanese": "Show Japanese description",
   "art.descriptionEnglish": "Show English description",
+  'premium.title': 'ART SLIDE Premium',
+  'premium.price': '¥200 / month',
+  'premium.note': 'Tax included. Renews automatically every month. Cancel any time: Premium stays until the end of the period you paid for.',
+  'premium.f1': 'All artworks',
+  'premium.f2': 'More puzzle sizes',
+  'premium.f3': 'No ads',
+  'premium.f4': 'Your own photos',
+  'premium.subscribe': 'Subscribe',
+  'premium.soon': 'Premium is not available yet.',
+  'premium.lockedArt': 'This painting is part of Premium.',
+  'premium.lockedSize': 'This board size is part of Premium.',
+  'premium.free': 'Free includes 30 paintings and board sizes up to level 6.',
+  'premium.lock': 'Premium',
+  'home.premium': 'Premium',
 } as const;
 
 export type Key = keyof typeof en;
