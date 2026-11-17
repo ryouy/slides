@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { commerceRows, disclosureNote, formatDate, legalLang, planFacts, privacySections, PRICE_YEN, TBD, termsSections, type LegalLang, type Section } from './content';
+import { commerceRows, disclosureNote, formatDate, legalLang, planFacts, privacySections, requestHow, PRICE_YEN, TBD, termsSections, type LegalLang, type Section } from './content';
 import { OPERATOR, type OperatorInfo } from './operator';
 
 const full: OperatorInfo = { legalForm: 'individual', name: { mode: 'on-request' }, tradeName: 'Example Games', representative: '', address: { mode: 'on-request' }, phone: { mode: 'on-request' }, contactFormUrl: 'https://forms.gle/example', email: '', supportHours: 'Replies within 3 business days', disclosureTarget: '3営業日以内', tax: 'inclusive', invoiceNumber: 'T1234567890123', court: '東京地方裁判所', effectiveDate: '2026-12-01' };
@@ -8,22 +8,29 @@ const text = (sections: Section[]) => sections.map((s) => `${s.title}\n${s.body.
 
 describe('nothing is invented', () => {
   for (const l of LANGS) {
-    it(`${l}: the only thing still open (the effective date) shows a visible "not set" mark; the notice itself is complete`, () => {
+    it(`${l}: the notice itself is complete; only an unset effective date shows a visible "not set" mark (none once it is set)`, () => {
+      const open = OPERATOR.effectiveDate === '';
       expect(commerceRows(l, OPERATOR).map(([, v]) => v).join('\n')).not.toContain(TBD[l]);
-      expect(text(termsSections(l, OPERATOR))).toContain(TBD[l]);
-      expect(text(privacySections(l, OPERATOR))).toContain(TBD[l]);
+      expect(text(termsSections(l, OPERATOR)).includes(TBD[l])).toBe(open);
+      expect(text(privacySections(l, OPERATOR)).includes(TBD[l])).toBe(open);
+      expect(text(termsSections(l, { ...OPERATOR, effectiveDate: '' }))).toContain(TBD[l]);
     });
-    it(`${l}: the private details never appear (no name, e-mail, phone number or address)`, () => {
+    it(`${l}: the published details are the decided ones; the private ones (address, telephone) never appear`, () => {
       const all = `${commerceRows(l, OPERATOR).map(([, v]) => v).join('\n')}\n${text(termsSections(l, OPERATOR))}\n${text(privacySections(l, OPERATOR))}`;
-      expect(all).not.toMatch(/[A-Za-z0-9._%+-]+@(?!example)[A-Za-z0-9-]+\.[a-z]{2,}/); // no e-mail address
+      const rows = Object.fromEntries(commerceRows(l, OPERATOR));
+      expect(rows[l === 'ja' ? '販売事業者' : 'Seller']).toBe('Ryo Matsushita');
+      expect(rows[l === 'ja' ? '運営統括責任者' : 'Person responsible for operations']).toBe('Ryo Matsushita');
+      expect(rows[l === 'ja' ? 'お問い合わせ先' : 'Contact']).toContain('[removed]');
+      expect([...all.matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[a-z]{2,}/g)].map((m) => m[0]).filter((a) => a !== '[removed]')).toEqual([]); // no other e-mail address
       expect(all).not.toMatch(/\d{2,4}-\d{2,4}-\d{3,4}/); // no phone number
       expect(all).not.toMatch(/〒|東京都|大阪府/); // no address
+      for (const k of l === 'ja' ? ['所在地', '電話番号'] : ['Address', 'Telephone']) expect(rows[k], k).toMatch(/請求があった場合には、遅滞なく開示いたします|without delay on request/);
     });
     it(`${l}: with every detail set, no "not set" mark remains and the form is named`, () => {
       const all = `${commerceRows(l, full).map(([, v]) => v).join('\n')}\n${text(termsSections(l, full))}\n${text(privacySections(l, full))}`;
       expect(all).not.toContain(TBD[l]);
       expect(all).toContain('https://forms.gle/example');
-      expect(all).not.toContain('@'); // the operator keeps the e-mail address private
+      expect(all).not.toContain('@'); // this fixture publishes no e-mail address
     });
   }
 });
@@ -100,7 +107,9 @@ describe('name, address and telephone are provided on request', () => {
       expect(text(termsSections(l, full))).toContain('https://forms.gle/example');
       expect(text(privacySections(l, full))).toContain('https://forms.gle/example');
     }
-    expect(text(termsSections('ja', full))).toContain('事業者情報の開示請求');
+    expect(text(termsSections('ja', full))).toContain('住所・電話番号は、請求があった場合に遅滞なく開示します');
+    expect(requestHow('ja', full)).toContain('事業者情報の開示請求');
+    expect(requestHow('ja', { ...full, email: 'help@example.com' })).toContain('help@example.com');
     expect(text(privacySections('ja', full))).toContain('Googleフォーム');
     expect(text(privacySections('en', full))).toContain('Google Forms');
     expect(text(termsSections('ja', full))).toContain('の運営者（個人、屋号：Example Games。氏名・住所・電話番号は');

@@ -1,4 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
+import { OPERATOR } from '../src/legal/operator';
+
+const DATE_OPEN = OPERATOR.effectiveDate === ''; // false once the publication date has been set
 
 /** The legal pages and the facts shown before buying. Operator details are NOT filled in yet: every gap must show. */
 const gating = (page: Page) => page.addInitScript(() => { localStorage.setItem('slides:dev-gating', '1'); localStorage.setItem('slides:dev-operator', '1'); });
@@ -25,19 +28,25 @@ test('the notice lists every item, in Japanese and in English, and marks what th
   for (const k of ['所在地', '電話番号']) await expect(ja.locator('.commerce-row', { hasText: k }).first()).toContainText('請求があった場合には、遅滞なく開示いたします');
   await expect(ja).toContainText('事業者情報の開示請求');
   await expect(ja.getByTestId('legal-link').first()).toHaveAttribute('href', 'https://forms.gle/vksFVB2QUzdzKeEu6');
-  await expect(ja).not.toContainText('@'); // no e-mail address is published
+  // published: seller, person responsible, e-mail address
+  await expect(ja.locator('.commerce-row', { hasText: '販売事業者' }).first()).toContainText('Ryo Matsushita');
+  await expect(ja.locator('.commerce-row', { hasText: '運営統括責任者' }).first()).toContainText('Ryo Matsushita');
+  await expect(ja.locator('.commerce-row', { hasText: 'お問い合わせ先' }).first()).toContainText('[removed]');
+  await expect(ja).not.toContainText('個人で運営しているため');
   // what is still undecided is marked, and listed above
   await expect(ja).toContainText('月額200円（税込・追加の消費税請求なし）');
   await expect(ja).toContainText('適格請求書発行事業者ではありません');
   expect(await ja.getByTestId('legal-tbd').count()).toBe(0); // the notice itself is complete
-  await expect(page.getByTestId('commerce-incomplete')).toContainText('運営者情報が未設定'); // only the effective date is still open
-  await expect(page.getByTestId('commerce-incomplete')).toContainText('制定日');
-  await expect(page.getByTestId('commerce-incomplete')).not.toContainText('消費税の扱い');
-  await expect(page.getByTestId('commerce-incomplete')).not.toContainText('所在地'); // decided: on request
+  if (DATE_OPEN) {
+    await expect(page.getByTestId('commerce-incomplete')).toContainText('運営者情報が未設定'); // only the effective date is still open
+    await expect(page.getByTestId('commerce-incomplete')).toContainText('制定日');
+    await expect(page.getByTestId('commerce-incomplete')).not.toContainText('消費税の扱い');
+  } else await expect(page.getByTestId('commerce-incomplete')).toHaveCount(0); // everything is set: no warning
+  if (DATE_OPEN) await expect(page.getByTestId('commerce-incomplete')).not.toContainText('所在地'); // decided: on request
   await page.getByTestId('legal-lang-en').click();
   await expect(page.locator('.topbar h1')).toHaveText('Notice under the Act on Specified Commercial Transactions');
   await expect(page.getByTestId('commerce')).toContainText('refunds');
-  await expect(page.getByTestId('commerce-incomplete')).toContainText('not set yet');
+  if (DATE_OPEN) await expect(page.getByTestId('commerce-incomplete')).toContainText('not set yet');
   expect(await page.locator('.commerce-row').count()).toBe(15);
 });
 
@@ -47,7 +56,8 @@ test('terms and privacy: complete texts in Japanese and English, with unset item
     await page.getByTestId('legal-lang-ja').click();
     await expect(page.locator('.topbar h1')).toHaveText(ja);
     expect(await page.locator('.legal-sections section').count()).toBeGreaterThanOrEqual(12);
-    expect(await page.getByTestId('legal-tbd').count()).toBeGreaterThan(0);
+    if (DATE_OPEN) expect(await page.getByTestId('legal-tbd').count()).toBeGreaterThan(0);
+    else expect(await page.getByTestId('legal-tbd').count()).toBe(0); // the date is set: no gaps anywhere
     await page.getByTestId('legal-lang-en').click();
     await expect(page.locator('.topbar h1')).toHaveText(en);
     expect(await page.locator('.legal-sections section').count()).toBeGreaterThanOrEqual(12);
@@ -58,7 +68,7 @@ test('terms and privacy: complete texts in Japanese and English, with unset item
   expect(text).toContain('月額200円');
   expect(text).toContain('自動で請求');
   expect(text).toContain('サブスクリプションを管理');
-  expect(text).not.toMatch(/@[a-z0-9-]+\.(com|jp)/i); // no invented e-mail address
+  expect([...text.matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[a-z]{2,}/g)].map((m) => m[0]).filter((a) => a !== '[removed]')).toEqual([]); // no other e-mail address
 });
 
 test('the interface language picks the legal language: Japanese gets Japanese, everything else English', async ({ page }) => {
@@ -83,12 +93,11 @@ test('the notice, terms, privacy and contact are one click away from every page 
   for (const name of ['Privacy', 'Terms', 'Contact']) await expect(page.locator('footer.footer').getByRole('link', { name })).toBeVisible();
 });
 
-test('contact page: the form is the official channel, no e-mail address is shown', async ({ page }) => {
+test('contact page: the form and the published e-mail address are the channels', async ({ page }) => {
   await page.goto('/contact');
   await expect(page.getByTestId('contact')).toBeVisible();
   await expect(page.getByTestId('contact-form').getByTestId('legal-link')).toHaveAttribute('href', 'https://forms.gle/vksFVB2QUzdzKeEu6');
-  await expect(page.getByTestId('contact-mail')).toHaveCount(0);
-  await expect(page.getByTestId('contact')).not.toContainText('@');
+  await expect(page.getByTestId('contact-mail')).toHaveAttribute('href', 'mailto:[removed]');
   await page.getByTestId('legal-lang-ja').click();
   await expect(page.getByTestId('contact')).toContainText('事業者情報の開示請求');
 });
@@ -113,12 +122,13 @@ test('the contact form is linked from the footer, the notice, the terms and the 
   }
 });
 
-test('terms and privacy: no e-mail address is published anywhere', async ({ page }) => {
+test('terms and privacy: the only e-mail address published is the operator\u2019s', async ({ page }) => {
   for (const path of ['/terms', '/privacy', '/commerce', '/contact']) {
     await page.goto(path);
     for (const l of ['ja', 'en']) {
       await page.getByTestId(`legal-lang-${l}`).click();
-      expect(await page.locator('.prose').innerText(), `${path} ${l}`).not.toMatch(/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[a-z]{2,}/);
+      const found = [...(await page.locator('.prose').innerText()).matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[a-z]{2,}/g)].map((m) => m[0]).filter((a) => a !== '[removed]');
+      expect(found, `${path} ${l}`).toEqual([]);
     }
   }
 });

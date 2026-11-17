@@ -56,16 +56,17 @@ export interface OperatorInfo {
 }
 
 export const OPERATOR: OperatorInfo = {
-  // Decided by the operator (policy of 2026-11-17): an individual business that keeps name, address and telephone private and
-  // discloses them on a lawful request; general enquiries go through the contact form; the e-mail address is not published.
+  // Decided by the operator (policy updated 2026-11-17): the seller name, the person responsible and the e-mail address are
+  // published (Stripe's public requirements); address and telephone stay private and are provided without delay on request;
+  // general enquiries and such requests may use the contact form or the e-mail address.
   legalForm: 'individual',
-  name: { mode: 'on-request' },
+  name: { mode: 'public', value: 'Ryo Matsushita' },
   tradeName: '',
-  representative: '',
+  representative: 'Ryo Matsushita',
   address: { mode: 'on-request' },
   phone: { mode: 'on-request' },
   contactFormUrl: 'https://forms.gle/vksFVB2QUzdzKeEu6',
-  email: '',
+  email: '[removed]',
   supportHours: '',
   disclosureTarget: '',
   // Tax treatment: tax-exempt business. Set on the operator's own statement (an individual, no business-start notification,

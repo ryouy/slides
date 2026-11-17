@@ -27,10 +27,11 @@ export const formRef = (l: LegalLang, o: OperatorInfo): string => (validFormUrl(
 /** How to ask for the details that are provided on request. */
 export function requestHow(l: LegalLang, o: OperatorInfo): string {
   const url = formRef(l, o);
+  const mail = o.email.trim();
   const target = o.disclosureTarget.trim();
   return l === 'ja'
-    ? `お問い合わせフォーム（${url}）で「事業者情報の開示請求」を選び、返信先メールアドレスを入力してご請求ください${target ? `。目安：${target}` : ''}`
-    : `please use the contact form (${url}), choose “Request for the operator’s details” and enter an e-mail address for the reply${target ? `. Target: ${target}` : ''}`;
+    ? `${mail ? `メール（${mail}）、または` : ''}お問い合わせフォーム（${url}）で、内容に「事業者情報の開示請求」と書き、返信先メールアドレスを入力してご請求ください${target ? `。目安：${target}` : ''}`
+    : `please ${mail ? `e-mail ${mail} or ` : ''}use the contact form (${url}): write “Request for the operator’s details” in your message and enter an e-mail address for the reply${target ? `. Target: ${target}` : ''}`;
 }
 
 function disclosed(l: LegalLang, d: Disclosure, o: OperatorInfo): string {
@@ -53,8 +54,10 @@ function operatorLabel(l: LegalLang, o: OperatorInfo): string {
 }
 
 /** Where to send enquiries, as a phrase. */
-const contactRef = (l: LegalLang, o: OperatorInfo): string =>
-  l === 'ja' ? `お問い合わせフォーム（${formRef(l, o)}）` : `the contact form (${formRef(l, o)})`;
+const contactRef = (l: LegalLang, o: OperatorInfo): string => {
+  const mail = o.email.trim();
+  return l === 'ja' ? `${mail ? `メール（${mail}）、または` : ''}お問い合わせフォーム（${formRef(l, o)}）` : `${mail ? `e-mail (${mail}) or ` : ''}the contact form (${formRef(l, o)})`;
+};
 
 export function formatDate(l: LegalLang, iso: string): string {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
@@ -81,7 +84,7 @@ export function planFacts(l: LegalLang, o: OperatorInfo): Row[] {
         ['更新', '1か月ごとに自動で更新されます。契約期間の定めはなく、解約するまで毎月続きます。'],
         ['お支払い', 'お申し込み時に初回の料金をお支払いいただき、以降は毎月、お申し込みと同じ日・同じ時刻に、同じお支払い方法へ自動で請求されます。クレジットカード・デビットカード等（決済代行：Stripe）。'],
         ['支払総額の目安', `契約期間の定めがないため総額は確定しません（目安：6か月で${PRICE_SIX_MONTHS.toLocaleString('ja-JP')}円、12か月で${PRICE_TWELVE_MONTHS.toLocaleString('ja-JP')}円。目安であり、解約までの期間により変わります）。`],
-        ['解約', 'サイト内「アカウント」の「サブスクリプションを管理」から、いつでも解約できます。解約料はかかりません。次回の更新日時より前に手続きをすれば、次回以降は請求されません。解約後も、お支払い済みの期間の終わりまでPremiumをご利用いただけます。'],
+        ['解約', 'サイト内「アカウント」の「サブスクリプションを管理」（決済代行会社Stripeのカスタマーポータルが開きます）から、いつでも解約できます。解約料はかかりません。次回の更新日時より前に手続きをすれば、次回以降は請求されません。解約後も、お支払い済みの期間の終わりまでPremiumをご利用いただけます。'],
         ['返金・申込みの撤回', '通信販売にはクーリング・オフ制度はありません。デジタルサービスの性質上、お申し込み後の返品・キャンセルによる返金や、期間の途中で解約した場合の日割り返金はいたしません（法令により認められる場合を除きます）。'],
         ['ご利用開始', 'お支払いの完了後、ただちにPremiumをご利用いただけます。'],
       ]
@@ -90,7 +93,7 @@ export function planFacts(l: LegalLang, o: OperatorInfo): Row[] {
         ['Renewal', 'Renews automatically every month. There is no fixed term: it continues every month until you cancel.'],
         ['Payment', 'The first charge is made when you subscribe. After that you are charged automatically every month, on the same day and at the same time as your sign-up, to the same payment method. Credit / debit cards etc. (payments are handled by Stripe).'],
         ['Total (guide)', `Because there is no fixed term the total is not fixed (guide: ${yen(PRICE_SIX_MONTHS)} for 6 months, ${yen(PRICE_TWELVE_MONTHS)} for 12 months; it depends on how long you stay subscribed).`],
-        ['Cancelling', 'Cancel any time under “Account” → “Manage subscription”. There is no cancellation fee. If you cancel before the next renewal time you are not charged again. Premium stays available until the end of the period you have already paid for.'],
+        ['Cancelling', 'Cancel any time under “Account” → “Manage subscription” (this opens the payment provider Stripe’s customer portal). There is no cancellation fee. If you cancel before the next renewal time you are not charged again. Premium stays available until the end of the period you have already paid for.'],
         ['Refunds / withdrawal', 'Online sales have no statutory cooling-off period. Because this is a digital service, we do not refund after sign-up or pro-rate a refund when you cancel part-way through a period (except where the law requires it).'],
         ['Start', 'Premium is available right after payment is completed.'],
       ];
@@ -100,7 +103,7 @@ export function planFacts(l: LegalLang, o: OperatorInfo): Row[] {
 export function commerceRows(l: LegalLang, o: OperatorInfo): Row[] {
   const trade = o.tradeName.trim();
   const seller = o.name && o.name.mode === 'public' ? (trade ? (l === 'ja' ? `${or(l, o.name.value)}（屋号：${trade}）` : `${or(l, o.name.value)} (trade name: ${trade})`) : or(l, o.name.value)) : disclosed(l, o.name, o) + (trade ? (l === 'ja' ? `　屋号：${trade}` : `  Trade name: ${trade}`) : '');
-  const responsible = o.legalForm === 'corporation' ? or(l, o.representative) : o.legalForm === 'individual' ? (l === 'ja' ? '個人で運営しているため、販売事業者（上記）本人です。' : 'The service is run by an individual: the seller named above.') : TBD[l];
+  const responsible = o.representative.trim() ? o.representative.trim() : o.legalForm === 'corporation' ? TBD[l] : o.legalForm === 'individual' ? (l === 'ja' ? '個人で運営しているため、販売事業者（上記）本人です。' : 'The service is run by an individual: the seller named above.') : TBD[l];
   const hours = o.supportHours.trim() ? (l === 'ja' ? `（${o.supportHours.trim()}）` : ` (${o.supportHours.trim()})`) : '';
   const contact = l === 'ja'
     ? `お問い合わせフォーム：${formRef(l, o)}${hours}${o.email.trim() ? `　メール：${o.email.trim()}` : ''}`
@@ -171,7 +174,7 @@ export function termsSections(l: LegalLang, o: OperatorInfo): Section[] {
       { id: 'suspend', title: '第14条（利用停止・契約の解除）', body: ['利用者が本規約に違反した場合、当方は、利用者への通知のうえ、利用を停止し、または契約を解除することがあります。この場合、第6条の定めにより、お支払い済みの料金は返金されません。ただし、当方の責めに帰すべき事由による場合を除きます。'] },
       { id: 'amend', title: '第15条（本規約の変更）', body: ['本規約を変更する場合は、変更後の内容と適用日を、本サービス上でお知らせします。変更後も本サービスを利用した場合は、変更に同意したものとみなします。ただし、利用者に不利益な変更は、法令に従って行います。'] },
       { id: 'law', title: '第16条（準拠法・管轄）', body: [court ? `本規約には日本法を適用します。本サービスに関する紛争は、民事訴訟法に定める管轄裁判所のほか、${court}も、第一審の管轄裁判所とします。` : '本規約には日本法を適用します。本サービスに関する紛争は、民事訴訟法に定める管轄裁判所を、第一審の管轄裁判所とします。'] },
-      { id: 'contact', title: '第17条（お問い合わせ）', body: [`本規約やお支払いに関するお問い合わせは、${contactRef(l, o)}までお願いします。事業者情報（氏名・住所・電話番号）は、請求があった場合に遅滞なく開示します（同フォームの「事業者情報の開示請求」）。`, `制定・最終改定日：${formatDate(l, o.effectiveDate)}`] },
+      { id: 'contact', title: '第17条（お問い合わせ）', body: [`本規約やお支払いに関するお問い合わせは、${contactRef(l, o)}までお願いします。事業者の住所・電話番号は、請求があった場合に遅滞なく開示します（ご請求の方法は、特定商取引法に基づく表記をご覧ください）。`, `制定・最終改定日：${formatDate(l, o.effectiveDate)}`] },
     ];
   }
   return [
@@ -191,7 +194,7 @@ export function termsSections(l: LegalLang, o: OperatorInfo): Section[] {
     { id: 'suspend', title: 'Article 14 (Suspension and termination)', body: ['If you break these Terms we may, after notifying you, suspend your use or terminate the contract. In that case fees already paid are not refunded under Article 6, unless we are at fault.'] },
     { id: 'amend', title: 'Article 15 (Changes to these Terms)', body: ['If we change these Terms we will announce the new content and the date it applies in the Service. If you keep using the Service after that you agree to the change. Changes that are unfavourable to you are made in accordance with the law.'] },
     { id: 'law', title: 'Article 16 (Governing law and courts)', body: [court ? `Japanese law applies to these Terms. For disputes about the Service, the court that has jurisdiction under the Code of Civil Procedure, and also the ${court}, have jurisdiction in the first instance.` : 'Japanese law applies to these Terms. For disputes about the Service, the court that has jurisdiction under the Code of Civil Procedure has jurisdiction in the first instance.'] },
-    { id: 'contact', title: 'Article 17 (Contact)', body: [`For questions about these Terms or payments, use ${contactRef(l, o)}. The operator’s name, address and telephone are provided without delay on request (choose “Request for the operator’s details” on the same form).`, `Established / last revised: ${formatDate(l, o.effectiveDate)}`] },
+    { id: 'contact', title: 'Article 17 (Contact)', body: [`For questions about these Terms or payments, use ${contactRef(l, o)}. The operator’s address and telephone are provided without delay on request (how to ask is on the notice under the Act on Specified Commercial Transactions).`, `Established / last revised: ${formatDate(l, o.effectiveDate)}`] },
   ];
 }
 
@@ -203,7 +206,7 @@ export function privacySections(l: LegalLang, o: OperatorInfo): Section[] {
     return [
       { id: 'who', title: '1. 事業者', body: [`${who}（以下「当方」）は、ゲームサイト「ART SLIDE」「BIG SLIDE」「WORD SLIDE」（以下「本サービス」）における、利用者の情報を、次のとおり取り扱います。`] },
       { id: 'device', title: '2. 端末の中だけに保存される情報', body: ['設定、言語、プレイの記録（クリアした作品、ベストの時間・手数など）、遊びかけのパズルは、お使いの端末のブラウザ（localStorage）に保存されます。これらは、当方のサーバーには送信されません。', 'Premiumプランの「マイフォト」で追加した写真は、お使いの端末のブラウザ（IndexedDB）の中だけに保存されます。当方のサーバーへの送信、共有、Googleドライブへの保存は行いません。ブラウザのデータを消去すると失われます。'] },
-      { id: 'collected', title: '3. 当方が取得する情報', body: ['ログインしない場合：当方は、利用者を識別する情報を取得しません（ただし、下記の接続ログと広告を除きます）。', 'Googleでログインした場合：Googleアカウントの識別子（sub）と、表示名を取得します。メールアドレスは保存しません。ログイン状態を保つため、ログインの確認情報（Cookie）を使い、サーバー側にはそのハッシュ値だけを、最長30日間保存します。', 'Premiumプランを申し込んだ場合：決済代行会社Stripeの顧客ID、契約の状態、契約期間の終了日を保存します。カード番号等の決済情報は、Stripeが取得・管理し、当方は取得しません。', 'Googleドライブの同期を、利用者が自分で有効にした場合：プレイの記録（クリアした作品ごとのベスト、クリア回数、日付、直近の履歴）を、利用者ご自身のGoogleドライブの、このアプリ専用の非表示の領域に保存します。写真、契約の状態、メールアドレスは含みません。', 'お問い合わせ：お問い合わせフォーム（Googleフォーム）から送信された、お問い合わせの種類と内容、および、任意で入力された返信先メールアドレスを取得します。返信と、事業者情報の開示請求への対応のためだけに使い、対応に必要な期間が過ぎたら削除します。フォームの回答は、Google LLCのサービス上で受け付けます。','接続ログ：サイトの提供と、不正利用の防止のため、通信に伴い、IPアドレス、日時、アクセス先などが、ホスティング事業者（Cloudflare）に記録されます。ログイン試行の回数を制限する際は、IPアドレスそのものではなく、鍵付きのハッシュ値だけを、短期間（最長10分の集計期間。古い集計は削除）使います。'] },
+      { id: 'collected', title: '3. 当方が取得する情報', body: ['ログインしない場合：当方は、利用者を識別する情報を取得しません（ただし、下記の接続ログと広告を除きます）。', 'Googleでログインした場合：Googleアカウントの識別子（sub）と、表示名を取得します。メールアドレスは保存しません。ログイン状態を保つため、ログインの確認情報（Cookie）を使い、サーバー側にはそのハッシュ値だけを、最長30日間保存します。', 'Premiumプランを申し込んだ場合：決済代行会社Stripeの顧客ID、契約の状態、契約期間の終了日を保存します。カード番号等の決済情報は、Stripeが取得・管理し、当方は取得しません。', 'Googleドライブの同期を、利用者が自分で有効にした場合：プレイの記録（クリアした作品ごとのベスト、クリア回数、日付、直近の履歴）を、利用者ご自身のGoogleドライブの、このアプリ専用の非表示の領域に保存します。写真、契約の状態、メールアドレスは含みません。', 'お問い合わせ：お問い合わせフォーム（Googleフォーム）から送信された、お問い合わせの種類と内容、および、任意で入力された返信先メールアドレスを取得します。メールでご連絡いただいた場合は、そのメールアドレスと内容を取得します。返信と、事業者情報（住所・電話番号）の開示請求への対応のためだけに使い、対応に必要な期間が過ぎたら削除します。フォームの回答とメールは、Google LLCのサービス上で受け付けます。','接続ログ：サイトの提供と、不正利用の防止のため、通信に伴い、IPアドレス、日時、アクセス先などが、ホスティング事業者（Cloudflare）に記録されます。ログイン試行の回数を制限する際は、IPアドレスそのものではなく、鍵付きのハッシュ値だけを、短期間（最長10分の集計期間。古い集計は削除）使います。'] },
       { id: 'purpose', title: '4. 利用目的', body: [['本サービスの提供、ログイン、Premiumプランの契約・請求・解約の管理のため', 'プレイの記録の同期（利用者が有効にした場合）のため', '不正利用の防止、障害の調査、本サービスの安全な運営のため', 'お問い合わせへの対応のため', '広告の表示のため（下記9）']] },
       { id: 'third', title: '5. 第三者への提供・業務委託', body: ['当方は、法令に基づく場合を除き、本人の同意なく個人データを第三者に提供しません。本サービスの運営には、次の事業者のサービスを利用しており、必要な範囲で、情報の取扱いを委託しています。', ['Cloudflare, Inc.：サイトの配信、API、データベース（D1）の提供', 'Google LLC：Googleアカウントでのログイン、Googleドライブ（同期を有効にした場合）、お問い合わせフォーム（Googleフォーム）', 'Stripe, Inc.：Premiumプランの決済・契約管理', '忍者AdMax（広告配信事業者）：広告の表示。広告の事業者は、Cookie等を使って、広告の配信・効果の測定を行うことがあります。ゲームの進行状況などは、広告事業者には送信しません'] ] },
       { id: 'abroad', title: '6. 外国にある事業者の利用', body: ['上記の事業者のうち、Cloudflare、Google、Stripeなどは、外国（米国を含みます）を含む複数の地域で、情報を処理・保存することがあります。各社は、それぞれのプライバシーポリシーと契約に基づいて、情報を取り扱います。'] },
@@ -219,7 +222,7 @@ export function privacySections(l: LegalLang, o: OperatorInfo): Section[] {
   return [
     { id: 'who', title: '1. Operator', body: [`${who} (“we”) handles users’ information on the game site “ART SLIDE”, “BIG SLIDE” and “WORD SLIDE” (the “Service”) as described here.`] },
     { id: 'device', title: '2. Information that stays on your device', body: ['Your settings, language, play records (paintings cleared, best time and moves) and unfinished puzzles are stored in your browser (localStorage). They are not sent to our servers.', 'Photos you add in “My Photos” (Premium) are stored only in your browser (IndexedDB) on your device. They are not uploaded to our servers, shared, or saved to Google Drive. They are lost if you clear your browser data.'] },
-    { id: 'collected', title: '3. Information we collect', body: ['If you do not sign in: we collect nothing that identifies you (apart from the connection logs and advertising described below).', 'If you sign in with Google: we receive your Google account identifier (sub) and display name. We do not store your e-mail address. To keep you signed in we use a login cookie; on the server only a hash of it is stored, for at most 30 days.', 'If you subscribe to Premium: we store the Stripe customer ID, the state of your contract and the end date of the paid period. Card details are collected and managed by the payment provider Stripe; we never receive them.', 'If you turn on Google Drive sync yourself: your play records (best results per painting, number of clears, dates, recent history) are saved in a hidden area of your own Google Drive reserved for this app. Photos, contract state and e-mail address are not included.', 'Contact form: we receive the inquiry type and content you send through the contact form (Google Forms), and the reply e-mail address if you choose to enter one. We use it only to reply and to answer requests for the operator’s details, and delete it once it is no longer needed. Form answers are received on Google LLC’s service.', 'Connection logs: to deliver the site and prevent abuse, the hosting provider (Cloudflare) records the IP address, time and requested address of each request. To limit login attempts we use only a keyed hash of the IP address, for a short time (a counting window of at most 10 minutes; old counters are deleted), never the address itself.'] },
+    { id: 'collected', title: '3. Information we collect', body: ['If you do not sign in: we collect nothing that identifies you (apart from the connection logs and advertising described below).', 'If you sign in with Google: we receive your Google account identifier (sub) and display name. We do not store your e-mail address. To keep you signed in we use a login cookie; on the server only a hash of it is stored, for at most 30 days.', 'If you subscribe to Premium: we store the Stripe customer ID, the state of your contract and the end date of the paid period. Card details are collected and managed by the payment provider Stripe; we never receive them.', 'If you turn on Google Drive sync yourself: your play records (best results per painting, number of clears, dates, recent history) are saved in a hidden area of your own Google Drive reserved for this app. Photos, contract state and e-mail address are not included.', 'Contact: we receive the inquiry type and content you send through the contact form (Google Forms), and the reply e-mail address if you choose to enter one. If you write to us by e-mail we receive your e-mail address and message. We use it only to reply and to answer requests for the operator’s address and telephone, and delete it once it is no longer needed. Form answers and e-mails are received on Google LLC’s service.', 'Connection logs: to deliver the site and prevent abuse, the hosting provider (Cloudflare) records the IP address, time and requested address of each request. To limit login attempts we use only a keyed hash of the IP address, for a short time (a counting window of at most 10 minutes; old counters are deleted), never the address itself.'] },
     { id: 'purpose', title: '4. Purposes', body: [['Providing the Service, signing in, and managing the Premium contract, billing and cancellation', 'Syncing your play records (if you turn it on)', 'Preventing abuse, investigating faults and running the Service safely', 'Answering your enquiries and requests for the operator’s details', 'Showing advertising (see 9)']] },
     { id: 'third', title: '5. Sharing and service providers', body: ['Except where the law requires it, we do not provide personal data to third parties without your consent. To run the Service we use the following providers and entrust them with the handling of information to the extent necessary.', ['Cloudflare, Inc.: delivering the site, the API and the database (D1)', 'Google LLC: signing in with a Google account, Google Drive (if you turn on sync), and the contact form (Google Forms)', 'Stripe, Inc.: payment and contract management for Premium', 'Shinobi AdMax (ad provider): showing advertising. The ad provider may use cookies and similar technology to deliver ads and measure them. Your game progress is not sent to the ad provider'] ] },
     { id: 'abroad', title: '6. Providers located abroad', body: ['Providers such as Cloudflare, Google and Stripe may process and store information in several regions, including outside Japan (the United States among them). They handle it under their own privacy policies and contracts.'] },
@@ -236,6 +239,6 @@ export function privacySections(l: LegalLang, o: OperatorInfo): Section[] {
 /** One sentence under the purchase facts: the seller's details are provided on request, and how to ask. */
 export function disclosureNote(l: LegalLang, o: OperatorInfo): string {
   return l === 'ja'
-    ? `事業者の氏名・住所・電話番号は、請求があった場合に遅滞なく開示します。ご請求は、お問い合わせフォーム（${formRef(l, o)}）から、「事業者情報の開示請求」を選んでお願いします。`
-    : `The operator’s name, address and telephone are provided without delay on request: use the contact form (${formRef(l, o)}) and choose “Request for the operator’s details”.`;
+    ? `事業者の住所・電話番号は、請求があった場合に遅滞なく開示します。ご請求は、${requestHow(l, o)}。`
+    : `The operator’s address and telephone are provided without delay on request: ${requestHow(l, o)}.`;
 }

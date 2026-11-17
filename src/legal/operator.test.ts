@@ -21,23 +21,25 @@ const full: OperatorInfo = {
 describe('the shipped operator details', () => {
   it('carry exactly the operator\'s decided policy and nothing invented', () => {
     expect(OPERATOR.legalForm).toBe('individual');
-    expect(OPERATOR.name).toEqual({ mode: 'on-request' }); // name, address, telephone: provided on request
-    expect(OPERATOR.address).toEqual({ mode: 'on-request' });
+    expect(OPERATOR.name).toEqual({ mode: 'public', value: 'Ryo Matsushita' }); // published: Stripe's public requirements
+    expect(OPERATOR.address).toEqual({ mode: 'on-request' }); // address and telephone: provided without delay on request
     expect(OPERATOR.phone).toEqual({ mode: 'on-request' });
     expect(OPERATOR.contactFormUrl).toBe('https://forms.gle/vksFVB2QUzdzKeEu6');
-    expect(OPERATOR.email).toBe(''); // the e-mail address is not published
-    expect(OPERATOR.representative).toBe('');
+    expect(OPERATOR.email).toBe('[removed]'); // published
+    expect(OPERATOR.representative).toBe('Ryo Matsushita');
     expect(OPERATOR.tradeName).toBe('');
   });
   it('tax treatment is "tax-exempt business" (as the operator stated: an individual, no registration as an invoice issuer)', () => {
     expect(OPERATOR.tax).toBe('exempt');
     expect(OPERATOR.invoiceNumber).toBe('');
   });
-  it('only the effective date is still open (it is the real publication day), so purchases stay off until it is set', () => {
-    expect(OPERATOR.effectiveDate).toBe('');
-    expect(missingOperatorFields(OPERATOR)).toEqual(['effectiveDate']);
-    expect(operatorReady(OPERATOR)).toBe(false);
+  it('the effective date (the real publication day) is the only item that can be open; purchases stay off until it is set', () => {
+    expect(missingOperatorFields({ ...OPERATOR, effectiveDate: '' })).toEqual(['effectiveDate']);
+    expect(operatorReady({ ...OPERATOR, effectiveDate: '' })).toBe(false);
     expect(operatorReady({ ...OPERATOR, effectiveDate: '2026-12-01' })).toBe(true);
+    // whatever state the file is in: nothing but the date can be missing
+    expect(missingOperatorFields(OPERATOR).filter((f) => f !== 'effectiveDate')).toEqual([]);
+    expect(missingOperatorFields(OPERATOR).length === 0 || OPERATOR.effectiveDate === '').toBe(true);
   });
 });
 

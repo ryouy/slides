@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { OPERATOR } from '../src/legal/operator';
 
 /** The Worker API is replaced by in-page mocks: these tests are about what the site does with its answers. */
 type Me = { signedIn: boolean; premium: boolean; name?: string; status?: string | null; currentPeriodEnd?: number | null; cancelAtPeriodEnd?: boolean };
@@ -147,8 +148,10 @@ test('purchases stay off while the operator details are missing or the server ha
   await page.addInitScript(() => localStorage.setItem('slides:dev-gating', '1')); // no dev-operator flag: details are empty
   await mockApi(page);
   await page.goto('/art-slide/premium');
-  await expect(page.getByTestId('premium-subscribe')).toBeDisabled();
-  await expect(page.getByTestId('premium-soon')).toBeVisible();
+  if (OPERATOR.effectiveDate === '') { // once the publication date is set the details are complete and only the server switch keeps purchases off
+    await expect(page.getByTestId('premium-subscribe')).toBeDisabled();
+    await expect(page.getByTestId('premium-soon')).toBeVisible();
+  }
 
   const p2 = await page.context().newPage();
   await p2.addInitScript(() => { localStorage.setItem('slides:dev-gating', '1'); localStorage.setItem('slides:dev-operator', '1'); });
@@ -162,8 +165,10 @@ test('the commercial-law notice page exists, is complete, and the banner says wh
   await page.getByTestId('legal-lang-ja').click();
   await expect(page.getByTestId('commerce')).toContainText('月額200円');
   await expect(page.getByTestId('commerce')).toContainText('解約');
-  await expect(page.getByTestId('commerce-incomplete')).toBeVisible(); // the effective date is not set yet
-  await expect(page.getByTestId('commerce-incomplete')).toContainText('制定日');
+  if (OPERATOR.effectiveDate === '') {
+    await expect(page.getByTestId('commerce-incomplete')).toBeVisible(); // the effective date is not set yet
+    await expect(page.getByTestId('commerce-incomplete')).toContainText('制定日');
+  } else await expect(page.getByTestId('commerce-incomplete')).toHaveCount(0);
   await expect(page.getByTestId('commerce')).not.toContainText('【未設定】'); // the notice itself has no gaps
 });
 
