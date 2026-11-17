@@ -144,6 +144,8 @@ describe('pure rules', () => {
     expect(hasPremium(row('canceled', n + 100), n)).toBe(false); // an ended contract (e.g. cancelled at once) gives no access
     expect(hasPremium(row('canceled', n - 1), n)).toBe(false);
     expect(hasPremium({ ...row('active', n + 100), cancel_at_period_end: 1 }, n)).toBe(true); // cancelled in the portal: paid time is kept until it ends
+    expect(hasPremium({ ...row('active', n - 1), cancel_at_period_end: 1 }, n)).toBe(false); // cancelled and the paid period is over: Free at once, even if the 'deleted' webhook is late
+    expect(hasPremium({ ...row('active', n + 1), cancel_at_period_end: 1 }, n)).toBe(true); // ...but not a second earlier than the period end
     for (const s of ['unpaid', 'incomplete', 'incomplete_expired', 'paused']) expect(hasPremium(row(s, n + 100), n)).toBe(false);
     expect(hasPremium(null, n)).toBe(false);
   });

@@ -24,7 +24,8 @@ export function hasPremium(sub: SubscriptionRow | null | undefined, nowSec: numb
   switch (sub.status) {
     case 'active':
     case 'trialing':
-      return end === 0 || nowSec < end + RENEWAL_GRACE_SECONDS;
+      // a contract that is ending (cancelled in the portal) will not renew: the access ends exactly with the paid period, no grace
+      return end === 0 || nowSec < end + (sub.cancel_at_period_end ? 0 : RENEWAL_GRACE_SECONDS);
     case 'past_due':
       return nowSec < end;
     default:
