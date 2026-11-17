@@ -1,4 +1,4 @@
-import { authConfigured, billingConfigured, checkoutConfigError, type Env } from './env';
+import { authConfigured, billingConfigured, checkoutConfigError, parseAllowlist, purchaseAllowed, type Env } from './env';
 import { currentUser, finishLogin, logout, startLogin } from './auth';
 import { createCheckout, createPortal, deleteAccount, handleWebhook, planFor } from './billing';
 import { serveArtwork } from './artwork';
@@ -46,7 +46,10 @@ export async function handle(request: Request, env: Env, deps: Deps = {}): Promi
   if (path === '/api/me' || path === '/api/billing/status') {
     if (method !== 'GET') return err(405, 'method');
     if (!user) return json({ signedIn: false, premium: false });
-    return json(await planFor(env, user, { refresh: path === '/api/billing/status' && url.searchParams.get('refresh') === '1', fetchFn: deps.fetchFn }));
+    const plan = await planFor(env, user, { refresh: path === '/api/billing/status' && url.searchParams.get('refresh') === '1', fetchFn: deps.fetchFn });
+    // may THIS person buy right now? (purchases on, Stripe set up, and the account is on the allowlist) — decided here, never by the page
+    const canPurchase = billingConfigured(env) && env.PURCHASES_ENABLED === 'true' && !checkoutConfigError(env) && purchaseAllowed(env, user.id);
+    return json({ ...plan, canPurchase });
   }
 
   // everything below changes something: it needs a session and a request from our own pages
@@ -61,6 +64,10 @@ export async function handle(request: Request, env: Env, deps: Deps = {}): Promi
     if (bad) {
       console.error(`checkout refused: ${bad} (check STRIPE_PRICE_ID / STRIPE_SECRET_KEY)`); // a setup mistake: nothing is sent to Stripe
       return err(503, bad);
+    }
+    if (!purchaseAllowed(env, user.id)) {
+      if (parseAllowlist(env.PURCHASE_ALLOWLIST) === null) console.error('checkout refused: PURCHASE_ALLOWLIST is unset, empty or malformed (nobody may buy)');
+      return err(403, 'not_allowed'); // purchases are limited to the accounts on the allowlist
     }
     return createCheckout(env, user, deps.fetchFn);
   }

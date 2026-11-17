@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { OPERATOR } from '../src/legal/operator';
 
 /** The Worker API is replaced by in-page mocks: these tests are about what the site does with its answers. */
-type Me = { signedIn: boolean; premium: boolean; name?: string; status?: string | null; currentPeriodEnd?: number | null; cancelAtPeriodEnd?: boolean };
+type Me = { signedIn: boolean; premium: boolean; canPurchase?: boolean; name?: string; status?: string | null; currentPeriodEnd?: number | null; cancelAtPeriodEnd?: boolean };
 async function mockApi(page: Page, opts: { config?: { auth: boolean; billing: boolean; purchases: boolean } | null; me?: Me; meDelayMs?: number } = {}) {
   const calls: string[] = [];
   await page.route('**/api/**', async (route) => {
@@ -40,7 +40,7 @@ test('no backend: the site stays Free, the offer says it is not available and si
   await mockApi(page, { config: null });
   await page.goto('/art-slide/premium');
   await expect(page.getByTestId('premium-soon')).toBeVisible();
-  await expect(page.getByTestId('premium-subscribe')).toBeDisabled();
+  await expect(page.getByTestId('premium-subscribe')).toHaveCount(0);
   await page.goto('/art-slide/account');
   await expect(page.getByTestId('account-unavailable')).toBeVisible();
   await page.goto('/art-slide/play/van-gogh-bedroom');
@@ -64,7 +64,7 @@ test('signed out: sign in with Google; Subscribe needs it first', async ({ page 
 
 test('signed in on the Free plan: Subscribe starts Checkout through the server', async ({ page }) => {
   await gating(page);
-  const calls = await mockApi(page, { me: { signedIn: true, premium: false, name: 'Ann Example', status: null } });
+  const calls = await mockApi(page, { me: { signedIn: true, premium: false, canPurchase: true, name: 'Ann Example', status: null } });
   await page.goto('/art-slide/premium');
   await expect(page.getByTestId('premium-signin')).toHaveCount(0);
   await page.getByTestId('premium-agree').check();
@@ -126,7 +126,7 @@ test('a Free visitor still sees ads; a returning signed-in visitor sees none whi
 
 test('after Checkout the page re-checks with the server instead of trusting the redirect', async ({ page }) => {
   await gating(page);
-  const calls = await mockApi(page, { me: { signedIn: true, premium: false, name: 'Ann Example', status: null } });
+  const calls = await mockApi(page, { me: { signedIn: true, premium: false, canPurchase: true, name: 'Ann Example', status: null } });
   await page.goto('/art-slide/premium?checkout=success');
   await expect(page.getByTestId('premium')).toBeVisible();
   await expect.poll(() => calls).toContain('GET /api/billing/status?refresh=1');
@@ -149,7 +149,7 @@ test('purchases stay off while the operator details are missing or the server ha
   await mockApi(page);
   await page.goto('/art-slide/premium');
   if (OPERATOR.effectiveDate === '') { // once the publication date is set the details are complete and only the server switch keeps purchases off
-    await expect(page.getByTestId('premium-subscribe')).toBeDisabled();
+    await expect(page.getByTestId('premium-subscribe')).toHaveCount(0);
     await expect(page.getByTestId('premium-soon')).toBeVisible();
   }
 
@@ -157,7 +157,7 @@ test('purchases stay off while the operator details are missing or the server ha
   await p2.addInitScript(() => { localStorage.setItem('slides:dev-gating', '1'); localStorage.setItem('slides:dev-operator', '1'); });
   await mockApi(p2, { config: { auth: true, billing: true, purchases: false } });
   await p2.goto('/art-slide/premium');
-  await expect(p2.getByTestId('premium-subscribe')).toBeDisabled();
+  await expect(p2.getByTestId('premium-subscribe')).toHaveCount(0);
 });
 
 test('the commercial-law notice page exists, is complete, and the banner says what is still open (the publication date)', async ({ page }) => {
@@ -178,4 +178,52 @@ test('the daily puzzle is open to everyone, also when its painting is a Premium 
   await page.goto('/art-slide/daily');
   await expect(page.locator('.aboard')).toBeVisible();
   await expect(page.getByTestId('premium')).toHaveCount(0);
+});
+
+// ---- limited live test: ?tester lets the tester sign in and see their account id although the paid plan is not on in this build ----
+test('allowlist: a signed-in account that may not buy sees no button, only "not available"', async ({ page }) => {
+  await gating(page);
+  await mockApi(page, { me: { signedIn: true, premium: false, canPurchase: false, name: 'Ann Example', status: null } });
+  await page.goto('/art-slide/premium');
+  await expect(page.getByTestId('premium-soon')).toBeVisible();
+  await expect(page.getByTestId('premium-subscribe')).toHaveCount(0);
+  await expect(page.getByTestId('purchase-facts')).toHaveCount(0);
+  await page.goto('/art-slide/account');
+  await expect(page.getByTestId('account-subscribe')).toHaveCount(0);
+});
+
+test('allowlist: an account the server allows sees the button (after the consent box)', async ({ page }) => {
+  await gating(page);
+  await mockApi(page, { me: { signedIn: true, premium: false, canPurchase: true, name: 'Ann Example', status: null } });
+  await page.goto('/art-slide/premium');
+  await expect(page.getByTestId('premium-subscribe')).toBeDisabled();
+  await page.getByTestId('premium-agree').check();
+  await expect(page.getByTestId('premium-subscribe')).toBeEnabled();
+});
+
+test('tester mode without the paid plan in the build: ?tester signs in and shows the account id; nothing is offered to a visitor who may not buy', async ({ page }) => {
+  // no dev-gating: this is the production build state (VITE_PREMIUM_ENABLED off)
+  const calls = await mockApi(page, { config: { auth: true, billing: true, purchases: true } });
+  await page.goto('/art-slide/premium?tester=1');
+  await expect(page.getByTestId('tester-box')).toBeVisible();
+  expect(await page.getByTestId('tester-signin').getAttribute('href')).toBe('/api/auth/google?return=%2Fart-slide%2Fpremium%3Ftester%3D1');
+  await expect(page.getByTestId('premium-subscribe')).toHaveCount(0); // anonymous: no purchase button, only the tester box's sign-in link
+  await page.unroute('**/api/**');
+  await mockApi(page, { me: { signedIn: true, premium: false, canPurchase: false, name: 'Ann', status: null, id: 'acct-123456789' } as Me & { id: string } });
+  await page.goto('/art-slide/premium?tester=1');
+  await expect(page.getByTestId('tester-id')).toHaveText('acct-123456789');
+  await expect(page.getByTestId('tester-state')).toContainText('may not buy');
+  await expect(page.getByTestId('premium-subscribe')).toHaveCount(0);
+  await expect(page.getByTestId('premium-soon')).toBeVisible();
+  void calls;
+});
+
+test('without ?tester the premium page makes no API call at all (production build state)', async ({ page }) => {
+  const calls = await mockApi(page, { config: { auth: true, billing: true, purchases: true } });
+  await page.goto('/art-slide/premium');
+  await page.waitForTimeout(500);
+  expect(calls).toEqual([]);
+  await expect(page.getByTestId('tester-box')).toHaveCount(0);
+  await expect(page.getByTestId('premium-subscribe')).toHaveCount(0);
+  await expect(page.getByTestId('premium-soon')).toBeVisible();
 });

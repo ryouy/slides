@@ -5,14 +5,15 @@ import { FREE_ARTWORK_IDS } from '../src/premium/freeList';
  * Every kind of visitor, with the server's answers replaced by mocks:
  * signed out · Free · Premium · Premium that is set to end · contract ended.
  */
-type Me = { signedIn: boolean; premium: boolean; id?: string; name?: string; status?: string | null; currentPeriodEnd?: number | null; cancelAtPeriodEnd?: boolean };
+type Me = { signedIn: boolean; premium: boolean; canPurchase?: boolean; id?: string; name?: string; status?: string | null; currentPeriodEnd?: number | null; cancelAtPeriodEnd?: boolean };
 const END = Math.floor(Date.now() / 1000) + 20 * 86400;
 const STATES: Record<string, { me: Me; premium: boolean }> = {
   'signed out': { me: { signedIn: false, premium: false }, premium: false },
-  Free: { me: { signedIn: true, premium: false, id: 'u1', name: 'Ann', status: null }, premium: false },
+  Free: { me: { signedIn: true, premium: false, canPurchase: true, id: 'u1', name: 'Ann', status: null }, premium: false },
+  'Free, not allowed to buy': { me: { signedIn: true, premium: false, canPurchase: false, id: 'u1', name: 'Ann', status: null }, premium: false },
   Premium: { me: { signedIn: true, premium: true, id: 'u1', name: 'Ann', status: 'active', currentPeriodEnd: END, cancelAtPeriodEnd: false }, premium: true },
   'Premium, set to end': { me: { signedIn: true, premium: true, id: 'u1', name: 'Ann', status: 'active', currentPeriodEnd: END, cancelAtPeriodEnd: true }, premium: true },
-  'contract ended': { me: { signedIn: true, premium: false, id: 'u1', name: 'Ann', status: 'canceled', currentPeriodEnd: END - 40 * 86400, cancelAtPeriodEnd: false }, premium: false },
+  'contract ended': { me: { signedIn: true, premium: false, canPurchase: true, id: 'u1', name: 'Ann', status: 'canceled', currentPeriodEnd: END - 40 * 86400, cancelAtPeriodEnd: false }, premium: false },
 };
 const LOCKED = 'monet-stacks-of-wheat-end-of-summer';
 
@@ -101,7 +102,7 @@ for (const [name, { me, premium }] of Object.entries(STATES)) {
         else if (name === 'Premium, set to end') await expect(plan).toContainText('ends on');
         else await expect(plan).toHaveText('Free plan');
         await expect(page.getByTestId('manage')).toHaveCount(premium ? 1 : 0);
-        await expect(page.getByTestId('account-subscribe')).toHaveCount(premium ? 0 : 1); // ended contracts can subscribe again
+        await expect(page.getByTestId('account-subscribe')).toHaveCount(premium || !me.canPurchase ? 0 : 1); // ended contracts can subscribe again; an account that may not buy is offered nothing
         await expect(page.getByTestId('signout')).toBeVisible();
       }
       await page.goto('/art-slide/premium');
@@ -109,6 +110,12 @@ for (const [name, { me, premium }] of Object.entries(STATES)) {
         await expect(page.getByTestId('premium-active')).toBeVisible();
         await expect(page.getByTestId('premium-manage')).toBeVisible();
         await expect(page.getByTestId('premium-subscribe')).toHaveCount(0);
+      } else if (me.signedIn && !me.canPurchase) {
+        // this account may not buy (the server says so): no button, no consent box, only "not available"
+        await expect(page.getByTestId('premium-subscribe')).toHaveCount(0);
+        await expect(page.getByTestId('premium-agree')).toHaveCount(0);
+        await expect(page.getByTestId('purchase-facts')).toHaveCount(0);
+        await expect(page.getByTestId('premium-soon')).toBeVisible();
       } else {
         await expect(page.getByTestId('premium-subscribe')).toBeDisabled();
         await page.getByTestId('premium-agree').check();
@@ -127,7 +134,7 @@ test('after Checkout the page says it is confirming, then shows Premium once the
     const path = new URL(route.request().url()).pathname;
     const json = (b: unknown) => route.fulfill({ contentType: 'application/json', body: JSON.stringify(b) });
     if (path === '/api/config') return json({ auth: true, billing: true, purchases: true });
-    if (path === '/api/me' || path === '/api/billing/status') return json({ signedIn: true, id: 'u1', name: 'Ann', premium, status: premium ? 'active' : null, currentPeriodEnd: END, cancelAtPeriodEnd: false });
+    if (path === '/api/me' || path === '/api/billing/status') return json({ signedIn: true, canPurchase: true, id: 'u1', name: 'Ann', premium, status: premium ? 'active' : null, currentPeriodEnd: END, cancelAtPeriodEnd: false });
     return route.fulfill({ status: 404, body: '{}' });
   });
   await page.goto('/art-slide/premium?checkout=success');

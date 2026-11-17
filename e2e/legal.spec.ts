@@ -137,7 +137,7 @@ for (const lang of ['en', 'ja'] as const) {
   test(`before buying (${lang}): price, renewal, payment, total, cancelling and refunds are shown, and the button needs consent`, async ({ page }) => {
     await gating(page);
     await page.addInitScript((l) => localStorage.setItem('wordslide:save', JSON.stringify({ version: 1, settings: { lang: l, theme: 'system', colorblind: false, adConsent: null }, completed: 0, noHintClears: 0, dailyHistory: {}, endlessStreak: 0, maxEndlessStreak: 0, bests: { easy: {}, normal: {}, hard: {} }, history: [], inProgress: {}, lastDifficulty: 'normal' })), lang);
-    await mockApi(page, { signedIn: true, id: 'u', name: 'Ann', premium: false, status: null });
+    await mockApi(page, { signedIn: true, canPurchase: true, id: 'u', name: 'Ann', premium: false, status: null });
     await page.goto('/art-slide/premium');
     const facts = page.getByTestId('purchase-facts');
     await expect(facts).toBeVisible();
@@ -160,7 +160,7 @@ for (const lang of ['en', 'ja'] as const) {
 
 test('the account screen sends a visitor to the purchase screen (with all the facts), not straight to payment', async ({ page }) => {
   await gating(page);
-  await mockApi(page, { signedIn: true, id: 'u', name: 'Ann', premium: false, status: null });
+  await mockApi(page, { signedIn: true, canPurchase: true, id: 'u', name: 'Ann', premium: false, status: null });
   await page.goto('/art-slide/account');
   await page.getByTestId('account-subscribe').click();
   await expect(page).toHaveURL(/\/art-slide\/premium$/);

@@ -13,6 +13,8 @@ export interface Me {
   /** Hint for Google's Drive consent: offer the account that is signed in here. */
   googleSub?: string;
   premium: boolean;
+  /** The server's answer to "may this account buy right now?" (purchases on and the account is on the purchase allowlist). */
+  canPurchase?: boolean;
   name?: string | null;
   status?: string | null;
   /** unix seconds */

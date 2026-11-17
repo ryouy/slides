@@ -44,8 +44,21 @@ export async function refreshAccount(afterCheckout = false): Promise<void> {
 export const subscribeAccount = (cb: () => void): (() => void) => (listeners.add(cb), () => listeners.delete(cb));
 
 let started = false;
-export async function initAccount(): Promise<void> {
-  if (started || !gatingOn()) return;
+/**
+ * The limited live test: a page opened with ?tester (or coming back from Checkout) may look up the account although the paid plan
+ * is not switched on in this build. It changes nothing for other visitors: the server alone decides who may buy.
+ */
+export const testerRequested = (): boolean => {
+  try {
+    const q = new URLSearchParams(location.search);
+    return q.has('tester') || q.has('checkout');
+  } catch {
+    return false;
+  }
+};
+
+export async function initAccount(force = false): Promise<void> {
+  if (started || !(gatingOn() || force)) return;
   started = true;
   if (hint()) setEntitlement({ premium: false, loading: true }); // (already so from the first render; kept for a late start)
   const config = await fetchConfig();

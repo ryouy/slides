@@ -11,6 +11,7 @@ import { fullImageId, isDailyImage } from './artwork';
 import { ARTWORKS } from '../src/games/art-slide/data';
 import { FREE_ARTWORK_IDS } from '../src/premium/freeList';
 import { formEncode, verifyStripeSignature, type FetchFn } from './stripe';
+import { ALLOWLIST_MAX, parseAllowlist, purchaseAllowed } from './env';
 
 // ---- an in-memory D1 (SQLite) running the real migration ----
 function makeDb(): { d1: D1Database; raw: DatabaseSync } {
@@ -92,7 +93,7 @@ const call = (path: string, init: RequestInit & { cookie?: string; origin?: stri
 const cookieOf = (res: Response, name: string) => res.headers.getSetCookie().map((c) => c.split(';')[0]).find((c) => c.startsWith(`${name}=`));
 
 /** Runs the whole login and returns the session cookie. */
-async function login(sub_ = 'google-sub-1', name = 'Ann Example'): Promise<string> {
+async function login(sub_ = 'google-sub-1', name = 'Ann Example', allow = true): Promise<string> {
   const start = await call('/api/auth/google?return=/art-slide/premium');
   const loc = new URL(start.headers.get('location')!);
   const oauth = cookieOf(start, '__Host-slides_oauth') ?? cookieOf(start, 'slides_oauth')!;
@@ -101,6 +102,10 @@ async function login(sub_ = 'google-sub-1', name = 'Ann Example'): Promise<strin
   const done = await call(`/api/auth/callback?code=abc&state=${loc.searchParams.get('state')}`, { cookie: oauth });
   expect(done.status).toBe(302);
   expect(done.headers.get('location')).toBe('/art-slide/premium');
+  if (allow) { // most tests are about Checkout itself: put this account on the purchase allowlist (the allowlist has its own tests)
+    const id = (raw.prepare('SELECT id FROM users WHERE google_sub = ?').get(sub_) as { id: string }).id;
+    env = { ...env, PURCHASE_ALLOWLIST: [env.PURCHASE_ALLOWLIST, id].filter(Boolean).join(',') };
+  }
   return cookieOf(done, '__Host-slides_session')!;
 }
 
@@ -655,5 +660,93 @@ describe('account deletion', () => {
     fake.failStripe = true;
     expect((await call('/api/account/delete', { method: 'POST', cookie })).status).toBe(502);
     expect(raw.prepare('SELECT COUNT(*) AS n FROM users').get()).toEqual({ n: 1 });
+  });
+});
+
+describe('purchase allowlist (limited live test: only listed accounts may start a Checkout)', () => {
+  const ids = (cookieSub: string) => (raw.prepare('SELECT id FROM users WHERE google_sub = ?').get(cookieSub) as { id: string }).id;
+  const co = (cookie: string) => call('/api/billing/checkout', { method: 'POST', cookie });
+
+  it('parses only a well-formed list: unset, empty, blank, a bad entry or too many entries mean NOBODY', () => {
+    expect(parseAllowlist(undefined)).toBeNull();
+    expect(parseAllowlist('')).toBeNull();
+    expect(parseAllowlist('  ,  ')).toBeNull();
+    expect(parseAllowlist('short')).toBeNull(); // not an account id
+    expect(parseAllowlist('aaaaaaaa-1111, bad entry!')).toBeNull(); // one bad entry spoils the whole list
+    expect(parseAllowlist('*')).toBeNull(); // no wildcard: "everybody" needs a deliberate change in code
+    expect(parseAllowlist(Array.from({ length: ALLOWLIST_MAX + 1 }, (_, i) => `id-${String(i).padStart(8, '0')}`).join(','))).toBeNull();
+    expect([...parseAllowlist('aaaaaaaa-1111,bbbbbbbb-2222 cccccccc-3333\n')!]).toEqual(['aaaaaaaa-1111', 'bbbbbbbb-2222', 'cccccccc-3333']);
+    expect(purchaseAllowed({ ...env, PURCHASE_ALLOWLIST: 'aaaaaaaa-1111' }, 'aaaaaaaa-1111')).toBe(true);
+    expect(purchaseAllowed({ ...env, PURCHASE_ALLOWLIST: 'aaaaaaaa-1111' }, 'aaaaaaaa-11')).toBe(false);
+  });
+
+  it('an account on the list can start a Checkout; an account that is not gets 403 and nothing reaches Stripe', async () => {
+    env = { ...env, PURCHASE_ALLOWLIST: undefined };
+    const ok = await login('sub-ok', 'Ok', true);
+    const other = await login('sub-other', 'Other', false);
+    const before = fake.calls.length;
+    const denied = await co(other);
+    expect(denied.status).toBe(403);
+    expect(await denied.json()).toEqual({ error: 'not_allowed' });
+    expect(fake.calls.length).toBe(before); // no customer, no price lookup, no session
+    expect(fake.createdSessions).toBe(0);
+    expect(raw.prepare('SELECT stripe_customer_id AS c FROM users WHERE id = ?').get(ids('sub-other'))).toEqual({ c: null });
+    const allowed = await co(ok);
+    expect(allowed.status).toBe(200);
+    expect((await allowed.json() as { url: string }).url).toContain('checkout.stripe.test');
+    expect(fake.createdSessions).toBe(1);
+    expect((await co(other)).status).toBe(403); // still refused after the other one bought
+  });
+
+  it('unset, empty or malformed allowlist: everybody is refused (403), even a signed-in account', async () => {
+    const cookie = await login('sub-a', 'A', false);
+    const id = ids('sub-a');
+    for (const bad of [undefined, '', '   ', ',', '*', `${id},not valid!`, 'x']) {
+      env = { ...env, PURCHASE_ALLOWLIST: bad };
+      const r = await co(cookie);
+      expect(r.status, JSON.stringify(bad)).toBe(403);
+      expect(fake.createdSessions).toBe(0);
+    }
+    env = { ...env, PURCHASE_ALLOWLIST: id };
+    expect((await co(cookie)).status).toBe(200); // the same account passes once it is listed
+  });
+
+  it('not signed in: 401; a cross-site request: 403; PURCHASES_ENABLED off: 503 even for a listed account', async () => {
+    const cookie = await login('sub-b', 'B', true);
+    expect((await call('/api/billing/checkout', { method: 'POST' })).status).toBe(401);
+    expect((await call('/api/billing/checkout', { method: 'POST', cookie, origin: 'https://evil.example' })).status).toBe(403);
+    env = { ...env, PURCHASES_ENABLED: 'false' };
+    expect((await co(cookie)).status).toBe(503);
+    expect(fake.createdSessions).toBe(0);
+  });
+
+  it('a live key still needs ALLOW_LIVE_PAYMENTS, listed or not', async () => {
+    const cookie = await login('sub-c', 'C', true);
+    env = { ...env, STRIPE_SECRET_KEY: 'rk_live_abcdefghijkl' };
+    expect(await (await co(cookie)).json()).toEqual({ error: 'live_key_not_allowed' });
+    expect(fake.createdSessions).toBe(0);
+  });
+
+  it('/api/me tells the signed-in person whether THEY may buy, and never reveals the list', async () => {
+    const listed = await login('sub-d', 'D', true);
+    const unlisted = await login('sub-e', 'E', false);
+    const meOf = async (c: string) => (await call('/api/me', { cookie: c })).json() as Promise<{ canPurchase?: boolean; id?: string }>;
+    expect((await meOf(listed)).canPurchase).toBe(true);
+    expect((await meOf(unlisted)).canPurchase).toBe(false);
+    expect(JSON.stringify(await meOf(unlisted))).not.toContain(ids('sub-d')); // another account's id is never shown
+    env = { ...env, PURCHASES_ENABLED: 'false' };
+    expect((await meOf(listed)).canPurchase).toBe(false); // purchases off: nobody
+    env = { ...env, PURCHASES_ENABLED: 'true', PURCHASE_ALLOWLIST: undefined };
+    expect((await meOf(listed)).canPurchase).toBe(false); // list unset: nobody
+    expect((await (await call('/api/me')).json())).toEqual({ signedIn: false, premium: false }); // anonymous: nothing at all
+    expect(await (await call('/api/config')).json()).not.toHaveProperty('canPurchase');
+  });
+
+  it('the portal (to cancel) is not limited by the list: a subscriber can always manage and cancel', async () => {
+    const cookie = await login('sub-f', 'F', true);
+    expect((await co(cookie)).status).toBe(200);
+    env = { ...env, PURCHASE_ALLOWLIST: undefined, PURCHASES_ENABLED: 'false' };
+    const r = await call('/api/billing/portal', { method: 'POST', cookie });
+    expect(r.status).toBe(200);
   });
 });

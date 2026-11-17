@@ -29,9 +29,24 @@ export interface Env {
   PURCHASES_ENABLED?: string;
   /** "true" makes full-size Premium paintings need a Premium account (set together with VITE_PREMIUM_ENABLED). */
   PREMIUM_ENFORCED?: string;
+  /**
+   * Who may start a purchase: account ids (the `id` that /api/me shows to the signed-in person), separated by commas or spaces.
+   * Unset, empty or malformed (any entry that is not an id) = NOBODY may buy. Set as a Cloudflare Secret.
+   */
+  PURCHASE_ALLOWLIST?: string;
   /** "true" allows a LIVE Stripe key (real money). Absent/anything else: only test keys can start a Checkout. */
   ALLOW_LIVE_PAYMENTS?: string;
 }
+
+const ALLOW_ID = /^[A-Za-z0-9_-]{8,64}$/;
+export const ALLOWLIST_MAX = 20;
+/** The allowed account ids, or null when the setting is unset, empty or malformed (then nobody may buy). Never logs the values. */
+export function parseAllowlist(raw: string | undefined): Set<string> | null {
+  const items = (raw ?? '').split(/[\s,]+/).filter(Boolean);
+  if (!items.length || items.length > ALLOWLIST_MAX || !items.every((i) => ALLOW_ID.test(i))) return null;
+  return new Set(items);
+}
+export const purchaseAllowed = (e: Env, userId: string): boolean => parseAllowlist(e.PURCHASE_ALLOWLIST)?.has(userId) ?? false;
 
 export const authConfigured = (e: Env): boolean => !!(e.DB && e.GOOGLE_CLIENT_ID && e.GOOGLE_CLIENT_SECRET && e.SESSION_SECRET && e.SITE_URL);
 /** A Stripe PRICE id looks like price_… . A product id (prod_…) or anything else is a setup mistake, never sent to Stripe. */

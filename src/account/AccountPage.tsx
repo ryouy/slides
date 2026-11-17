@@ -62,7 +62,7 @@ export function AccountPage() {
               <button className="btn wide" data-testid="manage" disabled={busy} onClick={() => run(openPortal)}>{t('acct.manage')}</button>
             ) : (
               // no contract, or one that has ended: subscribing (again) is offered
-              canSubscribe(config) && <button className="btn primary wide" data-testid="account-subscribe" disabled={busy} onClick={() => go('premium')}>{t('premium.subscribe')}</button>
+              canSubscribe(config, me) && <button className="btn primary wide" data-testid="account-subscribe" disabled={busy} onClick={() => go('premium')}>{t('premium.subscribe')}</button>
             )}
             <DriveSync />
             <button className="btn wide" data-testid="signout" disabled={busy} onClick={signOut}>{t('acct.signOut')}</button>
