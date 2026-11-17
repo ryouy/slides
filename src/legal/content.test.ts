@@ -1,28 +1,30 @@
 import { describe, expect, it } from 'vitest';
-import { commerceRows, formatDate, legalLang, planFacts, privacySections, PRICE_YEN, TBD, termsSections, type LegalLang, type Section } from './content';
+import { commerceRows, disclosureNote, formatDate, legalLang, planFacts, privacySections, PRICE_YEN, TBD, termsSections, type LegalLang, type Section } from './content';
 import { OPERATOR, type OperatorInfo } from './operator';
 
-const full: OperatorInfo = { name: 'Taro Example', tradeName: 'Example Games', representative: 'Taro Example', address: { mode: 'on-request' }, phone: { mode: 'public', value: '03-0000-0000' }, email: 'support@example.com', supportHours: 'Weekdays 10:00-18:00', tax: 'inclusive', invoiceNumber: 'T1234567890123', court: '東京地方裁判所', effectiveDate: '2026-12-01' };
+const full: OperatorInfo = { legalForm: 'individual', name: { mode: 'on-request' }, tradeName: 'Example Games', representative: '', address: { mode: 'on-request' }, phone: { mode: 'on-request' }, contactFormUrl: 'https://forms.gle/example', email: '', supportHours: 'Replies within 3 business days', disclosureTarget: '3営業日以内', tax: 'inclusive', invoiceNumber: 'T1234567890123', court: '東京地方裁判所', effectiveDate: '2026-12-01' };
 const LANGS: LegalLang[] = ['ja', 'en'];
 const text = (sections: Section[]) => sections.map((s) => `${s.title}\n${s.body.map((b) => (Array.isArray(b) ? b.join('\n') : b)).join('\n')}`).join('\n');
 
 describe('nothing is invented', () => {
   for (const l of LANGS) {
-    it(`${l}: with no operator details every missing item shows a visible "not set" mark`, () => {
-      const rows = commerceRows(l, OPERATOR).map(([, v]) => v).join('\n');
-      expect(rows).toContain(TBD[l]);
-      expect(text(termsSections(l, OPERATOR))).toContain(TBD[l]);
-      expect(text(privacySections(l, OPERATOR))).toContain(TBD[l]);
-      // and no plausible-looking fake detail slipped in
-      const all = `${rows}\n${text(termsSections(l, OPERATOR))}\n${text(privacySections(l, OPERATOR))}`;
-      expect(all).not.toMatch(/@(?!.*(?:google|stripe|cloudflare))[a-z0-9-]+\.(com|jp|net)/i);
+    it(`${l}: what the operator has not decided (tax treatment, date) shows a visible "not set" mark`, () => {
+      const all = `${commerceRows(l, OPERATOR).map(([, v]) => v).join('\n')}\n${text(termsSections(l, OPERATOR))}\n${text(privacySections(l, OPERATOR))}`;
+      expect(all).toContain(TBD[l]);
+      expect(commerceRows(l, OPERATOR).map(([, v]) => v).join('\n')).toContain(TBD[l]); // the price line (tax) and the notice
+      expect(text(termsSections(l, OPERATOR))).toContain(TBD[l]); // the effective date
+    });
+    it(`${l}: the private details never appear (no name, e-mail, phone number or address)`, () => {
+      const all = `${commerceRows(l, OPERATOR).map(([, v]) => v).join('\n')}\n${text(termsSections(l, OPERATOR))}\n${text(privacySections(l, OPERATOR))}`;
+      expect(all).not.toMatch(/[A-Za-z0-9._%+-]+@(?!example)[A-Za-z0-9-]+\.[a-z]{2,}/); // no e-mail address
       expect(all).not.toMatch(/\d{2,4}-\d{2,4}-\d{3,4}/); // no phone number
       expect(all).not.toMatch(/〒|東京都|大阪府/); // no address
     });
-    it(`${l}: with every detail set, no "not set" mark remains`, () => {
+    it(`${l}: with every detail set, no "not set" mark remains and the form is named`, () => {
       const all = `${commerceRows(l, full).map(([, v]) => v).join('\n')}\n${text(termsSections(l, full))}\n${text(privacySections(l, full))}`;
       expect(all).not.toContain(TBD[l]);
-      expect(all).toContain('support@example.com');
+      expect(all).toContain('https://forms.gle/example');
+      expect(all).not.toContain('@'); // the operator keeps the e-mail address private
     });
   }
 });
@@ -30,7 +32,7 @@ describe('nothing is invented', () => {
 describe('the notice has every item the law lists for an online sale of a service', () => {
   it('ja: seller, responsible person, address, phone, e-mail, price, other charges, payment, start, term/renewal, cancelling, returns, system requirements', () => {
     const labels = commerceRows('ja', full).map(([k]) => k);
-    for (const k of ['販売事業者', '運営統括責任者', '所在地', '電話番号', 'メールアドレス', '販売価格', '商品代金以外の必要料金', 'お支払い方法・時期', 'サービスの提供時期', '契約期間・自動更新', '解約の方法・条件', '返品・返金・申込みの撤回', '動作環境']) expect(labels, k).toContain(k);
+    for (const k of ['販売事業者', '運営統括責任者', '所在地', '電話番号', 'お問い合わせ先', '販売価格', '商品代金以外の必要料金', 'お支払い方法・時期', 'サービスの提供時期', '契約期間・自動更新', '解約の方法・条件', '返品・返金・申込みの撤回', '動作環境']) expect(labels, k).toContain(k);
   });
   it('en has the same items in the same order', () => {
     expect(commerceRows('en', full)).toHaveLength(commerceRows('ja', full).length);
@@ -54,14 +56,52 @@ describe('the notice has every item the law lists for an online sale of a servic
   });
 });
 
-describe('address and phone', () => {
-  it('"on request" says it will be sent without delay and where to ask; "public" prints the value', () => {
+describe('name, address and telephone are provided on request', () => {
+  it('ja: each says it is provided without delay on request, and where and how to ask', () => {
     const rows = Object.fromEntries(commerceRows('ja', full));
-    expect(rows['所在地']).toContain('請求があった場合には、遅滞なく開示いたします');
-    expect(rows['所在地']).toContain('support@example.com');
-    expect(rows['電話番号']).toBe('03-0000-0000');
-    const en = Object.fromEntries(commerceRows('en', full));
-    expect(en['Address']).toContain('without delay on request');
+    for (const k of ['販売事業者', '所在地', '電話番号']) {
+      expect(rows[k], k).toContain('請求があった場合には、遅滞なく開示いたします');
+      expect(rows[k], k).toContain('https://forms.gle/example');
+      expect(rows[k], k).toContain('事業者情報の開示請求');
+      expect(rows[k], k).toContain('3営業日以内');
+    }
+  });
+  it('en: the same', () => {
+    const rows = Object.fromEntries(commerceRows('en', full));
+    for (const k of ['Seller', 'Address', 'Telephone']) {
+      expect(rows[k], k).toContain('without delay on request');
+      expect(rows[k], k).toContain('https://forms.gle/example');
+      expect(rows[k], k).toContain('Request for the operator’s details');
+    }
+  });
+  it('a public value is printed instead', () => {
+    expect(Object.fromEntries(commerceRows('ja', { ...full, name: { mode: 'public', value: '山田 太郎' }, phone: { mode: 'public', value: '03-0000-0000' } }))['電話番号']).toBe('03-0000-0000');
+    expect(Object.fromEntries(commerceRows('ja', { ...full, name: { mode: 'public', value: '山田 太郎' } }))['販売事業者']).toContain('山田 太郎');
+  });
+  it('the contact row names the form (and the e-mail only if the operator chose to publish one)', () => {
+    expect(Object.fromEntries(commerceRows('ja', full))['お問い合わせ先']).toContain('https://forms.gle/example');
+    expect(Object.fromEntries(commerceRows('ja', full))['お問い合わせ先']).not.toContain('メール');
+    expect(Object.fromEntries(commerceRows('ja', { ...full, email: 'help@example.com' }))['お問い合わせ先']).toContain('help@example.com');
+  });
+  it('the responsible person: the seller itself for a sole proprietor, a named person for a company', () => {
+    expect(Object.fromEntries(commerceRows('ja', full))['運営統括責任者']).toContain('個人事業のため');
+    expect(Object.fromEntries(commerceRows('ja', { ...full, legalForm: 'corporation', representative: '佐藤 花子' }))['運営統括責任者']).toBe('佐藤 花子');
+    expect(Object.fromEntries(commerceRows('ja', { ...full, legalForm: 'corporation', representative: '' }))['運営統括責任者']).toContain(TBD.ja);
+  });
+  it('the terms and the privacy policy repeat it and use the form as the contact; the privacy policy names the form as a data source', () => {
+    for (const l of LANGS) {
+      expect(text(termsSections(l, full))).toContain('https://forms.gle/example');
+      expect(text(privacySections(l, full))).toContain('https://forms.gle/example');
+    }
+    expect(text(termsSections('ja', full))).toContain('事業者情報の開示請求');
+    expect(text(privacySections('ja', full))).toContain('Googleフォーム');
+    expect(text(privacySections('en', full))).toContain('Google Forms');
+    expect(text(termsSections('ja', full))).toContain('個人事業者');
+  });
+  it('the purchase screen says it too', () => {
+    expect(disclosureNote('ja', full)).toContain('遅滞なく開示します');
+    expect(disclosureNote('ja', full)).toContain('https://forms.gle/example');
+    expect(disclosureNote('en', full)).toContain('without delay on request');
   });
 });
 

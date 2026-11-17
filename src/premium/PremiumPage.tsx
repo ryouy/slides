@@ -3,7 +3,7 @@ import { LockIcon } from '../components/Icons';
 import { refreshAccount } from '../account/store';
 import { Link } from '../components/Link';
 import { useLang, useT } from '../i18n';
-import { legalLang, planFacts } from '../legal/content';
+import { disclosureNote, legalLang, planFacts } from '../legal/content';
 import { withMarks } from '../legal/LegalPages';
 import { OPERATOR } from '../legal/operator';
 import { go } from '../router';
@@ -48,6 +48,7 @@ export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' })
                 </div>
               ))}
             </dl>
+            <p className="muted purchase-seller" data-testid="purchase-seller">{withMarks(disclosureNote(l, OPERATOR))}</p>
             <label className="agree">
               <input type="checkbox" data-testid="premium-agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
               <span>{t('premium.agree')}</span>

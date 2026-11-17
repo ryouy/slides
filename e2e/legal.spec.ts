@@ -19,10 +19,19 @@ test('the notice lists every item, in Japanese and in English, and marks what th
   await page.getByTestId('legal-lang-ja').click();
   await expect(page.locator('.topbar h1')).toHaveText('特定商取引法に基づく表記');
   const ja = page.getByTestId('commerce');
-  for (const k of ['販売事業者', '運営統括責任者', '所在地', '電話番号', 'メールアドレス', '販売価格', '商品代金以外の必要料金', 'お支払い方法・時期', 'サービスの提供時期', '契約期間・自動更新', '解約の方法・条件', '返品・返金・申込みの撤回', '動作環境']) await expect(ja).toContainText(k);
+  for (const k of ['販売事業者', '運営統括責任者', '所在地', '電話番号', 'お問い合わせ先', '販売価格', '商品代金以外の必要料金', 'お支払い方法・時期', 'サービスの提供時期', '契約期間・自動更新', '解約の方法・条件', '返品・返金・申込みの撤回', '動作環境']) await expect(ja).toContainText(k);
   await expect(ja).toContainText('クーリング・オフ制度はありません');
-  expect(await page.getByTestId('legal-tbd').count()).toBeGreaterThanOrEqual(4); // name, responsible person, address, phone, e-mail... all visibly unset
+  // name, address and telephone: provided on request, with the form to ask in
+  for (const k of ['所在地', '電話番号']) await expect(ja.locator('.commerce-row', { hasText: k }).first()).toContainText('請求があった場合には、遅滞なく開示いたします');
+  await expect(ja).toContainText('事業者情報の開示請求');
+  await expect(ja.getByTestId('legal-link').first()).toHaveAttribute('href', 'https://forms.gle/vksFVB2QUzdzKeEu6');
+  await expect(ja).not.toContainText('@'); // no e-mail address is published
+  // what is still undecided is marked, and listed above
+  expect(await page.getByTestId('legal-tbd').count()).toBeGreaterThanOrEqual(1);
   await expect(page.getByTestId('commerce-incomplete')).toContainText('運営者情報が未設定');
+  await expect(page.getByTestId('commerce-incomplete')).toContainText('消費税の扱い');
+  await expect(page.getByTestId('commerce-incomplete')).toContainText('制定日');
+  await expect(page.getByTestId('commerce-incomplete')).not.toContainText('所在地'); // decided: on request
   await page.getByTestId('legal-lang-en').click();
   await expect(page.locator('.topbar h1')).toHaveText('Notice under the Act on Specified Commercial Transactions');
   await expect(page.getByTestId('commerce')).toContainText('refunds');
@@ -72,11 +81,44 @@ test('the notice, terms, privacy and contact are one click away from every page 
   for (const name of ['Privacy', 'Terms', 'Contact']) await expect(page.locator('footer.footer').getByRole('link', { name })).toBeVisible();
 });
 
-test('contact page: no address is made up; the e-mail is marked as not set', async ({ page }) => {
+test('contact page: the form is the official channel, no e-mail address is shown', async ({ page }) => {
   await page.goto('/contact');
   await expect(page.getByTestId('contact')).toBeVisible();
-  await expect(page.getByTestId('legal-tbd')).toBeVisible();
+  await expect(page.getByTestId('contact-form').getByTestId('legal-link')).toHaveAttribute('href', 'https://forms.gle/vksFVB2QUzdzKeEu6');
   await expect(page.getByTestId('contact-mail')).toHaveCount(0);
+  await expect(page.getByTestId('contact')).not.toContainText('@');
+  await page.getByTestId('legal-lang-ja').click();
+  await expect(page.getByTestId('contact')).toContainText('事業者情報の開示請求');
+});
+
+test('the contact form is linked from the footer, the notice, the terms and the privacy policy (opens in a new tab, safely)', async ({ page }) => {
+  const FORM = 'https://forms.gle/vksFVB2QUzdzKeEu6';
+  await page.goto('/about');
+  const footer = page.getByTestId('footer-contact');
+  await expect(footer).toHaveAttribute('href', FORM);
+  await expect(footer).toHaveAttribute('target', '_blank');
+  expect(await footer.getAttribute('rel')).toContain('noopener');
+  for (const path of ['/commerce', '/terms', '/privacy']) {
+    await page.goto(path);
+    await page.getByTestId('legal-lang-ja').click();
+    const links = page.getByTestId('legal-link').filter({ hasText: 'forms.gle' });
+    expect(await links.count(), path).toBeGreaterThan(0);
+    await expect(links.first(), path).toHaveAttribute('href', FORM);
+    await expect(links.first()).toHaveAttribute('target', '_blank');
+    expect(await links.first().getAttribute('rel')).toContain('noopener');
+    await page.getByTestId('legal-lang-en').click();
+    expect(await page.getByTestId('legal-link').filter({ hasText: 'forms.gle' }).count(), `${path} (en)`).toBeGreaterThan(0);
+  }
+});
+
+test('terms and privacy: no e-mail address is published anywhere', async ({ page }) => {
+  for (const path of ['/terms', '/privacy', '/commerce', '/contact']) {
+    await page.goto(path);
+    for (const l of ['ja', 'en']) {
+      await page.getByTestId(`legal-lang-${l}`).click();
+      expect(await page.locator('.prose').innerText(), `${path} ${l}`).not.toMatch(/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[a-z]{2,}/);
+    }
+  }
 });
 
 for (const lang of ['en', 'ja'] as const) {
@@ -99,6 +141,8 @@ for (const lang of ['en', 'ja'] as const) {
     await page.getByTestId('premium-agree').uncheck();
     await expect(button).toBeDisabled();
     await expect(page.getByTestId('premium-commerce-link')).toBeVisible();
+    await expect(page.getByTestId('purchase-seller')).toContainText(lang === 'ja' ? '請求があった場合に遅滞なく開示します' : 'without delay on request');
+    await expect(page.getByTestId('purchase-seller').getByTestId('legal-link')).toHaveAttribute('href', 'https://forms.gle/vksFVB2QUzdzKeEu6');
   });
 }
 

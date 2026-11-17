@@ -1,35 +1,50 @@
 /**
  * Operator details for the 特定商取引法に基づく表記, the Terms of Use and the Privacy Policy.
  *
- * LEAVE EMPTY until the operator supplies the real information: nothing here may be invented or guessed. While a
- * required item is missing the pages show a visible "not set" mark and paid subscriptions stay switched off
- * (see canSubscribe). See docs/LEGAL-CHECKLIST.md for what each item is and what the law says about it.
+ * Nothing here may be invented or guessed: an item the operator has not decided stays empty / null, the pages then show a
+ * visible "not set" mark and paid subscriptions stay switched off (see canSubscribe). docs/LEGAL-CHECKLIST.md explains each
+ * item and what the law says about it.
  */
 
 /**
- * How a contact detail is shown on the notice.
+ * How a detail is shown on the notice.
  *  - { mode: 'public', value }  : printed on the page
- *  - { mode: 'on-request' }     : the page says it is sent without delay when asked for (特商法11条ただし書; the operator must then
- *                                 really answer such a request by e-mail, with the address where they actually work / a number they can be reached on)
+ *  - { mode: 'on-request' }     : the page says it is provided without delay when asked for (消費者庁「通信販売広告Q&A」Q15・Q17:
+ *                                 allowed for an individual's name, address and telephone if the notice says so AND the operator
+ *                                 really answers a request without delay)
  *  - null                       : not decided yet (counts as missing)
  */
 export type Disclosure = { mode: 'public'; value: string } | { mode: 'on-request' } | null;
 
+export type LegalForm = 'individual' | 'corporation';
+
 export interface OperatorInfo {
-  /** 販売事業者: the seller's name (for an individual: their own name). */
-  name: string;
-  /** 屋号・サービス名義 (optional). */
+  /** 個人事業者か法人か. */
+  legalForm: LegalForm | null;
+  /**
+   * 販売事業者の氏名・名称. An individual's real (family-register) name, or a corporation's registered name. A trade name or the
+   * site name alone is not a valid seller name (Q16). May be "on request".
+   */
+  name: Disclosure;
+  /** 屋号 (optional, shown in addition to the name, never instead of it). */
   tradeName: string;
-  /** 運営統括責任者: the person responsible for the operation (for a sole proprietor: themselves). */
+  /**
+   * 運営統括責任者. For a corporation: the representative / the person responsible for the sales operation. For an
+   * individual business the seller is that person, so this stays empty (the notice then says it is the seller).
+   */
   representative: string;
   /** 所在地 */
   address: Disclosure;
   /** 電話番号 */
   phone: Disclosure;
-  /** 問い合わせ先メールアドレス (always public: it is also where a request for address/phone is sent). */
+  /** お問い合わせフォームのURL (the official contact channel; also where a request for the details is made). https only. */
+  contactFormUrl: string;
+  /** メールアドレス (optional: leave empty to keep it private). */
   email: string;
-  /** 対応時間・回答の目安 (optional), e.g. 「平日10〜18時、2営業日以内に返信」. */
+  /** 対応時間・回答の目安 (optional), e.g. 「通常、3営業日以内に返信します」. */
   supportHours: string;
+  /** 開示請求への対応期間の目安 (optional), e.g. 「請求から3営業日以内」. The law only says 「遅滞なく」. */
+  disclosureTarget: string;
   /** 消費税の扱い: 'inclusive' = ¥200 includes consumption tax / 'exempt' = tax-exempt business, no tax added / null = not decided. */
   tax: 'inclusive' | 'exempt' | null;
   /** 適格請求書発行事業者の登録番号 (T + 13 digits), only if registered (optional). */
@@ -41,21 +56,26 @@ export interface OperatorInfo {
 }
 
 export const OPERATOR: OperatorInfo = {
-  name: '',
+  // Decided by the operator (policy of 2026-11-17): an individual business that keeps name, address and telephone private and
+  // discloses them on a lawful request; general enquiries go through the contact form; the e-mail address is not published.
+  legalForm: 'individual',
+  name: { mode: 'on-request' },
   tradeName: '',
   representative: '',
-  address: null,
-  phone: null,
+  address: { mode: 'on-request' },
+  phone: { mode: 'on-request' },
+  contactFormUrl: 'https://forms.gle/vksFVB2QUzdzKeEu6',
   email: '',
   supportHours: '',
+  disclosureTarget: '',
+  // NOT yet decided by the operator:
   tax: null,
   invoiceNumber: '',
   court: '',
   effectiveDate: '',
 };
 
-export type OperatorField = 'name' | 'representative' | 'address' | 'phone' | 'email' | 'tax' | 'effectiveDate';
-export const REQUIRED_FIELDS: OperatorField[] = ['name', 'representative', 'address', 'phone', 'email', 'tax', 'effectiveDate'];
+export type OperatorField = 'legalForm' | 'name' | 'representative' | 'address' | 'phone' | 'contactFormUrl' | 'tax' | 'effectiveDate';
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -65,23 +85,34 @@ export function disclosureOk(d: Disclosure): boolean {
   return d !== null && (d.mode === 'on-request' || (d.mode === 'public' && d.value.trim().length > 0));
 }
 
+export function validFormUrl(u: string): boolean {
+  try {
+    const url = new URL(u.trim());
+    return url.protocol === 'https:' && url.hostname.includes('.');
+  } catch {
+    return false;
+  }
+}
+
 /** Which required items are still missing (or malformed). */
 export function missingOperatorFields(o: OperatorInfo = OPERATOR): OperatorField[] {
   const missing: OperatorField[] = [];
-  if (!o.name.trim()) missing.push('name');
-  if (!o.representative.trim()) missing.push('representative');
+  if (o.legalForm === null) missing.push('legalForm');
+  if (!disclosureOk(o.name)) missing.push('name');
+  if (o.legalForm === 'corporation' && !o.representative.trim()) missing.push('representative'); // an individual business is its own responsible person
   if (!disclosureOk(o.address)) missing.push('address');
   if (!disclosureOk(o.phone)) missing.push('phone');
-  if (!EMAIL.test(o.email.trim())) missing.push('email');
+  if (!validFormUrl(o.contactFormUrl)) missing.push('contactFormUrl');
   if (o.tax === null) missing.push('tax');
   if (!DATE.test(o.effectiveDate) || Number.isNaN(Date.parse(o.effectiveDate))) missing.push('effectiveDate');
   return missing;
 }
 
-/** Problems in the optional items that were filled in (a malformed registration number must not be published). */
+/** Problems in the optional items that were filled in (a malformed registration number or e-mail must not be published). */
 export function operatorWarnings(o: OperatorInfo = OPERATOR): string[] {
   const w: string[] = [];
   if (o.invoiceNumber.trim() && !INVOICE.test(o.invoiceNumber.trim())) w.push('invoiceNumber must be T followed by 13 digits');
+  if (o.email.trim() && !EMAIL.test(o.email.trim())) w.push('email is not a valid address (leave it empty to keep it private)');
   return w;
 }
 

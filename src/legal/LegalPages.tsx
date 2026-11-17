@@ -1,13 +1,22 @@
 import { Fragment, useState, type ReactNode } from 'react';
 import { useLang } from '../i18n';
 import { Page } from '../ui/Pages';
-import { commerceRows, legalLang, privacySections, TBD, termsSections, type Block, type LegalLang, type Row, type Section } from './content';
+import { commerceRows, formRef, legalLang, privacySections, TBD, termsSections, type Block, type LegalLang, type Row, type Section } from './content';
 import { missingOperatorFields, OPERATOR, operatorWarnings, type OperatorField, type OperatorInfo } from './operator';
 
-/** Wraps every "not set" mark so a missing detail is impossible to overlook. */
+/** Wraps every "not set" mark so a missing detail is impossible to overlook, and makes https addresses into links. */
 export function withMarks(text: string): ReactNode {
-  const re = new RegExp(`(${Object.values(TBD).map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'g');
-  return text.split(re).map((part, i) => (Object.values(TBD).includes(part) ? <mark key={i} className="legal-tbd" data-testid="legal-tbd">{part}</mark> : <Fragment key={i}>{part}</Fragment>));
+  const marks = Object.values(TBD).map((m) => m.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+  const re = new RegExp(`(${marks}|https:\\/\\/[^\\s　）)」、。]+)`, 'g');
+  return text.split(re).map((part, i) =>
+    Object.values(TBD).includes(part) ? (
+      <mark key={i} className="legal-tbd" data-testid="legal-tbd">{part}</mark>
+    ) : part.startsWith('https://') ? (
+      <a key={i} href={part} target="_blank" rel="noopener noreferrer" data-testid="legal-link">{part}</a>
+    ) : (
+      <Fragment key={i}>{part}</Fragment>
+    ),
+  );
 }
 
 const TITLES: Record<'commerce' | 'terms' | 'privacy' | 'contact', Record<LegalLang, string>> = {
@@ -17,11 +26,12 @@ const TITLES: Record<'commerce' | 'terms' | 'privacy' | 'contact', Record<LegalL
   contact: { ja: 'お問い合わせ', en: 'Contact' },
 };
 const FIELD_LABEL: Record<OperatorField, Record<LegalLang, string>> = {
-  name: { ja: '販売事業者名', en: 'Seller name' },
-  representative: { ja: '運営統括責任者', en: 'Person responsible' },
+  legalForm: { ja: '個人事業者か法人か', en: 'Sole proprietor or company' },
+  name: { ja: '販売事業者名の扱い', en: 'Seller name' },
+  representative: { ja: '運営統括責任者（法人の場合）', en: 'Person responsible (company)' },
   address: { ja: '所在地の扱い', en: 'Address' },
   phone: { ja: '電話番号の扱い', en: 'Telephone' },
-  email: { ja: 'メールアドレス', en: 'E-mail' },
+  contactFormUrl: { ja: 'お問い合わせフォームのURL', en: 'Contact form URL' },
   tax: { ja: '消費税の扱い', en: 'Tax treatment' },
   effectiveDate: { ja: '制定日', en: 'Effective date' },
 };
@@ -115,13 +125,19 @@ export function ContactPage({ operator = OPERATOR }: { operator?: OperatorInfo }
   return (
     <LegalShell kind="contact">
       {(l) => {
+        const form = formRef(l, operator);
         const mail = operator.email.trim();
         return (
           <div data-testid="contact">
-            <p>{l === 'ja' ? 'ご質問・不具合のご報告・ご意見、お支払いや解約に関するお問い合わせ、個人情報の開示等のご請求は、次のメールアドレスまでお願いします。' : 'For questions, bug reports, feedback, payment or cancellation enquiries, and requests about your personal information, please write to:'}</p>
-            <p className="contact-mail">{mail ? <a href={`mailto:${mail}`} data-testid="contact-mail">{mail}</a> : withMarks(TBD[l])}</p>
-            {operator.supportHours.trim() && <p className="muted">{operator.supportHours.trim()}</p>}
-            <p className="muted">{l === 'ja' ? '契約の解約は、サイト内「アカウント」の「サブスクリプションを管理」から、いつでも行えます（メールでのご連絡は不要です）。' : 'You can cancel your subscription any time under “Account” → “Manage subscription” (no e-mail is needed).'}</p>
+            <p>{l === 'ja' ? 'ご質問・不具合のご報告・ご意見、お支払いやアカウントに関するお問い合わせ、個人情報の開示等のご請求、事業者情報（氏名・住所・電話番号）の開示請求は、次のお問い合わせフォームからお願いします。' : 'For questions, bug reports, feedback, payment or account enquiries, requests about your personal information, and requests for the operator’s details (name, address, telephone), please use the contact form:'}</p>
+            <p className="contact-mail" data-testid="contact-form">{withMarks(form)}</p>
+            <ul>
+              <li>{l === 'ja' ? '事業者情報の開示請求は、フォームの「お問い合わせの種類」で「事業者情報の開示請求」を選び、返信先メールアドレスを入力してください。請求があった場合には、遅滞なく開示します。' : 'To ask for the operator’s details, choose “Request for the operator’s details” as the inquiry type and enter an e-mail address for the reply. We provide them without delay.'}</li>
+              {operator.disclosureTarget.trim() && <li>{l === 'ja' ? `開示の目安：${operator.disclosureTarget.trim()}` : `Target time to provide them: ${operator.disclosureTarget.trim()}`}</li>}
+              {operator.supportHours.trim() && <li>{operator.supportHours.trim()}</li>}
+            </ul>
+            {mail && <p className="muted">{l === 'ja' ? 'メール：' : 'E-mail: '}<a href={`mailto:${mail}`} data-testid="contact-mail">{mail}</a></p>}
+            <p className="muted">{l === 'ja' ? '契約の解約は、サイト内「アカウント」の「サブスクリプションを管理」から、いつでも行えます（フォームでの連絡は不要です）。' : 'You can cancel your subscription any time under “Account” → “Manage subscription” (no message is needed).'}</p>
           </div>
         );
       }}

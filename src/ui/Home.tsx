@@ -1,3 +1,4 @@
+import { OPERATOR, validFormUrl } from '../legal/operator';
 import { go } from '../nav';
 import { Link } from '../components/Link';
 import { BackToMain } from '../components/GameNav';
@@ -41,7 +42,11 @@ export function Footer() {
       <Link to="/privacy">{t('common.privacy')}</Link>
       <Link to="/terms">{t('common.terms')}</Link>
       <Link to="/commerce" data-testid="footer-commerce" title={t('common.commerce')}>{t('common.commerceShort')}</Link>
-      <Link to="/contact">{t('common.contact')}</Link>
+      {validFormUrl(OPERATOR.contactFormUrl) ? (
+        <a href={OPERATOR.contactFormUrl.trim()} target="_blank" rel="noopener noreferrer" data-testid="footer-contact">{t('common.contact')}</a>
+      ) : (
+        <Link to="/contact">{t('common.contact')}</Link>
+      )}
     </footer>
   );
 }

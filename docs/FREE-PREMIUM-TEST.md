@@ -146,7 +146,7 @@ curl -s -o /dev/null -w "%{http_code}\n" http://localhost:8787/artworks/monet-st
 
 | # | 作業 | 状態・メモ |
 |---|---|---|
-| 1 | **運営者情報**（`src/legal/operator.ts`：氏名・運営統括責任者・所在地/電話の扱い・メール・消費税の扱い・制定日）を入力し、住所・電話を「公開」か「請求時開示」か決める | **未入力**（そろうまで購入ボタンは使えない）。一覧と判断材料は [LEGAL-CHECKLIST.md](LEGAL-CHECKLIST.md) |
+| 1 | **運営者情報**：消費税の扱い（`tax`）と制定日（`effectiveDate`）を入力。Google フォームの修正（開示請求の選択肢・返信先の必須化・通知）。Stripe 審査への対応を決める | 氏名・住所・電話番号は「請求時開示」、メール非公開、フォームを窓口とする方針は反映済み。未入力が残るあいだ購入ボタンは使えない。詳細は [LEGAL-CHECKLIST.md](LEGAL-CHECKLIST.md) |
 | 2 | 利用規約・プライバシーポリシー・特商法表記の文面を、日本語・英語で読んで確認 | 初版を用意済み。LEGAL-CHECKLIST.md の C（判断項目）を確認 |
 | 3 | Google OAuth を「本番」に公開／`workers.dev` が承認済みドメインとして受け付けられるか確認（だめなら独自ドメイン） | 要確認 |
 | 4 | Stripe を本番モードに：本番キー・本番の価格 ID（¥200・月次）・本番の Webhook・`ALLOW_LIVE_PAYMENTS=true` | テストの顧客データを D1 から掃除してから（STRIPE-TEST.md の 5 章） |

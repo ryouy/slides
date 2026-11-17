@@ -2048,3 +2048,6 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   font-weight: 500;
   letter-spacing: .02em;
 }
+
+.legal-sections a, .commerce a, .purchase-seller a, [data-testid=contact] a { word-break: break-all; }
+.purchase-seller { margin: 0; font-size: 12px; line-height: 1.6; }

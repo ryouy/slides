@@ -1,63 +1,76 @@
 import { describe, expect, it } from 'vitest';
-import { disclosureOk, missingOperatorFields, OPERATOR, operatorReady, operatorWarnings, type OperatorInfo } from './operator';
+import { disclosureOk, missingOperatorFields, OPERATOR, operatorReady, operatorWarnings, validFormUrl, type OperatorInfo } from './operator';
 
 const full: OperatorInfo = {
-  name: 'Taro Example',
+  legalForm: 'individual',
+  name: { mode: 'on-request' },
   tradeName: '',
-  representative: 'Taro Example',
+  representative: '',
   address: { mode: 'on-request' },
   phone: { mode: 'on-request' },
-  email: 'support@example.com',
+  contactFormUrl: 'https://forms.gle/example',
+  email: '',
   supportHours: '',
+  disclosureTarget: '',
   tax: 'inclusive',
   invoiceNumber: '',
   court: '',
   effectiveDate: '2026-12-01',
 };
 
-describe('operator details gate paid subscriptions', () => {
-  it('the shipped details are all empty: nothing is invented, and purchases stay off', () => {
-    expect(OPERATOR.name).toBe('');
+describe('the shipped operator details', () => {
+  it('carry exactly the operator\'s decided policy and nothing invented', () => {
+    expect(OPERATOR.legalForm).toBe('individual');
+    expect(OPERATOR.name).toEqual({ mode: 'on-request' }); // name, address, telephone: provided on request
+    expect(OPERATOR.address).toEqual({ mode: 'on-request' });
+    expect(OPERATOR.phone).toEqual({ mode: 'on-request' });
+    expect(OPERATOR.contactFormUrl).toBe('https://forms.gle/vksFVB2QUzdzKeEu6');
+    expect(OPERATOR.email).toBe(''); // the e-mail address is not published
     expect(OPERATOR.representative).toBe('');
-    expect(OPERATOR.address).toBeNull();
-    expect(OPERATOR.phone).toBeNull();
-    expect(OPERATOR.email).toBe('');
-    expect(OPERATOR.tax).toBeNull();
-    expect(OPERATOR.effectiveDate).toBe('');
-    expect(missingOperatorFields(OPERATOR).sort()).toEqual(['address', 'effectiveDate', 'email', 'name', 'phone', 'representative', 'tax']);
+    expect(OPERATOR.tradeName).toBe('');
+  });
+  it('still lack what the operator has not decided (tax treatment, effective date), so purchases stay off', () => {
+    expect(missingOperatorFields(OPERATOR).sort()).toEqual(['effectiveDate', 'tax']);
     expect(operatorReady(OPERATOR)).toBe(false);
   });
+});
 
-  it('is ready when every required item is set (address and phone may be "on request")', () => {
+describe('what the notice needs before purchases may open', () => {
+  it('a sole proprietor who keeps name, address and telephone for on-request disclosure is complete once tax and date are set', () => {
     expect(missingOperatorFields(full)).toEqual([]);
     expect(operatorReady(full)).toBe(true);
-    expect(operatorReady({ ...full, address: { mode: 'public', value: '1-2-3 Example, Tokyo' }, phone: { mode: 'public', value: '03-0000-0000' } })).toBe(true);
   });
-
   it('every required item is really required', () => {
-    expect(missingOperatorFields({ ...full, name: '  ' })).toEqual(['name']);
-    expect(missingOperatorFields({ ...full, representative: '' })).toEqual(['representative']);
-    expect(missingOperatorFields({ ...full, address: null })).toEqual(['address']); // "not decided" is not an answer
+    expect(missingOperatorFields({ ...full, legalForm: null })).toEqual(['legalForm']);
+    expect(missingOperatorFields({ ...full, name: null })).toEqual(['name']); // "not decided" is not an answer
+    expect(missingOperatorFields({ ...full, name: { mode: 'public', value: ' ' } })).toEqual(['name']);
+    expect(missingOperatorFields({ ...full, address: null })).toEqual(['address']);
     expect(missingOperatorFields({ ...full, phone: null })).toEqual(['phone']);
-    expect(missingOperatorFields({ ...full, address: { mode: 'public', value: ' ' } })).toEqual(['address']); // public but empty
     expect(missingOperatorFields({ ...full, tax: null })).toEqual(['tax']);
     expect(missingOperatorFields({ ...full, effectiveDate: '' })).toEqual(['effectiveDate']);
     expect(missingOperatorFields({ ...full, effectiveDate: '2026-13-45' })).toEqual(['effectiveDate']);
-    expect(missingOperatorFields({ ...full, effectiveDate: '17/11/2026' })).toEqual(['effectiveDate']);
   });
-
-  it('the e-mail must look like one (it is also where requests for address/phone are sent)', () => {
-    for (const bad of ['', 'nobody', 'a@b', '@example.com', 'a b@example.com']) expect(missingOperatorFields({ ...full, email: bad }), bad).toEqual(['email']);
-    expect(missingOperatorFields({ ...full, email: 'a@b.jp' })).toEqual([]);
+  it('a company must name the person responsible; a sole proprietor is its own responsible person', () => {
+    expect(missingOperatorFields({ ...full, legalForm: 'corporation' })).toEqual(['representative']);
+    expect(missingOperatorFields({ ...full, legalForm: 'corporation', representative: 'Hanako Example' })).toEqual([]);
+    expect(missingOperatorFields({ ...full, legalForm: 'individual', representative: '' })).toEqual([]);
   });
-
+  it('the contact form must be a real https address (it is the official channel and where details are requested)', () => {
+    for (const bad of ['', 'forms.gle/x', 'http://forms.gle/x', 'javascript:alert(1)', 'https://localhost', 'not a url']) expect(missingOperatorFields({ ...full, contactFormUrl: bad }), bad).toEqual(['contactFormUrl']);
+    expect(validFormUrl('https://forms.gle/abc')).toBe(true);
+    expect(validFormUrl('https://docs.google.com/forms/d/e/x/viewform')).toBe(true);
+  });
+  it('the e-mail address is optional (private by default); if given it must be valid', () => {
+    expect(operatorReady({ ...full, email: '' })).toBe(true);
+    expect(operatorWarnings({ ...full, email: 'support@example.com' })).toEqual([]);
+    for (const bad of ['nobody', 'a@b', '@example.com']) expect(operatorReady({ ...full, email: bad }), bad).toBe(false);
+  });
   it('a malformed invoice registration number is refused, an empty one is fine', () => {
     expect(operatorWarnings({ ...full, invoiceNumber: '' })).toEqual([]);
     expect(operatorWarnings({ ...full, invoiceNumber: 'T1234567890123' })).toEqual([]);
     expect(operatorWarnings({ ...full, invoiceNumber: '1234567890123' })).toHaveLength(1);
     expect(operatorReady({ ...full, invoiceNumber: 'T123' })).toBe(false);
   });
-
   it('disclosure choices', () => {
     expect(disclosureOk(null)).toBe(false);
     expect(disclosureOk({ mode: 'on-request' })).toBe(true);
