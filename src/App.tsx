@@ -8,13 +8,13 @@ import { AccountPage } from './account/AccountPage';
 import { PhotosPage } from './custom/PhotosPage';
 import { initAccount } from './account/store';
 import { initSync } from './sync/state';
-import { CommercePage } from './legal/CommercePage';
+import { CommercePage, ContactPage, PrivacyPage, TermsPage } from './legal/LegalPages';
 import { PremiumPage } from './premium/PremiumPage';
 import { parsePath, usePath } from './router';
 import { SaveProvider, useSave } from './storage/SaveContext';
 import { useLang } from './i18n';
 import { Home } from './ui/Home';
-import { AboutPage, ContactPage, HowToPage, PrivacyPage, SettingsPage, StatsPage, TermsPage } from './ui/Pages';
+import { AboutPage, HowToPage, SettingsPage, StatsPage } from './ui/Pages';
 import { DailyScreen, EndlessScreen } from './ui/Screens';
 
 const TITLES = { 'word-slide': 'WORD SLIDE', 'big-slide': 'BIG SLIDE', 'art-slide': 'ART SLIDE' };

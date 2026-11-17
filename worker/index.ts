@@ -2,6 +2,7 @@ import { authConfigured, billingConfigured, checkoutConfigError, type Env } from
 import { currentUser, finishLogin, logout, startLogin } from './auth';
 import { createCheckout, createPortal, deleteAccount, handleWebhook, planFor } from './billing';
 import { serveArtwork } from './artwork';
+import { hmacHex } from './crypto';
 import { allow } from './db';
 import { err, json, sameOrigin } from './http';
 import type { FetchFn } from './stripe';
@@ -29,8 +30,10 @@ export async function handle(request: Request, env: Env, deps: Deps = {}): Promi
   if (path === '/api/auth/google' || path === '/api/auth/callback') {
     if (method !== 'GET') return err(405, 'method');
     // a visitor can start a login now and then, not thousands of times: per address, 40 per 10 minutes
+    // the address is never stored: only a keyed hash of it, and only for as long as the 10-minute window (see allow())
     const ip = request.headers.get('cf-connecting-ip') ?? 'unknown';
-    if (!(await allow(env.DB!, `auth:${ip}`, 40, 600))) return err(429, 'rate_limited');
+    const who = (await hmacHex(env.SESSION_SECRET!, `ip|${ip}`)).slice(0, 32);
+    if (!(await allow(env.DB!, `auth:${who}`, 40, 600))) return err(429, 'rate_limited');
     return path === '/api/auth/google' ? startLogin(request, env) : finishLogin(request, env, deps.fetchFn);
   }
   if (path === '/api/auth/logout') {

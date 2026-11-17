@@ -99,6 +99,8 @@ export async function allow(db: D1Database, key: string, limit: number, windowSe
   const now = nowSec();
   const row = await db.prepare('SELECT window_start, count FROM rate_limits WHERE key = ?').bind(key).first<{ window_start: number; count: number }>();
   if (!row || now - row.window_start >= windowSec) {
+    // housekeeping: counters of finished windows are not kept
+    await db.prepare('DELETE FROM rate_limits WHERE window_start < ?').bind(now - 86_400).run();
     await db.prepare('INSERT INTO rate_limits (key, window_start, count) VALUES (?, ?, 1) ON CONFLICT(key) DO UPDATE SET window_start = excluded.window_start, count = 1').bind(key, now).run();
     return true;
   }

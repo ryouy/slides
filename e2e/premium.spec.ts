@@ -55,6 +55,8 @@ test('signed out: sign in with Google; Subscribe needs it first', async ({ page 
   expect(await a.getAttribute('href')).toBe('/api/auth/google?return=%2Fart-slide%2Faccount');
   await page.goto('/art-slide/premium');
   await expect(page.getByTestId('premium-signin')).toBeVisible();
+  await expect(page.getByTestId('premium-subscribe')).toBeDisabled(); // not before the visitor has read and agreed
+  await page.getByTestId('premium-agree').check();
   await expect(page.getByTestId('premium-subscribe')).toBeEnabled();
   expect(calls.some((c) => c.startsWith('POST'))).toBe(false); // nothing is sent before the visitor acts
 });
@@ -64,6 +66,7 @@ test('signed in on the Free plan: Subscribe starts Checkout through the server',
   const calls = await mockApi(page, { me: { signedIn: true, premium: false, name: 'Ann Example', status: null } });
   await page.goto('/art-slide/premium');
   await expect(page.getByTestId('premium-signin')).toHaveCount(0);
+  await page.getByTestId('premium-agree').check();
   await page.getByTestId('premium-subscribe').click();
   await expect(page).toHaveURL(/checkout=mock/);
   expect(calls).toContain('POST /api/billing/checkout');
@@ -156,10 +159,11 @@ test('purchases stay off while the operator details are missing or the server ha
 
 test('the commercial-law notice page exists and says what is still missing', async ({ page }) => {
   await page.goto('/commerce');
-  await expect(page.getByTestId('commerce')).toContainText('月額 200円（税込）');
+  await page.getByTestId('legal-lang-ja').click();
+  await expect(page.getByTestId('commerce')).toContainText('月額200円');
   await expect(page.getByTestId('commerce')).toContainText('解約');
   await expect(page.getByTestId('commerce-incomplete')).toBeVisible(); // details not supplied yet
-  await expect(page.getByTestId('commerce')).toContainText('（未設定）');
+  await expect(page.getByTestId('commerce')).toContainText('【未設定】');
 });
 
 test('the daily puzzle is open to everyone, also when its painting is a Premium one', async ({ page }) => {

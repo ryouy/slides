@@ -268,6 +268,17 @@ describe('Google sign-in', () => {
     expect((await call('/api/auth/google', { headers: { 'cf-connecting-ip': '203.0.113.10' } })).status).toBe(302); // others are unaffected
   });
 
+  it('never keeps an IP address: only a keyed hash, and old counters are deleted', async () => {
+    await call('/api/auth/google', { headers: { 'cf-connecting-ip': '203.0.113.77' } });
+    const keys = (raw.prepare('SELECT key FROM rate_limits').all() as { key: string }[]).map((r) => r.key);
+    expect(keys).toHaveLength(1);
+    expect(keys[0]).toMatch(/^auth:[0-9a-f]{32}$/);
+    expect(JSON.stringify(keys)).not.toContain('203.0.113.77');
+    raw.prepare("INSERT INTO rate_limits VALUES ('auth:old', ?, 3)").run(NOW() - 3 * 86400);
+    await call('/api/auth/google', { headers: { 'cf-connecting-ip': '198.51.100.5' } }); // a new window starts: housekeeping runs
+    expect((raw.prepare("SELECT COUNT(*) AS n FROM rate_limits WHERE key = 'auth:old'").get() as { n: number }).n).toBe(0);
+  });
+
   it('logout needs a request from our own site and ends the session', async () => {
     const cookie = await login();
     expect((await call('/api/auth/logout', { method: 'POST', cookie, origin: 'https://evil.example' })).status).toBe(403);

@@ -2015,3 +2015,28 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .link-quiet:hover:not(:disabled), .link-quiet:focus-visible { color: var(--fg); }
 .link-quiet:disabled { opacity: .5; cursor: default; }
 .account .btn.wide, .drive-sync .btn.wide { margin: 0; }
+
+/* Legal pages and the purchase facts */
+.legal-tbd { background: #ffe9a8; color: #5a3b00; padding: 0 3px; border-radius: 2px; font-weight: 600; }
+:root[data-theme='dark'] .legal-tbd { background: #5a4600; color: #ffe9a8; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) .legal-tbd { background: #5a4600; color: #ffe9a8; } }
+.legal-lang { display: flex; gap: 6px; margin: 0 0 12px; }
+.legal-lang button { border: 1px solid var(--line); background: transparent; color: var(--muted); padding: 5px 12px; font: inherit; font-size: 12px; cursor: pointer; border-radius: 2px; }
+.legal-lang button.on { color: var(--fg); border-color: var(--fg); }
+.legal-note { font-size: 12px; margin: 0 0 10px; }
+.legal-incomplete { border: 1px solid var(--line); padding: 10px 14px; margin: 0 0 14px; font-size: 13px; }
+.legal-incomplete p { margin: 0 0 6px; }
+.legal-incomplete ul { margin: 0; padding-left: 18px; }
+.legal-sections section { margin: 0 0 18px; }
+.legal-sections h2 { margin: 0 0 6px; font-size: 15px; }
+.legal-sections p { margin: 0 0 8px; font-size: 14px; line-height: 1.7; }
+.legal-sections ul { margin: 0 0 8px; padding-left: 20px; font-size: 14px; line-height: 1.7; }
+.contact-mail { font-size: 18px; }
+.purchase-facts { border: 1px solid var(--line); padding: 14px 14px 10px; display: grid; gap: 10px; text-align: left; }
+.purchase-facts h2 { margin: 0; font-size: 13px; letter-spacing: .06em; }
+.purchase-facts dl { margin: 0; display: grid; gap: 8px; }
+.purchase-facts dl > div { display: grid; gap: 1px; }
+.purchase-facts dt { font-size: 11px; color: var(--muted); letter-spacing: .04em; }
+.purchase-facts dd { margin: 0; font-size: 13px; line-height: 1.6; }
+.purchase-facts .agree { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; line-height: 1.55; padding-top: 6px; border-top: 1px solid var(--line); cursor: pointer; }
+.purchase-facts .agree input { margin-top: 3px; flex: none; width: 18px; height: 18px; }

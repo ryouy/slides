@@ -186,40 +186,5 @@ export function AboutPage() {
   );
 }
 
-export function PrivacyPage() {
-  const t = useT();
-  return (
-    <Page title={t('common.privacy')}>
-      <p>{t('privacy.storage')}</p>
-      <p>{t('privacy.accounts')}</p>
-      <p>{t('privacy.premium')}</p>
-      <p>{t('privacy.photos')}</p>
-      <p>{t('privacy.ads')}</p>
-      <p>{t('privacy.choice')}</p>
-      <p>{t('privacy.admax')}</p>
-      <p>{t('privacy.changes')}</p>
-      <p className="muted">{t('privacy.operatorNote')}</p>
-    </Page>
-  );
-}
 
-export function TermsPage() {
-  const t = useT();
-  return (
-    <Page title={t('common.terms')}>
-      <p>{t('legal.terms')}</p>
-      <p>{t('legal.premium')}</p>
-      <p className="muted">{t('legal.termsNote')}</p>
-    </Page>
-  );
-}
 
-export function ContactPage() {
-  const t = useT();
-  return (
-    <Page title={t('common.contact')}>
-      <p>{t('legal.contact')}</p>
-      <p className="muted">{t('legal.contactNote')}</p>
-    </Page>
-  );
-}

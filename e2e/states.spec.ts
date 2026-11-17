@@ -110,6 +110,8 @@ for (const [name, { me, premium }] of Object.entries(STATES)) {
         await expect(page.getByTestId('premium-manage')).toBeVisible();
         await expect(page.getByTestId('premium-subscribe')).toHaveCount(0);
       } else {
+        await expect(page.getByTestId('premium-subscribe')).toBeDisabled();
+        await page.getByTestId('premium-agree').check();
         await expect(page.getByTestId('premium-subscribe')).toBeEnabled();
         await expect(page.getByTestId('premium-active')).toHaveCount(0);
         if (!me.signedIn) await expect(page.getByTestId('premium-signin')).toBeVisible();

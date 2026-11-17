@@ -241,9 +241,9 @@ test('each unit is served as its own page on this site with one AdMax tag and no
 test('privacy policy covers the ad network and the opt-out', async ({ page }) => {
   await page.goto('/privacy');
   const text = await page.locator('.prose').innerText();
-  expect(text).toMatch(/AdMax/);
+  expect(text).toMatch(/Shinobi AdMax/);
   expect(text).not.toMatch(/Adsterra/);
   expect(text).toMatch(/cookies/i);
-  expect(text).toMatch(/consent is required/i); // consent first where the law requires it
+  expect(text).toMatch(/EU, EEA, UK and Switzerland/); // consent first where the law requires it
   expect(text).toMatch(/Settings/);
 });

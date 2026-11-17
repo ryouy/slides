@@ -1,8 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { LockIcon } from '../components/Icons';
 import { refreshAccount } from '../account/store';
 import { Link } from '../components/Link';
-import { useT } from '../i18n';
+import { useLang, useT } from '../i18n';
+import { legalLang, planFacts } from '../legal/content';
+import { withMarks } from '../legal/LegalPages';
+import { OPERATOR } from '../legal/operator';
 import { go } from '../router';
 import { Page } from '../ui/Pages';
 import { useAccount } from '../account/store';
@@ -15,6 +18,8 @@ export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' })
   const { premium } = useEntitlement();
   const { config, me } = useAccount();
   const available = canSubscribe(config);
+  const l = legalLang(useLang());
+  const [agreed, setAgreed] = useState(false);
   return (
     <div className="premium" data-testid="premium">
       {reason && <p className="premium-reason" data-testid="premium-reason"><LockIcon size={16} /> {t(reason === 'art' ? 'premium.lockedArt' : reason === 'photos' ? 'premium.lockedPhotos' : 'premium.lockedSize')}</p>}
@@ -31,13 +36,30 @@ export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' })
           <button className="btn wide" data-testid="premium-manage" onClick={() => void openPortal()}>{t('acct.manage')}</button>
         </>
       ) : (
-        <button className="btn primary wide" data-testid="premium-subscribe" disabled={!available} onClick={() => void startCheckout()}>{t('premium.subscribe')}</button>
+        <>
+          {/* what the visitor must see before the button: price, renewal, payment, total, how to cancel, refunds (特商法11条・12条の6) */}
+          <section className="purchase-facts" data-testid="purchase-facts" aria-label={t('premium.beforeTitle')}>
+            <h2>{t('premium.beforeTitle')}</h2>
+            <dl>
+              {planFacts(l, OPERATOR).map(([k, v]) => (
+                <div key={k}>
+                  <dt>{k}</dt>
+                  <dd>{withMarks(v)}</dd>
+                </div>
+              ))}
+            </dl>
+            <label className="agree">
+              <input type="checkbox" data-testid="premium-agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
+              <span>{t('premium.agree')}</span>
+            </label>
+          </section>
+          <button className="btn primary wide" data-testid="premium-subscribe" disabled={!available || !agreed} onClick={() => void startCheckout()}>{t('premium.subscribeFull')}</button>
+        </>
       )}
       {!available && !premium && <p className="muted" data-testid="premium-soon">{t('premium.soon')}</p>}
       {available && !premium && !me?.signedIn && <p className="muted" data-testid="premium-signin">{t('premium.signIn')}</p>}
-      <p className="muted premium-note">{t('premium.note')}</p>
       <p className="muted premium-note">{t('premium.free')}</p>
-      <p className="muted premium-note"><Link to="/terms">{t('common.terms')}</Link> · <Link to="/privacy">{t('common.privacy')}</Link> · <Link to="/commerce">特定商取引法に基づく表記</Link></p>
+      <p className="muted premium-note"><Link to="/terms">{t('common.terms')}</Link> · <Link to="/privacy">{t('common.privacy')}</Link> · <Link to="/commerce" data-testid="premium-commerce-link">{t('common.commerce')}</Link></p>
     </div>
   );
 }

@@ -78,7 +78,7 @@ test('direct URLs and legacy hash URLs work', async ({ page }) => {
   await page.goto('/#/how');
   await expect(page).toHaveURL(/\/word-slide\/how$/);
   await page.goto('/privacy');
-  await expect(page.locator('.topbar h1')).toHaveText('Privacy');
+  await expect(page.locator('.topbar h1')).toHaveText('Privacy Policy');
 });
 
 test('BIG SLIDE daily: 4x4 with one big tile, 10 numbers and a goal picture', async ({ page }) => {

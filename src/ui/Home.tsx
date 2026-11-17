@@ -40,6 +40,7 @@ export function Footer() {
       <Link to="/about">{t('common.about')}</Link>
       <Link to="/privacy">{t('common.privacy')}</Link>
       <Link to="/terms">{t('common.terms')}</Link>
+      <Link to="/commerce" data-testid="footer-commerce" title={t('common.commerce')}>{t('common.commerceShort')}</Link>
       <Link to="/contact">{t('common.contact')}</Link>
     </footer>
   );
