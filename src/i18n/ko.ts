@@ -115,7 +115,7 @@ const ko: Partial<Dict> = {
   'result.cleared': '클리어!', 'result.next': '다음 문제', 'result.showResult': '결과 보기',
   "home.streak": "{n}일 연속",
   "home.explore": "갤러리 둘러보기",
-  "home.other": "기타",
+  "home.other": "메뉴",
   "home.dailyShort": "데일리",
   "art.openExhibit": "오늘의 작품 보기",
   "stats.endlessStreak": "연속 클리어",

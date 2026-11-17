@@ -115,7 +115,7 @@ const fr: Partial<Dict> = {
   'result.cleared': 'RÉUSSI !', 'result.next': 'Puzzle suivant', 'result.showResult': 'Voir le résultat',
   "home.streak": "{n} jours de suite",
   "home.explore": "Explorer la galerie",
-  "home.other": "Plus",
+  "home.other": "Menu",
   "home.dailyShort": "Quotidien",
   "art.openExhibit": "Voir l’œuvre du jour",
   "stats.endlessStreak": "SÉRIE INFINIE",
