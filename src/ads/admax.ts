@@ -26,8 +26,11 @@ export const adScriptUrl = (unit: AdUnit): string => `${SCRIPT_BASE}/${unit.tag}
 /** Real ads are requested in production builds; VITE_ADS_ENABLED=false switches them off (e.g. for a preview deploy). */
 export const adsEnabled = (): boolean => import.meta.env?.VITE_ADS_ENABLED !== 'false';
 
-/** The PC tag from 728px of viewport width up (the site's desktop breakpoint), the phone tag below. */
-export const DESKTOP_MIN_WIDTH = 728;
+/**
+ * The PC tag (300x250) from 900px of viewport width up, where the game pages become two columns and the ad has its own
+ * place in the side column; the phone tag (320x50) below, wherever the text sits under the board (also on tablets and narrow windows).
+ */
+export const DESKTOP_MIN_WIDTH = 900;
 export const chooseAdUnit = (viewportWidth: number): AdUnit => (viewportWidth >= DESKTOP_MIN_WIDTH ? AD_UNITS.desktop : AD_UNITS.mobile);
 
 /** A screen narrower than the unit it would get shows no ad at all (nothing is shrunk or cropped). */

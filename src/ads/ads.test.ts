@@ -8,10 +8,12 @@ describe('ad units', () => {
     expect(AD_UNITS.mobile).toEqual({ id: 'mobile', tag: 'e17c874ec991654a2894f1c609f8c486', width: 320, height: 50 });
     expect(adScriptUrl(AD_UNITS.desktop)).toBe('https://adm.shinobi.jp/s/a1c2070f42cfa5a3fc12867425b874ed');
   });
-  it('picks the PC tag from 728px up and the phone tag below', () => {
-    expect(DESKTOP_MIN_WIDTH).toBe(728);
+  it('picks the PC tag from 900px up (the two-column layout) and the phone tag below', () => {
+    expect(DESKTOP_MIN_WIDTH).toBe(900);
     expect(chooseAdUnit(1920).id).toBe('desktop');
-    expect(chooseAdUnit(728).id).toBe('desktop');
+    expect(chooseAdUnit(900).id).toBe('desktop');
+    expect(chooseAdUnit(899).id).toBe('mobile'); // single column: text under the board
+    expect(chooseAdUnit(728).id).toBe('mobile');
     expect(chooseAdUnit(727).id).toBe('mobile');
     expect(chooseAdUnit(412).id).toBe('mobile');
   });
