@@ -29,9 +29,15 @@ describe('the shipped operator details', () => {
     expect(OPERATOR.representative).toBe('');
     expect(OPERATOR.tradeName).toBe('');
   });
-  it('still lack what the operator has not decided (tax treatment, effective date), so purchases stay off', () => {
-    expect(missingOperatorFields(OPERATOR).sort()).toEqual(['effectiveDate', 'tax']);
+  it('tax treatment is "tax-exempt business" (as the operator stated: an individual, no registration as an invoice issuer)', () => {
+    expect(OPERATOR.tax).toBe('exempt');
+    expect(OPERATOR.invoiceNumber).toBe('');
+  });
+  it('only the effective date is still open (it is the real publication day), so purchases stay off until it is set', () => {
+    expect(OPERATOR.effectiveDate).toBe('');
+    expect(missingOperatorFields(OPERATOR)).toEqual(['effectiveDate']);
     expect(operatorReady(OPERATOR)).toBe(false);
+    expect(operatorReady({ ...OPERATOR, effectiveDate: '2026-12-01' })).toBe(true);
   });
 });
 

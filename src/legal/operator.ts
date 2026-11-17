@@ -19,7 +19,7 @@ export type Disclosure = { mode: 'public'; value: string } | { mode: 'on-request
 export type LegalForm = 'individual' | 'corporation';
 
 export interface OperatorInfo {
-  /** 個人事業者か法人か. */
+  /** 個人（法人ではない）か法人か. An individual who runs the service alone, with or without a business-start notification. */
   legalForm: LegalForm | null;
   /**
    * 販売事業者の氏名・名称. An individual's real (family-register) name, or a corporation's registered name. A trade name or the
@@ -68,10 +68,13 @@ export const OPERATOR: OperatorInfo = {
   email: '',
   supportHours: '',
   disclosureTarget: '',
-  // NOT yet decided by the operator:
-  tax: null,
+  // Tax treatment: tax-exempt business. Set on the operator's own statement (an individual, no business-start notification,
+  // not registered as a qualified invoice issuer, no election to be taxable). Whether the exemption really applies depends on
+  // their sales history and filings, which the developer cannot check: see docs/LEGAL-CHECKLIST.md for the criteria.
+  tax: 'exempt',
   invoiceNumber: '',
   court: '',
+  // The effective date is the day the texts are really published: set it on that day with `npm run legal:date`.
   effectiveDate: '',
 };
 

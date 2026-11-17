@@ -8,11 +8,10 @@ const text = (sections: Section[]) => sections.map((s) => `${s.title}\n${s.body.
 
 describe('nothing is invented', () => {
   for (const l of LANGS) {
-    it(`${l}: what the operator has not decided (tax treatment, date) shows a visible "not set" mark`, () => {
-      const all = `${commerceRows(l, OPERATOR).map(([, v]) => v).join('\n')}\n${text(termsSections(l, OPERATOR))}\n${text(privacySections(l, OPERATOR))}`;
-      expect(all).toContain(TBD[l]);
-      expect(commerceRows(l, OPERATOR).map(([, v]) => v).join('\n')).toContain(TBD[l]); // the price line (tax) and the notice
-      expect(text(termsSections(l, OPERATOR))).toContain(TBD[l]); // the effective date
+    it(`${l}: the only thing still open (the effective date) shows a visible "not set" mark; the notice itself is complete`, () => {
+      expect(commerceRows(l, OPERATOR).map(([, v]) => v).join('\n')).not.toContain(TBD[l]);
+      expect(text(termsSections(l, OPERATOR))).toContain(TBD[l]);
+      expect(text(privacySections(l, OPERATOR))).toContain(TBD[l]);
     });
     it(`${l}: the private details never appear (no name, e-mail, phone number or address)`, () => {
       const all = `${commerceRows(l, OPERATOR).map(([, v]) => v).join('\n')}\n${text(termsSections(l, OPERATOR))}\n${text(privacySections(l, OPERATOR))}`;
@@ -49,10 +48,18 @@ describe('the notice has every item the law lists for an online sale of a servic
     const en = planFacts('en', full).map(([, v]) => v).join('\n');
     for (const s of ['¥200 per month', 'tax included', 'automatically every month', 'no fixed term', 'Manage subscription', 'no cancellation fee', 'no statutory cooling-off', 'pro-rate']) expect(en, s).toContain(s);
   });
-  it('the tax wording follows the operator (a tax-exempt business must not say 税込)', () => {
-    expect(planFacts('ja', { ...full, tax: 'exempt' })[0][1]).not.toContain('税込');
-    expect(planFacts('ja', { ...full, tax: 'exempt' })[0][1]).toContain('納税義務が免除');
-    expect(planFacts('ja', { ...full, tax: null })[0][1]).toContain(TBD.ja);
+  it('one price wording for everybody, whichever tax treatment: the amount is the total, nothing is added', () => {
+    for (const tax of ['exempt', 'inclusive'] as const) {
+      expect(planFacts('ja', { ...full, tax })[0][1]).toBe('月額200円（税込・追加の消費税請求なし）');
+      expect(planFacts('en', { ...full, tax })[0][1]).toBe('¥200 per month (tax included; no additional consumption tax is charged)');
+    }
+    expect(planFacts('ja', { ...full, tax: null })[0][1]).toContain(TBD.ja); // not decided yet: marked
+    expect(planFacts('ja', OPERATOR)[0][1]).toBe('月額200円（税込・追加の消費税請求なし）'); // what the site really shows
+  });
+  it('says plainly that the operator is not an invoice issuer, unless a registration number is given', () => {
+    expect(Object.fromEntries(commerceRows('ja', { ...full, invoiceNumber: '' }))['適格請求書（インボイス）']).toContain('登録していません');
+    expect(Object.fromEntries(commerceRows('en', { ...full, invoiceNumber: '' }))['Qualified invoices']).toContain('not registered');
+    expect(Object.fromEntries(commerceRows('ja', full))['適格請求書発行事業者の登録番号']).toBe('T1234567890123');
   });
 });
 
@@ -84,7 +91,7 @@ describe('name, address and telephone are provided on request', () => {
     expect(Object.fromEntries(commerceRows('ja', { ...full, email: 'help@example.com' }))['お問い合わせ先']).toContain('help@example.com');
   });
   it('the responsible person: the seller itself for a sole proprietor, a named person for a company', () => {
-    expect(Object.fromEntries(commerceRows('ja', full))['運営統括責任者']).toContain('個人事業のため');
+    expect(Object.fromEntries(commerceRows('ja', full))['運営統括責任者']).toContain('個人で運営しているため');
     expect(Object.fromEntries(commerceRows('ja', { ...full, legalForm: 'corporation', representative: '佐藤 花子' }))['運営統括責任者']).toBe('佐藤 花子');
     expect(Object.fromEntries(commerceRows('ja', { ...full, legalForm: 'corporation', representative: '' }))['運営統括責任者']).toContain(TBD.ja);
   });
@@ -96,7 +103,8 @@ describe('name, address and telephone are provided on request', () => {
     expect(text(termsSections('ja', full))).toContain('事業者情報の開示請求');
     expect(text(privacySections('ja', full))).toContain('Googleフォーム');
     expect(text(privacySections('en', full))).toContain('Google Forms');
-    expect(text(termsSections('ja', full))).toContain('個人事業者');
+    expect(text(termsSections('ja', full))).toContain('の運営者（個人、屋号：Example Games。氏名・住所・電話番号は');
+    expect(text(termsSections('ja', { ...full, tradeName: '' }))).toContain('の運営者（個人。氏名・住所・電話番号は');
   });
   it('the purchase screen says it too', () => {
     expect(disclosureNote('ja', full)).toContain('遅滞なく開示します');

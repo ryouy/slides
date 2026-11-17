@@ -27,16 +27,18 @@ test('the notice lists every item, in Japanese and in English, and marks what th
   await expect(ja.getByTestId('legal-link').first()).toHaveAttribute('href', 'https://forms.gle/vksFVB2QUzdzKeEu6');
   await expect(ja).not.toContainText('@'); // no e-mail address is published
   // what is still undecided is marked, and listed above
-  expect(await page.getByTestId('legal-tbd').count()).toBeGreaterThanOrEqual(1);
-  await expect(page.getByTestId('commerce-incomplete')).toContainText('運営者情報が未設定');
-  await expect(page.getByTestId('commerce-incomplete')).toContainText('消費税の扱い');
+  await expect(ja).toContainText('月額200円（税込・追加の消費税請求なし）');
+  await expect(ja).toContainText('適格請求書発行事業者ではありません');
+  expect(await ja.getByTestId('legal-tbd').count()).toBe(0); // the notice itself is complete
+  await expect(page.getByTestId('commerce-incomplete')).toContainText('運営者情報が未設定'); // only the effective date is still open
   await expect(page.getByTestId('commerce-incomplete')).toContainText('制定日');
+  await expect(page.getByTestId('commerce-incomplete')).not.toContainText('消費税の扱い');
   await expect(page.getByTestId('commerce-incomplete')).not.toContainText('所在地'); // decided: on request
   await page.getByTestId('legal-lang-en').click();
   await expect(page.locator('.topbar h1')).toHaveText('Notice under the Act on Specified Commercial Transactions');
   await expect(page.getByTestId('commerce')).toContainText('refunds');
   await expect(page.getByTestId('commerce-incomplete')).toContainText('not set yet');
-  expect(await page.locator('.commerce-row').count()).toBe(14);
+  expect(await page.locator('.commerce-row').count()).toBe(15);
 });
 
 test('terms and privacy: complete texts in Japanese and English, with unset items marked, and no made-up details', async ({ page }) => {
@@ -130,8 +132,8 @@ for (const lang of ['en', 'ja'] as const) {
     const facts = page.getByTestId('purchase-facts');
     await expect(facts).toBeVisible();
     const t = await facts.innerText();
-    if (lang === 'ja') for (const s of ['月額200円', '自動で更新', '契約期間の定めはなく', 'サブスクリプションを管理', '解約料はかかりません', 'クーリング・オフ制度はありません', '日割り返金はいたしません', '支払総額の目安']) expect(t).toContain(s);
-    else for (const s of ['¥200 per month', 'automatically every month', 'no fixed term', 'Manage subscription', 'no cancellation fee', 'no statutory cooling-off', 'pro-rate', 'Total (guide)']) expect(t).toContain(s);
+    if (lang === 'ja') for (const s of ['月額200円', '自動で更新', '契約期間の定めはなく', 'サブスクリプションを管理', '解約料はかかりません', 'クーリング・オフ制度はありません', '日割り返金はいたしません', '支払総額の目安', '追加の消費税請求なし']) expect(t).toContain(s);
+    else for (const s of ['¥200 per month', 'automatically every month', 'no fixed term', 'Manage subscription', 'no cancellation fee', 'no statutory cooling-off', 'pro-rate', 'Total (guide)', 'no additional consumption tax']) expect(t).toContain(s);
     // the button states the obligation and stays off until the box is ticked
     const button = page.getByTestId('premium-subscribe');
     await expect(button).toContainText(lang === 'ja' ? '月額200円・自動更新' : '¥200 / month, auto-renewing');

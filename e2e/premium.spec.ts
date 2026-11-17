@@ -157,13 +157,14 @@ test('purchases stay off while the operator details are missing or the server ha
   await expect(p2.getByTestId('premium-subscribe')).toBeDisabled();
 });
 
-test('the commercial-law notice page exists and says what is still missing', async ({ page }) => {
+test('the commercial-law notice page exists, is complete, and the banner says what is still open (the publication date)', async ({ page }) => {
   await page.goto('/commerce');
   await page.getByTestId('legal-lang-ja').click();
   await expect(page.getByTestId('commerce')).toContainText('月額200円');
   await expect(page.getByTestId('commerce')).toContainText('解約');
-  await expect(page.getByTestId('commerce-incomplete')).toBeVisible(); // details not supplied yet
-  await expect(page.getByTestId('commerce')).toContainText('【未設定】');
+  await expect(page.getByTestId('commerce-incomplete')).toBeVisible(); // the effective date is not set yet
+  await expect(page.getByTestId('commerce-incomplete')).toContainText('制定日');
+  await expect(page.getByTestId('commerce')).not.toContainText('【未設定】'); // the notice itself has no gaps
 });
 
 test('the daily puzzle is open to everyone, also when its painting is a Premium one', async ({ page }) => {

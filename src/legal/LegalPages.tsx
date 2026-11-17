@@ -26,7 +26,7 @@ const TITLES: Record<'commerce' | 'terms' | 'privacy' | 'contact', Record<LegalL
   contact: { ja: 'お問い合わせ', en: 'Contact' },
 };
 const FIELD_LABEL: Record<OperatorField, Record<LegalLang, string>> = {
-  legalForm: { ja: '個人事業者か法人か', en: 'Sole proprietor or company' },
+  legalForm: { ja: '個人か法人か', en: 'Individual or company' },
   name: { ja: '販売事業者名の扱い', en: 'Seller name' },
   representative: { ja: '運営統括責任者（法人の場合）', en: 'Person responsible (company)' },
   address: { ja: '所在地の扱い', en: 'Address' },

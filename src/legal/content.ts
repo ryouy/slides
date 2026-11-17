@@ -46,7 +46,7 @@ function operatorLabel(l: LegalLang, o: OperatorInfo): string {
   const trade = o.tradeName.trim();
   if (o.name && o.name.mode === 'public') return trade ? `${or(l, o.name.value)}（${trade}）` : or(l, o.name.value);
   if (!o.name) return TBD[l];
-  const kind = o.legalForm === 'corporation' ? (l === 'ja' ? '運営法人' : 'the operating company') : l === 'ja' ? '個人事業者' : 'a sole proprietor';
+  const kind = o.legalForm === 'corporation' ? (l === 'ja' ? '運営法人' : 'the operating company') : l === 'ja' ? '個人' : 'an individual';
   return l === 'ja'
     ? `「ART SLIDE」の運営者（${kind}${trade ? `、屋号：${trade}` : ''}。氏名・住所・電話番号は、請求があった場合に遅滞なく開示します）`
     : `the operator of “ART SLIDE” (${kind}${trade ? `, trade name: ${trade}` : ''}; name, address and telephone are provided without delay on request)`;
@@ -64,13 +64,10 @@ export function formatDate(l: LegalLang, iso: string): string {
 
 const yen = (n: number) => `¥${n.toLocaleString('en-US')}`;
 
+/** One price wording for everybody, whatever the operator's tax status: the amount is the total, nothing is added. */
 function priceLine(l: LegalLang, o: OperatorInfo): string {
-  if (l === 'ja') {
-    const base = `月額${PRICE_YEN}円`;
-    return o.tax === 'inclusive' ? `${base}（税込）` : o.tax === 'exempt' ? `${base}（当事業者は消費税の納税義務が免除されているため、消費税等は別途請求しません）` : `${base}（消費税の扱い：${TBD.ja}）`;
-  }
-  const base = `${yen(PRICE_YEN)} per month`;
-  return o.tax === 'inclusive' ? `${base} (tax included)` : o.tax === 'exempt' ? `${base} (no consumption tax is added: the operator is exempt from it)` : `${base} (tax treatment: ${TBD.en})`;
+  if (l === 'ja') return o.tax === null ? `月額${PRICE_YEN}円（消費税の扱い：${TBD.ja}）` : `月額${PRICE_YEN}円（税込・追加の消費税請求なし）`;
+  return o.tax === null ? `${yen(PRICE_YEN)} per month (tax treatment: ${TBD.en})` : `${yen(PRICE_YEN)} per month (tax included; no additional consumption tax is charged)`;
 }
 
 /**
@@ -103,7 +100,7 @@ export function planFacts(l: LegalLang, o: OperatorInfo): Row[] {
 export function commerceRows(l: LegalLang, o: OperatorInfo): Row[] {
   const trade = o.tradeName.trim();
   const seller = o.name && o.name.mode === 'public' ? (trade ? (l === 'ja' ? `${or(l, o.name.value)}（屋号：${trade}）` : `${or(l, o.name.value)} (trade name: ${trade})`) : or(l, o.name.value)) : disclosed(l, o.name, o) + (trade ? (l === 'ja' ? `　屋号：${trade}` : `  Trade name: ${trade}`) : '');
-  const responsible = o.legalForm === 'corporation' ? or(l, o.representative) : o.legalForm === 'individual' ? (l === 'ja' ? '個人事業のため、販売事業者（上記）本人です。' : 'This is a sole proprietorship: the seller named above.') : TBD[l];
+  const responsible = o.legalForm === 'corporation' ? or(l, o.representative) : o.legalForm === 'individual' ? (l === 'ja' ? '個人で運営しているため、販売事業者（上記）本人です。' : 'The service is run by an individual: the seller named above.') : TBD[l];
   const hours = o.supportHours.trim() ? (l === 'ja' ? `（${o.supportHours.trim()}）` : ` (${o.supportHours.trim()})`) : '';
   const contact = l === 'ja'
     ? `お問い合わせフォーム：${formRef(l, o)}${hours}${o.email.trim() ? `　メール：${o.email.trim()}` : ''}`
@@ -127,6 +124,7 @@ export function commerceRows(l: LegalLang, o: OperatorInfo): Row[] {
       ['動作環境', '最新版の主要なブラウザ（Chrome・Safari・Edge・Firefox）で、JavaScriptが有効であること。マイフォト機能には、端末内の保存（IndexedDB）が使えるブラウザが必要です。'],
     ];
     if (o.invoiceNumber.trim()) rows.push(['適格請求書発行事業者の登録番号', o.invoiceNumber.trim()]);
+    else rows.push(['適格請求書（インボイス）', '当事業者は、適格請求書発行事業者ではありません（登録していません）。']);
     return rows;
   }
   const rows: Row[] = [
@@ -146,6 +144,7 @@ export function commerceRows(l: LegalLang, o: OperatorInfo): Row[] {
     ['System requirements', 'A current major browser (Chrome, Safari, Edge, Firefox) with JavaScript enabled. My Photos needs a browser that can store data on the device (IndexedDB).'],
   ];
   if (o.invoiceNumber.trim()) rows.push(['Qualified invoice issuer number', o.invoiceNumber.trim()]);
+  else rows.push(['Qualified invoices', 'The operator is not registered as a qualified invoice issuer.']);
   return rows;
 }
 
