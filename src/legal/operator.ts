@@ -76,7 +76,7 @@ export const OPERATOR: OperatorInfo = {
   invoiceNumber: '',
   court: '',
   // The effective date is the day the texts are really published: set it on that day with `npm run legal:date`.
-  effectiveDate: '',
+  effectiveDate: '2026-11-17',
 };
 
 export type OperatorField = 'legalForm' | 'name' | 'representative' | 'address' | 'phone' | 'contactFormUrl' | 'tax' | 'effectiveDate';
