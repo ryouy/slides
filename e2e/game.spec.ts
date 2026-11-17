@@ -97,8 +97,9 @@ test('CHECK compares the chosen row with the chosen card only', async ({ page })
   await expect(page.locator('.row-sel')).toHaveAttribute('data-row', '1');
   await check.click();
   await expect(page.getByTestId('checks')).toHaveText('1');
-  // only the 4 tiles of row 2 are coloured
-  await expect(page.locator('.tile.m-green, .tile.m-yellow, .tile.m-gray')).toHaveCount(4);
+  // only the tiles of row 2 are coloured (all 4, or 3 when the blank happens to be in that row: it depends on the day's puzzle)
+  const inRow2 = await page.locator('.tile').evaluateAll((els) => els.filter((e) => Math.floor(Number(e.getAttribute('data-cell')) / 4) === 1).length);
+  await expect(page.locator('.tile.m-green, .tile.m-yellow, .tile.m-gray')).toHaveCount(inRow2);
   const rows = await page.locator('.tile.m-green, .tile.m-yellow, .tile.m-gray').evaluateAll((els) => els.map((e) => Math.floor(Number(e.getAttribute('data-cell')) / 4)));
   expect(new Set(rows)).toEqual(new Set([1]));
   await expect(page.locator('.history .h-row')).toHaveCount(1);
