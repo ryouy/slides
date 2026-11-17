@@ -188,3 +188,10 @@ Stripe CLI（`stripe`）が使える場合のみ。構文は Stripe の最新ド
 | 支払ったのに `premium:false` | Webhook が届いていない。Stripe の Webhook 画面でイベントの応答コードを確認（400＝署名シークレットの不一致、503＝`STRIPE_WEBHOOK_SECRET` 未登録）。`/api/billing/status?refresh=1` で取り直せる |
 | Webhook が 400 | `STRIPE_WEBHOOK_SECRET` が、そのエンドポイントの署名シークレット（`whsec_…`）と違う。テストの Webhook を作り直した場合は更新が必要 |
 | 429 | 1 時間あたりの回数制限。しばらく待つ |
+
+
+## Webhook の自動検証（Sandbox・実課金なし）
+
+`PATH=$HOME/.local/bin:$PATH npx vite-node scripts/webhook-e2e.ts`
+
+Stripe CLI（Sandbox にログイン済み）が必要です。本物の Worker コード（署名検証・イベント処理・D1 書き込み）をローカルで動かし、`stripe listen` が転送する **Sandbox の実イベント**を、CLI 自身の署名シークレット（本番のものではありません）で検証します。確認する内容：署名なし／誤り／別シークレット／古い時刻／改ざんは 400、重複イベントは二重処理されない、作成→期間末解約→終了で Premium が変わる、期間末で無料に戻る（猶予なし）、遅れて届いた古いイベントが解約を取り消さない、アカウントに紐づかない契約は何も保存しない。作成した Sandbox の顧客は最後に削除します。**本番の Webhook 配信（Cloudflare 上のエンドポイント）自体の確認にはなりません**（Stripe ダッシュボードの「Webhook → 送信先 → イベント配信」で、2xx の応答を確認してください）。
