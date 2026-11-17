@@ -3,9 +3,9 @@ import { AD_UNITS, DESKTOP_MIN_WIDTH, adFits, adFrameHtml, adFrameUrl, adScriptU
 import { adsAllowed, consentRequired } from './consent';
 
 describe('ad units', () => {
-  it('uses the two AdMax tags exactly as issued, both 300x250', () => {
+  it('uses the two AdMax tags as issued: PC 300x250, phone 320x50 (the size the phone tag itself declares)', () => {
     expect(AD_UNITS.desktop).toEqual({ id: 'desktop', tag: 'a1c2070f42cfa5a3fc12867425b874ed', width: 300, height: 250 });
-    expect(AD_UNITS.mobile).toEqual({ id: 'mobile', tag: 'e17c874ec991654a2894f1c609f8c486', width: 300, height: 250 });
+    expect(AD_UNITS.mobile).toEqual({ id: 'mobile', tag: 'e17c874ec991654a2894f1c609f8c486', width: 320, height: 50 });
     expect(adScriptUrl(AD_UNITS.desktop)).toBe('https://adm.shinobi.jp/s/a1c2070f42cfa5a3fc12867425b874ed');
   });
   it('picks the PC tag from 728px up and the phone tag below', () => {
@@ -16,10 +16,13 @@ describe('ad units', () => {
     expect(chooseAdUnit(412).id).toBe('mobile');
   });
   it('shows no ad (and shrinks nothing) on screens narrower than the unit', () => {
-    expect(adFits(299)).toBe(false);
+    expect(adFits(319)).toBe(false); // the phone banner is 320px wide
+    expect(adFits(300)).toBe(false);
     expect(adFits(280)).toBe(false);
-    expect(adFits(300)).toBe(true);
+    expect(adFits(320)).toBe(true);
     expect(adFits(375)).toBe(true);
+    expect(adFits(727)).toBe(true);
+    expect(adFits(728)).toBe(true); // the PC banner (300px) fits anywhere it is used
     expect(adFits(1280)).toBe(true);
   });
 });

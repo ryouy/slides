@@ -159,7 +159,7 @@ const en = {
   'result.showResult': 'Show result',
   "home.streak": "{n}-day streak",
   "home.explore": "Explore the gallery",
-  "home.other": "More",
+  "home.other": "Menu",
   "home.dailyShort": "Daily",
   "art.openExhibit": "View today's artwork",
   "stats.endlessStreak": "ENDLESS STREAK",

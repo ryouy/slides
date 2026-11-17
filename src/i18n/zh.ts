@@ -114,7 +114,7 @@ const zh: Partial<Dict> = {
   'result.cleared': '通关！', 'result.next': '下一题', 'result.showResult': '查看结果',
   "home.streak": "连续{n}天",
   "home.explore": "探索画廊",
-  "home.other": "其他",
+  "home.other": "菜单",
   "home.dailyShort": "每日",
   "art.openExhibit": "欣赏今日作品",
   "stats.endlessStreak": "连续通关",

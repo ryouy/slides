@@ -114,7 +114,7 @@ const ja: Partial<Dict> = {
   'result.cleared': 'クリア！', 'result.next': '次の問題', 'result.showResult': '結果を見る',
   "home.streak": "{n}日連続",
   "home.explore": "ギャラリーを楽しむ",
-  "home.other": "もっと見る",
+  "home.other": "メニュー",
   "home.dailyShort": "デイリー",
   "art.openExhibit": "作品を見る",
   "stats.endlessStreak": "連続クリア",

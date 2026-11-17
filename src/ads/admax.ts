@@ -1,5 +1,6 @@
 /**
- * 忍者AdMax (Shinobi AdMax) 300x250 inline banners: one tag for PC, one for phones. A tag is a single
+ * 忍者AdMax (Shinobi AdMax) banners: one tag for PC (300x250) and one for phones (320x50: the size the phone tag really serves,
+ * checked in the tag's own script: `width:320,height:50`). A tag is a single
  * `<script src="https://adm.shinobi.jp/s/<id>">` that may use `document.write`, so every ad lives in its
  * own sandboxed <iframe> pointing at a small page of this site (see AdBanner and the `adFrames` Vite plugin).
  * VITE_ADS_ENABLED=false turns ads off for a build (nothing is requested). The dev server never loads real ads.
@@ -16,7 +17,7 @@ export interface AdUnit {
 
 export const AD_UNITS: Record<AdUnitId, AdUnit> = {
   desktop: { id: 'desktop', tag: 'a1c2070f42cfa5a3fc12867425b874ed', width: 300, height: 250 },
-  mobile: { id: 'mobile', tag: 'e17c874ec991654a2894f1c609f8c486', width: 300, height: 250 },
+  mobile: { id: 'mobile', tag: 'e17c874ec991654a2894f1c609f8c486', width: 320, height: 50 },
 };
 
 export const SCRIPT_BASE = 'https://adm.shinobi.jp/s';
@@ -29,9 +30,8 @@ export const adsEnabled = (): boolean => import.meta.env?.VITE_ADS_ENABLED !== '
 export const DESKTOP_MIN_WIDTH = 728;
 export const chooseAdUnit = (viewportWidth: number): AdUnit => (viewportWidth >= DESKTOP_MIN_WIDTH ? AD_UNITS.desktop : AD_UNITS.mobile);
 
-/** Narrower screens than the 300px unit get no ad at all (nothing is shrunk or cropped). */
-export const AD_MIN_WIDTH = 300;
-export const adFits = (viewportWidth: number): boolean => viewportWidth >= AD_MIN_WIDTH;
+/** A screen narrower than the unit it would get shows no ad at all (nothing is shrunk or cropped). */
+export const adFits = (viewportWidth: number): boolean => viewportWidth >= chooseAdUnit(viewportWidth).width;
 
 const TAG = /^[0-9a-f]{32}$/;
 

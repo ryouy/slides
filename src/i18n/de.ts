@@ -114,7 +114,7 @@ const de: Partial<Dict> = {
   'result.cleared': 'GESCHAFFT!', 'result.next': 'Nächstes Puzzle', 'result.showResult': 'Ergebnis zeigen',
   "home.streak": "{n} Tage in Folge",
   "home.explore": "Galerie erkunden",
-  "home.other": "Mehr",
+  "home.other": "Menü",
   "home.dailyShort": "Täglich",
   "art.openExhibit": "Heutiges Werk ansehen",
   "stats.endlessStreak": "ENDLOS-SERIE",

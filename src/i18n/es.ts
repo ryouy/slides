@@ -114,7 +114,7 @@ const es: Partial<Dict> = {
   'result.cleared': '¡COMPLETADO!', 'result.next': 'Siguiente puzle', 'result.showResult': 'Ver resultado',
   "home.streak": "{n} días seguidos",
   "home.explore": "Explorar la galería",
-  "home.other": "Más",
+  "home.other": "Menú",
   "home.dailyShort": "Diario",
   "art.openExhibit": "Ver la obra del día",
   "stats.endlessStreak": "RACHA SIN FIN",

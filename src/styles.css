@@ -554,7 +554,7 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .reset-link:hover { color: #c0392b; }
 
 /* very narrow phones: let the 300px ad use the page gutter, so it never forces a horizontal scroll */
-@media (max-width: 331px) { .ad-box { margin-inline: -16px; } }
+@media (max-width: 351px) { .ad-box { margin-inline: -16px; } } /* the 320px phone banner may use the page gutter on the narrowest phones */
 
 /* Art Slide: fixed viewport sizing prevents the puzzle from growing when mobile browser chrome collapses. */
 .artgame .aboard-wrap { width: min(100%, calc((100svh - 248px) * var(--aspect, 1)), 900px); }
@@ -2015,3 +2015,11 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .link-quiet:hover:not(:disabled), .link-quiet:focus-visible { color: var(--fg); }
 .link-quiet:disabled { opacity: .5; cursor: default; }
 .account .btn.wide, .drive-sync .btn.wide { margin: 0; }
+
+/* Japanese: the home links use an ordinary Gothic (sans-serif) face, not the serif used for the Latin headings */
+:root:lang(ja) .art-home .art-home-menu .btn,
+:root:lang(ja) .art-home .art-home-menu .btn + .btn {
+  font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic Medium', 'Yu Gothic', 'Noto Sans JP', Meiryo, sans-serif;
+  font-weight: 500;
+  letter-spacing: .02em;
+}

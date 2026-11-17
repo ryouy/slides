@@ -40,17 +40,17 @@ for (const [name, url] of pages) {
   });
 }
 
-test('always 300x250: PC tag from 728px, phone tag below, none under 300px, never overflowing', async ({ page }) => {
+test('PC tag (300x250) from 728px, phone tag (320x50) below, none under 320px, never overflowing', async ({ page }) => {
   const cases: [number, string, number, number][] = [
     [1280, 'desktop', 300, 250],
     [728, 'desktop', 300, 250],
-    [727, 'mobile', 300, 250],
-    [430, 'mobile', 300, 250],
-    [412, 'mobile', 300, 250],
-    [390, 'mobile', 300, 250],
-    [375, 'mobile', 300, 250],
-    [320, 'mobile', 300, 250],
-    [300, 'mobile', 300, 250],
+    [727, 'mobile', 320, 50],
+    [430, 'mobile', 320, 50],
+    [412, 'mobile', 320, 50],
+    [390, 'mobile', 320, 50],
+    [375, 'mobile', 320, 50],
+    [351, 'mobile', 320, 50], // the narrowest phones: the banner uses the page gutter
+    [320, 'mobile', 320, 50],
   ];
   for (const [w, unit, aw, ah] of cases) {
     await page.setViewportSize({ width: w, height: 900 });
@@ -62,7 +62,7 @@ test('always 300x250: PC tag from 728px, phone tag below, none under 300px, neve
     expect(b.x + b.width).toBeLessThanOrEqual(w + 0.5);
     expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
   }
-  await page.setViewportSize({ width: 280, height: 800 });
+  await page.setViewportSize({ width: 319, height: 800 });
   await page.goto('/word-slide/daily');
   await page.waitForTimeout(500);
   await expect(page.getByTestId('ad-box')).toHaveCount(0); // too narrow: no ad at all, nothing shrunk
@@ -78,6 +78,8 @@ test('on phones the ad sits right under the controls and above the description',
   const desc = (await page.getByTestId('art-desc').boundingBox())!;
   expect(ad.y).toBeGreaterThanOrEqual(toggle.y + toggle.height - 1);
   expect(desc.y).toBeGreaterThanOrEqual(ad.y + ad.height - 1);
+  expect(ad.height).toBeLessThan(100); // a 320x50 banner and its label: no 250px-high reserved space
+  expect(desc.y - (ad.y + ad.height)).toBeLessThan(40); // the description follows the ad closely: no big blank under it
   expect(ad.y + 20).toBeLessThan(915); // on the first screen
 });
 

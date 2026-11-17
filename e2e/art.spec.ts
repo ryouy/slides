@@ -793,3 +793,26 @@ test.describe('home on wide screens', () => {
     for (const id of ids) expect(FREE_ARTWORK_IDS).toContain(id);
   });
 });
+
+test('home menu: the "more" section is called Menu (not "More"), and in Japanese the links use a Gothic face', async ({ page }, info) => {
+  await page.goto('/art-slide');
+  await expect(page.locator('.art-more summary')).toHaveText('Menu');
+  await page.goto('/settings');
+  await page.getByTestId('lang-select').selectOption('ja');
+  await page.goto('/art-slide');
+  await page.waitForTimeout(500);
+  await expect(page.locator('.art-more summary')).toHaveText('メニュー');
+  for (const id of ['art-gallery', 'art-random']) {
+    const family = await page.getByTestId(id).evaluate((e) => getComputedStyle(e).fontFamily);
+    expect(family, id).not.toMatch(/Georgia|Times/i); // no serif face (sans-serif is fine)
+    expect(family, id).toMatch(/Gothic|Hiragino|Yu Gothic|Noto Sans|Meiryo|sans-serif|Helvetica/i);
+  }
+  if (info.project.name === 'desktop') {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    for (const id of ['art-gallery', 'art-random']) {
+      const family = await page.getByTestId(id).evaluate((e) => getComputedStyle(e).fontFamily);
+      expect(family).toMatch(/Hiragino Kaku Gothic|Yu Gothic|Noto Sans JP|Meiryo/);
+      expect(family).not.toMatch(/Georgia/);
+    }
+  }
+});

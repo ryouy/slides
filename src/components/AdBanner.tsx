@@ -44,7 +44,7 @@ function useSlot(): boolean {
 
 /**
  * The ad area shared by all games, placed below the board and controls.
- *  - 300x250 everywhere (PC tag from 728px wide, phone tag below); screens under 300px get no ad at all
+ *  - PC tag (300x250) from 728px wide, phone tag (320x50) below; screens under 320px get no ad at all
  *  - the ad runs in its own iframe (a page of this site per unit): it cannot navigate the page away or
  *    clash with the other tag or `document.write`; if it fails or is blocked the game is unaffected
  *  - dev server: a placeholder. Production: the live ad, only when the visitor's consent status allows it
@@ -72,11 +72,11 @@ export const AdBanner = memo(function AdBanner({ side = false, gallery = false }
   const width = useViewportWidth();
   const { allowed } = useAdConsent();
   const { premium, loading } = useEntitlement();
-  const unit = chooseAdUnit(width); // PC tag on wide screens, phone tag below; both 300x250
+  const unit = chooseAdUnit(width); // PC tag (300x250) on wide screens, phone tag (320x50) below
   const live = adsEnabled() || adsForcedLive();
 
   if (premium || loading) return null; // Premium: no ad slot, no ad script, no leftover space
-  if ((!gallery && !ownsSingle) || !adFits(width)) return null; // too narrow for the smallest unit: no ad, no overflow
+  if ((!gallery && !ownsSingle) || !adFits(width)) return null; // too narrow for its unit: no ad, no overflow
   const placeholder = import.meta.env.DEV && !adsForcedLive();
   if (!placeholder && !(live && allowed)) return null;
 
