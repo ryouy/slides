@@ -44,7 +44,7 @@ function useSlot(): boolean {
 
 /**
  * The ad area shared by all games, placed below the board and controls.
- *  - PC tag (300x250) from 728px wide, phone tag (320x50) below; screens under 320px get no ad at all
+ *  - PC tag (300x250) from 900px wide (two-column layout), phone tag (320x50) below; screens under 320px get no ad at all
  *  - the ad runs in its own iframe (a page of this site per unit): it cannot navigate the page away or
  *    clash with the other tag or `document.write`; if it fails or is blocked the game is unaffected
  *  - dev server: a placeholder. Production: the live ad, only when the visitor's consent status allows it

@@ -40,10 +40,13 @@ for (const [name, url] of pages) {
   });
 }
 
-test('PC tag (300x250) from 728px, phone tag (320x50) below, none under 320px, never overflowing', async ({ page }) => {
+test('PC tag (300x250) from 900px (two-column layout), phone tag (320x50) below, none under 320px, never overflowing', async ({ page }) => {
   const cases: [number, string, number, number][] = [
     [1280, 'desktop', 300, 250],
-    [728, 'desktop', 300, 250],
+    [900, 'desktop', 300, 250],
+    [899, 'mobile', 320, 50], // single column: the text sits under the board, so the compact banner
+    [820, 'mobile', 320, 50], // a tablet / narrow window like the one that showed a 300x250 ad above the text
+    [728, 'mobile', 320, 50],
     [727, 'mobile', 320, 50],
     [430, 'mobile', 320, 50],
     [412, 'mobile', 320, 50],
@@ -248,4 +251,25 @@ test('privacy policy covers the ad network and the opt-out', async ({ page }) =>
   expect(text).toMatch(/cookies/i);
   expect(text).toMatch(/EU, EEA, UK and Switzerland/); // consent first where the law requires it
   expect(text).toMatch(/Settings/);
+});
+
+test('ART SLIDE: wherever the text is under the board (below 900px), the ad is the compact 320x50, directly above the text', async ({ page }) => {
+  for (const w of [899, 820, 768, 640, 390]) {
+    await page.setViewportSize({ width: w, height: 900 });
+    await page.goto('/art-slide/play/van-gogh-bedroom');
+    await page.waitForTimeout(500);
+    const box = await page.getByTestId('ad-box').boundingBox();
+    const ph = await page.getByTestId('ad-placeholder').boundingBox();
+    const desc = (await page.getByTestId('art-desc').boundingBox())!;
+    const board = (await page.locator('.aboard').boundingBox())!;
+    expect(desc.y, `${w}px: text under the board`).toBeGreaterThan(board.y + board.height - 1);
+    expect([Math.round(ph!.width), Math.round(ph!.height)], `${w}px`).toEqual([320, 50]);
+    expect(box!.height, `${w}px`).toBeLessThan(100);
+    expect(desc.y - (box!.y + box!.height), `${w}px: no blank under the ad`).toBeLessThan(40);
+  }
+  await page.setViewportSize({ width: 900, height: 900 }); // two columns: the PC banner in the side column
+  await page.goto('/art-slide/play/van-gogh-bedroom');
+  await page.waitForTimeout(500);
+  const ph = await page.getByTestId('ad-placeholder').boundingBox();
+  expect([Math.round(ph!.width), Math.round(ph!.height)]).toEqual([300, 250]);
 });
