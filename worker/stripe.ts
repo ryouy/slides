@@ -26,6 +26,8 @@ export interface StripeSubscription {
   current_period_end?: number;
   items?: { data?: { current_period_end?: number }[] };
   metadata?: Record<string, string>;
+  /** true = live mode object, false = test mode object (Stripe sets it on every object). */
+  livemode?: boolean;
 }
 /** `current_period_end` moved from the subscription to its items in newer API versions: accept both. */
 export const periodEnd = (s: StripeSubscription): number | null => s.current_period_end ?? s.items?.data?.[0]?.current_period_end ?? null;
@@ -70,7 +72,8 @@ export function stripeClient(secretKey: string, fetchFn: FetchFn = (i, init) => 
     return JSON.parse(text) as T;
   }
   return {
-    createCustomer: (userId: string) => call<{ id: string }>('POST', '/customers', { metadata: { user_id: userId } }, `customer-${userId}`),
+    createCustomer: (userId: string, livemode: boolean) => call<{ id: string }>('POST', '/customers', { metadata: { user_id: userId } }, `customer-${userId}-${livemode ? 'live' : 'test'}`), // (the idempotency key is per mode: Stripe remembers keys for a day)
+    getCustomer: (id: string) => call<{ id: string; deleted?: boolean; livemode?: boolean }>('GET', `/customers/${encodeURIComponent(id)}`),
     createCheckout: (p: { customer: string; userId: string; price: string; successUrl: string; cancelUrl: string }) =>
       call<{ id: string; url: string }>('POST', '/checkout/sessions', {
         mode: 'subscription',

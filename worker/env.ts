@@ -55,6 +55,9 @@ export function parseAllowlist(raw: string | undefined): Set<string> | null {
 export const publicSalesOpen = (e: Env): boolean => e.PUBLIC_SALES === 'open';
 export const purchaseAllowed = (e: Env, userId: string): boolean => publicSalesOpen(e) || (parseAllowlist(e.PURCHASE_ALLOWLIST)?.has(userId) ?? false);
 
+/** Which Stripe world this Worker talks to: 1 = live key, 0 = test key (or none). Customers and subscriptions are kept per mode. */
+export const stripeLivemode = (e: Env): 0 | 1 => (/^(sk|rk)_live_/.test(e.STRIPE_SECRET_KEY ?? '') ? 1 : 0);
+
 export const authConfigured = (e: Env): boolean => !!(e.DB && e.GOOGLE_CLIENT_ID && e.GOOGLE_CLIENT_SECRET && e.SESSION_SECRET && e.SITE_URL);
 /** A Stripe PRICE id looks like price_… . A product id (prod_…) or anything else is a setup mistake, never sent to Stripe. */
 export const validPriceId = (id: string | undefined): boolean => !!id && /^price_[A-Za-z0-9]{6,}$/.test(id);

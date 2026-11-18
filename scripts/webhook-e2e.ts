@@ -35,6 +35,7 @@ function makeDb(): { d1: D1Database; raw: DatabaseSync } {
   const raw = new DatabaseSync(':memory:');
   raw.exec('PRAGMA foreign_keys = ON');
   raw.exec(readFileSync(new URL('../migrations/0001_init.sql', import.meta.url), 'utf8'));
+  raw.exec(readFileSync(new URL('../migrations/0002_stripe_modes.sql', import.meta.url), 'utf8'));
   const d1: D1Database = {
     prepare(q: string) {
       let args: unknown[] = [];
@@ -153,10 +154,10 @@ async function main() {
     check(created.status === 200, 'real signed event accepted by the Worker', `HTTP ${created.status}`);
     const sub = JSON.parse(created.body).data.object;
     cust = typeof sub.customer === 'string' ? sub.customer : sub.customer.id;
-    const row = () => raw.prepare('SELECT * FROM subscriptions WHERE user_id = ?').get(USER) as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    const row = () => raw.prepare('SELECT * FROM stripe_subscriptions WHERE user_id = ? AND livemode = 0').get(USER) as any; // eslint-disable-line @typescript-eslint/no-explicit-any
     const nowS = () => Math.floor(Date.now() / 1000);
     check(!!row() && row().stripe_subscription_id === sub.id, 'subscription stored for the account named in the metadata');
-    check((raw.prepare('SELECT stripe_customer_id AS c FROM users WHERE id = ?').get(USER) as any).c === cust, 'the Stripe customer is tied to the account');
+    check((raw.prepare('SELECT customer_id AS c FROM stripe_customers WHERE user_id = ? AND livemode = 0').get(USER) as any).c === cust, 'the Stripe customer is tied to the account');
     check(['active', 'trialing'].includes(row()?.status) && hasPremium(row(), nowS()), 'status is active → Premium', row()?.status);
     const live = await stripeJson('get', `/v1/subscriptions/${sub.id}`);
     const liveEnd: number = live.current_period_end ?? live.items.data[0].current_period_end;
@@ -195,7 +196,7 @@ async function main() {
     console.log('\n6. Events with no matching account');
     await stripe('trigger', 'customer.subscription.created'); // no user_id in its metadata
     await waitFor((s) => s.type === 'customer.subscription.created' && s.id !== created.id && s.id !== lateId && s.status === 200, 'an unrelated subscription event');
-    check((raw.prepare('SELECT COUNT(*) AS n FROM subscriptions').get() as any).n === 1, 'a subscription that belongs to no account of ours is acknowledged but stores nothing'); // eslint-disable-line @typescript-eslint/no-explicit-any
+    check((raw.prepare('SELECT COUNT(*) AS n FROM stripe_subscriptions').get() as any).n === 1, 'a subscription that belongs to no account of ours is acknowledged but stores nothing'); // eslint-disable-line @typescript-eslint/no-explicit-any
     const bad = seen.filter((s) => s.status >= 400 && s.sig.includes('t=') && !s.body.includes('selftest') && !s.body.includes('forged'));
     check(bad.length === 0, 'every real event from Stripe was answered with 2xx', bad.map((b) => `${b.type}:${b.status}`).join(','));
   } finally {

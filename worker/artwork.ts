@@ -3,7 +3,7 @@ import { dailyArtworkId } from '../src/games/art-slide/logic/dailyPick';
 import { isFreeArtwork } from '../src/premium/freeList';
 import { jstDateKey } from '../src/utils/date';
 import { currentUser } from './auth';
-import { authConfigured, type Env } from './env';
+import { authConfigured, stripeLivemode, type Env } from './env';
 import { getSubscription, nowSec } from './db';
 import { hasPremium } from './entitlement';
 
@@ -36,7 +36,7 @@ export async function serveArtwork(request: Request, env: Env): Promise<Response
   try {
     if (authConfigured(env)) {
       const user = await currentUser(request, env);
-      if (user) premium = hasPremium(await getSubscription(env.DB!, user.id), nowSec());
+      if (user) premium = hasPremium(await getSubscription(env.DB!, user.id, stripeLivemode(env)), nowSec());
     }
   } catch (e) {
     logError('artwork check failed', e); // fail closed: never hand out a Premium image on an error

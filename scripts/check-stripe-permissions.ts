@@ -18,7 +18,7 @@ type Fetch = (url: string, init?: RequestInit) => Promise<Response>;
 /** What the Worker calls (worker/stripe.ts): 9 requests in all. */
 export const NEEDED: { permission: string; uses: string; probe: { method: 'GET' | 'POST' | 'DELETE'; path: string; body?: string } }[] = [
   { permission: 'Prices — Read', uses: 'GET /v1/prices/{id} (is it the ¥200 monthly price?)', probe: { method: 'GET', path: '/prices?limit=1' } },
-  { permission: 'Customers — Write', uses: 'POST /v1/customers (one Stripe customer per account; probed on a nonexistent customer id)', probe: { method: 'POST', path: '/customers/cus_zzprobe_nonexistent', body: 'description=probe' } },
+  { permission: 'Customers — Write', uses: 'POST /v1/customers (one Stripe customer per account and mode) and GET /v1/customers/{id} (checks that a saved customer exists in this mode); probed on a nonexistent customer id', probe: { method: 'POST', path: '/customers/cus_zzprobe_nonexistent', body: 'description=probe' } },
   { permission: 'Subscriptions — Read', uses: 'GET /v1/subscriptions, GET /v1/subscriptions/{id} (the webhook re-reads the contract)', probe: { method: 'GET', path: '/subscriptions?limit=1' } },
   { permission: 'Subscriptions — Write', uses: 'DELETE /v1/subscriptions/{id} (only when an account is deleted)', probe: { method: 'DELETE', path: '/subscriptions/sub_zzprobe_nonexistent' } },
   { permission: 'Checkout Sessions — Read', uses: 'GET /v1/checkout/sessions (find an open payment page)', probe: { method: 'GET', path: '/checkout/sessions?limit=1' } },

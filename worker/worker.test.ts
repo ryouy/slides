@@ -16,10 +16,11 @@ import { resetPriceCheckForTests as priceCheckedReset } from './billing';
 import { ALLOWLIST_MAX, parseAllowlist, publicSalesOpen, purchaseAllowed } from './env';
 
 // ---- an in-memory D1 (SQLite) running the real migration ----
-function makeDb(): { d1: D1Database; raw: DatabaseSync } {
+function makeDb(withModeMigration = true): { d1: D1Database; raw: DatabaseSync } {
   const raw = new DatabaseSync(':memory:');
   raw.exec('PRAGMA foreign_keys = ON');
   raw.exec(readFileSync(new URL('../migrations/0001_init.sql', import.meta.url), 'utf8'));
+  if (withModeMigration) raw.exec(readFileSync(new URL('../migrations/0002_stripe_modes.sql', import.meta.url), 'utf8'));
   const d1: D1Database = {
     prepare(q: string) {
       let args: unknown[] = [];
@@ -43,7 +44,7 @@ function makeDb(): { d1: D1Database; raw: DatabaseSync } {
 // ---- a fake Google + Stripe ----
 const SITE = 'https://slides.example';
 const jwt = (claims: object) => `x.${btoa(JSON.stringify(claims)).replace(/=+$/, '')}.y`;
-interface Fake { sub: Record<string, unknown>; calls: string[]; googleClaims: Record<string, unknown>; failStripe: boolean; price: Record<string, unknown>; openSessions: { id: string }[]; createdSessions: number }
+interface Fake { sub: Record<string, unknown>; calls: string[]; googleClaims: Record<string, unknown>; failStripe: boolean; price: Record<string, unknown>; openSessions: { id: string }[]; createdSessions: number; nextCustomer?: string; missingSubs?: Set<string>; missingCustomers: Set<string>; livemodeOf: (key: string) => boolean }
 const goodPrice = { id: 'price_1Abc23DEF', active: true, livemode: false, currency: 'jpy', unit_amount: 200, type: 'recurring', recurring: { interval: 'month', interval_count: 1 } };
 function makeFetch(f: Fake): FetchFn {
   return async (input, init) => {
@@ -52,14 +53,25 @@ function makeFetch(f: Fake): FetchFn {
     const ok = (body: unknown) => new Response(JSON.stringify(body), { status: 200 });
     if (input.startsWith('https://oauth2.googleapis.com/token')) return ok({ id_token: jwt(f.googleClaims) });
     if (f.failStripe) return new Response('{"error":"boom"}', { status: 500 });
-    if (input.endsWith('/v1/customers') && method === 'POST') return ok({ id: 'cus_1' });
+    if (input.endsWith('/v1/customers') && method === 'POST') return ok({ id: f.nextCustomer ?? 'cus_1' });
+    if (input.includes('/v1/customers/') && method === 'GET') {
+      const id = decodeURIComponent(input.split('/v1/customers/')[1]);
+      // Stripe: a customer of the other mode "does not exist" for this key
+      return f.missingCustomers.has(id) ? new Response(JSON.stringify({ error: { type: 'invalid_request_error', code: 'resource_missing', message: `No such customer: '${id}'` } }), { status: 404 }) : ok({ id, livemode: f.livemodeOf(String((init?.headers as Record<string, string> | undefined)?.authorization ?? '')) });
+    }
     if (input.includes('/v1/prices/')) return ok({ ...f.price, id: decodeURIComponent(input.split('/v1/prices/')[1]) });
     if (input.includes('/v1/checkout/sessions?customer=')) return ok({ data: f.openSessions });
     if (input.includes('/expire') && method === 'POST') { f.openSessions = f.openSessions.filter((x) => !input.includes(x.id)); return ok({ id: 'expired' }); }
     if (input.endsWith('/v1/checkout/sessions')) { f.createdSessions++; return ok({ id: 'cs_1', url: 'https://checkout.stripe.test/c/1' }); }
     if (input.endsWith('/v1/billing_portal/sessions')) return ok({ url: 'https://billing.stripe.test/p/1' });
-    if (input.includes('/v1/subscriptions?customer=')) return ok({ data: f.sub.id ? [f.sub] : [] });
+    if (input.includes('/v1/subscriptions?customer=')) {
+      const c = decodeURIComponent(input.split('customer=')[1].split('&')[0]);
+      // exactly what Stripe answered in production: HTTP 400 resource_missing for a customer of the other mode
+      if (f.missingCustomers.has(c)) return new Response(JSON.stringify({ error: { type: 'invalid_request_error', code: 'resource_missing', message: `No such customer: '${c}'; a similar object exists in test mode, but a live mode key was used to make this request.` } }), { status: 400 });
+      return ok({ data: f.sub.id ? [f.sub] : [] });
+    }
     if (input.includes('/v1/subscriptions/sub_1')) {
+      if (f.missingSubs?.has('sub_1')) return new Response(JSON.stringify({ error: { type: 'invalid_request_error', code: 'resource_missing', message: 'No such subscription' } }), { status: 404 });
       if (method === 'DELETE') return ok((f.sub = { ...f.sub, status: 'canceled' }));
       return ok(f.sub);
     }
@@ -72,6 +84,8 @@ let raw: DatabaseSync;
 let fake: Fake;
 let fetchFn: FetchFn;
 const NOW = () => Math.floor(Date.now() / 1000);
+/** puts a Stripe customer on an account for the TEST mode (the tests use a test key), as a checkout would */
+const fileCustomer = (userId: string, customerId: string, livemode = 0) => raw.prepare('INSERT OR REPLACE INTO stripe_customers (user_id, livemode, customer_id, created_at) VALUES (?, ?, ?, ?)').run(userId, livemode, customerId, NOW());
 const baseEnv = (d1: D1Database): Env => ({
   ASSETS: { fetch: async () => new Response('asset') },
   DB: d1,
@@ -123,7 +137,7 @@ beforeEach(() => {
   const m = makeDb();
   raw = m.raw;
   env = baseEnv(m.d1);
-  fake = { sub: {}, calls: [], googleClaims: {}, failStripe: false, price: { ...goodPrice }, openSessions: [], createdSessions: 0 };
+  fake = { sub: {}, calls: [], googleClaims: {}, failStripe: false, price: { ...goodPrice }, openSessions: [], createdSessions: 0, missingCustomers: new Set(), livemodeOf: (k) => /_live_/.test(k) };
   fetchFn = makeFetch(fake);
 });
 
@@ -201,7 +215,7 @@ describe('setup mistakes never reach Stripe', () => {
       expect(res.status, bad).toBe(503);
       expect(await res.json()).toEqual({ error: bad === '' ? 'not_configured' : 'invalid_price_id' });
       expect(fake.calls.filter((c) => c.includes('stripe.com')), bad).toEqual([]); // nothing was sent to Stripe
-      expect(raw.prepare('SELECT stripe_customer_id FROM users').get()).toEqual({ stripe_customer_id: null }); // no customer was created either
+      expect(raw.prepare('SELECT COUNT(*) AS n FROM stripe_customers').get()).toEqual({ n: 0 }); // no customer was created either
     }
   });
   it('a publishable key in place of the secret key is refused too, and /api/config then reports purchases off', async () => {
@@ -310,7 +324,8 @@ describe('Checkout and portal', () => {
     const cookie = await login();
     const res = await call('/api/billing/checkout', { method: 'POST', cookie });
     expect(await res.json()).toEqual({ url: 'https://checkout.stripe.test/c/1' });
-    expect(raw.prepare('SELECT stripe_customer_id FROM users').get()).toEqual({ stripe_customer_id: 'cus_1' });
+    expect(raw.prepare('SELECT livemode, customer_id FROM stripe_customers').get()).toEqual({ livemode: 0, customer_id: 'cus_1' }); // filed under the key's mode (test)
+    expect(raw.prepare('SELECT stripe_customer_id FROM users').get()).toEqual({ stripe_customer_id: null }); // the old column is no longer written
     expect((await me(cookie)).premium).toBe(false); // only a verified subscription grants it
     // calling again reuses the customer
     await call('/api/billing/checkout', { method: 'POST', cookie });
@@ -393,7 +408,7 @@ describe('billing rate limits (what a normal buyer does must never lock them out
   it('the portal has its own allowance, and Checkout does not eat it', async () => {
     const cookie = await login();
     await co(cookie);
-    raw.prepare("UPDATE users SET stripe_customer_id = 'cus_1' WHERE id = ?").run(uidOf());
+    fileCustomer(uidOf(), 'cus_1');
     for (let i = 0; i < 19; i++) { clearBurst(); expect((await co(cookie)).status).toBe(200); } // (+ the first one above = 20)
     clearBurst();
     expect((await co(cookie)).status).toBe(429); // checkout is spent for the hour ...
@@ -410,7 +425,7 @@ describe('billing rate limits (what a normal buyer does must never lock them out
   it('the limits are per account: one buyer in a burst does not slow another; Google sign-in has its own counter', async () => {
     const a = await login('sub-r1', 'R1');
     const b = await login('sub-r2', 'R2');
-    raw.prepare("UPDATE users SET stripe_customer_id = 'cus_b' WHERE google_sub = 'sub-r2'").run(); // (the fake Stripe hands out one customer id)
+    fake.nextCustomer = 'cus_b'; // (the fake Stripe hands out the next customer id)
     for (let i = 0; i < 10; i++) await co(a);
     expect((await co(a)).status).toBe(429);
     expect((await co(b)).status).toBe(200);
@@ -474,7 +489,7 @@ describe('Stripe webhook', () => {
     fake.sub = { ...fake.sub, cancel_at_period_end: true };
     await webhook(subEvent('evt_2'));
     expect(await me(cookie)).toMatchObject({ premium: true });
-    expect(raw.prepare('SELECT cancel_at_period_end AS c FROM subscriptions').get()).toEqual({ c: 1 });
+    expect(raw.prepare('SELECT cancel_at_period_end AS c FROM stripe_subscriptions').get()).toEqual({ c: 1 });
     fake.sub = { ...fake.sub, status: 'canceled', current_period_end: NOW() - 60 };
     await webhook(subEvent('evt_3', 'customer.subscription.deleted'));
     expect((await me(cookie)).premium).toBe(false);
@@ -519,22 +534,22 @@ describe('Stripe webhook', () => {
     const { cookie, uid } = await subscribed();
     fake.sub = sub({ metadata: { user_id: uid }, customer: 'cus_someone_else' });
     expect((await webhook(subEvent('evt_m'))).status).toBe(200);
-    expect(raw.prepare('SELECT COUNT(*) AS n FROM subscriptions').get()).toEqual({ n: 0 });
+    expect(raw.prepare('SELECT COUNT(*) AS n FROM stripe_subscriptions').get()).toEqual({ n: 0 });
     expect((await me(cookie)).premium).toBe(false);
   });
 
   it('ignores a subscription that belongs to nobody here', async () => {
     fake.sub = sub({ metadata: {}, customer: 'cus_unknown' });
     expect((await webhook({ id: 'evt_u', type: 'customer.subscription.created', data: { object: { id: 'sub_1', customer: 'cus_unknown' } } })).status).toBe(200);
-    expect(raw.prepare('SELECT COUNT(*) AS n FROM subscriptions').get()).toEqual({ n: 0 });
+    expect(raw.prepare('SELECT COUNT(*) AS n FROM stripe_subscriptions').get()).toEqual({ n: 0 });
   });
 
   it('re-reads Stripe when a stored period has run out (missed webhook): renewed -> Premium, ended -> Free', async () => {
     const { cookie, uid } = await subscribed();
-    const stale = () => raw.prepare('INSERT OR REPLACE INTO subscriptions VALUES (?, ?, ?, ?, 0, ?)').run(uid, 'sub_1', 'active', NOW() - 5 * 86400, NOW() - 3600);
+    const stale = () => raw.prepare('INSERT OR REPLACE INTO stripe_subscriptions VALUES (?, 0, ?, ?, ?, 0, ?)').run(uid, 'sub_1', 'active', NOW() - 5 * 86400, NOW() - 3600);
     stale();
     expect((await me(cookie)).premium).toBe(true); // Stripe says it was renewed: the stored row is corrected
-    expect((raw.prepare('SELECT current_period_end AS e FROM subscriptions').get() as { e: number }).e).toBeGreaterThan(NOW());
+    expect((raw.prepare('SELECT current_period_end AS e FROM stripe_subscriptions').get() as { e: number }).e).toBeGreaterThan(NOW());
     stale();
     fake.sub = { ...fake.sub, status: 'canceled', current_period_end: NOW() - 86400 };
     expect((await me(cookie)).premium).toBe(false); // Stripe says it ended
@@ -595,7 +610,7 @@ describe('Checkout safety: price, mode and double purchase', () => {
     await co(cookie); // creates the Stripe customer
     const uid = (raw.prepare('SELECT id FROM users').get() as { id: string }).id;
     fake.sub = sub({ metadata: { user_id: uid } }); // paid at Stripe; no webhook yet
-    expect(raw.prepare('SELECT COUNT(*) AS n FROM subscriptions').get()).toEqual({ n: 0 });
+    expect(raw.prepare('SELECT COUNT(*) AS n FROM stripe_subscriptions').get()).toEqual({ n: 0 });
     fake.createdSessions = 0;
     const res = await co(cookie);
     expect(res.status).toBe(409);
@@ -629,7 +644,7 @@ describe('Checkout safety: price, mode and double purchase', () => {
     const uid = (raw.prepare('SELECT id FROM users').get() as { id: string }).id;
     fake.sub = sub({ id: 'sub_1', metadata: { user_id: uid } });
     await webhook(subEvent('evt_first'));
-    const first = raw.prepare('SELECT stripe_subscription_id AS id FROM subscriptions').get();
+    const first = raw.prepare('SELECT stripe_subscription_id AS id FROM stripe_subscriptions').get();
     expect(first).toEqual({ id: 'sub_1' });
     // a second one appears at Stripe
     const second = sub({ id: 'sub_2', metadata: { user_id: uid } });
@@ -646,7 +661,7 @@ describe('Checkout safety: price, mode and double purchase', () => {
     console.error = orig;
     fake.sub = saved;
     expect(res.status).toBe(200);
-    expect(raw.prepare('SELECT stripe_subscription_id AS id FROM subscriptions').get()).toEqual({ id: 'sub_1' }); // the first one stays
+    expect(raw.prepare('SELECT stripe_subscription_id AS id FROM stripe_subscriptions').get()).toEqual({ id: 'sub_1' }); // the first one stays
     expect(spy.some((m) => m.startsWith('duplicate_subscription'))).toBe(true);
     expect((await me(cookie)).premium).toBe(true);
   });
@@ -747,7 +762,7 @@ describe('account deletion', () => {
     expect((await call('/api/account/delete', { method: 'POST', cookie, origin: 'https://evil.example' })).status).toBe(403);
     expect((await call('/api/account/delete', { method: 'POST', cookie })).status).toBe(200);
     expect(fake.calls).toContain('DELETE https://api.stripe.com/v1/subscriptions/sub_1');
-    for (const t of ['users', 'subscriptions', 'sessions']) expect(raw.prepare(`SELECT COUNT(*) AS n FROM ${t}`).get()).toEqual({ n: 0 });
+    for (const t of ['users', 'subscriptions', 'stripe_subscriptions', 'stripe_customers', 'sessions']) expect(raw.prepare(`SELECT COUNT(*) AS n FROM ${t}`).get()).toEqual({ n: 0 });
     expect((await me(cookie)).signedIn).toBe(false);
   });
 
@@ -790,7 +805,7 @@ describe('purchase allowlist (limited live test: only listed accounts may start 
     expect(await denied.json()).toEqual({ error: 'not_allowed' });
     expect(fake.calls.length).toBe(before); // no customer, no price lookup, no session
     expect(fake.createdSessions).toBe(0);
-    expect(raw.prepare('SELECT stripe_customer_id AS c FROM users WHERE id = ?').get(ids('sub-other'))).toEqual({ c: null });
+    expect(raw.prepare('SELECT COUNT(*) AS n FROM stripe_customers WHERE user_id = ?').get(ids('sub-other'))).toEqual({ n: 0 });
     const allowed = await co(ok);
     expect(allowed.status).toBe(200);
     expect((await allowed.json() as { url: string }).url).toContain('checkout.stripe.test');
@@ -974,8 +989,8 @@ describe('logs never carry secrets (Stripe response bodies, key fragments, crede
   it('Stripe fails while re-reading a stale contract: the log has only status and class', async () => {
     const cookie = await login();
     const id = ids1();
-    raw.prepare("UPDATE users SET stripe_customer_id = 'cus_1' WHERE id = ?").run(id);
-    raw.prepare("INSERT INTO subscriptions (user_id, stripe_subscription_id, status, current_period_end, cancel_at_period_end, updated_at) VALUES (?, 'sub_1', 'active', ?, 0, ?)").run(id, NOW() - 100, NOW() - 5000);
+    fileCustomer(id, 'cus_1');
+    raw.prepare("INSERT INTO stripe_subscriptions (user_id, livemode, stripe_subscription_id, status, current_period_end, cancel_at_period_end, updated_at) VALUES (?, 0, 'sub_1', 'active', ?, 0, ?)").run(id, NOW() - 100, NOW() - 5000);
     fetchFn = async () => new Response(BODY, { status: 401 });
     const r = await (await call('/api/billing/status?refresh=1', { cookie })).json() as { signedIn: boolean };
     expect(r.signedIn).toBe(true); // the page still works with the stored state
@@ -994,5 +1009,151 @@ describe('logs never carry secrets (Stripe response bodies, key fragments, crede
     noSecrets(logged);
     expect(logged).toContain('api error: Error: database exploded near [redacted]');
     expect(logged).not.toMatch(/at .*\.ts|stack/i); // no stack trace
+  });
+});
+
+describe('Stripe TEST and LIVE objects are kept apart (a customer id of one mode is never used with the other mode\u2019s key)', () => {
+  const liveEnv = (over: Partial<Env> = {}): Env => ({ ...env, STRIPE_SECRET_KEY: 'rk_live_abcdefghijkl', ALLOW_LIVE_PAYMENTS: 'true', STRIPE_PRICE_ID: 'price_LiveGood0001', ...over });
+  const goLive = () => { env = liveEnv(); fake.price = { ...goodPrice, livemode: true }; priceCheckedReset(); };
+  const uidOf = () => (raw.prepare('SELECT id FROM users').get() as { id: string }).id;
+  const rows = (table: string) => raw.prepare(`SELECT * FROM ${table} ORDER BY livemode`).all() as Record<string, unknown>[];
+  const co = (cookie: string) => call('/api/billing/checkout', { method: 'POST', cookie });
+  const stripeCalls = (re: RegExp) => fake.calls.filter((c) => re.test(c));
+  const clearBurst = () => raw.prepare("DELETE FROM rate_limits WHERE key LIKE 'billing-burst:%'").run();
+
+  it('the production case: a TEST customer id saved earlier, the LIVE key now: Checkout works, the test id is kept and filed as test, nothing is sent to Stripe with it', async () => {
+    const cookie = await login();
+    raw.prepare("UPDATE users SET stripe_customer_id = 'cus_TESTONLY' WHERE id = ?").run(uidOf()); // saved by the old single-column version
+    goLive();
+    fake.missingCustomers.add('cus_TESTONLY'); // for the live key it "does not exist"
+    fake.nextCustomer = 'cus_LIVE1';
+    const res = await co(cookie);
+    expect(res.status).toBe(200);
+    expect((await res.json() as { url: string }).url).toContain('checkout.stripe.test');
+    expect(rows('stripe_customers').map((r) => [r.livemode, r.customer_id])).toEqual([[0, 'cus_TESTONLY'], [1, 'cus_LIVE1']]); // each mode has its own
+    expect(raw.prepare('SELECT stripe_customer_id AS c FROM users').get()).toEqual({ c: 'cus_TESTONLY' }); // the old column is untouched
+    expect(stripeCalls(/subscriptions\?customer=cus_TESTONLY/)).toEqual([]); // never asked with the wrong key (this was the server_error)
+    expect(stripeCalls(/customers\?customer=cus_TESTONLY|checkout.*cus_TESTONLY/)).toEqual([]);
+    expect(stripeCalls(/subscriptions\?customer=cus_LIVE1/)).toHaveLength(1);
+    expect(await (await call('/api/me', { cookie })).json()).toMatchObject({ signedIn: true, premium: false });
+  });
+
+  it('an old customer id that DOES exist in this mode is adopted (no second customer is created)', async () => {
+    const cookie = await login();
+    raw.prepare("UPDATE users SET stripe_customer_id = 'cus_REALLIVE' WHERE id = ?").run(uidOf());
+    goLive();
+    expect((await co(cookie)).status).toBe(200);
+    expect(rows('stripe_customers').map((r) => [r.livemode, r.customer_id])).toEqual([[1, 'cus_REALLIVE']]);
+    expect(stripeCalls(/POST https:\/\/api.stripe.com\/v1\/customers$/)).toEqual([]); // nothing created
+  });
+
+  it('the same account has an independent customer in each mode, and each key always gets its own', async () => {
+    const cookie = await login();
+    fake.nextCustomer = 'cus_TEST_A';
+    await co(cookie); // test key
+    goLive();
+    fake.nextCustomer = 'cus_LIVE_B';
+    await co(cookie);
+    expect(rows('stripe_customers').map((r) => [r.livemode, r.customer_id])).toEqual([[0, 'cus_TEST_A'], [1, 'cus_LIVE_B']]);
+    fake.calls.length = 0;
+    env = { ...env, STRIPE_SECRET_KEY: 'sk_test_x1234567890', ALLOW_LIVE_PAYMENTS: undefined, STRIPE_PRICE_ID: 'price_1Abc23DEF' };
+    fake.price = { ...goodPrice };
+    priceCheckedReset();
+    clearBurst(); await co(cookie);
+    expect(stripeCalls(/subscriptions\?customer=cus_TEST_A/)).toHaveLength(1); // back on the test key: the test customer
+    expect(stripeCalls(/cus_LIVE_B/)).toEqual([]);
+    expect(stripeCalls(/POST https:\/\/api.stripe.com\/v1\/customers$/)).toEqual([]);
+  });
+
+  it('a customer filed for this mode that Stripe does not know is NOT silently replaced: Checkout says so and creates nothing', async () => {
+    const cookie = await login();
+    goLive();
+    raw.prepare('INSERT INTO stripe_customers (user_id, livemode, customer_id, created_at) VALUES (?, 1, ?, ?)').run(uidOf(), 'cus_GONE', NOW());
+    fake.missingCustomers.add('cus_GONE');
+    const res = await co(cookie);
+    expect(res.status).toBe(503);
+    expect(await res.json()).toEqual({ error: 'customer_unavailable' });
+    expect(stripeCalls(/POST https:\/\/api.stripe.com\/v1\/(customers|checkout)/)).toEqual([]);
+    expect(rows('stripe_customers').map((r) => r.customer_id)).toEqual(['cus_GONE']); // still there for a person to look at
+    expect(fake.createdSessions).toBe(0);
+  });
+
+  it('the portal uses the customer of this mode: with only a test customer it says "no customer" and sends nothing', async () => {
+    const cookie = await login();
+    raw.prepare("UPDATE users SET stripe_customer_id = 'cus_TESTONLY' WHERE id = ?").run(uidOf());
+    goLive();
+    fake.missingCustomers.add('cus_TESTONLY');
+    const res = await call('/api/billing/portal', { method: 'POST', cookie });
+    expect(res.status).toBe(404);
+    expect(await res.json()).toEqual({ error: 'no_customer' });
+    expect(stripeCalls(/billing_portal/)).toEqual([]);
+    expect(rows('stripe_customers').map((r) => [r.livemode, r.customer_id])).toEqual([[0, 'cus_TESTONLY']]); // filed as test, kept
+  });
+
+  it('webhook events of the other mode are acknowledged and never applied', async () => {
+    const cookie = await login();
+    goLive();
+    fileCustomer(uidOf(), 'cus_LIVE9', 1);
+    fake.sub = sub({ id: 'sub_1', customer: 'cus_LIVE9', livemode: true, metadata: { user_id: uidOf() } });
+    const testEvent = { id: 'evt_test_mode', livemode: false, type: 'customer.subscription.created', data: { object: { id: 'sub_1', customer: 'cus_LIVE9' } } };
+    const r = await webhook(testEvent);
+    expect(r.status).toBe(200);
+    expect(await r.json()).toEqual({ received: true, ignored: 'other_mode' });
+    expect(rows('stripe_subscriptions')).toEqual([]);
+    expect((await me(cookie)).premium).toBe(false);
+    const liveEvent = { ...testEvent, id: 'evt_live_mode', livemode: true };
+    expect((await webhook(liveEvent)).status).toBe(200);
+    expect(rows('stripe_subscriptions').map((x) => x.livemode)).toEqual([1]);
+    expect((await me(cookie)).premium).toBe(true);
+  });
+
+  it('a TEST-mode subscription can never give Premium while the live key is in use, and live data never leaks into test mode', async () => {
+    const cookie = await login();
+    const id = uidOf();
+    raw.prepare('INSERT INTO stripe_subscriptions VALUES (?, 0, ?, ?, ?, 0, ?)').run(id, 'sub_TESTSUB', 'active', NOW() + 20 * 86400, NOW());
+    goLive();
+    expect((await me(cookie)).premium).toBe(false); // live key: the test row does not count
+    raw.prepare('INSERT INTO stripe_subscriptions VALUES (?, 1, ?, ?, ?, 0, ?)').run(id, 'sub_LIVESUB', 'active', NOW() + 20 * 86400, NOW());
+    expect((await me(cookie)).premium).toBe(true);
+    env = { ...env, STRIPE_SECRET_KEY: 'sk_test_x1234567890' };
+    raw.prepare('DELETE FROM stripe_subscriptions WHERE livemode = 0').run();
+    expect((await me(cookie)).premium).toBe(false); // test key: the live row does not count either
+  });
+
+  it('an old-table subscription is checked once: unknown to this mode -> filed as the other mode (kept, grants nothing); known -> this mode\u2019s', async () => {
+    const cookie = await login();
+    const id = uidOf();
+    raw.prepare('INSERT INTO subscriptions VALUES (?, ?, ?, ?, 0, ?)').run(id, 'sub_1', 'active', NOW() + 20 * 86400, NOW());
+    goLive();
+    fake.missingSubs = new Set(['sub_1']); // a test-mode subscription: "no such subscription" for the live key
+    expect((await me(cookie)).premium).toBe(false);
+    expect(rows('stripe_subscriptions').map((r) => [r.livemode, r.stripe_subscription_id])).toEqual([[0, 'sub_1']]);
+    expect(raw.prepare('SELECT COUNT(*) AS n FROM subscriptions').get()).toEqual({ n: 1 }); // the old row is untouched
+    const asked = stripeCalls(/subscriptions\/sub_1/).length;
+    await me(cookie);
+    expect(stripeCalls(/subscriptions\/sub_1/).length).toBe(asked); // decided once, not on every page load
+  });
+
+  it('a genuine LIVE subscription saved by the old version keeps its Premium: it is checked once, found in the live world and filed as live', async () => {
+    const cookie = await login();
+    const id = uidOf();
+    raw.prepare('INSERT INTO subscriptions VALUES (?, ?, ?, ?, 0, ?)').run(id, 'sub_1', 'active', NOW() + 20 * 86400, NOW());
+    goLive();
+    fileCustomer(id, 'cus_1', 1);
+    fake.sub = sub({ id: 'sub_1', customer: 'cus_1', livemode: true, metadata: { user_id: id } });
+    expect((await me(cookie)).premium).toBe(true);
+    expect(rows('stripe_subscriptions').map((r) => [r.livemode, r.stripe_subscription_id])).toEqual([[1, 'sub_1']]);
+    expect(raw.prepare('SELECT COUNT(*) AS n FROM subscriptions').get()).toEqual({ n: 1 }); // the old row stays
+  });
+
+  it('works with no migration applied: the Worker creates the two (empty) tables itself, existing data untouched', async () => {
+    const m = makeDb(false);
+    raw = m.raw;
+    env = { ...env, DB: m.d1 };
+    expect(raw.prepare("SELECT name FROM sqlite_master WHERE name = 'stripe_customers'").get()).toBeUndefined();
+    const cookie = await login();
+    expect((await co(cookie)).status).toBe(200);
+    expect(raw.prepare("SELECT name FROM sqlite_master WHERE name IN ('stripe_customers', 'stripe_subscriptions') ORDER BY name").all()).toHaveLength(2);
+    expect(rows('stripe_customers')).toHaveLength(1);
   });
 });

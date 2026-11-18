@@ -121,7 +121,7 @@ async function main() {
 
   // the real migration on the real (local) D1
   const db = await mf.getD1Database('DB');
-  const sql = readFileSync(join(ROOT, 'migrations/0001_init.sql'), 'utf8').split('\n').filter((l) => !l.trim().startsWith('--')).join('\n');
+  const sql = ['0001_init.sql', '0002_stripe_modes.sql'].map((f) => readFileSync(join(ROOT, 'migrations', f), 'utf8')).join('\n').split('\n').filter((l) => !l.trim().startsWith('--')).join('\n');
   await db.batch(sql.split(';').map((s) => s.trim()).filter(Boolean).map((s) => db.prepare(s)));
   const now = Math.floor(Date.now() / 1000);
   for (const [id, sub, name] of [[USER, 'g-e2e-1', 'E2E Tester'], [OTHER, 'g-e2e-2', 'E2E Other']]) {
@@ -179,7 +179,7 @@ async function main() {
     while (Date.now() - t0 < ms) { const v = await pred(); if (v) return v; await sleep(500); }
     throw new Error(`timed out waiting for ${label}`);
   };
-  const row = async () => db.prepare('SELECT * FROM subscriptions WHERE user_id = ?').bind(USER).first();
+  const row = async () => db.prepare('SELECT * FROM stripe_subscriptions WHERE user_id = ? AND livemode = 0').bind(USER).first();
 
   let browser;
   try {
@@ -205,11 +205,11 @@ async function main() {
     const co = await call('/api/billing/checkout', { method: 'POST', cookieOf: cookie });
     const coBody = await co.json();
     check(co.status === 200 && /^https:\/\/checkout\.stripe\.com\//.test(coBody.url ?? ''), 'Worker returned a Stripe Checkout URL', `HTTP ${co.status}${coBody.error ? ' ' + coBody.error : ''}`);
-    const u1 = await db.prepare('SELECT stripe_customer_id AS c FROM users WHERE id = ?').bind(USER).first();
+    const u1 = await db.prepare('SELECT customer_id AS c FROM stripe_customers WHERE user_id = ? AND livemode = 0').bind(USER).first();
     const cust = u1?.c ?? '';
     if (cust) created.customers.add(cust);
     check(/^cus_/.test(cust), 'a Sandbox customer was created and tied to the account');
-    check(!(await db.prepare('SELECT stripe_customer_id AS c FROM users WHERE id = ?').bind(OTHER).first()).c, 'the refused account got no Stripe customer');
+    check(!(await db.prepare('SELECT customer_id AS c FROM stripe_customers WHERE user_id = ?').bind(OTHER).first()), 'the refused account got no Stripe customer');
 
     const { chromium } = await import('@playwright/test');
     browser = await chromium.launch({ headless: true });

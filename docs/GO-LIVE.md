@@ -42,3 +42,11 @@
 - **Build 変数（`VITE_PREMIUM_ENABLED`）は、保存しただけでは効かない。** 新しいビルドが走って初めて画面に反映される。Cloudflare の「Retry build」が使えないときは、リポジトリに実際の変更（この文書の更新など）をプッシュするとビルドが走る。
 - **`PREMIUM_ENFORCED` は、画面側の再ビルドが終わってから `true` にする。** 先に有効にすると、古いビルドの画面にはロック表示がないまま Premium 作品の原寸画像だけが 403 になり、画像の読み込みエラーが出る。
 - 順序: ①`VITE_PREMIUM_ENABLED=true` を保存 → ②再ビルド完了を確認 → ③`PREMIUM_ENFORCED=true` → ④`PUBLIC_SALES=open`・`ALLOW_LIVE_PAYMENTS=true` → ⑤最後に `PURCHASES_ENABLED=true`。
+
+## Stripe のテスト環境と本番環境は別世界（顧客・契約を分けて保存）
+- テストキーで作った顧客・契約の ID は、本番キーからは「存在しない」（`resource_missing`）。以前の版は顧客 ID を 1 列（`users.stripe_customer_id`）にしか保存しておらず、テストで保存した ID を本番キーで使って `server_error` になった。
+- 今は **モードごと**に保存する（`migrations/0002_stripe_modes.sql`: `stripe_customers` と `stripe_subscriptions`、`livemode` 1=本番・0=テスト）。同じ Google アカウントでも、テストと本番の顧客・契約は独立。
+- 古い列・テーブル（`users.stripe_customer_id`、`subscriptions`）は **変更も削除もしない**。初めて必要になったときに Stripe に問い合わせて分類する: その環境に存在する→その環境のもの、「存在しない」→もう一方の環境のものとして記録（残す）。
+- 保存済みの顧客が Stripe に存在しない場合は、黙って新規作成せず `503 customer_unavailable`（人の確認が必要）。
+- Webhook は `livemode` が使用中のキーと違うイベントを確認応答だけして適用しない。
+- マイグレーション `0002` は適用しなくても、Worker が初回のリクエストで同じ空のテーブルを作る（既存データには触れない）。`npx wrangler d1 migrations apply slides-db --remote` で適用しておくと記録が揃う。
