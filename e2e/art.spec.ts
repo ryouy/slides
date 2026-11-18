@@ -817,3 +817,105 @@ test('home menu: the "more" section is called Menu (not "More"), and in Japanese
     }
   }
 });
+
+// ---- phones and tablets: roomy controls, and a warning that never shifts the board ----
+for (const [w, h] of [[320, 640], [360, 740], [390, 844], [768, 1024]] as const) {
+  test(`${w}px wide: large well-spaced controls, Information kept away from Shuffle, no overflow`, async ({ page }, info) => {
+    test.skip(info.project.name !== 'mobile', 'touch layouts only');
+    await page.setViewportSize({ width: w, height: h });
+    await page.goto('/art-slide/play/van-gogh-bedroom');
+    await expect(page.locator('.aboard')).toBeVisible();
+    await page.waitForTimeout(450);
+    const box = async (id: string) => (await page.getByTestId(id).boundingBox())!;
+    const [pv, sh, nm, nx] = await Promise.all(['preview', 'shuffle', 'numbers-toggle', 'next-artwork'].map(box));
+    for (const b of [pv, sh, nm, nx]) {
+      expect(b.height).toBeGreaterThanOrEqual(48); // a thumb-sized target
+      expect(b.width).toBeGreaterThanOrEqual(60);
+    }
+    for (const b of [sh, nm, nx]) expect(Math.abs(b.y - pv.y)).toBeLessThan(2); // one row
+    // order: Information | gap | Shuffle, Numbers, Next
+    expect(sh.x - (pv.x + pv.width)).toBeGreaterThanOrEqual(14); // Information is kept apart from Shuffle
+    expect(nm.x - (sh.x + sh.width)).toBeGreaterThanOrEqual(6);
+    expect(nx.x - (nm.x + nm.width)).toBeGreaterThanOrEqual(6);
+    for (const id of ['preview', 'shuffle', 'numbers-toggle', 'next-artwork']) {
+      const label = page.getByTestId(id).locator('.art-action-label');
+      await expect(label).toBeVisible(); // the words are shown, not only icons
+      expect(await label.evaluate((e) => (e.parentElement as HTMLElement).scrollWidth <= (e.parentElement as HTMLElement).clientWidth + 1)).toBe(true); // nothing is cut off
+    }
+    const trig = (await sizeTrigger(page).boundingBox())!;
+    expect(trig.height).toBeGreaterThanOrEqual(36);
+    expect(trig.y + trig.height).toBeLessThanOrEqual(pv.y); // the piece-count menu sits above the control row
+    expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
+    const row = await page.locator('.art-actions').boundingBox();
+    expect(row!.x).toBeGreaterThanOrEqual(0);
+    expect(row!.x + row!.width).toBeLessThanOrEqual(w);
+  });
+}
+
+test('daily on a phone: two large buttons, nothing else', async ({ page }, info) => {
+  test.skip(info.project.name !== 'mobile', 'touch layouts only');
+  await page.goto('/art-slide/daily');
+  await expect(page.locator('.aboard')).toBeVisible();
+  await page.waitForTimeout(450);
+  const [pv, nm] = await Promise.all(['preview', 'numbers-toggle'].map(async (id) => (await page.getByTestId(id).boundingBox())!));
+  expect(pv.height).toBeGreaterThanOrEqual(48);
+  expect(nm.height).toBeGreaterThanOrEqual(48);
+  expect(Math.abs(pv.y - nm.y)).toBeLessThan(2);
+  expect(pv.width).toBeGreaterThan(100);
+  await expect(page.getByTestId('shuffle')).toHaveCount(0);
+});
+
+for (const [w, h] of [[320, 640], [390, 844], [1280, 800]] as const) {
+  test(`the piece-count warning at ${w}px: two short lines, equal large buttons, and the board does not move`, async ({ page }, info) => {
+    test.skip((w >= 900) !== (info.project.name === 'desktop'), 'one run per layout');
+    await page.setViewportSize({ width: w, height: h });
+    await page.goto('/art-slide/play/seurat-grande-jatte');
+    await page.waitForTimeout(450);
+    const sol = await solution(page, 'free');
+    await page.locator(`.atile[data-cell="${sol[0]}"]`).click();
+    await expect(page.getByTestId('moves')).toHaveText('1');
+    const boardBefore = (await page.locator('.aboard').boundingBox())!;
+    await setLevel(page, 4);
+    const bar = page.getByTestId('confirm-bar');
+    await expect(bar).toBeVisible();
+    await page.waitForTimeout(450); // let the sheet finish sliding in before measuring
+    await expect(page.getByRole('alert')).toContainText(/Switch to \d+×\d+\?/);
+    await expect(bar.locator('.confirm-line')).toHaveCount(2); // the question, then what it costs
+    const lines = await bar.locator('.confirm-line').evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().height / parseFloat(getComputedStyle(e).lineHeight))));
+    expect(lines.every((n) => n <= 2)).toBe(true); // never a long ragged paragraph
+    const [ok, cancel] = await Promise.all([page.getByTestId('confirm-size'), page.getByTestId('confirm-cancel')].map(async (l) => (await l.boundingBox())!));
+    expect(ok.height).toBeGreaterThanOrEqual(44);
+    expect(Math.abs(ok.width - cancel.width)).toBeLessThan(2); // equal, wide buttons
+    expect(Math.abs(ok.y - cancel.y)).toBeLessThan(2);
+    expect(ok.width).toBeGreaterThanOrEqual(w >= 900 ? 80 : 100);
+    const barBox = (await bar.boundingBox())!;
+    expect(barBox.x).toBeGreaterThanOrEqual(0);
+    expect(barBox.x + barBox.width).toBeLessThanOrEqual(w);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
+    const boardAfter = (await page.locator('.aboard').boundingBox())!;
+    if (w < 900) {
+      expect(Math.abs(boardAfter.y - boardBefore.y)).toBeLessThan(1); // phones: the sheet floats, the board stays where it was
+      expect(barBox.y + barBox.height).toBeLessThanOrEqual(h);
+      expect(barBox.y).toBeGreaterThan(h / 2); // at the bottom, in the thumb's reach
+    }
+    await page.getByTestId('confirm-cancel').click();
+    await expect(bar).toHaveCount(0);
+    await expect(page.getByTestId('moves')).toHaveText('1');
+    await setLevel(page, 4);
+    await page.getByTestId('confirm-size').click();
+    await expect.poll(async () => (await savedPuzzle(page, 'free')).size).toBe(4);
+  });
+}
+
+test('the warning is two lines in Japanese too', async ({ page }, info) => {
+  test.skip(info.project.name !== 'mobile', 'one run is enough');
+  await page.addInitScript(() => localStorage.setItem('wordslide:save', JSON.stringify({ version: 1, settings: { lang: 'ja', theme: 'system', colorblind: false, adConsent: null }, completed: 0, noHintClears: 0, dailyHistory: {}, endlessStreak: 0, maxEndlessStreak: 0, bests: { easy: {}, normal: {}, hard: {} }, history: [], inProgress: {}, lastDifficulty: 'normal' })));
+  await page.goto('/art-slide/play/seurat-grande-jatte');
+  const sol = await solution(page, 'free');
+  await page.locator(`.atile[data-cell="${sol[0]}"]`).click();
+  await setLevel(page, 4);
+  const lines = page.getByTestId('confirm-bar').locator('.confirm-line');
+  await expect(lines).toHaveCount(2);
+  await expect(lines.nth(0)).toContainText('に切り替えますか？');
+  await expect(lines.nth(1)).toHaveText('進行中のデータは失われます。');
+});

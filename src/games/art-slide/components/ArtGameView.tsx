@@ -19,6 +19,9 @@ import { ArtLevelMenu } from './ArtLevelMenu';
 import { ArtBoard } from './ArtBoard';
 import { ArtPreview } from './ArtPreview';
 
+/** The warning is shown as short lines (the question, then what it costs) so it never breaks in the middle of a phrase. */
+const sentences = (text: string): string[] => text.split(/(?<=[？?。.!！])\s*/).map((x) => x.trim()).filter(Boolean);
+
 const KEY_DIR: Record<string, ArtDirection> = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' };
 
 interface Props {
@@ -182,7 +185,6 @@ export function ArtGameView(p: Props) {
             <Stat label={t('common.time')} value={formatTime(state.elapsedMs)} id="time" />
             <Stat label={t('common.moves')} value={String(state.moves)} id="moves" />
           </div>
-          <div className={`actions art-actions${daily ? ' daily-actions' : ''}`}>
           {!daily && (
             <div className="art-mobile-level">
               <ArtLevelMenu
@@ -195,6 +197,7 @@ export function ArtGameView(p: Props) {
               />
             </div>
           )}
+          <div className={`actions art-actions${daily ? ' daily-actions' : ''}`}>
             <button className="btn" data-testid="preview" aria-label={t('art.preview')} title={t('art.preview')}
               onClick={() => {
                 const rect = boardRef.current?.getBoundingClientRect();
@@ -224,10 +227,14 @@ export function ArtGameView(p: Props) {
       </header>
 
       {pending !== null && (
-        <div className="confirm-bar" role="alert">
-          <span>{t('art.confirmLevel', { grid: gridLabel(pending) })}</span>
-          <button className="btn primary" data-testid="confirm-size" onClick={() => { const l = pending; setPending(null); p.onLevel?.(l); }}>{t('art.start')}</button>
-          <button className="btn" onClick={() => setPending(null)}>{t('common.cancel')}</button>
+        <div className="confirm-bar" role="alert" data-testid="confirm-bar">
+          <p className="confirm-text">
+            {sentences(t('art.confirmLevel', { grid: gridLabel(pending) })).map((line, i) => <span key={i} className="confirm-line">{line}</span>)}
+          </p>
+          <div className="confirm-actions">
+            <button className="btn primary" data-testid="confirm-size" onClick={() => { const l = pending; setPending(null); p.onLevel?.(l); }}>{t('art.start')}</button>
+            <button className="btn" data-testid="confirm-cancel" onClick={() => setPending(null)}>{t('common.cancel')}</button>
+          </div>
         </div>
       )}
 
