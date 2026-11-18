@@ -94,6 +94,11 @@ export async function eventSeen(db: D1Database, eventId: string): Promise<boolea
 export const markEvent = (db: D1Database, eventId: string, type: string) =>
   db.prepare('INSERT OR IGNORE INTO stripe_events (event_id, type, processed_at) VALUES (?, ?, ?)').bind(eventId, type, nowSec()).run();
 
+/** Takes one hit back (the action did not happen after all: a failure that is not the visitor's doing must not use up their allowance). */
+export async function giveBack(db: D1Database, key: string): Promise<void> {
+  await db.prepare('UPDATE rate_limits SET count = count - 1 WHERE key = ? AND count > 0').bind(key).run();
+}
+
 /** Fixed-window limiter: true while under `limit` hits per `windowSec` for `key`. */
 export async function allow(db: D1Database, key: string, limit: number, windowSec: number): Promise<boolean> {
   const now = nowSec();

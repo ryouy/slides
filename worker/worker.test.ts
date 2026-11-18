@@ -12,6 +12,7 @@ import { ARTWORKS } from '../src/games/art-slide/data';
 import { FREE_ARTWORK_IDS } from '../src/premium/freeList';
 import { formEncode, StripeError, verifyStripeSignature, type FetchFn } from './stripe';
 import { describeError, redact } from './safeLog';
+import { resetPriceCheckForTests as priceCheckedReset } from './billing';
 import { ALLOWLIST_MAX, parseAllowlist, publicSalesOpen, purchaseAllowed } from './env';
 
 // ---- an in-memory D1 (SQLite) running the real migration ----
@@ -326,12 +327,110 @@ describe('Checkout and portal', () => {
     expect(await (await call('/api/billing/portal', { method: 'POST', cookie })).json()).toEqual({ url: 'https://billing.stripe.test/p/1' });
   });
 
-  it('limits how often the billing endpoints can be called', async () => {
+  it('limits how often the billing endpoints can be called: a burst of 8 a minute, every request counted', async () => {
     const cookie = await login();
     const codes: number[] = [];
     for (let i = 0; i < 12; i++) codes.push((await call('/api/billing/checkout', { method: 'POST', cookie })).status);
-    expect(codes.slice(0, 10).every((c) => c === 200)).toBe(true);
-    expect(codes.slice(10)).toEqual([429, 429]);
+    expect(codes.slice(0, 8).every((c) => c === 200)).toBe(true);
+    expect(codes.slice(8)).toEqual([429, 429, 429, 429]);
+  });
+});
+
+describe('billing rate limits (what a normal buyer does must never lock them out)', () => {
+  const uidOf = () => (raw.prepare('SELECT id FROM users').get() as { id: string }).id;
+  const row = (key: string) => raw.prepare('SELECT count, window_start AS start FROM rate_limits WHERE key = ?').get(key) as { count: number; start: number } | undefined;
+  /** the one-minute burst counter is reset so that the HOURLY allowance can be looked at on its own */
+  const clearBurst = () => raw.prepare("DELETE FROM rate_limits WHERE key LIKE 'billing-burst:%'").run();
+  const co = (cookie: string) => call('/api/billing/checkout', { method: 'POST', cookie });
+  const portal = (cookie: string) => call('/api/billing/portal', { method: 'POST', cookie });
+
+  it('attempts that fail before a payment page is created (setup problem) do not use up the hourly allowance', async () => {
+    env = { ...env, STRIPE_PRICE_ID: 'price_NeverCheckedBefore1' }; // not in the 5-minute price cache
+    fake.price = { ...fake.price, active: false };
+    const cookie = await login();
+    for (let i = 0; i < 25; i++) { clearBurst(); expect((await co(cookie)).status).toBe(503); } // 25 failed clicks: never 429
+    expect(row(`checkout:${uidOf()}`)).toBeUndefined();
+    fake.price = { ...fake.price, active: true };
+    priceCheckedReset();
+    clearBurst();
+    expect((await co(cookie)).status).toBe(200); // the first good click works at once
+  });
+
+  it('already subscribed (409) does not use it up either', async () => {
+    const cookie = await login();
+    await co(cookie);
+    fake.sub = sub({ metadata: { user_id: uidOf() } });
+    await webhook({ id: 'evt_a', type: 'customer.subscription.created', data: { object: { id: 'sub_1', customer: 'cus_1' } } });
+    const used = row(`checkout:${uidOf()}`)?.count ?? 0;
+    for (let i = 0; i < 25; i++) { clearBurst(); expect((await co(cookie)).status).toBe(409); }
+    expect(row(`checkout:${uidOf()}`)?.count ?? 0).toBe(used);
+  });
+
+  it('when Stripe itself fails the hit is given back', async () => {
+    const cookie = await login();
+    const real = fetchFn;
+    fetchFn = async (input, init) => (input.endsWith('/v1/checkout/sessions') && init?.method === 'POST' ? new Response('{"error":{"type":"api_error"}}', { status: 500 }) : real(input, init));
+    for (let i = 0; i < 25; i++) { clearBurst(); await expect(co(cookie)).rejects.toThrow('Stripe API 500'); } // (in production the Worker's wrapper answers server_error; never rate_limited)
+    expect(row(`checkout:${uidOf()}`)?.count ?? 0).toBe(0);
+    fetchFn = real;
+    clearBurst();
+    expect((await co(cookie)).status).toBe(200);
+  });
+
+  it('payment pages that really are created are limited to 20 an hour, and it ends when the hour does', async () => {
+    const cookie = await login();
+    const codes: number[] = [];
+    for (let i = 0; i < 22; i++) { clearBurst(); codes.push((await co(cookie)).status); }
+    expect(codes.slice(0, 20).every((c) => c === 200)).toBe(true);
+    expect(codes.slice(20)).toEqual([429, 429]);
+    // the window is fixed: an hour after it started the counter starts again by itself (nothing stays locked)
+    raw.prepare('UPDATE rate_limits SET window_start = window_start - 3601 WHERE key = ?').run(`checkout:${uidOf()}`);
+    clearBurst();
+    expect((await co(cookie)).status).toBe(200);
+    expect(row(`checkout:${uidOf()}`)!.count).toBe(1);
+  });
+
+  it('the portal has its own allowance, and Checkout does not eat it', async () => {
+    const cookie = await login();
+    await co(cookie);
+    raw.prepare("UPDATE users SET stripe_customer_id = 'cus_1' WHERE id = ?").run(uidOf());
+    for (let i = 0; i < 19; i++) { clearBurst(); expect((await co(cookie)).status).toBe(200); } // (+ the first one above = 20)
+    clearBurst();
+    expect((await co(cookie)).status).toBe(429); // checkout is spent for the hour ...
+    clearBurst();
+    expect((await portal(cookie)).status).toBe(200); // ... but the account can still open the portal
+  });
+
+  it('an old counter left by the previous version (billing:<id>) does not block anyone', async () => {
+    const cookie = await login();
+    raw.prepare('INSERT INTO rate_limits (key, window_start, count) VALUES (?, ?, 10)').run(`billing:${uidOf()}`, NOW());
+    expect((await co(cookie)).status).toBe(200);
+  });
+
+  it('the limits are per account: one buyer in a burst does not slow another; Google sign-in has its own counter', async () => {
+    const a = await login('sub-r1', 'R1');
+    const b = await login('sub-r2', 'R2');
+    raw.prepare("UPDATE users SET stripe_customer_id = 'cus_b' WHERE google_sub = 'sub-r2'").run(); // (the fake Stripe hands out one customer id)
+    for (let i = 0; i < 10; i++) await co(a);
+    expect((await co(a)).status).toBe(429);
+    expect((await co(b)).status).toBe(200);
+    for (let i = 0; i < 40; i++) await call('/api/auth/google', { headers: { 'cf-connecting-ip': '198.51.100.7' } });
+    expect((await call('/api/auth/google', { headers: { 'cf-connecting-ip': '198.51.100.7' } })).status).toBe(429); // the sign-in limiter (by address)
+    clearBurst();
+    expect((await co(b)).status).toBe(200); // and it does not touch the billing counters
+    const keys = (raw.prepare('SELECT key FROM rate_limits').all() as { key: string }[]).map((r) => r.key.split(':')[0]);
+    expect(new Set(keys)).toEqual(new Set(['billing-burst', 'checkout', 'auth']));
+  });
+
+  it('the answer is the app\u2019s own JSON 429, and Stripe is not called when it limits', async () => {
+    const cookie = await login();
+    for (let i = 0; i < 8; i++) await co(cookie);
+    const before = fake.calls.length;
+    const r = await co(cookie);
+    expect(r.status).toBe(429);
+    expect(r.headers.get('content-type')).toContain('application/json');
+    expect(await r.json()).toEqual({ error: 'rate_limited' });
+    expect(fake.calls.length).toBe(before); // refused before anything was sent to Stripe
   });
 });
 

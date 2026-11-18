@@ -1,6 +1,6 @@
 import type { Env } from './env';
 import { billingConfigured } from './env';
-import { allow, deleteUser, eventSeen, getSubscription, markEvent, nowSec, saveSubscription, setStripeCustomer, userByCustomer, userById, type UserRow } from './db';
+import { allow, giveBack, deleteUser, eventSeen, getSubscription, markEvent, nowSec, saveSubscription, setStripeCustomer, userByCustomer, userById, type UserRow } from './db';
 import { hasPremium, isOpenSubscription, type SubscriptionRow } from './entitlement';
 import { err, json } from './http';
 import { priceProblem } from './priceCheck';
@@ -86,10 +86,23 @@ const site = (env: Env) => (env.SITE_URL ?? '').replace(/\/+$/, '');
 /** price id -> checked at (ms): a price is re-read from Stripe at most every 5 minutes per Worker instance. */
 const priceChecked = new Map<string, number>();
 const PRICE_TTL_MS = 5 * 60_000;
+/** Tests only: forget which prices were already checked. */
+export const resetPriceCheckForTests = (): void => priceChecked.clear();
 const BLOCKING = new Set(['active', 'trialing', 'past_due', 'unpaid', 'incomplete']);
 
+/**
+ * Limits on the billing endpoints (per ACCOUNT, stored in D1 table rate_limits; Google sign-in has its own counter per address):
+ *  - BURST: 8 requests per minute for checkout + portal together. Every request counts, so hammering the buttons is stopped at once.
+ *  - HOURLY: 20 payment pages (checkout) and 20 portal pages per hour, counted only when one is really about to be created, and given
+ *    back if Stripe fails. A setup problem, "already subscribed", or a Stripe error therefore never locks a visitor out for an hour.
+ * (Until this change a single counter of 10 per hour was shared by both, and used up by every click, failed or not.)
+ */
+const BURST = { limit: 8, windowSec: 60 };
+const HOURLY = { limit: 20, windowSec: 3600 };
+const burstKey = (userId: string) => `billing-burst:${userId}`;
+
 export async function createCheckout(env: Env, user: UserRow, fetchFn?: FetchFn): Promise<Response> {
-  if (!(await allow(env.DB!, `billing:${user.id}`, 10, 3600))) return err(429, 'rate_limited');
+  if (!(await allow(env.DB!, burstKey(user.id), BURST.limit, BURST.windowSec))) return err(429, 'rate_limited');
   const existing = await getSubscription(env.DB!, user.id);
   if (isOpenSubscription(existing, nowSec())) return err(409, 'already_subscribed'); // one contract per account
   const stripe = stripeClient(env.STRIPE_SECRET_KEY!, fetchFn);
@@ -115,24 +128,39 @@ export async function createCheckout(env: Env, user: UserRow, fetchFn?: FetchFn)
     return err(409, held.status === 'incomplete' ? 'payment_pending' : 'already_subscribed');
   }
 
-  // only one payment page may be open at a time (two tabs paying twice would mean two subscriptions)
-  for (const open of (await stripe.listOpenSessions(customer)).data) await stripe.expireSession(open.id).catch(() => undefined);
+  // from here a payment page really is created: this is what the hourly allowance counts
+  const hourlyKey = `checkout:${user.id}`;
+  if (!(await allow(env.DB!, hourlyKey, HOURLY.limit, HOURLY.windowSec))) return err(429, 'rate_limited');
+  try {
+    // only one payment page may be open at a time (two tabs paying twice would mean two subscriptions)
+    for (const open of (await stripe.listOpenSessions(customer)).data) await stripe.expireSession(open.id).catch(() => undefined);
 
-  const session = await stripe.createCheckout({
-    customer,
-    userId: user.id,
-    price: env.STRIPE_PRICE_ID!,
-    successUrl: `${site(env)}/art-slide/premium?checkout=success`,
-    cancelUrl: `${site(env)}/art-slide/premium?checkout=cancel`,
-  });
-  return json({ url: session.url });
+    const session = await stripe.createCheckout({
+      customer,
+      userId: user.id,
+      price: env.STRIPE_PRICE_ID!,
+      successUrl: `${site(env)}/art-slide/premium?checkout=success`,
+      cancelUrl: `${site(env)}/art-slide/premium?checkout=cancel`,
+    });
+    return json({ url: session.url });
+  } catch (e) {
+    await giveBack(env.DB!, hourlyKey).catch(() => undefined); // Stripe failed: nothing was created, so nothing is used up
+    throw e;
+  }
 }
 
 export async function createPortal(env: Env, user: UserRow, fetchFn?: FetchFn): Promise<Response> {
   if (!user.stripe_customer_id) return err(404, 'no_customer');
-  if (!(await allow(env.DB!, `billing:${user.id}`, 10, 3600))) return err(429, 'rate_limited');
-  const portal = await stripeClient(env.STRIPE_SECRET_KEY!, fetchFn).createPortal(user.stripe_customer_id, `${site(env)}/art-slide/account`);
-  return json({ url: portal.url });
+  if (!(await allow(env.DB!, burstKey(user.id), BURST.limit, BURST.windowSec))) return err(429, 'rate_limited');
+  const hourlyKey = `portal:${user.id}`;
+  if (!(await allow(env.DB!, hourlyKey, HOURLY.limit, HOURLY.windowSec))) return err(429, 'rate_limited');
+  try {
+    const portal = await stripeClient(env.STRIPE_SECRET_KEY!, fetchFn).createPortal(user.stripe_customer_id, `${site(env)}/art-slide/account`);
+    return json({ url: portal.url });
+  } catch (e) {
+    await giveBack(env.DB!, hourlyKey).catch(() => undefined);
+    throw e;
+  }
 }
 
 /** Account deletion: ends any open subscription, removes our rows. Stripe keeps the payment records it must keep. */
