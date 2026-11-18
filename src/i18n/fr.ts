@@ -15,7 +15,7 @@ const fr: Partial<Dict> = {
   'era.Before 1700': 'Avant 1700', 'era.1700s': '1700', 'era.1900s': '1900',
   'level.3': 'Facile', 'level.4': 'Normal', 'level.5': 'Difficile',
   'premium.title': 'ART SLIDE Premium',
-  'premium.price': '¥200 / mois',
+  'premium.price': '¥200 / mois (taxes comprises)',
   'premium.f1': 'Toutes les œuvres',
   'premium.f2': 'Plus de tailles de plateau',
   'premium.f3': 'Sans publicité',

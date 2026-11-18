@@ -11,7 +11,7 @@ import { fullImageId, isDailyImage } from './artwork';
 import { ARTWORKS } from '../src/games/art-slide/data';
 import { FREE_ARTWORK_IDS } from '../src/premium/freeList';
 import { formEncode, verifyStripeSignature, type FetchFn } from './stripe';
-import { ALLOWLIST_MAX, parseAllowlist, purchaseAllowed } from './env';
+import { ALLOWLIST_MAX, parseAllowlist, publicSalesOpen, purchaseAllowed } from './env';
 
 // ---- an in-memory D1 (SQLite) running the real migration ----
 function makeDb(): { d1: D1Database; raw: DatabaseSync } {
@@ -748,5 +748,61 @@ describe('purchase allowlist (limited live test: only listed accounts may start 
     env = { ...env, PURCHASE_ALLOWLIST: undefined, PURCHASES_ENABLED: 'false' };
     const r = await call('/api/billing/portal', { method: 'POST', cookie });
     expect(r.status).toBe(200);
+  });
+});
+
+describe('general sales mode (PUBLIC_SALES=open)', () => {
+  const co = (cookie: string) => call('/api/billing/checkout', { method: 'POST', cookie });
+  const meOf = async (c: string) => (await call('/api/me', { cookie: c })).json() as Promise<{ canPurchase?: boolean }>;
+
+  it('only the exact text "open" turns it on; anything else keeps the allowlist in force', () => {
+    expect(publicSalesOpen({ ...env, PUBLIC_SALES: 'open' })).toBe(true);
+    for (const v of [undefined, '', 'true', 'TRUE', '1', 'yes', 'on', 'OPEN', 'Open', ' open', 'open ', '*', 'all']) expect(publicSalesOpen({ ...env, PUBLIC_SALES: v }), JSON.stringify(v)).toBe(false);
+    expect(purchaseAllowed({ ...env, PUBLIC_SALES: 'true', PURCHASE_ALLOWLIST: undefined }, 'someone-1234')).toBe(false); // a wrong value is "closed", not "open"
+    expect(purchaseAllowed({ ...env, PUBLIC_SALES: 'open', PURCHASE_ALLOWLIST: undefined }, 'someone-1234')).toBe(true);
+  });
+
+  it('open: every signed-in account can start a Checkout, with no allowlist at all', async () => {
+    env = { ...env, PUBLIC_SALES: 'open', PURCHASE_ALLOWLIST: undefined };
+    const a = await login('sub-p1', 'P1', false);
+    const b = await login('sub-p2', 'P2', false);
+    expect((await meOf(a)).canPurchase).toBe(true);
+    expect((await co(a)).status).toBe(200);
+    expect((await meOf(b)).canPurchase).toBe(true);
+    expect((await call('/api/billing/checkout', { method: 'POST' })).status).toBe(401); // still needs a signed-in account
+    expect((await call('/api/billing/checkout', { method: 'POST', cookie: a, origin: 'https://evil.example' })).status).toBe(403);
+  });
+
+  it('a wrong value is closed: nobody can buy, with or without a malformed list', async () => {
+    const cookie = await login('sub-p3', 'P3', false);
+    for (const v of ['true', '1', 'OPEN', 'yes']) {
+      env = { ...env, PUBLIC_SALES: v, PURCHASE_ALLOWLIST: undefined };
+      expect((await co(cookie)).status, v).toBe(403);
+      expect((await meOf(cookie)).canPurchase, v).toBe(false);
+    }
+    expect(fake.createdSessions).toBe(0);
+  });
+
+  it('open still needs every other switch: PURCHASES_ENABLED, a valid key and price, and ALLOW_LIVE_PAYMENTS for a live key', async () => {
+    env = { ...env, PUBLIC_SALES: 'open', PURCHASE_ALLOWLIST: undefined };
+    const cookie = await login('sub-p4', 'P4', false);
+    env = { ...env, PURCHASES_ENABLED: 'false' };
+    expect((await co(cookie)).status).toBe(503);
+    expect((await meOf(cookie)).canPurchase).toBe(false);
+    env = { ...env, PURCHASES_ENABLED: undefined };
+    expect((await co(cookie)).status).toBe(503); // missing = off
+    env = { ...env, PURCHASES_ENABLED: 'true', STRIPE_SECRET_KEY: 'rk_live_abcdefghijkl' };
+    expect(await (await co(cookie)).json()).toEqual({ error: 'live_key_not_allowed' });
+    env = { ...env, STRIPE_SECRET_KEY: 'sk_test_x1234567890', STRIPE_PRICE_ID: 'prod_notaprice' };
+    expect(await (await co(cookie)).json()).toEqual({ error: 'invalid_price_id' });
+    expect(fake.createdSessions).toBe(0);
+  });
+
+  it('closing it again (PUBLIC_SALES removed) returns to the allowlist at once', async () => {
+    env = { ...env, PUBLIC_SALES: 'open', PURCHASE_ALLOWLIST: undefined };
+    const cookie = await login('sub-p5', 'P5', false);
+    expect((await co(cookie)).status).toBe(200);
+    env = { ...env, PUBLIC_SALES: undefined };
+    expect((await co(cookie)).status).toBe(403);
   });
 });

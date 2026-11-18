@@ -66,7 +66,7 @@ export async function handle(request: Request, env: Env, deps: Deps = {}): Promi
       return err(503, bad);
     }
     if (!purchaseAllowed(env, user.id)) {
-      if (parseAllowlist(env.PURCHASE_ALLOWLIST) === null) console.error('checkout refused: PURCHASE_ALLOWLIST is unset, empty or malformed (nobody may buy)');
+      if (parseAllowlist(env.PURCHASE_ALLOWLIST) === null) console.error('checkout refused: neither PUBLIC_SALES=open nor a valid PURCHASE_ALLOWLIST is set (nobody may buy)');
       return err(403, 'not_allowed'); // purchases are limited to the accounts on the allowlist
     }
     return createCheckout(env, user, deps.fetchFn);

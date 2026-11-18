@@ -157,7 +157,8 @@ function subscriptionIdOf(ev: StripeEvent): string | null {
   const s = o.subscription ?? o.parent?.subscription_details?.subscription;
   return typeof s === 'string' ? s : (s?.id ?? null);
 }
-const HANDLED = new Set(['checkout.session.completed', 'customer.subscription.created', 'customer.subscription.updated', 'customer.subscription.deleted', 'customer.subscription.paused', 'customer.subscription.resumed', 'invoice.paid', 'invoice.payment_failed', 'invoice.payment_succeeded']);
+export const HANDLED_EVENTS = ['checkout.session.completed', 'customer.subscription.created', 'customer.subscription.updated', 'customer.subscription.deleted', 'customer.subscription.paused', 'customer.subscription.resumed', 'invoice.paid', 'invoice.payment_failed', 'invoice.payment_succeeded'];
+const HANDLED = new Set(HANDLED_EVENTS);
 
 export async function handleWebhook(request: Request, env: Env, fetchFn?: FetchFn): Promise<Response> {
   const raw = await request.text();

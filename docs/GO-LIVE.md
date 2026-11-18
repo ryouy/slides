@@ -1,0 +1,33 @@
+# 一般販売の開始と停止（Premium 月額 ¥200・税込）
+
+現状: **販売停止中**（`PURCHASES_ENABLED`・`ALLOW_LIVE_PAYMENTS`・`PUBLIC_SALES`・`PREMIUM_ENFORCED`・`VITE_PREMIUM_ENABLED` はすべて未設定）。
+
+## 仕組み（購入が始まるための条件。1つでも欠けると購入は拒否される）
+| 条件 | 設定 | 欠けたとき |
+|---|---|---|
+| 購入機能 | Secret `PURCHASES_ENABLED` = `true` | 503 |
+| 本番キーの許可 | Secret `ALLOW_LIVE_PAYMENTS` = `true`（`rk_live_` / `sk_live_` を使うとき） | 503 `live_key_not_allowed` |
+| 誰が買えるか | Secret `PUBLIC_SALES` = **`open`**（ちょうどこの文字列のみ。`true`・`1`・`OPEN` などは「閉」として扱う）。それ以外は `PURCHASE_ALLOWLIST`（未設定なら全員拒否） | 403 `not_allowed` |
+| 画面に購入導線を出す | ビルド変数 `VITE_PREMIUM_ENABLED` = `true` | 購入導線・ロックは出ない（`/art-slide/premium?tester=1` だけ例外） |
+| 高解像度画像の保護 | Secret `PREMIUM_ENFORCED` = `true`（`VITE_PREMIUM_ENABLED` と同時） | 画像は従来どおり全員に配信 |
+| Stripe の設定 | キー・Price・Webhook 署名シークレット・ポータル | 503 など |
+
+## 開始前の確認（読み取り専用・課金なし）
+1. `STRIPE_SECRET_KEY=rk_live_… STRIPE_PRICE_ID=price_… npx vite-node scripts/check-stripe.ts` — 本番キー・¥200/月の価格の一致。
+2. `STRIPE_SECRET_KEY=rk_live_… STRIPE_PRICE_ID=price_… npx vite-node scripts/check-stripe-live.ts` — キーの読み取り権限、Webhook 送信先（URL・有効・必須イベントの購読）、ポータルで「期間末に解約」できること。出力の最後の **書き込み権限**（Customers / Checkout Sessions / Customer portal / Subscriptions）は、ダッシュボードで目視確認。
+3. Stripe ダッシュボード: Webhook 送信先の署名シークレットが Cloudflare の `STRIPE_WEBHOOK_SECRET` と同じ（本番用）こと。
+4. 法的ページ（`/commerce` `/terms` `/privacy`）が表示され、フォーム・メールの窓口が機能すること。
+
+## 開始の手順（この順で）
+1. Cloudflare の Secret を追加: `PURCHASES_ENABLED=true`、`ALLOW_LIVE_PAYMENTS=true`、`PUBLIC_SALES=open`（画面は変わらない）。
+2. ビルド変数 `VITE_PREMIUM_ENABLED=true` と Secret `PREMIUM_ENFORCED=true` を設定し、再デプロイ（Settings → Build の変数は、ビルドし直して初めて効く）。
+3. `/api/config` が `purchases:true`、サイトに「Premium」の導線とロックが出ることを確認。
+4. すぐに Stripe ダッシュボードで、最初の購入・Webhook 配信（2xx）を見守る。
+
+## 問題が起きたときの停止手順（上ほど速く、影響が小さい）
+1. **購入だけを止める（数秒）**: Secret `PURCHASES_ENABLED` を `false` にする（または削除）。新規の購入は 503、**既存の契約者の Premium・ポータル・解約は影響なし**。
+2. **誰も買えないようにする**: Secret `PUBLIC_SALES` を削除（許可リストが無ければ全員拒否）。
+3. **本番課金そのものを止める**: Secret `ALLOW_LIVE_PAYMENTS` を削除。
+4. **Premium の画面とロックを消す**: ビルド変数 `VITE_PREMIUM_ENABLED` を削除して再デプロイし、Secret `PREMIUM_ENFORCED` を削除（全作品が再び全員に開く）。
+5. **Worker のコードを戻す**: Cloudflare → `slides` → Deployments で直前のバージョンに戻す。
+- 課金してしまった利用者への対応: Stripe ダッシュボードで返金・解約（返金は手動）。`scripts/check-no-open-subscriptions.ts` で、課金が続く契約が残っていないか確認できる。

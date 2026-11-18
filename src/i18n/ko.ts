@@ -15,7 +15,7 @@ const ko: Partial<Dict> = {
   'era.Before 1700': '1700년 이전', 'era.1700s': '1700년대', 'era.1900s': '1900년대',
   'level.3': '쉬움', 'level.4': '보통', 'level.5': '어려움',
   'premium.title': 'ART SLIDE Premium',
-  'premium.price': '월 ¥200',
+  'premium.price': '월 ¥200 (세금 포함)',
   'premium.f1': '모든 작품',
   'premium.f2': '더 큰 퍼즐 크기',
   'premium.f3': '광고 없음',
