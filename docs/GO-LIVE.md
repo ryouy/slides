@@ -36,3 +36,9 @@
 ## 開始後・停止後の確認（読み取り専用）
 - 開始前／停止後: `node scripts/check-launch.mjs --expect stopped`
 - 開始後: `node scripts/check-launch.mjs --expect live`（`/api/config` が `purchases:true`、Premium の「準備中」が消え、同意つきの購入ボタンが出る、Premium 作品の原寸画像が未ログインで 403、サムネイルは公開のまま、ART/WORD/BIG が動く、など）。購入・ログインはしません。
+
+
+## 実際に起きたこと（教訓）
+- **Build 変数（`VITE_PREMIUM_ENABLED`）は、保存しただけでは効かない。** 新しいビルドが走って初めて画面に反映される。Cloudflare の「Retry build」が使えないときは、リポジトリに実際の変更（この文書の更新など）をプッシュするとビルドが走る。
+- **`PREMIUM_ENFORCED` は、画面側の再ビルドが終わってから `true` にする。** 先に有効にすると、古いビルドの画面にはロック表示がないまま Premium 作品の原寸画像だけが 403 になり、画像の読み込みエラーが出る。
+- 順序: ①`VITE_PREMIUM_ENABLED=true` を保存 → ②再ビルド完了を確認 → ③`PREMIUM_ENFORCED=true` → ④`PUBLIC_SALES=open`・`ALLOW_LIVE_PAYMENTS=true` → ⑤最後に `PURCHASES_ENABLED=true`。
