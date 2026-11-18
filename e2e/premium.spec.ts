@@ -244,7 +244,7 @@ test('the sign-in page is reachable while the paid plan is off: /art-slide/accou
   await expect(page.getByTestId('signin')).toHaveCount(0);
 });
 
-for (const vw of [320, 390]) test(`the account button is on the ART SLIDE home at ${vw}px when the paid plan is on, and takes the visitor to the account page`, async ({ page }, info) => {
+for (const vw of [320, 390]) test(`the account button on the ART SLIDE home at ${vw}px: "Sign in" when signed out (straight to Google), "Account" when signed in`, async ({ page }, info) => {
   test.skip(info.project.name !== 'mobile' && vw === 320, 'phone width');
   await page.setViewportSize({ width: vw, height: 700 });
   await gating(page);
@@ -252,20 +252,58 @@ for (const vw of [320, 390]) test(`the account button is on the ART SLIDE home a
   await page.goto('/art-slide');
   await page.evaluate(() => document.fonts.ready); // the title's letters are laid out with the real font
   const btn = page.getByTestId('home-account');
+  await expect(btn).toHaveAttribute('data-state', 'signed-out');
+  await expect(btn).toHaveAttribute('aria-label', 'Sign in');
+  expect(await btn.getAttribute('href')).toBe('/api/auth/google?return=%2Fart-slide'); // no extra page in between
   // wait until the page has stopped gliding in (the position is the same on two reads), instead of a fixed pause
   let last = -1;
   await expect.poll(async () => { const x = (await btn.boundingBox())!.x; const same = Math.abs(x - last) < 0.5; last = x; return same; }, { timeout: 5000 }).toBe(true);
-  await expect(btn).toBeVisible();
   const box = (await btn.boundingBox())!;
   expect(box.width).toBeGreaterThanOrEqual(40);
   expect(box.height).toBeGreaterThanOrEqual(44);
-  const textRight = await page.locator('.art-home-title').evaluate((e) => { const r = document.createRange(); r.selectNodeContents(e); return r.getBoundingClientRect().right; });
-  expect(box.x).toBeGreaterThanOrEqual(textRight + 4); // never on top of the title's letters
-  expect(box.x + box.width).toBeLessThanOrEqual(vw); // and always inside the screen
+  const title = (await page.locator('.art-home-title').boundingBox())!;
+  expect(box.y + box.height).toBeLessThanOrEqual(title.y + 1); // on a phone it has its own row above the title: never on top of the letters
+  expect(box.x + box.width).toBeLessThanOrEqual(vw); // inside the screen
+  expect(box.x).toBeGreaterThan(vw / 2); // at the right
+  await expect(btn.locator('span')).toBeVisible(); // with its word, not just an icon
+  await expect(btn.locator('span')).toHaveText('Sign in');
   expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
-  await btn.click();
+
+  // signed in: the same place, "Account", and it opens the account page
+  await page.unroute('**/api/**');
+  await mockApi(page, { me: { signedIn: true, premium: false, name: 'Ann', status: null } });
+  await page.goto('/art-slide');
+  const acct = page.getByTestId('home-account');
+  await expect(acct).toHaveAttribute('data-state', 'signed-in');
+  await expect(acct).toHaveAttribute('aria-label', 'Account');
+  await acct.click();
   await expect(page).toHaveURL(/\/art-slide\/account$/);
-  await expect(page.getByTestId('signin')).toBeVisible();
+  await expect(page.getByTestId('account-name')).toBeVisible();
+});
+
+test('the home button says "Sign in" in Japanese when signed out', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('wordslide:save', JSON.stringify({ version: 1, settings: { lang: 'ja', theme: 'system', colorblind: false, adConsent: null }, completed: 0, noHintClears: 0, dailyHistory: {}, endlessStreak: 0, maxEndlessStreak: 0, bests: { easy: {}, normal: {}, hard: {} }, history: [], inProgress: {}, lastDifficulty: 'normal' })));
+  await gating(page);
+  await mockApi(page);
+  await page.goto('/art-slide');
+  await expect(page.getByTestId('home-account')).toHaveAttribute('aria-label', 'ログイン');
+});
+
+test('account page: Sync on/off and Sign out sit side by side, and the sync text is short', async ({ page }) => {
+  await gating(page);
+  await mockApi(page, { config: { auth: true, billing: true, purchases: true, googleClientId: 'cid.apps.googleusercontent.com' } as never, me: { signedIn: true, premium: false, name: 'Ann', status: null } });
+  await page.goto('/art-slide/account');
+  const on = page.getByTestId('sync-enable');
+  const out = page.getByTestId('signout');
+  await expect(on).toBeVisible();
+  const [a, b] = await Promise.all([on.boundingBox(), out.boundingBox()]);
+  expect(Math.abs(a!.y - b!.y)).toBeLessThan(2); // one row
+  expect(b!.x).toBeGreaterThan(a!.x + a!.width - 1);
+  expect(Math.abs(a!.width - b!.width)).toBeLessThan(2); // equal widths
+  expect(a!.height).toBeGreaterThanOrEqual(40);
+  const desc = await page.getByTestId('sync').locator('p').first().innerText();
+  expect(desc.length).toBeLessThan(80); // one short sentence
+  expect(desc).toContain('Google Drive');
 });
 
 test('without the paid plan the home has no account button (nothing to sign in for)', async ({ page }) => {

@@ -19,11 +19,15 @@ import { dailyArtworkId, generateArtDaily, generateArtFree } from '../logic/gene
 import { newArtGame, type ArtState } from '../logic/game';
 import { recordArtClear, useArtSave } from '../storage';
 import { scheduleSync } from '../../../sync/state';
+import { useAccount } from '../../../account/store';
+import { signInUrl } from '../../../account/api';
 
 export function ArtHome() {
   const t = useT();
   const { data } = useArtSave();
   const { premium, gating } = useEntitlement();
+  const { config, me, ready } = useAccount();
+  const loggedOut = ready && config.auth && !me?.signedIn; // (until the account is known the neutral "Account" is shown, so a signed-in visitor never sees "Sign in" flash)
   const today = jstDateKey();
   const streak = currentDailyStreak(data.dailyHistory, today);
   const exhibit = getArtwork(dailyArtworkId(today)) ?? ARTWORKS[0];
@@ -35,10 +39,18 @@ export function ArtHome() {
       <header className="art-home-head">
         <h1 className="art-home-title">ART SLIDE</h1>
         {gating && (
-          <Link to="/art-slide/account" className="art-home-account" data-testid="home-account" aria-label={t('home.account')} title={t('home.account')}>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6" /><path d="M4.5 20c.6-4 3.8-6 7.5-6s6.9 2 7.5 6" /></svg>
-            <span>{t('home.account')}</span>
-          </Link>
+          loggedOut ? (
+            // signed out: the button says so and starts the Google sign-in straight away (back to this page afterwards)
+            <a href={signInUrl('/art-slide')} className="art-home-account" data-testid="home-account" data-state="signed-out" aria-label={t('home.login')} title={t('home.login')}>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6" /><path d="M4.5 20c.6-4 3.8-6 7.5-6s6.9 2 7.5 6" /></svg>
+              <span>{t('home.login')}</span>
+            </a>
+          ) : (
+            <Link to="/art-slide/account" className="art-home-account" data-testid="home-account" data-state="signed-in" aria-label={t('home.account')} title={t('home.account')}>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6" /><path d="M4.5 20c.6-4 3.8-6 7.5-6s6.9 2 7.5 6" /></svg>
+              <span>{t('home.account')}</span>
+            </Link>
+          )
         )}
       </header>
       <Link to="/art-slide/daily" className="exhibit-card" data-testid="exhibit">

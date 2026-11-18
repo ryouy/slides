@@ -2162,20 +2162,25 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   .screen.artgame .confirm-bar .confirm-actions .btn { min-height: 44px; }
 }
 
-/* the account button: top right of the ART SLIDE home (only when the paid plan is on) — an icon on phones, icon + word on wider screens */
-.art-home-head { position: relative; }
+/* the account / sign-in button of the ART SLIDE home (only when the paid plan is on): its own small row above the title on phones,
+   top right beside the title on wide screens. It always carries its word ("Sign in" / "Account"). */
+.art-home-head { display: flex; flex-direction: column; }
 .art-home-account {
-  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
-  display: inline-flex; align-items: center; gap: 8px; min-width: 44px; height: 44px; padding: 0 12px; box-sizing: border-box;
-  justify-content: center; border: 1px solid var(--line); border-radius: 999px; color: var(--fg); text-decoration: none; font-size: 13px;
+  order: -1; align-self: flex-end; margin: 0 0 4px;
+  display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 14px 0 12px; box-sizing: border-box;
+  justify-content: center; border: 1px solid var(--line); border-radius: 999px; color: var(--fg); text-decoration: none; font-size: 13px; white-space: nowrap;
 }
-.art-home-account svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; flex: none; }
-.art-home-account span { display: none; }
+.art-home-account svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; flex: none; }
 .art-home-account:hover, .art-home-account:focus-visible { background: var(--surface); }
-@media (min-width: 640px) { .art-home-account span { display: inline; } }
-@media (max-width: 380px) { .art-home-account { right: -10px; min-width: 40px; padding: 0 8px; } } /* the title takes the width on very small phones: the button uses the page margin */
+@media (min-width: 640px) {
+  .art-home-head { position: relative; }
+  .art-home-account { position: absolute; right: 0; top: 50%; transform: translateY(-50%); order: 0; margin: 0; }
+}
 
-/* a purchase that could not start is explained, with the short code for support */
-.premium-error { display: grid; gap: 8px; padding: 12px 14px; border: 1px solid var(--fg); border-radius: 10px; text-align: center; }
-.premium-error p { margin: 0; font-weight: 600; line-height: 1.5; }
-.premium-error small { color: var(--muted); font-size: 11px; word-break: break-all; }
+/* two buttons side by side (Sync on/off and Sign out) */
+.account-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.account-row .btn { width: 100%; box-sizing: border-box; margin: 0; }
+.account-row > :only-child { grid-column: 1 / -1; }
+
+.drive-sync h3 { text-transform: none; letter-spacing: 0; } /* "Googleドライブ", not "GOOGLEドライブ" */
+.drive-sync p { text-wrap: balance; word-break: auto-phrase; line-break: strict; }

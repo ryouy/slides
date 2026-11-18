@@ -68,8 +68,9 @@ export function AccountPage() {
               // no contract, or one that has ended: subscribing (again) is offered
               canSubscribe(config, me) && <button className="btn primary wide" data-testid="account-subscribe" disabled={busy} onClick={() => go('premium')}>{t('premium.subscribe')}</button>
             )}
-            <DriveSync />
-            <button className="btn wide" data-testid="signout" disabled={busy} onClick={signOut}>{t('acct.signOut')}</button>
+            <DriveSync>
+              <button className="btn" data-testid="signout" disabled={busy} onClick={signOut}>{t('acct.signOut')}</button>
+            </DriveSync>
             <button className="link-quiet" data-testid="delete-account" disabled={busy} onClick={deleteAccount}>{t('acct.delete')}</button>
           </>
         )}
