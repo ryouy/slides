@@ -256,6 +256,7 @@ const en = {
   "art.descriptionJapanese": "Show Japanese description",
   "art.descriptionEnglish": "Show English description",
   'premium.title': 'ART SLIDE Premium',
+  'premium.cancelAnytime': 'Renews monthly. Cancel any time.',
   'premium.price': '¥200 / month (tax included)',
   'premium.f1': 'All artworks',
   'premium.f2': 'More puzzle sizes',

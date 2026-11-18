@@ -15,6 +15,7 @@ const es: Partial<Dict> = {
   'era.Before 1700': 'Antes de 1700', 'era.1700s': '1700s', 'era.1900s': '1900s',
   'level.3': 'Fácil', 'level.4': 'Normal', 'level.5': 'Difícil',
   'premium.title': 'ART SLIDE Premium',
+  'premium.cancelAnytime': 'Se renueva cada mes. Cancela cuando quieras.',
   'premium.price': '¥200 / mes (impuestos incluidos)',
   'premium.f1': 'Todas las obras',
   'premium.f2': 'Tableros más grandes',

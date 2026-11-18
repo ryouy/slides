@@ -15,6 +15,7 @@ const zh: Partial<Dict> = {
   'era.Before 1700': '1700年以前', 'era.1700s': '18世纪', 'era.1900s': '20世纪',
   'level.3': '简单', 'level.4': '普通', 'level.5': '困难',
   'premium.title': 'ART SLIDE Premium',
+  'premium.cancelAnytime': '每月自动续订，可随时取消。',
   'premium.price': '每月 ¥200（含税）',
   'premium.f1': '全部画作',
   'premium.f2': '更大的棋盘',

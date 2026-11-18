@@ -15,6 +15,7 @@ const ja: Partial<Dict> = {
   'era.Before 1700': '1700年より前', 'era.1700s': '1700年代', 'era.1900s': '1900年代',
   'level.3': 'やさしい', 'level.4': 'ふつう', 'level.5': 'むずかしい',
   'premium.title': 'ART SLIDE Premium',
+  'premium.cancelAnytime': '毎月自動更新。いつでも解約できます。',
   'premium.price': '月額 ¥200（税込）',
   'premium.f1': 'すべての絵画',
   'premium.f2': 'さらに大きな盤面',

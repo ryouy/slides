@@ -24,7 +24,10 @@ export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' })
   return (
     <div className="premium" data-testid="premium">
       {reason && <p className="premium-reason" data-testid="premium-reason"><LockIcon size={16} /> {t(reason === 'art' ? 'premium.lockedArt' : reason === 'photos' ? 'premium.lockedPhotos' : 'premium.lockedSize')}</p>}
-      <p className="premium-price"><b>{t('premium.price')}</b></p>
+      <div className="premium-hero">
+        <p className="premium-price"><b>{t('premium.price')}</b></p>
+        <p className="premium-sub">{t('premium.cancelAnytime')}</p>
+      </div>
       <ul className="premium-list">
         <li>{t('premium.f1')}</li>
         <li>{t('premium.f2')}</li>
@@ -60,7 +63,7 @@ export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' })
       )}
       {state === 'off' && !premium && <p className="muted" data-testid="premium-soon">{t('premium.soon')}</p>}
       {state === 'signin' && !premium && <p className="muted" data-testid="premium-signin">{t('premium.signIn')}</p>}
-      <p className="muted premium-note">{t('premium.free')}</p>
+      <p className="premium-free">{t('premium.free')}</p>
       <p className="muted premium-note"><Link to="/terms">{t('common.terms')}</Link> · <Link to="/privacy">{t('common.privacy')}</Link> · <Link to="/commerce" data-testid="premium-commerce-link">{t('common.commerce')}</Link></p>
     </div>
   );
@@ -105,10 +108,12 @@ export function PremiumPage() {
   }, [back, premium]);
   return (
     <Page title={t('premium.title')}>
-      {back && !premium && <p className="muted" role="status" data-testid="premium-thanks">{t('premium.thanks')}</p>}
-      {tester && <TesterBox signedIn={!!me?.signedIn} id={me?.id} canPurchase={me?.canPurchase === true} />}
-      <PremiumPanel />
-      <button className="btn wide" onClick={() => go('gallery')}>{t('art.change')}</button>
+      <div className="premium-page">
+        {back && !premium && <p className="premium-thanks" role="status" data-testid="premium-thanks">{t('premium.thanks')}</p>}
+        {tester && <TesterBox signedIn={!!me?.signedIn} id={me?.id} canPurchase={me?.canPurchase === true} />}
+        <PremiumPanel />
+        <button className="btn wide premium-back" onClick={() => go('gallery')}>{t('art.change')}</button>
+      </div>
     </Page>
   );
 }

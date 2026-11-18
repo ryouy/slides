@@ -15,6 +15,7 @@ const de: Partial<Dict> = {
   'era.Before 1700': 'Vor 1700', 'era.1700s': '1700er', 'era.1900s': '1900er',
   'level.3': 'Leicht', 'level.4': 'Mittel', 'level.5': 'Schwer',
   'premium.title': 'ART SLIDE Premium',
+  'premium.cancelAnytime': 'Verlängert sich monatlich. Jederzeit kündbar.',
   'premium.price': '¥200 / Monat (inkl. Steuern)',
   'premium.f1': 'Alle Gemälde',
   'premium.f2': 'Mehr Spielfeldgrößen',
