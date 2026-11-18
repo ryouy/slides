@@ -226,26 +226,32 @@ test('changing level after moves asks first; SHUFFLE re-places the pieces', asyn
 
 test('SHUFFLE really slides the tiles one by one, never asks for confirmation, and always stays solvable', async ({ page }) => {
   await page.goto('/art-slide/play/monet-water-lilies');
+  await expect(page.locator('.art-loading')).toHaveCount(0); // the painting is on the board before we start
   const first = await snap(page);
   const dur = await page.locator('.apiece').first().evaluate((e) => getComputedStyle(e).transitionDuration);
   expect(parseFloat(dur)).toBeGreaterThan(0.1); // tiles glide, they do not jump
+  // Record the sliding from INSIDE the page (a MutationObserver sees every step), instead of polling it from the test:
+  // polling under a busy machine misses steps and made this test timing-dependent.
+  await page.evaluate(() => {
+    const w = window as unknown as { __seen: Set<string>; __buttonAlwaysDisabled: boolean; __sawShuffling: boolean };
+    w.__seen = new Set(); w.__buttonAlwaysDisabled = true; w.__sawShuffling = false;
+    const read = () => [...document.querySelectorAll('.atile')].map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).join();
+    const check = () => {
+      if (!document.querySelector('.aboard.shuffling')) return;
+      w.__sawShuffling = true;
+      w.__seen.add(read());
+      if (!(document.querySelector('[data-testid=shuffle]') as HTMLButtonElement).disabled) w.__buttonAlwaysDisabled = false;
+    };
+    new MutationObserver(check).observe(document.body, { subtree: true, attributes: true, childList: true, attributeFilter: ['data-cell', 'class', 'disabled'] });
+  });
   await page.getByTestId('shuffle').click();
   await expect(page.getByRole('alert')).toHaveCount(0);
   await expect(page.locator('.aboard')).toHaveClass(/shuffling/);
-  const seen = new Set<string>();
-  const t0 = Date.now();
-  let sawDisabled = false;
-  while (Date.now() - t0 < 12000) {
-    const st = await page.evaluate(() => ({ s: !!document.querySelector('.aboard.shuffling'), d: (document.querySelector('[data-testid=shuffle]') as HTMLButtonElement).disabled, b: [...document.querySelectorAll('.atile')].map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).join() }));
-    if (!st.s) break;
-    seen.add(st.b);
-    expect(st.d).toBe(true);
-    sawDisabled = true;
-    await page.waitForTimeout(40);
-  }
-  expect(sawDisabled).toBe(true);
-  expect(seen.size).toBeGreaterThanOrEqual(8);
-  await shuffleDone(page);
+  await shuffleDone(page); // (the observer has recorded the whole sliding by now)
+  const rec = await page.evaluate(() => { const w = window as unknown as { __seen: Set<string>; __buttonAlwaysDisabled: boolean; __sawShuffling: boolean }; return { steps: w.__seen.size, disabled: w.__buttonAlwaysDisabled, saw: w.__sawShuffling }; });
+  expect(rec.saw).toBe(true);
+  expect(rec.disabled).toBe(true); // the button is off for the whole shuffle
+  expect(rec.steps).toBeGreaterThanOrEqual(8); // really one tile after another, not a jump
   await expect(page.getByTestId('moves')).toHaveText('0');
   expect(await snap(page)).not.toBe(first);
   const sol = await solution(page, 'free');
@@ -819,7 +825,7 @@ test('home menu: the "more" section is called Menu (not "More"), and in Japanese
 });
 
 // ---- phones and tablets: roomy controls, and a warning that never shifts the board ----
-for (const [w, h] of [[320, 640], [360, 740], [390, 844], [768, 1024]] as const) {
+for (const [w, h] of [[320, 640], [360, 740], [375, 667], [390, 844], [430, 932], [768, 1024], [899, 900], [667, 375]] as const) {
   test(`${w}px wide: large well-spaced controls, Information kept away from Shuffle, no overflow`, async ({ page }, info) => {
     test.skip(info.project.name !== 'mobile', 'touch layouts only');
     await page.setViewportSize({ width: w, height: h });
@@ -865,7 +871,7 @@ test('daily on a phone: two large buttons, nothing else', async ({ page }, info)
   await expect(page.getByTestId('shuffle')).toHaveCount(0);
 });
 
-for (const [w, h] of [[320, 640], [390, 844], [1280, 800]] as const) {
+for (const [w, h] of [[320, 640], [375, 667], [390, 844], [430, 932], [899, 900], [1280, 800]] as const) {
   test(`the piece-count warning at ${w}px: two short lines, equal large buttons, and the board does not move`, async ({ page }, info) => {
     test.skip((w >= 900) !== (info.project.name === 'desktop'), 'one run per layout');
     await page.setViewportSize({ width: w, height: h });
@@ -874,7 +880,9 @@ for (const [w, h] of [[320, 640], [390, 844], [1280, 800]] as const) {
     const sol = await solution(page, 'free');
     await page.locator(`.atile[data-cell="${sol[0]}"]`).click();
     await expect(page.getByTestId('moves')).toHaveText('1');
-    const boardBefore = (await page.locator('.aboard').boundingBox())!;
+    // the board's place in the PAGE (not the viewport: clicking a tile or the menu may scroll the page, which is not a layout shift)
+    const boardTop = () => page.locator('.aboard').evaluate((e) => Math.round(e.getBoundingClientRect().top + window.scrollY));
+    const boardBefore = await boardTop();
     await setLevel(page, 4);
     const bar = page.getByTestId('confirm-bar');
     await expect(bar).toBeVisible();
@@ -892,9 +900,8 @@ for (const [w, h] of [[320, 640], [390, 844], [1280, 800]] as const) {
     expect(barBox.x).toBeGreaterThanOrEqual(0);
     expect(barBox.x + barBox.width).toBeLessThanOrEqual(w);
     expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
-    const boardAfter = (await page.locator('.aboard').boundingBox())!;
     if (w < 900) {
-      expect(Math.abs(boardAfter.y - boardBefore.y)).toBeLessThan(1); // phones: the sheet floats, the board stays where it was
+      expect(Math.abs((await boardTop()) - boardBefore)).toBeLessThan(1); // phones: the sheet floats, the board stays where it was
       expect(barBox.y + barBox.height).toBeLessThanOrEqual(h);
       expect(barBox.y).toBeGreaterThan(h / 2); // at the bottom, in the thumb's reach
     }
@@ -918,4 +925,41 @@ test('the warning is two lines in Japanese too', async ({ page }, info) => {
   await expect(lines).toHaveCount(2);
   await expect(lines.nth(0)).toContainText('に切り替えますか？');
   await expect(lines.nth(1)).toHaveText('進行中のデータは失われます。');
+});
+
+test('a landscape phone: the warning is one compact row, so the board stays in view', async ({ page }, info) => {
+  test.skip(info.project.name !== 'mobile', 'touch layouts only');
+  await page.setViewportSize({ width: 667, height: 375 });
+  await page.goto('/art-slide/play/seurat-grande-jatte');
+  await page.waitForTimeout(450);
+  const sol = await solution(page, 'free');
+  await page.locator(`.atile[data-cell="${sol[0]}"]`).click();
+  await setLevel(page, 4);
+  const bar = page.getByTestId('confirm-bar');
+  await expect(bar).toBeVisible();
+  await page.waitForTimeout(450);
+  const b = (await bar.boundingBox())!;
+  expect(b.height).toBeLessThanOrEqual(90); // text on the left, buttons on the right
+  expect(b.y + b.height).toBeLessThanOrEqual(375);
+  for (const id of ['confirm-size', 'confirm-cancel']) expect((await page.getByTestId(id).boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  const ok = (await page.getByTestId('confirm-size').boundingBox())!;
+  expect(ok.x).toBeGreaterThan(b.x + b.width / 2); // the buttons are on the right half
+  expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
+  await page.getByTestId('confirm-cancel').click();
+  await expect(bar).toHaveCount(0);
+});
+
+test('a tap on the warning sheet lands on the sheet, never on a tile behind it', async ({ page }, info) => {
+  test.skip(info.project.name !== 'mobile', 'touch layouts only');
+  await page.setViewportSize({ width: 320, height: 520 }); // short: the sheet reaches over the lower board
+  await page.goto('/art-slide/play/seurat-grande-jatte');
+  await page.waitForTimeout(450);
+  const sol = await solution(page, 'free');
+  await page.locator(`.atile[data-cell="${sol[0]}"]`).click();
+  await setLevel(page, 4);
+  await expect(page.getByTestId('confirm-bar')).toBeVisible();
+  await page.waitForTimeout(450);
+  const b = (await page.getByTestId('confirm-bar').boundingBox())!;
+  const hit = await page.evaluate(({ x, y }) => { const e = document.elementFromPoint(x, y); return e?.closest('.confirm-bar') ? 'sheet' : e?.closest('.atile') ? 'tile' : 'other'; }, { x: b.x + b.width / 2, y: b.y + 4 });
+  expect(hit).toBe('sheet');
 });
