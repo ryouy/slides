@@ -341,3 +341,46 @@ test('the Stripe address is only followed when it is https (or on this site)', a
   await expect(page.getByTestId('checkout-error-code')).toContainText('no_url');
   await expect(page).toHaveURL(/\/art-slide\/premium$/);
 });
+
+test('gallery: Premium-locked paintings are at the bottom of every group, whichever grouping is chosen', async ({ page }) => {
+  await gating(page);
+  await mockApi(page); // a free visitor
+  await page.goto('/art-slide/gallery');
+  await expect(page.locator('a.gcard').first()).toBeVisible();
+  const lockedLast = async (label: string) => {
+    const flags = await page.locator('a.gcard').evaluateAll((els) => els.map((e) => !!e.querySelector('[data-testid^="lock-"]')));
+    expect(flags.length, label).toBeGreaterThan(0);
+    const first = flags.indexOf(true);
+    expect(first === -1 || flags.slice(first).every(Boolean), `${label}: an open painting comes after a locked one`).toBe(true);
+    return flags.filter(Boolean).length;
+  };
+  const choose = async (name: RegExp) => {
+    await page.locator('[data-testid=group-by]:visible').click();
+    await page.locator('[data-testid=group-by-options]:visible').getByRole('option', { name }).click();
+  };
+  let seenLocked = 0;
+  for (const [name, label] of [[/Theme/, 'theme'], [/Era/, 'era']] as const) {
+    await choose(name);
+    const tabs = page.locator('[data-testid^="group-tab-"]');
+    const n = await tabs.count();
+    expect(n).toBeGreaterThan(1);
+    for (let i = 0; i < n; i++) { await tabs.nth(i).click(); seenLocked += await lockedLast(`${label} tab ${i}`); }
+  }
+  await choose(/No grouping/);
+  seenLocked += await lockedLast('no grouping');
+  expect(seenLocked).toBeGreaterThan(20); // (the check really looked at locked paintings)
+  // the same with the random order
+  await page.getByTestId('gal-random').click();
+  await lockedLast('no grouping, random');
+  // and there is no "Artist" grouping
+  await page.locator('[data-testid=group-by]:visible').click();
+  await expect(page.locator('[data-testid=group-by-options]:visible').getByRole('option', { name: /Artist/ })).toHaveCount(0);
+});
+
+test('gallery: a Premium visitor sees no locks and the order is the normal one', async ({ page }) => {
+  await gating(page);
+  await mockApi(page, { me: PREMIUM });
+  await page.goto('/art-slide/gallery');
+  await expect(page.locator('a.gcard').first()).toBeVisible();
+  await expect(page.locator('[data-testid^="lock-"]')).toHaveCount(0);
+});

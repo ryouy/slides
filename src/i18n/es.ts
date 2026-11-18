@@ -8,7 +8,7 @@ const es: Partial<Dict> = {
   'art.exhibit': 'OBRA DEL DÍA', 'art.exhibitN': 'OBRA DEL DÍA · #{n}', 'art.gallery': 'Visitar la galería', 'art.random': 'Pintura al azar', 'art.resume': 'Continuar',
   'gal.title': 'GALERÍA', 'gal.search': 'Buscar título, artista, tema…', 'gal.groupBy': 'Agrupar por', 'gal.sortBy': 'Ordenar por',
   'gal.filtered': '{n} de {total}', 'gal.empty': 'Ninguna pintura coincide con «{q}».',
-  'group.none': 'Sin agrupar', 'group.theme': 'Tema', 'group.artist': 'Artista', 'group.era': 'Época',
+  'group.none': 'Sin agrupar', 'group.theme': 'Tema', 'group.era': 'Época',
   'sort.artist': 'Artista A–Z', 'sort.title': 'Título A–Z', 'sort.year-asc': 'Más antiguas', 'sort.year-desc': 'Más recientes',
   'theme.Landscape': 'Paisaje', 'theme.Sea & Water': 'Mar y agua', 'theme.City & Street': 'Ciudad y calle', 'theme.People & Daily Life': 'Gente y vida diaria',
   'theme.Portrait': 'Retrato', 'theme.Still Life & Flowers': 'Bodegón y flores', 'theme.Myth & Religion': 'Mito y religión', 'theme.Japanese Prints': 'Grabados japoneses',

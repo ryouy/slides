@@ -8,7 +8,7 @@ const ja: Partial<Dict> = {
   'art.exhibit': '本日の展示', 'art.exhibitN': '今日の一枚 · No.{n}', 'art.gallery': 'ギャラリー', 'art.random': 'ランダムに遊ぶ', 'art.resume': '続きから',
   'gal.title': 'ギャラリー', 'gal.search': 'タイトル・作者・テーマで検索…', 'gal.groupBy': 'グループ', 'gal.sortBy': '並べ替え',
   'gal.filtered': '{n} / {total} 点', 'gal.empty': '「{q}」に一致する絵画はありません。',
-  'group.none': 'なし', 'group.theme': 'テーマ', 'group.artist': '作者', 'group.era': '年代',
+  'group.none': 'なし', 'group.theme': 'テーマ', 'group.era': '年代',
   'sort.artist': '作者順', 'sort.title': 'タイトル順', 'sort.year-asc': '古い順', 'sort.year-desc': '新しい順',
   'theme.Landscape': '風景', 'theme.Sea & Water': '海と水辺', 'theme.City & Street': '街並み', 'theme.People & Daily Life': '人々と暮らし',
   'theme.Portrait': '肖像', 'theme.Still Life & Flowers': '静物と花', 'theme.Myth & Religion': '神話・宗教', 'theme.Japanese Prints': '浮世絵',

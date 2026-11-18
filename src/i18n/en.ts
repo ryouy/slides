@@ -36,7 +36,6 @@ const en = {
   'gal.empty': 'No paintings match “{q}”.',
   'group.none': 'No grouping',
   'group.theme': 'Theme',
-  'group.artist': 'Artist',
   'group.era': 'Era',
   'sort.artist': 'Artist A–Z',
   'sort.title': 'Title A–Z',

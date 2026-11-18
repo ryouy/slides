@@ -426,7 +426,7 @@ describe('gallery: search, sort and grouping', () => {
     expect(artists).toEqual([...artists].sort((x, y) => x.localeCompare(y, 'en', { sensitivity: 'base' })));
   });
   it('groups every work exactly once, in a sensible group order', () => {
-    for (const by of ['none', 'theme', 'era', 'artist'] as const) {
+    for (const by of ['none', 'theme', 'era'] as const) {
       const groups = groupArtworks(ARTWORKS, by, 'year-asc');
       const ids = groups.flatMap((g) => g.items.map((a) => a.id));
       expect(ids.sort()).toEqual(ARTWORKS.map((a) => a.id).sort());
@@ -437,10 +437,6 @@ describe('gallery: search, sort and grouping', () => {
     expect(eras).toEqual(ERA_ORDER.filter((e) => eras.includes(e))); // chronological
     const themes = groupArtworks(ARTWORKS, 'theme', 'title').map((g) => g.label);
     expect(themes).toEqual(THEME_ORDER.filter((t) => themes.includes(t)));
-    const artistGroups = groupArtworks(ARTWORKS, 'artist', 'title');
-    expect(artistGroups.length).toBeGreaterThanOrEqual(40);
-    const keys = artistGroups.map((g) => g.items[0].artistSort);
-    expect(keys).toEqual([...keys].sort((x, y) => x.localeCompare(y, 'en', { sensitivity: 'base' })));
     // sort applies inside each group
     for (const g of groupArtworks(ARTWORKS, 'theme', 'year-asc')) {
       const ys = g.items.map((a) => a.yearStart);

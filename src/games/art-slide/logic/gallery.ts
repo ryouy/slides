@@ -1,7 +1,7 @@
 import type { Artwork } from '../types';
 import { rngFromString } from '../../../utils/rng';
 
-export type GroupBy = 'none' | 'artist' | 'era' | 'theme';
+export type GroupBy = 'none' | 'era' | 'theme';
 export type SortBy = 'artist' | 'title' | 'year-asc' | 'year-desc' | 'random';
 export type GalleryColumns = 'auto' | 1 | 2 | 3 | 4 | 5 | 6;
 export const GALLERY_COLUMN_OPTIONS: readonly GalleryColumns[] = ['auto', 1, 2, 3, 4, 5, 6];
@@ -9,7 +9,6 @@ export const GALLERY_COLUMN_OPTIONS: readonly GalleryColumns[] = ['auto', 1, 2, 
 export const GROUP_OPTIONS: { id: GroupBy; label: string }[] = [
   { id: 'none', label: 'No grouping' },
   { id: 'theme', label: 'Theme' },
-  { id: 'artist', label: 'Artist' },
   { id: 'era', label: 'Era' },
 ];
 export const SORT_OPTIONS: { id: SortBy; label: string }[] = [
@@ -70,21 +69,19 @@ export interface ArtGroup {
 }
 
 /** Groups (already filtered) artworks; items inside each group follow `sortBy`. Empty groups are omitted. */
-export function groupArtworks(list: readonly Artwork[], groupBy: GroupBy, sortBy: SortBy, randomSeed = 0): ArtGroup[] {
-  const sorted = sortArtworks(list, sortBy, randomSeed);
+export function groupArtworks(list: readonly Artwork[], groupBy: GroupBy, sortBy: SortBy, randomSeed = 0, isLocked: (a: Artwork) => boolean = () => false): ArtGroup[] {
+  // within every group the paintings the visitor can play come first, the Premium-locked ones last (each part keeps the chosen order)
+  const freeFirst = (items: Artwork[]) => [...items.filter((a) => !isLocked(a)), ...items.filter(isLocked)];
+  const sorted = freeFirst(sortArtworks(list, sortBy, randomSeed));
   if (groupBy === 'none') return sorted.length ? [{ key: 'all', label: '', items: sorted }] : [];
-  const keyOf = (a: Artwork) => (groupBy === 'artist' ? a.artist : groupBy === 'era' ? a.era : a.theme);
+  const keyOf = (a: Artwork) => (groupBy === 'era' ? a.era : a.theme);
   const map = new Map<string, Artwork[]>();
   for (const a of sorted) {
     const k = keyOf(a);
     (map.get(k) ?? map.set(k, []).get(k)!).push(a);
   }
-  let keys = [...map.keys()];
-  if (groupBy === 'artist') keys.sort((x, y) => byText(map.get(x)![0].artistSort, map.get(y)![0].artistSort));
-  else {
-    const order = groupBy === 'era' ? ERA_ORDER : THEME_ORDER;
-    keys = keys.sort((x, y) => (order.indexOf(x) + 1 || 99) - (order.indexOf(y) + 1 || 99) || byText(x, y));
-  }
+  const order = groupBy === 'era' ? ERA_ORDER : THEME_ORDER;
+  const keys = [...map.keys()].sort((x, y) => (order.indexOf(x) + 1 || 99) - (order.indexOf(y) + 1 || 99) || byText(x, y));
   return keys.map((k) => ({ key: k, label: k, items: map.get(k)! }));
 }
 

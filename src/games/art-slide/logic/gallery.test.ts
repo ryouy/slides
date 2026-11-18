@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Artwork } from '../types';
-import { groupArtworks, sortArtworks } from './gallery';
+import { GROUP_OPTIONS, groupArtworks, sortArtworks } from './gallery';
 import { defaultArtSave, migrateArt } from '../storage';
 
 const paintings = Array.from({ length: 30 }, (_, i) => ({
@@ -42,7 +42,7 @@ describe('gallery preferences', () => {
     const old = defaultArtSave();
     const migrated = migrateArt({ ...old, gallery: { groupBy: 'artist', sortBy: 'year-desc' } });
     expect(migrated.gallery).toEqual({
-      groupBy: 'artist', columns: 'auto', randomSeed: 0, randomized: false,
+      groupBy: 'theme', columns: 'auto', randomSeed: 0, randomized: false, // grouping by artist no longer exists: the default is used
     });
     expect('sortBy' in migrated.gallery).toBe(false);
   });
@@ -59,5 +59,44 @@ describe('gallery preferences', () => {
     const stored = defaultArtSave();
     stored.gallery = { groupBy: 'none', columns: 5, randomSeed: 712, randomized: true };
     expect(migrateArt(stored).gallery).toEqual(stored.gallery);
+  });
+});
+
+describe('Premium-locked paintings go last in every group', () => {
+  const locked = (a: Artwork) => Number(a.id.split('-')[1]) % 3 === 0; // every third painting is locked
+  const sorts = ['artist', 'title', 'year-asc', 'year-desc', 'random'] as const;
+
+  it('whatever the grouping or sort: inside each group the open ones come first, the locked ones after', () => {
+    for (const by of ['none', 'theme', 'era'] as const) {
+      for (const sort of sorts) {
+        for (const g of groupArtworks(paintings, by, sort, 7, locked)) {
+          const flags = g.items.map(locked);
+          const firstLocked = flags.indexOf(true);
+          expect(firstLocked === -1 || flags.slice(firstLocked).every(Boolean), `${by}/${sort}/${g.key}`).toBe(true); // no open painting after a locked one
+        }
+      }
+    }
+  });
+
+  it('each part keeps the chosen order, nothing is lost or repeated, and the groups themselves do not move', () => {
+    const plain = groupArtworks(paintings, 'theme', 'year-asc', 0);
+    const ordered = groupArtworks(paintings, 'theme', 'year-asc', 0, locked);
+    expect(ordered.map((g) => g.key)).toEqual(plain.map((g) => g.key));
+    for (const g of ordered) {
+      const same = plain.find((p) => p.key === g.key)!;
+      expect([...g.items].map((a) => a.id).sort()).toEqual([...same.items].map((a) => a.id).sort());
+      expect(g.items.filter((a) => !locked(a)).map((a) => a.id)).toEqual(same.items.filter((a) => !locked(a)).map((a) => a.id));
+      expect(g.items.filter(locked).map((a) => a.id)).toEqual(same.items.filter(locked).map((a) => a.id));
+    }
+  });
+
+  it('with nothing locked (a Premium visitor, or the paid plan off) the order is exactly as before', () => {
+    for (const by of ['none', 'theme', 'era'] as const) {
+      expect(groupArtworks(paintings, by, 'title', 3, () => false)).toEqual(groupArtworks(paintings, by, 'title', 3));
+    }
+  });
+
+  it('there is no grouping by artist any more', () => {
+    expect(GROUP_OPTIONS.map((o) => o.id)).toEqual(['none', 'theme', 'era']);
   });
 });

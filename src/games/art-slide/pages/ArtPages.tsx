@@ -121,8 +121,8 @@ export function ArtGallery() {
   const adEvery = galleryCols * 3;
   const filtered = useMemo(() => filterArtworks(ARTWORKS, query), [query]);
   const groups = useMemo(
-    () => groupArtworks(filtered, groupBy, randomized ? 'random' : 'artist', randomSeed),
-    [filtered, groupBy, randomized, randomSeed],
+    () => groupArtworks(filtered, groupBy, randomized ? 'random' : 'artist', randomSeed, (a) => isArtworkLocked(a.id, premium, gating)),
+    [filtered, groupBy, randomized, randomSeed, premium, gating],
   );
   const activeGroup = groups.find((g) => g.key === selectedGroup) ?? groups[0];
   const activeIndex = activeGroup ? groups.findIndex((g) => g.key === activeGroup.key) : -1;

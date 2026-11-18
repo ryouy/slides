@@ -137,9 +137,10 @@ test('gallery: search, group by theme/artist/era shown as tabs, randomised order
   await expect(page.locator('.gal-empty')).toBeVisible();
   await page.getByTestId('gal-search').fill('');
   await expect(page.getByTestId('gal-count')).toHaveCount(0); // the count only shows while filtering
-  // artists, then eras (oldest first)
-  await chooseSlide(page, 'group-by', /Artist/);
-  expect(await page.locator('[data-testid^="group-tab-"]').count()).toBeGreaterThanOrEqual(40);
+  // there is no grouping by artist; eras come oldest first
+  await page.locator('[data-testid=group-by]:visible').click();
+  await expect(page.locator('[data-testid=group-by-options]:visible').getByRole('option', { name: /Artist/ })).toHaveCount(0);
+  await page.keyboard.press('Escape');
   await chooseSlide(page, 'group-by', /Era/);
   const heads = await page.locator('[data-testid^="group-tab-"]').allInnerTexts();
   expect(heads[0]).toMatch(/before 1700/i);

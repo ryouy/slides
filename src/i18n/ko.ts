@@ -8,7 +8,7 @@ const ko: Partial<Dict> = {
   'art.exhibit': '오늘의 전시', 'art.exhibitN': '오늘의 전시 · #{n}', 'art.gallery': '갤러리 둘러보기', 'art.random': '무작위로 고르기', 'art.resume': '이어하기',
   'gal.title': '갤러리', 'gal.search': '제목, 화가, 주제 검색…', 'gal.groupBy': '그룹', 'gal.sortBy': '정렬',
   'gal.filtered': '{n} / {total}', 'gal.empty': '“{q}”와(과) 일치하는 그림이 없습니다.',
-  'group.none': '그룹 없음', 'group.theme': '주제', 'group.artist': '화가', 'group.era': '시대',
+  'group.none': '그룹 없음', 'group.theme': '주제', 'group.era': '시대',
   'sort.artist': '화가 A–Z', 'sort.title': '제목 A–Z', 'sort.year-asc': '오래된 순', 'sort.year-desc': '최신 순',
   'theme.Landscape': '풍경', 'theme.Sea & Water': '바다와 물', 'theme.City & Street': '도시와 거리', 'theme.People & Daily Life': '사람과 일상',
   'theme.Portrait': '초상', 'theme.Still Life & Flowers': '정물과 꽃', 'theme.Myth & Religion': '신화와 종교', 'theme.Japanese Prints': '우키요에',

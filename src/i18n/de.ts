@@ -8,7 +8,7 @@ const de: Partial<Dict> = {
   'art.exhibit': 'WERK DES TAGES', 'art.exhibitN': 'WERK DES TAGES · #{n}', 'art.gallery': 'Zur Galerie', 'art.random': 'Zufälliges Gemälde', 'art.resume': 'Fortsetzen',
   'gal.title': 'GALERIE', 'gal.search': 'Titel, Künstler, Thema suchen…', 'gal.groupBy': 'Gruppieren nach', 'gal.sortBy': 'Sortieren nach',
   'gal.filtered': '{n} von {total}', 'gal.empty': 'Keine Gemälde passen zu „{q}“.',
-  'group.none': 'Keine Gruppen', 'group.theme': 'Thema', 'group.artist': 'Künstler', 'group.era': 'Epoche',
+  'group.none': 'Keine Gruppen', 'group.theme': 'Thema', 'group.era': 'Epoche',
   'sort.artist': 'Künstler A–Z', 'sort.title': 'Titel A–Z', 'sort.year-asc': 'Älteste zuerst', 'sort.year-desc': 'Neueste zuerst',
   'theme.Landscape': 'Landschaft', 'theme.Sea & Water': 'Meer & Wasser', 'theme.City & Street': 'Stadt & Straße', 'theme.People & Daily Life': 'Menschen & Alltag',
   'theme.Portrait': 'Porträt', 'theme.Still Life & Flowers': 'Stillleben & Blumen', 'theme.Myth & Religion': 'Mythos & Religion', 'theme.Japanese Prints': 'Japanische Holzschnitte',

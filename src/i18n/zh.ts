@@ -8,7 +8,7 @@ const zh: Partial<Dict> = {
   'art.exhibit': '今日展品', 'art.exhibitN': '今日展品 · #{n}', 'art.gallery': '前往画廊', 'art.random': '随机选一幅', 'art.resume': '继续拼图',
   'gal.title': '画廊', 'gal.search': '搜索标题、画家、主题…', 'gal.groupBy': '分组', 'gal.sortBy': '排序',
   'gal.filtered': '{n} / {total}', 'gal.empty': '没有与“{q}”匹配的画作。',
-  'group.none': '不分组', 'group.theme': '主题', 'group.artist': '画家', 'group.era': '年代',
+  'group.none': '不分组', 'group.theme': '主题', 'group.era': '年代',
   'sort.artist': '画家 A–Z', 'sort.title': '标题 A–Z', 'sort.year-asc': '由旧到新', 'sort.year-desc': '由新到旧',
   'theme.Landscape': '风景', 'theme.Sea & Water': '海与水', 'theme.City & Street': '城市街景', 'theme.People & Daily Life': '人物与生活',
   'theme.Portrait': '肖像', 'theme.Still Life & Flowers': '静物与花卉', 'theme.Myth & Religion': '神话与宗教', 'theme.Japanese Prints': '浮世绘',
