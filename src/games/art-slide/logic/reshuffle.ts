@@ -29,6 +29,7 @@ export function planReshuffle(state: ArtState, seed: string): ReshufflePlan {
   const { steps, minMisplaced } = visibleShuffleSteps(state.puzzle.size, d);
   const rng = rngFromString(`${ART_GENERATOR_VERSION}|shuffle|${seed}|${d.cols}x${d.rows}`);
   const { board, clicks } = shuffleFromBoard(rng, d, state.board, steps, minMisplaced);
+  const daily = state.puzzle.mode === 'daily';
   const initialBlank = state.puzzle.initial.indexOf(null);
   // blank path from the SOLVED board to the old initial board (puzzle.solution is its reverse) ...
   const scramble = [...state.puzzle.solution.slice().reverse(), initialBlank];
@@ -36,8 +37,10 @@ export function planReshuffle(state: ArtState, seed: string): ReshufflePlan {
   const played = (state.blankPath ?? [initialBlank]).slice(1);
   const full = reduceBlankPath([...scramble, ...played, ...clicks]);
   const puzzle: ArtPuzzle = {
-    id: `art-${state.puzzle.artworkId}-${state.puzzle.size}-${seed}`,
-    mode: 'endless',
+    // the daily painting stays the daily (same id, number and mode): a reload resumes it and a clear is recorded as today's daily
+    id: daily ? state.puzzle.id : `art-${state.puzzle.artworkId}-${state.puzzle.size}-${seed}`,
+    mode: daily ? 'daily' : 'endless',
+    ...(daily && state.puzzle.number !== undefined ? { number: state.puzzle.number } : {}),
     size: state.puzzle.size,
     cols: d.cols,
     rows: d.rows,

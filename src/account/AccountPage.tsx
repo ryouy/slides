@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLang, useT } from '../i18n';
 import { go } from '../router';
 import { canSubscribe, openPortal } from '../premium/billing';
@@ -6,13 +6,17 @@ import { useEntitlement } from '../premium/entitlement';
 import { Page } from '../ui/Pages';
 import { postJson, signInUrl } from './api';
 import { DriveSync } from '../sync/DriveSync';
-import { refreshAccount, useAccount } from './store';
+import { initAccount, refreshAccount, testerRequested, useAccount } from './store';
 
 /** Contract states in which the portal (payment method, cancel) is what the visitor needs. */
 const OPEN = new Set(['active', 'trialing', 'past_due', 'unpaid', 'incomplete', 'paused']);
 
 /** Account: Google sign-in, plan and subscription management. Shown only when the paid plan is switched on. */
 export function AccountPage() {
+  // the sign-in page is also reachable while the paid plan is off in this build: /art-slide/account?tester
+  useEffect(() => {
+    if (testerRequested()) void initAccount(true);
+  }, []);
   const t = useT();
   const lang = useLang();
   const { gating, premium } = useEntitlement();
@@ -44,12 +48,12 @@ export function AccountPage() {
   return (
     <Page title={t('acct.title')}>
       <div className="account" data-testid="account">
-        {!gating || (ready && !config.auth) ? (
+        {!(gating || testerRequested()) || (ready && !config.auth) ? (
           <p className="muted" data-testid="account-unavailable">{t('acct.unavailable')}</p>
         ) : !ready ? (
           <p className="muted">…</p>
         ) : !me?.signedIn ? (
-          <a className="btn primary wide" data-testid="signin" href={signInUrl('/art-slide/account')}>{t('acct.signIn')}</a>
+          <a className="btn primary wide" data-testid="signin" href={signInUrl(location.pathname + location.search)}>{t('acct.signIn')}</a>
         ) : (
           <>
             <p className="account-name" data-testid="account-name"><b>{me.name ?? 'Google'}</b></p>

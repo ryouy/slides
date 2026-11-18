@@ -44,6 +44,17 @@ async function shuffleDone(page: Page) {
     return dom === saved && st.status === 'playing' && st.moves === 0;
   });
 }
+/** Like shuffleDone, for the daily (its saved state is under inProgress.daily). */
+async function shuffleDailyDone(page: Page) {
+  await expect(page.locator('.aboard')).not.toHaveClass(/shuffling/, { timeout: 12000 });
+  await page.waitForFunction(() => {
+    const st = JSON.parse(localStorage.getItem('artslide:save') ?? '{}').inProgress?.daily;
+    if (!st) return false;
+    const dom = [...document.querySelectorAll('.atile')].filter((e) => e.getAttribute('data-cell') !== '').map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).sort().join();
+    const saved = st.board.map((t: number | null, c: number) => (t === null ? '' : `${t}@${c}`)).filter(Boolean).sort().join();
+    return dom === saved && st.status === 'playing' && st.moves === 0;
+  });
+}
 const tiles = (page: Page) => page.locator('.aboard .apiece:not(.ghost)');
 const snap = (page: Page) => page.locator('.atile').evaluateAll((els) => els.map((e) => `${e.getAttribute('data-tile')}@${e.getAttribute('data-cell')}`).join());
 
@@ -463,13 +474,13 @@ test('progress survives a reload', async ({ page }) => {
   await expect(page.getByTestId('art-resume')).toBeVisible();
 });
 
-test('daily: normal level, one painting for everyone, no level switch or shuffle, records the clear', async ({ page, browser }) => {
+test('daily: normal level, one painting for everyone, no level switch (but a shuffle), records the clear', async ({ page, browser }) => {
   await page.goto('/art-slide/daily');
   const d = await savedPuzzle(page, 'daily');
   expect(d.size).toBe(4);
   await expect(tiles(page)).toHaveCount(d.cols * d.rows - 1);
   await expect(sizeTrigger(page)).toHaveCount(0); // the daily has a fixed size: no menu
-  await expect(page.getByTestId('shuffle')).toHaveCount(0);
+  await expect(page.getByTestId('shuffle')).toHaveCount(1); // the daily painting can be shuffled too
   await expect(page.locator('.top-kicker')).toContainText('DAILY');
   const title = await page.getByTestId('art-title').innerText();
   const ctx = await browser.newContext();
@@ -826,7 +837,7 @@ test('home menu: the "more" section is called Menu (not "More"), and in Japanese
 
 // ---- phones and tablets: roomy controls, and a warning that never shifts the board ----
 for (const [w, h] of [[320, 640], [360, 740], [375, 667], [390, 844], [430, 932], [768, 1024], [899, 900], [667, 375]] as const) {
-  test(`${w}px wide: large well-spaced controls, Information kept away from Shuffle, no overflow`, async ({ page }, info) => {
+  test(`${w}px wide: the controls sit in the header as icon buttons, Information kept away from Shuffle, no overflow`, async ({ page }, info) => {
     test.skip(info.project.name !== 'mobile', 'touch layouts only');
     await page.setViewportSize({ width: w, height: h });
     await page.goto('/art-slide/play/van-gogh-bedroom');
@@ -835,40 +846,72 @@ for (const [w, h] of [[320, 640], [360, 740], [375, 667], [390, 844], [430, 932]
     const box = async (id: string) => (await page.getByTestId(id).boundingBox())!;
     const [pv, sh, nm, nx] = await Promise.all(['preview', 'shuffle', 'numbers-toggle', 'next-artwork'].map(box));
     for (const b of [pv, sh, nm, nx]) {
-      expect(b.height).toBeGreaterThanOrEqual(48); // a thumb-sized target
-      expect(b.width).toBeGreaterThanOrEqual(60);
+      expect(b.height).toBeGreaterThanOrEqual(44); // a thumb-sized target
+      expect(b.width).toBeGreaterThanOrEqual(40);
     }
     for (const b of [sh, nm, nx]) expect(Math.abs(b.y - pv.y)).toBeLessThan(2); // one row
     // order: Information | gap | Shuffle, Numbers, Next
-    expect(sh.x - (pv.x + pv.width)).toBeGreaterThanOrEqual(14); // Information is kept apart from Shuffle
-    expect(nm.x - (sh.x + sh.width)).toBeGreaterThanOrEqual(6);
-    expect(nx.x - (nm.x + nm.width)).toBeGreaterThanOrEqual(6);
+    expect(pv.x).toBeLessThan(sh.x);
+    expect(sh.x - (pv.x + pv.width)).toBeGreaterThanOrEqual(10); // Information is kept apart from Shuffle
+    expect(nm.x - (sh.x + sh.width)).toBeGreaterThanOrEqual(3);
+    expect(nx.x - (nm.x + nm.width)).toBeGreaterThanOrEqual(3);
+    expect(nx.x + nx.width).toBeLessThanOrEqual(w);
     for (const id of ['preview', 'shuffle', 'numbers-toggle', 'next-artwork']) {
-      const label = page.getByTestId(id).locator('.art-action-label');
-      await expect(label).toBeVisible(); // the words are shown, not only icons
-      expect(await label.evaluate((e) => (e.parentElement as HTMLElement).scrollWidth <= (e.parentElement as HTMLElement).clientWidth + 1)).toBe(true); // nothing is cut off
+      await expect(page.getByTestId(id).locator('.art-action-label')).toBeHidden(); // icons only: no captions on a phone
+      expect(await page.getByTestId(id).getAttribute('aria-label')).toBeTruthy(); // but each one is still named for screen readers
     }
+    // everything is inside the header, above the board
+    const head = (await page.locator('.art-top').boundingBox())!;
+    const board = (await page.locator('.aboard').boundingBox())!;
+    for (const b of [pv, sh, nm, nx]) {
+      expect(b.y).toBeGreaterThanOrEqual(head.y - 1);
+      expect(b.y + b.height).toBeLessThanOrEqual(head.y + head.height + 1);
+      expect(b.y + b.height).toBeLessThanOrEqual(board.y + 1);
+    }
+    expect(head.height).toBeLessThan(120); // a compact header, not a block of controls
+    // the time and moves on the left do not run into the buttons
+    const time = (await page.getByTestId('moves').boundingBox())!;
+    expect(time.x + time.width).toBeLessThanOrEqual(pv.x);
     const trig = (await sizeTrigger(page).boundingBox())!;
     expect(trig.height).toBeGreaterThanOrEqual(36);
-    expect(trig.y + trig.height).toBeLessThanOrEqual(pv.y); // the piece-count menu sits above the control row
+    expect(trig.y + trig.height).toBeLessThanOrEqual(pv.y + 1); // the piece-count menu is in the row above
     expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
-    const row = await page.locator('.art-actions').boundingBox();
-    expect(row!.x).toBeGreaterThanOrEqual(0);
-    expect(row!.x + row!.width).toBeLessThanOrEqual(w);
   });
 }
 
-test('daily on a phone: two large buttons, nothing else', async ({ page }, info) => {
+test('Numbers: when ON the button is filled, so it is clearly different from the page behind it', async ({ page }, info) => {
+  await page.goto('/art-slide/play/degas-dance-class');
+  await page.waitForTimeout(450);
+  const toggle = page.getByTestId('numbers-toggle');
+  const colours = () => toggle.evaluate((e) => ({ bg: getComputedStyle(e).backgroundColor, fg: getComputedStyle(e).color, page: getComputedStyle(document.body).backgroundColor }));
+  const off = await colours();
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+  await expect.poll(async () => (await colours()).bg).not.toBe(off.bg); // the colour has eased in
+  await page.waitForTimeout(400);
+  const on = await colours();
+  expect(on.bg).not.toBe(on.page); // never the page's own colour
+  expect(on.bg).toBe(off.fg); // filled with the text colour, the text takes the page colour (inverted)
+  expect(on.fg).toBe(on.page);
+  void info;
+});
+
+test('daily on a phone: three icon buttons in the header (Information, Shuffle, Numbers)', async ({ page }, info) => {
   test.skip(info.project.name !== 'mobile', 'touch layouts only');
   await page.goto('/art-slide/daily');
   await expect(page.locator('.aboard')).toBeVisible();
   await page.waitForTimeout(450);
   const [pv, nm] = await Promise.all(['preview', 'numbers-toggle'].map(async (id) => (await page.getByTestId(id).boundingBox())!));
-  expect(pv.height).toBeGreaterThanOrEqual(48);
-  expect(nm.height).toBeGreaterThanOrEqual(48);
+  expect(pv.height).toBeGreaterThanOrEqual(44);
+  expect(nm.height).toBeGreaterThanOrEqual(44);
   expect(Math.abs(pv.y - nm.y)).toBeLessThan(2);
-  expect(pv.width).toBeGreaterThan(100);
-  await expect(page.getByTestId('shuffle')).toHaveCount(0);
+  expect(pv.width).toBeGreaterThanOrEqual(40);
+  await expect(page.getByTestId('preview').locator('.art-action-label')).toBeHidden();
+  const sh = (await page.getByTestId('shuffle').boundingBox())!;
+  expect(sh.height).toBeGreaterThanOrEqual(44);
+  expect(sh.x - (pv.x + pv.width)).toBeGreaterThanOrEqual(10); // Information is kept apart from Shuffle here too
+  expect(Math.abs(sh.y - pv.y)).toBeLessThan(2);
+  await expect(page.getByTestId('next-artwork')).toHaveCount(0); // (no Next on the daily)
 });
 
 for (const [w, h] of [[320, 640], [375, 667], [390, 844], [430, 932], [899, 900], [1280, 800]] as const) {
@@ -901,9 +944,9 @@ for (const [w, h] of [[320, 640], [375, 667], [390, 844], [430, 932], [899, 900]
     expect(barBox.x + barBox.width).toBeLessThanOrEqual(w);
     expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
     if (w < 900) {
-      expect(Math.abs((await boardTop()) - boardBefore)).toBeLessThan(1); // phones: the sheet floats, the board stays where it was
-      expect(barBox.y + barBox.height).toBeLessThanOrEqual(h);
-      expect(barBox.y).toBeGreaterThan(h / 2); // at the bottom, in the thumb's reach
+      expect(Math.abs((await boardTop()) - boardBefore)).toBeLessThan(1); // phones: the sheet floats over the header, the board stays where it was
+      expect(barBox.y).toBeGreaterThanOrEqual(0);
+      expect(barBox.y + barBox.height).toBeLessThan(h / 2); // at the TOP of the screen
     }
     await page.getByTestId('confirm-cancel').click();
     await expect(bar).toHaveCount(0);
@@ -940,7 +983,8 @@ test('a landscape phone: the warning is one compact row, so the board stays in v
   await page.waitForTimeout(450);
   const b = (await bar.boundingBox())!;
   expect(b.height).toBeLessThanOrEqual(90); // text on the left, buttons on the right
-  expect(b.y + b.height).toBeLessThanOrEqual(375);
+  expect(b.y).toBeGreaterThanOrEqual(0);
+  expect(b.y + b.height).toBeLessThanOrEqual(120); // at the top
   for (const id of ['confirm-size', 'confirm-cancel']) expect((await page.getByTestId(id).boundingBox())!.height).toBeGreaterThanOrEqual(44);
   const ok = (await page.getByTestId('confirm-size').boundingBox())!;
   expect(ok.x).toBeGreaterThan(b.x + b.width / 2); // the buttons are on the right half
@@ -949,9 +993,9 @@ test('a landscape phone: the warning is one compact row, so the board stays in v
   await expect(bar).toHaveCount(0);
 });
 
-test('a tap on the warning sheet lands on the sheet, never on a tile behind it', async ({ page }, info) => {
+test('a tap on the warning sheet lands on the sheet, never on a control or tile behind it', async ({ page }, info) => {
   test.skip(info.project.name !== 'mobile', 'touch layouts only');
-  await page.setViewportSize({ width: 320, height: 520 }); // short: the sheet reaches over the lower board
+  await page.setViewportSize({ width: 320, height: 520 });
   await page.goto('/art-slide/play/seurat-grande-jatte');
   await page.waitForTimeout(450);
   const sol = await solution(page, 'free');
@@ -961,5 +1005,38 @@ test('a tap on the warning sheet lands on the sheet, never on a tile behind it',
   await page.waitForTimeout(450);
   const b = (await page.getByTestId('confirm-bar').boundingBox())!;
   const hit = await page.evaluate(({ x, y }) => { const e = document.elementFromPoint(x, y); return e?.closest('.confirm-bar') ? 'sheet' : e?.closest('.atile') ? 'tile' : 'other'; }, { x: b.x + b.width / 2, y: b.y + 4 });
-  expect(hit).toBe('sheet');
+  expect(hit).toBe('sheet'); // (the header's buttons behind it are covered)
+  const hit2 = await page.evaluate(({ x, y }) => { const e = document.elementFromPoint(x, y); return e?.closest('.confirm-bar') ? 'sheet' : e?.closest('button') ? 'button' : 'other'; }, { x: b.x + 20, y: b.y + b.height - 4 });
+  expect(hit2).toBe('sheet');
+});
+
+// ---- the daily painting can be shuffled too ----
+test('daily: SHUFFLE re-places the pieces, stays the daily, survives a reload and the clear is recorded as today\u2019s daily', async ({ page }) => {
+  await page.goto('/art-slide/daily');
+  await expect(page.locator('.art-loading')).toHaveCount(0);
+  const first = await savedPuzzle(page, 'daily');
+  const before = await snap(page);
+  const sol = first.solution;
+  await page.locator(`.atile[data-cell="${sol[0]}"]`).click(); // a move first: no question is asked
+  await expect(page.getByTestId('moves')).toHaveText('1');
+  await page.getByTestId('shuffle').click();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await shuffleDailyDone(page);
+  await expect(page.getByTestId('moves')).toHaveText('0');
+  expect(await snap(page)).not.toBe(before);
+  const saved = (await readArt(page)).inProgress.daily.puzzle as { id: string; mode: string; number: number; artworkId: string };
+  expect(saved.mode).toBe('daily'); // still today's daily
+  expect(saved.id).toMatch(/^artdaily-/);
+  expect(typeof saved.number).toBe('number');
+  const shuffled = await snap(page);
+  await page.reload();
+  await expect(page.locator('.atile').first()).toBeVisible();
+  expect(await snap(page)).toBe(shuffled); // resumes the shuffled daily, not the original one
+  await expect(page.locator('.top-kicker')).toContainText('DAILY');
+  await solve(page, 'daily');
+  await expect(page.getByRole('dialog', { name: CLEARED })).toBeVisible();
+  const hist = (await readArt(page)).dailyHistory as Record<string, { number: number; artworkId: string }>;
+  expect(Object.keys(hist)).toHaveLength(1); // recorded as the daily
+  expect(Object.values(hist)[0].artworkId).toBe(saved.artworkId);
+  expect(Object.values(hist)[0].number).toBe(saved.number);
 });

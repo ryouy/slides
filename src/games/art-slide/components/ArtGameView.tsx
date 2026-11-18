@@ -197,7 +197,7 @@ export function ArtGameView(p: Props) {
               />
             </div>
           )}
-          <div className={`actions art-actions${daily ? ' daily-actions' : ''}`}>
+          <div className="actions art-actions">
             <button className="btn" data-testid="preview" aria-label={t('art.preview')} title={t('art.preview')}
               onClick={() => {
                 const rect = boardRef.current?.getBoundingClientRect();
@@ -206,10 +206,10 @@ export function ArtGameView(p: Props) {
               <svg className="art-action-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r=".9" fill="currentColor" stroke="none"/></svg>
               <span className="art-action-label">{t('art.preview')}</span>
             </button>
-            {!daily && <button className="btn" data-testid="shuffle" aria-label={t('art.shuffle')} title={t('art.shuffle')} disabled={shuffling} onClick={runShuffle}>
+            <button className="btn" data-testid="shuffle" aria-label={t('art.shuffle')} title={t('art.shuffle')} disabled={shuffling} onClick={runShuffle}>
               <svg className="art-action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h4c5 0 5 10 10 10h4m-4-4 4 4-4 4M3 17h4c2 0 3-1 4-3m2-4c1-2 2-3 4-3h4m-4-4 4 4-4 4"/></svg>
               <span className="art-action-label">{t('art.shuffle')}</span>
-            </button>}
+            </button>
             <button className={`btn num-btn${p.showNumbers ? ' on' : ''}`} data-testid="numbers-toggle"
               aria-label={t('art.numbers')} title={t('art.numbers')} aria-pressed={p.showNumbers} onClick={() => p.onToggleNumbers(!p.showNumbers)}>
               <span className="num-glyph art-action-icon" aria-hidden="true">#</span>

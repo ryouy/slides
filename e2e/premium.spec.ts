@@ -227,3 +227,15 @@ test('without ?tester the premium page makes no API call at all (production buil
   await expect(page.getByTestId('premium-subscribe')).toHaveCount(0);
   await expect(page.getByTestId('premium-soon')).toBeVisible();
 });
+
+test('the sign-in page is reachable while the paid plan is off: /art-slide/account?tester', async ({ page }) => {
+  // no dev-gating: the production build state
+  await mockApi(page, { config: { auth: true, billing: true, purchases: false } });
+  await page.goto('/art-slide/account?tester=1');
+  const a = page.getByTestId('signin');
+  await expect(a).toBeVisible();
+  expect(await a.getAttribute('href')).toBe('/api/auth/google?return=%2Fart-slide%2Faccount%3Ftester%3D1');
+  await page.goto('/art-slide/account'); // without ?tester it stays "unavailable"
+  await expect(page.getByTestId('account-unavailable')).toBeVisible();
+  await expect(page.getByTestId('signin')).toHaveCount(0);
+});
