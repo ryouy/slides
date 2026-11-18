@@ -31,3 +31,8 @@
 4. **Premium の画面とロックを消す**: ビルド変数 `VITE_PREMIUM_ENABLED` を削除して再デプロイし、Secret `PREMIUM_ENFORCED` を削除（全作品が再び全員に開く）。
 5. **Worker のコードを戻す**: Cloudflare → `slides` → Deployments で直前のバージョンに戻す。
 - 課金してしまった利用者への対応: Stripe ダッシュボードで返金・解約（返金は手動）。`scripts/check-no-open-subscriptions.ts` で、課金が続く契約が残っていないか確認できる。
+
+
+## 開始後・停止後の確認（読み取り専用）
+- 開始前／停止後: `node scripts/check-launch.mjs --expect stopped`
+- 開始後: `node scripts/check-launch.mjs --expect live`（`/api/config` が `purchases:true`、Premium の「準備中」が消え、同意つきの購入ボタンが出る、Premium 作品の原寸画像が未ログインで 403、サムネイルは公開のまま、ART/WORD/BIG が動く、など）。購入・ログインはしません。
