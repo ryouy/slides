@@ -195,3 +195,13 @@ Stripe CLI（`stripe`）が使える場合のみ。構文は Stripe の最新ド
 `PATH=$HOME/.local/bin:$PATH npx vite-node scripts/webhook-e2e.ts`
 
 Stripe CLI（Sandbox にログイン済み）が必要です。本物の Worker コード（署名検証・イベント処理・D1 書き込み）をローカルで動かし、`stripe listen` が転送する **Sandbox の実イベント**を、CLI 自身の署名シークレット（本番のものではありません）で検証します。確認する内容：署名なし／誤り／別シークレット／古い時刻／改ざんは 400、重複イベントは二重処理されない、作成→期間末解約→終了で Premium が変わる、期間末で無料に戻る（猶予なし）、遅れて届いた古いイベントが解約を取り消さない、アカウントに紐づかない契約は何も保存しない。作成した Sandbox の顧客は最後に削除します。**本番の Webhook 配信（Cloudflare 上のエンドポイント）自体の確認にはなりません**（Stripe ダッシュボードの「Webhook → 送信先 → イベント配信」で、2xx の応答を確認してください）。
+
+
+## Sandbox での購入フロー全体の統合テスト（実課金なし）
+
+```
+mkdir /tmp/mf4 && cd /tmp/mf4 && npm init -y && npm i miniflare@4     # 初回のみ（リポジトリの外）
+cd <このリポジトリ> && PATH=$HOME/.local/bin:$PATH node scripts/sandbox-integration.mjs
+```
+
+デプロイされるものと同じ Worker（`wrangler deploy --dry-run` のバンドル）を workerd（Miniflare）で動かし、本物の移行を適用したローカル D1 を使います。Stripe の**ホスト型 Checkout ページ**をヘッドレスブラウザで開いてテストカード（4242…）で支払い、`stripe listen` が転送する **Sandbox の実イベント**で Premium 付与 → 期間末解約 → 即時解約 まで確認します。Google ログインと、Worker から api.stripe.com への呼び出しだけが代役（後者は Stripe CLI 経由で同じ Sandbox が応答）。終了時に Sandbox の顧客は削除、価格・商品は無効化します。CLI が Sandbox でなければ実行しません。本番の鍵・Secret・Webhook には触れません。
