@@ -55,6 +55,19 @@ export const fetchMe = (refresh = false) => {
 
 export const signInUrl = (returnTo: string): string => `/api/auth/google?return=${encodeURIComponent(returnTo)}`;
 
+/** A POST that keeps the HTTP status and the server's short error code (e.g. "already_subscribed"): for messages the visitor sees. */
+export interface PostResult<T> { ok: boolean; status: number; data: T | null; code: string | null }
+export async function postForResult<T>(path: string): Promise<PostResult<T>> {
+  try {
+    const res = await fetch(path, { method: 'POST', credentials: 'same-origin', headers: { accept: 'application/json' } });
+    const body = (await res.json().catch(() => null)) as (T & { error?: unknown }) | null;
+    const code = typeof body?.error === 'string' && /^[a-z0-9_]{1,40}$/.test(body.error) ? body.error : null;
+    return { ok: res.ok, status: res.status, data: res.ok ? body : null, code };
+  } catch {
+    return { ok: false, status: 0, data: null, code: 'network' };
+  }
+}
+
 export async function postJson<T>(path: string): Promise<T | null> {
   try {
     const res = await fetch(path, { method: 'POST', credentials: 'same-origin', headers: { accept: 'application/json' } });

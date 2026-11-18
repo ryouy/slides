@@ -1,4 +1,4 @@
-import { postJson, signInUrl } from '../account/api';
+import { postForResult, signInUrl } from '../account/api';
 import { getAccount } from '../account/store';
 import { operatorReady } from '../legal/operator';
 import { gatingOn } from './entitlement';
@@ -22,22 +22,43 @@ export function purchaseState(config = getAccount().config, me = getAccount().me
 export const canSubscribe = (config = getAccount().config, me = getAccount().me): boolean => purchaseState(config, me) === 'ready';
 
 /** Subscribe: sign in first (Premium belongs to a Google account), then Stripe Checkout. */
-export async function startCheckout(): Promise<boolean> {
-  const state = purchaseState();
-  if (state === 'off') return false;
-  if (state === 'signin') {
-    location.assign(signInUrl(location.pathname + location.search)); // back to this page (with its ?tester) after the login
-    return true;
-  }
-  const res = await postJson<{ url: string }>('/api/billing/checkout');
-  if (!res?.url) return false;
-  location.assign(res.url);
-  return true;
+export type PurchaseFailure = 'signin' | 'already' | 'pending' | 'busy' | 'failed';
+export interface PurchaseOutcome { ok: boolean; failure?: PurchaseFailure; code?: string; status?: number }
+
+/** What the visitor should be told, from the server's answer. */
+export function failureOf(status: number, code: string | null): PurchaseFailure {
+  if (status === 401) return 'signin';
+  if (code === 'already_subscribed') return 'already';
+  if (code === 'payment_pending') return 'pending';
+  if (status === 429) return 'busy';
+  return 'failed';
 }
 
-export async function openPortal(): Promise<boolean> {
-  const res = await postJson<{ url: string }>('/api/billing/portal');
-  if (!res?.url) return false;
-  location.assign(res.url);
-  return true;
+/** Only an https address (Stripe) or a path on this site is ever followed. */
+const safeUrl = (u: unknown): u is string => typeof u === 'string' && /^(https:\/\/|\/(?!\/))/.test(u);
+
+export async function startCheckout(): Promise<PurchaseOutcome> {
+  const state = purchaseState();
+  if (state === 'off') return { ok: false, failure: 'failed', code: 'not_available' };
+  if (state === 'signin') {
+    location.assign(signInUrl(location.pathname + location.search)); // back to this page (with its ?tester) after the login
+    return { ok: true };
+  }
+  const res = await postForResult<{ url: string }>('/api/billing/checkout');
+  const url = res.data?.url;
+  if (!res.ok || !safeUrl(url)) {
+    return { ok: false, failure: res.ok ? 'failed' : failureOf(res.status, res.code), code: res.ok ? 'no_url' : (res.code ?? `http_${res.status}`), status: res.status };
+  }
+  location.assign(url);
+  return { ok: true };
+}
+
+export async function openPortal(): Promise<PurchaseOutcome> {
+  const res = await postForResult<{ url: string }>('/api/billing/portal');
+  const url = res.data?.url;
+  if (!res.ok || !safeUrl(url)) {
+    return { ok: false, failure: res.ok ? 'failed' : failureOf(res.status, res.code), code: res.ok ? 'no_url' : (res.code ?? `http_${res.status}`), status: res.status };
+  }
+  location.assign(url);
+  return { ok: true };
 }

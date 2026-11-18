@@ -1949,6 +1949,9 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .premium [data-testid=premium-soon] { margin: 0; padding: 12px 14px; border: 1px dashed var(--line); border-radius: 10px; text-align: center; }
 .premium [data-testid=premium-signin] { margin: 0; text-align: center; }
 .premium .btn.primary.wide { min-height: 52px; font-size: 15px; }
+.premium .phrase, .premium-page .phrase { display: inline-block; max-width: 100%; }
+.premium, .premium-page { text-wrap: pretty; word-break: auto-phrase; line-break: strict; }
+.premium-sub, .premium-free { text-wrap: balance; }
 .premium-free { margin: 0; padding: 12px 14px; border-radius: 10px; background: var(--surface); color: var(--muted); font-size: 13px; line-height: 1.55; text-align: center; }
 .premium-note { margin: 0; font-size: 12px; text-align: center; }
 .premium-thanks { margin: 0 0 8px; padding: 12px 14px; border-radius: 10px; background: var(--surface); text-align: center; }
@@ -2158,3 +2161,21 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   .screen.artgame .confirm-bar .confirm-actions { width: auto; max-width: none; grid-template-columns: repeat(2, minmax(112px, 1fr)); }
   .screen.artgame .confirm-bar .confirm-actions .btn { min-height: 44px; }
 }
+
+/* the account button: top right of the ART SLIDE home (only when the paid plan is on) — an icon on phones, icon + word on wider screens */
+.art-home-head { position: relative; }
+.art-home-account {
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  display: inline-flex; align-items: center; gap: 8px; min-width: 44px; height: 44px; padding: 0 12px; box-sizing: border-box;
+  justify-content: center; border: 1px solid var(--line); border-radius: 999px; color: var(--fg); text-decoration: none; font-size: 13px;
+}
+.art-home-account svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; flex: none; }
+.art-home-account span { display: none; }
+.art-home-account:hover, .art-home-account:focus-visible { background: var(--surface); }
+@media (min-width: 640px) { .art-home-account span { display: inline; } }
+@media (max-width: 380px) { .art-home-account { right: -10px; min-width: 40px; padding: 0 8px; } } /* the title takes the width on very small phones: the button uses the page margin */
+
+/* a purchase that could not start is explained, with the short code for support */
+.premium-error { display: grid; gap: 8px; padding: 12px 14px; border: 1px solid var(--fg); border-radius: 10px; text-align: center; }
+.premium-error p { margin: 0; font-weight: 600; line-height: 1.5; }
+.premium-error small { color: var(--muted); font-size: 11px; word-break: break-all; }

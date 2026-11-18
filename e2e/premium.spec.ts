@@ -3,7 +3,7 @@ import { OPERATOR } from '../src/legal/operator';
 
 /** The Worker API is replaced by in-page mocks: these tests are about what the site does with its answers. */
 type Me = { signedIn: boolean; premium: boolean; canPurchase?: boolean; name?: string; status?: string | null; currentPeriodEnd?: number | null; cancelAtPeriodEnd?: boolean };
-async function mockApi(page: Page, opts: { config?: { auth: boolean; billing: boolean; purchases: boolean } | null; me?: Me; meDelayMs?: number } = {}) {
+async function mockApi(page: Page, opts: { config?: { auth: boolean; billing: boolean; purchases: boolean } | null; me?: Me; meDelayMs?: number; checkout?: { status: number; body?: unknown } | 'abort' } = {}) {
   const calls: string[] = [];
   await page.route('**/api/**', async (route) => {
     const req = route.request();
@@ -15,7 +15,11 @@ async function mockApi(page: Page, opts: { config?: { auth: boolean; billing: bo
       if (opts.meDelayMs) await new Promise((r) => setTimeout(r, opts.meDelayMs));
       return ok(opts.me ?? { signedIn: false, premium: false });
     }
-    if (path === '/api/billing/checkout') return ok({ url: '/art-slide/premium?checkout=mock' });
+    if (path === '/api/billing/checkout') {
+      if (opts.checkout === 'abort') return route.abort('failed');
+      if (opts.checkout) return route.fulfill({ status: opts.checkout.status, contentType: 'application/json', body: JSON.stringify(opts.checkout.body ?? {}) });
+      return ok({ url: '/art-slide/premium?checkout=mock' });
+    }
     if (path === '/api/billing/portal') return ok({ url: '/art-slide/account?portal=mock' });
     if (path === '/api/auth/logout' || path === '/api/account/delete') return ok({ ok: true, deleted: true });
     return route.fulfill({ status: 404, body: '{}' });
@@ -238,4 +242,102 @@ test('the sign-in page is reachable while the paid plan is off: /art-slide/accou
   await page.goto('/art-slide/account'); // without ?tester it stays "unavailable"
   await expect(page.getByTestId('account-unavailable')).toBeVisible();
   await expect(page.getByTestId('signin')).toHaveCount(0);
+});
+
+for (const vw of [320, 390]) test(`the account button is on the ART SLIDE home at ${vw}px when the paid plan is on, and takes the visitor to the account page`, async ({ page }, info) => {
+  test.skip(info.project.name !== 'mobile' && vw === 320, 'phone width');
+  await page.setViewportSize({ width: vw, height: 700 });
+  await gating(page);
+  await mockApi(page);
+  await page.goto('/art-slide');
+  await page.evaluate(() => document.fonts.ready); // the title's letters are laid out with the real font
+  const btn = page.getByTestId('home-account');
+  // wait until the page has stopped gliding in (the position is the same on two reads), instead of a fixed pause
+  let last = -1;
+  await expect.poll(async () => { const x = (await btn.boundingBox())!.x; const same = Math.abs(x - last) < 0.5; last = x; return same; }, { timeout: 5000 }).toBe(true);
+  await expect(btn).toBeVisible();
+  const box = (await btn.boundingBox())!;
+  expect(box.width).toBeGreaterThanOrEqual(40);
+  expect(box.height).toBeGreaterThanOrEqual(44);
+  const textRight = await page.locator('.art-home-title').evaluate((e) => { const r = document.createRange(); r.selectNodeContents(e); return r.getBoundingClientRect().right; });
+  expect(box.x).toBeGreaterThanOrEqual(textRight + 4); // never on top of the title's letters
+  expect(box.x + box.width).toBeLessThanOrEqual(vw); // and always inside the screen
+  expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
+  await btn.click();
+  await expect(page).toHaveURL(/\/art-slide\/account$/);
+  await expect(page.getByTestId('signin')).toBeVisible();
+});
+
+test('without the paid plan the home has no account button (nothing to sign in for)', async ({ page }) => {
+  await page.goto('/art-slide');
+  await expect(page.getByTestId('exhibit')).toBeVisible();
+  await expect(page.getByTestId('home-account')).toHaveCount(0);
+});
+
+// ---- a purchase that cannot start is explained, never silent ----
+const FREE_BUYER: Me = { signedIn: true, premium: false, canPurchase: true, name: 'Ann Example', status: null };
+async function tryToBuy(page: Page, checkout: { status: number; body?: unknown } | 'abort') {
+  await gating(page);
+  const calls = await mockApi(page, { me: FREE_BUYER, checkout });
+  await page.goto('/art-slide/premium');
+  await page.getByTestId('premium-agree').check();
+  await page.getByTestId('premium-subscribe').click();
+  return calls;
+}
+for (const [name, checkout, text, code] of [
+  ['the payment setup is wrong (503)', { status: 503, body: { error: 'live_key_not_allowed' } }, /Please try again in a moment/, 'live_key_not_allowed'],
+  ['Stripe fails (500)', { status: 500, body: { error: 'server_error' } }, /Please try again in a moment/, 'server_error'],
+  ['the answer has no payment address', { status: 200, body: {} }, /Please try again in a moment/, 'no_url'],
+  ['the connection fails', 'abort', /Please try again in a moment/, 'network'],
+  ['too many attempts (429)', { status: 429, body: { error: 'rate_limited' } }, /Too many attempts/, 'rate_limited'],
+  ['a payment is still being confirmed (409)', { status: 409, body: { error: 'payment_pending' } }, /being confirmed/, 'payment_pending'],
+] as const) {
+  test(`checkout: ${name} → the visitor is told, with a code, and can try again`, async ({ page }) => {
+    const calls = await tryToBuy(page, checkout);
+    const box = page.getByTestId('checkout-error');
+    await expect(box).toBeVisible();
+    await expect(box).toContainText(text);
+    await expect(page.getByTestId('checkout-error-code')).toContainText(code);
+    await expect(page).toHaveURL(/\/art-slide\/premium$/); // still here
+    await expect(page.getByTestId('premium-subscribe')).toBeEnabled(); // and can try again
+    expect(calls.filter((c) => c === 'POST /api/billing/checkout')).toHaveLength(1);
+  });
+}
+
+test('checkout: already subscribed (409) → says so and offers the account page', async ({ page }) => {
+  await tryToBuy(page, { status: 409, body: { error: 'already_subscribed' } });
+  await expect(page.getByTestId('checkout-error')).toContainText(/already have Premium/);
+  await page.getByTestId('checkout-error').getByRole('button').click();
+  await expect(page).toHaveURL(/\/art-slide\/account$/);
+});
+
+test('checkout: signed out in the meantime (401) → asks to sign in again, with the link', async ({ page }) => {
+  await tryToBuy(page, { status: 401, body: { error: 'signin_required' } });
+  await expect(page.getByTestId('checkout-error')).toContainText(/sign-in has expired/);
+  expect(await page.getByTestId('checkout-error').locator('a').getAttribute('href')).toBe('/api/auth/google?return=%2Fart-slide%2Fpremium');
+});
+
+test('checkout: the button cannot be pressed twice while the request is running', async ({ page }) => {
+  await gating(page);
+  let posts = 0;
+  await mockApi(page, { me: FREE_BUYER });
+  await page.route('**/api/billing/checkout', async (route) => { posts++; await new Promise((r) => setTimeout(r, 800)); await route.fulfill({ status: 503, contentType: 'application/json', body: '{"error":"x_y"}' }); });
+  await page.goto('/art-slide/premium');
+  await page.getByTestId('premium-agree').check();
+  const btn = page.getByTestId('premium-subscribe');
+  await btn.click();
+  await expect(btn).toBeDisabled(); // busy: a second click is impossible
+  await expect(page.getByTestId('checkout-error')).toBeVisible();
+  expect(posts).toBe(1);
+});
+
+test('the Stripe address is only followed when it is https (or on this site)', async ({ page }) => {
+  await gating(page);
+  await mockApi(page, { me: FREE_BUYER });
+  await page.route('**/api/billing/checkout', (route) => route.fulfill({ contentType: 'application/json', body: '{"url":"javascript:alert(1)"}' }));
+  await page.goto('/art-slide/premium');
+  await page.getByTestId('premium-agree').check();
+  await page.getByTestId('premium-subscribe').click();
+  await expect(page.getByTestId('checkout-error-code')).toContainText('no_url');
+  await expect(page).toHaveURL(/\/art-slide\/premium$/);
 });

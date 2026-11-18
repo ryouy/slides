@@ -703,7 +703,7 @@ test.describe('Free / Premium gating (dev switch)', () => {
     await page.goto('/art-slide/premium');
     const text = await page.getByTestId('premium').innerText();
     expect(text).toContain('¥200 / month');
-    expect(text).toMatch(/All artworks/);
+    expect(text).toMatch(/\d{3,}\+ paintings to play/); // the number of paintings in the collection, "N+"
     expect(text).toMatch(/No ads/);
     // the renewal terms are shown with the purchase facts, which only appear where a purchase can be made (see legal.spec.ts)
     await expect(page.getByTestId('premium-subscribe')).toHaveCount(0); // no button until the paid plan is live and the server allows this visitor

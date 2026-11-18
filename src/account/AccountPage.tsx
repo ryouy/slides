@@ -63,7 +63,7 @@ export function AccountPage() {
                 : t('acct.free')}
             </p>
             {premium || OPEN.has(me.status ?? '') ? (
-              <button className="btn wide" data-testid="manage" disabled={busy} onClick={() => run(openPortal)}>{t('acct.manage')}</button>
+              <button className="btn wide" data-testid="manage" disabled={busy} onClick={() => run(async () => (await openPortal()).ok)}>{t('acct.manage')}</button>
             ) : (
               // no contract, or one that has ended: subscribing (again) is offered
               canSubscribe(config, me) && <button className="btn primary wide" data-testid="account-subscribe" disabled={busy} onClick={() => go('premium')}>{t('premium.subscribe')}</button>

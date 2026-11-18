@@ -34,6 +34,12 @@ export function ArtHome() {
     <div className="screen home art-home">
       <header className="art-home-head">
         <h1 className="art-home-title">ART SLIDE</h1>
+        {gating && (
+          <Link to="/art-slide/account" className="art-home-account" data-testid="home-account" aria-label={t('home.account')} title={t('home.account')}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6" /><path d="M4.5 20c.6-4 3.8-6 7.5-6s6.9 2 7.5 6" /></svg>
+            <span>{t('home.account')}</span>
+          </Link>
+        )}
       </header>
       <Link to="/art-slide/daily" className="exhibit-card" data-testid="exhibit">
         <img src={exhibit.thumbnailUrl} alt="" width={96} height={96} />

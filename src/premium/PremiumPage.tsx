@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { LockIcon } from '../components/Icons';
-import { signInUrl } from '../account/api';
 import { initAccount, refreshAccount, testerRequested } from '../account/store';
 import { Link } from '../components/Link';
 import { useLang, useT } from '../i18n';
@@ -8,10 +7,18 @@ import { disclosureNote, legalLang, planFacts } from '../legal/content';
 import { withMarks } from '../legal/LegalPages';
 import { OPERATOR } from '../legal/operator';
 import { go } from '../router';
+import { ARTWORKS } from '../games/art-slide/data';
 import { Page } from '../ui/Pages';
 import { useAccount } from '../account/store';
-import { openPortal, purchaseState, startCheckout } from './billing';
+import { openPortal, purchaseState, startCheckout, type PurchaseOutcome } from './billing';
+import { signInUrl } from '../account/api';
 import { useEntitlement } from './entitlement';
+
+/** Japanese and Chinese have no spaces: a line may then break anywhere. Each clause is kept whole (it moves to the next line as a unit), so a line never ends in the middle of a phrase. */
+function Phrases({ text, lang }: { text: string; lang: string }) {
+  if (lang !== 'ja' && lang !== 'zh') return <>{text}</>;
+  return <>{text.split(/(?<=[、。，,])/).map((c, i) => <span key={i} className="phrase">{c}</span>)}</>;
+}
 
 /** The Premium offer: price, what it includes and how it renews. `reason` explains a lock the visitor just ran into. */
 export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' }) {
@@ -19,17 +26,33 @@ export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' })
   const { premium } = useEntitlement();
   const { config, me } = useAccount();
   const state = purchaseState(config, me);
-  const l = legalLang(useLang());
+  const lang = useLang();
+  const l = legalLang(lang);
   const [agreed, setAgreed] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [problem, setProblem] = useState<PurchaseOutcome | null>(null);
+  /** Runs a purchase/portal action. A failure is SHOWN (never silent): what to do, plus the short server code for support. */
+  const run = async (action: () => Promise<PurchaseOutcome>) => {
+    if (busy) return;
+    setBusy(true);
+    setProblem(null);
+    try {
+      const r = await action();
+      if (!r.ok) setProblem(r);
+    } catch {
+      setProblem({ ok: false, failure: 'failed', code: 'client_error' });
+    }
+    setBusy(false); // (on success the browser is already leaving for Stripe)
+  };
   return (
     <div className="premium" data-testid="premium">
       {reason && <p className="premium-reason" data-testid="premium-reason"><LockIcon size={16} /> {t(reason === 'art' ? 'premium.lockedArt' : reason === 'photos' ? 'premium.lockedPhotos' : 'premium.lockedSize')}</p>}
       <div className="premium-hero">
         <p className="premium-price"><b>{t('premium.price')}</b></p>
-        <p className="premium-sub">{t('premium.cancelAnytime')}</p>
+        <p className="premium-sub"><Phrases text={t('premium.cancelAnytime')} lang={lang} /></p>
       </div>
       <ul className="premium-list">
-        <li>{t('premium.f1')}</li>
+        <li>{t('premium.f1', { n: ARTWORKS.length })}</li>
         <li>{t('premium.f2')}</li>
         <li>{t('premium.f3')}</li>
         <li>{t('premium.f4')}</li>
@@ -37,7 +60,7 @@ export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' })
       {premium ? (
         <>
           <p className="premium-on" data-testid="premium-active">✓ {t('premium.active')}</p>
-          <button className="btn wide" data-testid="premium-manage" onClick={() => void openPortal()}>{t('acct.manage')}</button>
+          <button className="btn wide" data-testid="premium-manage" disabled={busy} onClick={() => void run(openPortal)}>{t('acct.manage')}</button>
         </>
       ) : state === 'off' ? null : (
         <>
@@ -58,13 +81,21 @@ export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' })
               <span>{t('premium.agree')}</span>
             </label>
           </section>
-          <button className="btn primary wide" data-testid="premium-subscribe" disabled={!agreed} onClick={() => void startCheckout()}>{t('premium.subscribeFull')}</button>
+          <button className="btn primary wide" data-testid="premium-subscribe" disabled={!agreed || busy} aria-busy={busy} onClick={() => void run(startCheckout)}>{busy ? t('art.loading') : t('premium.subscribeFull')}</button>
         </>
+      )}
+      {problem && (
+        <div className="premium-error" role="alert" data-testid="checkout-error">
+          <p>{t(`premium.err.${problem.failure ?? 'failed'}` as 'premium.err.failed')}</p>
+          {problem.failure === 'signin' && <a className="btn wide" href={signInUrl(location.pathname + location.search)}>{t('acct.signIn')}</a>}
+          {problem.failure === 'already' && <button className="btn wide" onClick={() => go('account')}>{t('home.account')}</button>}
+          {problem.code && <small data-testid="checkout-error-code">{t('premium.err.code')}: {problem.code}</small>}
+        </div>
       )}
       {state === 'off' && !premium && <p className="muted" data-testid="premium-soon">{t('premium.soon')}</p>}
       {state === 'signin' && !premium && <p className="muted" data-testid="premium-signin">{t('premium.signIn')}</p>}
-      <p className="premium-free">{t('premium.free')}</p>
-      <p className="muted premium-note"><Link to="/terms">{t('common.terms')}</Link> · <Link to="/privacy">{t('common.privacy')}</Link> · <Link to="/commerce" data-testid="premium-commerce-link">{t('common.commerce')}</Link></p>
+      <p className="premium-free"><Phrases text={t('premium.free')} lang={lang} /></p>
+      {reason && <p className="muted premium-note"><Link to="/terms">{t('common.terms')}</Link> · <Link to="/privacy">{t('common.privacy')}</Link> · <Link to="/commerce" data-testid="premium-commerce-link">{t('common.commerce')}</Link></p>}
     </div>
   );
 }

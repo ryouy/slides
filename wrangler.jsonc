@@ -17,6 +17,9 @@
     // PURCHASES_ENABLED is deliberately NOT here: it is a Secret set in the dashboard (Settings → Variables and Secrets),
     // so it can be switched on/off instantly without a deploy. Absent or anything but "true" = purchases are OFF.
   },
+  // Keep what is set in the dashboard (Variables and Secrets) when a Git build deploys. Without this, every deploy DELETES plain
+  // Variables that are not listed in this file (Secrets always stay), which silently switched the sales flags off after a push.
+  "keep_vars": true,
   "observability": { "enabled": true },
   "d1_databases": [
     {

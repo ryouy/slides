@@ -152,7 +152,8 @@ for (const lang of ['en', 'ja'] as const) {
     await expect(button).toBeEnabled();
     await page.getByTestId('premium-agree').uncheck();
     await expect(button).toBeDisabled();
-    await expect(page.getByTestId('premium-commerce-link')).toBeVisible();
+    await expect(page.getByTestId('footer-commerce')).toBeVisible(); // the notice is linked in the page footer (not repeated inside the offer)
+    await expect(page.getByTestId('premium').locator('a')).toHaveCount(await page.getByTestId('premium').locator('a[href^="https://"]').count()); // no second row of Terms / Privacy / Notice links in the offer
     await expect(page.getByTestId('purchase-seller')).toContainText(lang === 'ja' ? '請求があった場合に遅滞なく開示します' : 'without delay on request');
     await expect(page.getByTestId('purchase-seller').getByTestId('legal-link')).toHaveAttribute('href', 'https://forms.gle/vksFVB2QUzdzKeEu6');
   });
