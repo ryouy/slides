@@ -58,7 +58,7 @@ if (live) {
   await page.getByTestId('premium-agree').check();
   check(await page.getByTestId('premium-subscribe').isEnabled(), 'ticking the consent box enables it');
   check((await page.getByTestId('premium-signin').count()) === 1, 'the visitor is told to sign in with Google first');
-  for (const [id, href] of [['premium-commerce-link', '/commerce']]) check((await page.getByTestId(id).getAttribute('href')) === href, 'link to the commercial-law notice');
+  check((await page.getByTestId('footer-commerce').getAttribute('href')) === '/commerce', 'link to the commercial-law notice (in the page footer)');
 } else {
   check((await page.getByTestId('premium-soon').count()) === 1 && (await page.getByTestId('premium-subscribe').count()) === 0, 'shows "not available yet" and no buy button');
 }
