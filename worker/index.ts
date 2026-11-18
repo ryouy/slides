@@ -1,3 +1,4 @@
+import { logError } from './safeLog';
 import { authConfigured, billingConfigured, checkoutConfigError, parseAllowlist, purchaseAllowed, type Env } from './env';
 import { currentUser, finishLogin, logout, startLogin } from './auth';
 import { createCheckout, createPortal, deleteAccount, handleWebhook, planFor } from './billing';
@@ -81,7 +82,7 @@ export default {
       try {
         return await serveArtwork(request, env);
       } catch (e) {
-        console.error('artwork error', e);
+        logError('artwork error', e);
         return env.PREMIUM_ENFORCED === 'true' ? new Response('Unavailable', { status: 503 }) : env.ASSETS.fetch(request); // never break the images while enforcement is off
       }
     }
@@ -89,7 +90,7 @@ export default {
     try {
       return await handle(request, env);
     } catch (e) {
-      console.error('api error', e);
+      logError('api error', e);
       return err(500, 'server_error');
     }
   },

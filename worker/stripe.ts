@@ -31,9 +31,30 @@ export interface StripeSubscription {
 export const periodEnd = (s: StripeSubscription): number | null => s.current_period_end ?? s.items?.data?.[0]?.current_period_end ?? null;
 export const customerId = (c: string | { id: string }): string => (typeof c === 'string' ? c : c.id);
 
+/** A short, loggable class of a Stripe failure: derived from the HTTP status only. */
+export type StripeErrorKind = 'invalid_request' | 'authentication' | 'permission' | 'not_found' | 'conflict' | 'rate_limit' | 'stripe_unavailable' | 'other';
+const kindOf = (status: number): StripeErrorKind =>
+  status === 400 ? 'invalid_request' : status === 401 ? 'authentication' : status === 403 ? 'permission' : status === 404 ? 'not_found' : status === 409 ? 'conflict' : status === 429 ? 'rate_limit' : status >= 500 ? 'stripe_unavailable' : 'other';
+const TOKEN = /^[a-z0-9_]{1,64}$/;
+
+/**
+ * A failed Stripe request. It deliberately carries NO response text: Stripe's error body can quote request details (even part of
+ * the API key in a 401), so only the status, its class and Stripe's own short machine codes (`type`, `code`: lowercase words) are kept.
+ */
 export class StripeError extends Error {
-  constructor(public status: number, public body: string) {
+  readonly kind: StripeErrorKind;
+  readonly type?: string;
+  readonly code?: string;
+  constructor(public status: number, responseText = '') {
     super(`Stripe API ${status}`);
+    this.kind = kindOf(status);
+    try {
+      const e = (JSON.parse(responseText) as { error?: { type?: unknown; code?: unknown } }).error;
+      if (typeof e?.type === 'string' && TOKEN.test(e.type)) this.type = e.type;
+      if (typeof e?.code === 'string' && TOKEN.test(e.code)) this.code = e.code;
+    } catch {
+      /* not JSON: nothing to keep */
+    }
   }
 }
 

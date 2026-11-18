@@ -1,3 +1,4 @@
+import { logError } from './safeLog';
 import { dailyArtworkId } from '../src/games/art-slide/logic/dailyPick';
 import { isFreeArtwork } from '../src/premium/freeList';
 import { jstDateKey } from '../src/utils/date';
@@ -38,7 +39,7 @@ export async function serveArtwork(request: Request, env: Env): Promise<Response
       if (user) premium = hasPremium(await getSubscription(env.DB!, user.id), nowSec());
     }
   } catch (e) {
-    console.error('artwork check failed', e); // fail closed: never hand out a Premium image on an error
+    logError('artwork check failed', e); // fail closed: never hand out a Premium image on an error
     return new Response('Unavailable', { status: 503, headers: { 'cache-control': 'no-store' } });
   }
   if (!premium) return new Response('Premium paintings need a Premium account', { status: 403, headers: { 'cache-control': 'no-store' } });

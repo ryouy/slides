@@ -3,6 +3,10 @@ dist
 test-results
 playwright-report
 .env*.local
+# local environment files hold real values: never track them (the public templates below stay tracked)
+.env
+.env.*
+!.env.example
 .vercel
 public/og/
 public/s/

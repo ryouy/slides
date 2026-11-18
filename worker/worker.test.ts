@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { DatabaseSync } from 'node:sqlite';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { claimsValid, decodeClaims } from './auth';
 import { hmacHex } from './crypto';
 import type { D1Database, D1PreparedStatement, Env } from './env';
@@ -10,7 +10,8 @@ import worker, { handle } from './index';
 import { fullImageId, isDailyImage } from './artwork';
 import { ARTWORKS } from '../src/games/art-slide/data';
 import { FREE_ARTWORK_IDS } from '../src/premium/freeList';
-import { formEncode, verifyStripeSignature, type FetchFn } from './stripe';
+import { formEncode, StripeError, verifyStripeSignature, type FetchFn } from './stripe';
+import { describeError, redact } from './safeLog';
 import { ALLOWLIST_MAX, parseAllowlist, publicSalesOpen, purchaseAllowed } from './env';
 
 // ---- an in-memory D1 (SQLite) running the real migration ----
@@ -804,5 +805,95 @@ describe('general sales mode (PUBLIC_SALES=open)', () => {
     expect((await co(cookie)).status).toBe(200);
     env = { ...env, PUBLIC_SALES: undefined };
     expect((await co(cookie)).status).toBe(403);
+  });
+});
+
+describe('logs never carry secrets (Stripe response bodies, key fragments, credentials)', () => {
+  // built at run time: a key-shaped literal in the source would be flagged by secret scanners even though it is a made-up value
+  const KEYTAIL = ['rk', 'live', '51SECRETKEYFRAGMENTxyz9876'].join('_');
+  const BODY = `{"error":{"message":"Invalid API Key provided: ${KEYTAIL}","type":"invalid_request_error","code":"api_key_expired"}}`;
+  let logged: string;
+  let spy: ReturnType<typeof vi.spyOn>;
+  const ids1 = () => (raw.prepare('SELECT id FROM users LIMIT 1').get() as { id: string }).id;
+  beforeEach(() => {
+    logged = '';
+    spy = vi.spyOn(console, 'error').mockImplementation((...a: unknown[]) => { logged += a.map((x) => (typeof x === 'string' ? x : JSON.stringify(x, Object.getOwnPropertyNames(x as object)) ?? String(x))).join(' ') + '\n'; });
+  });
+  afterEach(() => spy.mockRestore());
+  const WHSEC = ['whsec', 'abcdef1234'].join('_');
+  const GOCSPX = ['GOCSPX', 'abc_def'].join('-');
+  const GHP = ['ghp', 'a'.repeat(30)].join('_');
+  const noSecrets = (text: string) => {
+    expect(text).not.toContain(KEYTAIL);
+    expect(text).not.toMatch(/rk_live_|sk_live_|whsec_|Invalid API Key/);
+  };
+
+  it('StripeError keeps only the status, its class and Stripe\u2019s short codes: no body, nothing to print', () => {
+    const e = new StripeError(401, BODY);
+    expect(e.status).toBe(401);
+    expect(e.kind).toBe('authentication');
+    expect(e.type).toBe('invalid_request_error');
+    expect(e.code).toBe('api_key_expired');
+    const dump = JSON.stringify(e, Object.getOwnPropertyNames(e)) + String(e) + e.message + Object.keys(e).join(',');
+    noSecrets(dump);
+    expect('body' in e).toBe(false);
+    expect(describeError(e)).toBe('StripeError status=401 class=authentication type=invalid_request_error code=api_key_expired');
+    // a malformed or hostile body: nothing is taken from it that is not a short lowercase word
+    const weird = new StripeError(500, '{"error":{"type":"<script>alert(1)</script>","code":"Has Spaces And Secrets"}}');
+    expect(weird.type).toBeUndefined();
+    expect(weird.code).toBeUndefined();
+    expect(weird.kind).toBe('stripe_unavailable');
+    expect(new StripeError(502, 'not json').kind).toBe('stripe_unavailable');
+    expect(new StripeError(429).kind).toBe('rate_limit');
+    expect(new StripeError(404).kind).toBe('not_found');
+  });
+
+  it('describeError and redact: other errors are cut to a short redacted message, never the object or a stack', () => {
+    const text = describeError(new Error(`boom ${KEYTAIL} Bearer abc.def-ghi ${WHSEC} ${GOCSPX} ${GHP}`));
+    noSecrets(text);
+    expect(text).not.toMatch(/Bearer abc|GOCSPX-abc|ghp_a/);
+    expect(text).not.toContain(WHSEC);
+    expect(text).toContain('[redacted]');
+    expect(describeError(new Error('x'.repeat(5000))).length).toBeLessThan(260);
+    expect(describeError('a string')).toBe('non-error value thrown (string)');
+    expect(describeError({ secret: KEYTAIL })).not.toContain(KEYTAIL);
+    expect(redact(`keep this, hide ${['sk', 'test', 'abcdefghijk'].join('_')}`)).toBe('keep this, hide [redacted]');
+  });
+
+  it('Stripe fails during a webhook (401 with a body that quotes the key): 500 for Stripe to retry, and the log has only status and class', async () => {
+    const cookie = await login();
+    await call('/api/billing/checkout', { method: 'POST', cookie });
+    fake.sub = sub({ metadata: { user_id: ids1() } });
+    fetchFn = async (input) => (input.includes('/v1/subscriptions/') ? new Response(BODY, { status: 401 }) : makeFetch(fake)(input));
+    const res = await webhook(subEvent('evt_log_1'));
+    expect(res.status).toBe(500);
+    expect(await res.json()).toEqual({ error: 'processing_failed' });
+    noSecrets(logged);
+    expect(logged).toContain('webhook failed (customer.subscription.updated): StripeError status=401 class=authentication');
+  });
+
+  it('Stripe fails while re-reading a stale contract: the log has only status and class', async () => {
+    const cookie = await login();
+    const id = ids1();
+    raw.prepare("UPDATE users SET stripe_customer_id = 'cus_1' WHERE id = ?").run(id);
+    raw.prepare("INSERT INTO subscriptions (user_id, stripe_subscription_id, status, current_period_end, cancel_at_period_end, updated_at) VALUES (?, 'sub_1', 'active', ?, 0, ?)").run(id, NOW() - 100, NOW() - 5000);
+    fetchFn = async () => new Response(BODY, { status: 401 });
+    const r = await (await call('/api/billing/status?refresh=1', { cookie })).json() as { signedIn: boolean };
+    expect(r.signedIn).toBe(true); // the page still works with the stored state
+    noSecrets(logged);
+    expect(logged).toContain('stripe refresh failed: StripeError status=401 class=authentication');
+  });
+
+  it('an unexpected error anywhere in the API: the client gets only server_error and the log a short redacted line', async () => {
+    const cookie = await login();
+    const broken = { ...env, DB: { ...env.DB!, prepare: () => { throw new Error(`database exploded near ${KEYTAIL}`); } } as unknown as D1Database };
+    const res = await worker.fetch(new Request(`${SITE}/api/me`, { headers: { cookie } }), broken);
+    expect(res.status).toBe(500);
+    const clientSide = await res.text();
+    expect(JSON.parse(clientSide)).toEqual({ error: 'server_error' });
+    noSecrets(clientSide);
+    noSecrets(logged);
+    expect(logged).toContain('api error: Error: database exploded near [redacted]');
+    expect(logged).not.toMatch(/at .*\.ts|stack/i); // no stack trace
   });
 });

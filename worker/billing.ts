@@ -4,6 +4,7 @@ import { allow, deleteUser, eventSeen, getSubscription, markEvent, nowSec, saveS
 import { hasPremium, isOpenSubscription, type SubscriptionRow } from './entitlement';
 import { err, json } from './http';
 import { priceProblem } from './priceCheck';
+import { logError } from './safeLog';
 import { customerId, periodEnd, StripeError, stripeClient, verifyStripeSignature, type FetchFn, type StripeClient, type StripeSubscription } from './stripe';
 
 const REFRESH_AFTER = 600; // seconds: how old a row may be before an expired period is re-checked with Stripe
@@ -58,7 +59,7 @@ export async function planFor(env: Env, user: UserRow, opts: { refresh?: boolean
       await refreshFromStripe(env, stripeClient(env.STRIPE_SECRET_KEY!, opts.fetchFn), user);
       sub = await getSubscription(env.DB!, user.id);
     } catch (e) {
-      console.error('stripe refresh failed', e instanceof StripeError ? e.status : e);
+      logError('stripe refresh failed', e);
     }
   }
   return {
@@ -192,7 +193,7 @@ export async function handleWebhook(request: Request, env: Env, fetchFn?: FetchF
         await syncSubscription(env, sub, hint);
       }
     } catch (e) {
-      console.error('webhook failed', ev.type, e instanceof StripeError ? e.status : e);
+      logError(`webhook failed (${/^[a-z0-9._]{1,80}$/.test(ev.type) ? ev.type : 'unknown event type'})`, e);
       return err(500, 'processing_failed'); // not recorded: Stripe will deliver it again
     }
   }
