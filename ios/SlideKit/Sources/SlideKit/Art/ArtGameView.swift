@@ -103,6 +103,7 @@ struct ArtGameView: View {
 
     private var actions: some View {
         HStack(spacing: 2) {
+            if !daily { levelMenu }
             icon("info.circle", app.t("art.preview")) { showPreview = true }
             icon("shuffle", app.t("art.shuffle")) { model.shuffle(reduceMotion: reduceMotion) }.disabled(model.shuffling).opacity(model.shuffling ? 0.45 : 1)
             let on = store.save.showNumbers
@@ -115,6 +116,28 @@ struct ArtGameView: View {
             .buttonStyle(.plain)
             .accessibilityLabel(app.t("art.numbers")).accessibilityAddTraits(on ? .isSelected : [])
         }
+    }
+    /// Piece count (grid) chooser: just "4×3", no level names. Premium sizes show a lock.
+    private var levelMenu: some View {
+        Menu {
+            ForEach(artLevels, id: \.self) { l in
+                Button { choose(l) } label: {
+                    if ArtRules.isLevelLocked(l, premium: app.isPremium) { Label(gridLabel(l), systemImage: "lock.fill") }
+                    else if l == model.state.puzzle.size { Label(gridLabel(l), systemImage: "checkmark") }
+                    else { Text(gridLabel(l)) }
+                }
+            }
+        } label: {
+            HStack(spacing: 3) {
+                Text(gridLabel(model.state.puzzle.size)).font(Web.font(15, .medium, relativeTo: .subheadline)).monospacedDigit()
+                Image(systemName: "chevron.down").font(.system(size: 9, weight: .semibold))
+            }
+            .fixedSize().foregroundStyle(Web.fg).padding(.horizontal, 8).frame(minHeight: 44).contentShape(Rectangle())
+        }
+        .fixedSize()
+        .disabled(model.shuffling)
+        .accessibilityLabel(app.t("big.size"))
+        .accessibilityValue(gridLabel(model.state.puzzle.size))
     }
     private func icon(_ symbol: String, _ label: String, action: @escaping () -> Void) -> some View {
         Button(action: { Haptics.tap(); action() }) {
@@ -129,23 +152,6 @@ struct ArtGameView: View {
         VStack(alignment: .leading, spacing: 6) {
             if !daily {
                 HStack {
-                    Menu {
-                        ForEach(artLevels, id: \.self) { l in
-                            Button { choose(l) } label: {
-                                if ArtRules.isLevelLocked(l, premium: app.isPremium) { Label("\(levelName(l)) · \(gridLabel(l))", systemImage: "lock.fill") }
-                                else if l == model.state.puzzle.size { Label("\(levelName(l)) · \(gridLabel(l))", systemImage: "checkmark") }
-                                else { Text("\(levelName(l)) · \(gridLabel(l))") }
-                            }
-                        }
-                    } label: {
-                        HStack(spacing: 6) {
-                            Text("\(levelName(model.state.puzzle.size)) · \(gridLabel(model.state.puzzle.size))").font(Web.font(12, .medium, relativeTo: .caption))
-                            Image(systemName: "chevron.up.chevron.down").font(.system(size: 9))
-                        }
-                        .foregroundStyle(Web.fg).padding(.horizontal, 10).frame(minHeight: 38)
-                        .overlay(RoundedRectangle(cornerRadius: 3).stroke(Web.line, lineWidth: 1))
-                    }
-                    .disabled(model.shuffling).accessibilityLabel(app.t("big.size"))
                     Spacer()
                     Button { onNext() } label: {
                         HStack(spacing: 2) { Text(app.t(artwork.isCustom ? "photos.title" : "art.nextArtwork")); Image(systemName: "chevron.right").font(.system(size: 10)) }
@@ -159,7 +165,6 @@ struct ArtGameView: View {
         if let url, let u = URL(string: url) { Link(t, destination: u).underline().foregroundStyle(Web.muted) } else { Text(t) }
     }
 
-    private func levelName(_ l: Int) -> String { app.t("level.\(l)") }
     private func gridLabel(_ l: Int) -> String { let g = ArtGrid.gridFor(aspect: artwork.aspect, level: l); return "\(g.cols)×\(g.rows)" }
 
     private func choose(_ l: Int) {
