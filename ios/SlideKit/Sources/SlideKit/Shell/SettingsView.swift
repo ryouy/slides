@@ -5,6 +5,7 @@ import SlideCore
 public struct SettingsView: View {
     @Environment(AppModel.self) private var app
     @State private var showPremium = false
+    @State private var web: WebPage?
     @State private var bulk: (Int, Int)?
     @State private var nonce = ""
     @State private var confirmDelete = false
@@ -47,14 +48,16 @@ public struct SettingsView: View {
                 }
                 Section(app.t("ios.section.about")) {
                     if app.ads.privacyOptionsRequired { Button(app.t("ios.ads.privacy")) { Task { await app.ads.showPrivacyOptions() } } }
-                    Link(app.t("ios.terms"), destination: URL(string: "\(site)/terms")!)
-                    Link(app.t("ios.privacy"), destination: URL(string: "\(site)/privacy")!)
-                    Link(app.t("common.contact"), destination: URL(string: "\(site)/contact")!)
+                    webRow(app.t("common.about"), "about")
+                    webRow(app.t("ios.terms"), "terms")
+                    webRow(app.t("ios.privacy"), "privacy")
+                    webRow(app.t("common.contact"), "contact")
                     LabeledContent(app.t("ios.version"), value: Self.version)
                 }
             }
             .navigationTitle(app.t("home.settings"))
             .sheet(isPresented: $showPremium) { PremiumView() }
+            .sheet(item: $web) { w in SafariView(url: w.url).ignoresSafeArea() }
             .confirmationDialog(app.t("ios.account.deleteTitle"), isPresented: $confirmDelete, titleVisibility: .visible) {
                 Button(app.t("ios.account.deleteConfirm"), role: .destructive) { Task { await app.account.deleteAccount() } }
                 Button(app.t("ios.account.cancel"), role: .cancel) {}
@@ -109,7 +112,7 @@ public struct SettingsView: View {
                     let code = cred.authorizationCode
                     Task { await app.account.signIn(identityToken: token, nonce: raw, authorizationCode: code) }
                 }
-                .signInWithAppleButtonStyle(.whiteOutline)
+                .signInWithAppleButtonStyle(.black)
                 .frame(height: 44)
                 .disabled(app.account.busy)
                 .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
@@ -143,6 +146,16 @@ public struct SettingsView: View {
         case .deletedKeepApple: return app.t("ios.account.noticeDeletedApple")
         case .signOutDone, nil: return nil
         }
+    }
+
+    struct WebPage: Identifiable { let id = UUID(); let url: URL }
+    /// A legal / info page of the website, shown in an in-app Safari sheet.
+    private func webRow(_ title: String, _ page: String) -> some View {
+        Button { if let u = URL(string: "\(site)/\(page)") { web = WebPage(url: u) } } label: {
+            HStack { Text(title).foregroundStyle(.primary); Spacer(); Image(systemName: "arrow.up.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary) }
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 
     private func downloadAll() async {
