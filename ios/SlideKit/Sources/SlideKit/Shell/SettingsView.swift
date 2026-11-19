@@ -30,15 +30,15 @@ public struct SettingsView: View {
                     }
                     Toggle(app.t("settings.colorblind"), isOn: $app.colorblind)
                 }
-                Section(app.t("ios.section.offline")) {
-                    Text(app.t("ios.offline.note")).font(.footnote).foregroundStyle(.secondary)
-                    LabeledContent(app.t("ios.dl.title"), value: app.images.downloaded.isEmpty ? app.t("ios.dl.none") : app.t("ios.dl.count", ["n": app.images.downloaded.count, "mb": String(format: "%.1f", Double(app.images.totalBytes) / 1_048_576)]))
-                    if app.isPremium {
+                // Downloaded Premium paintings: only matters to Premium users, so nobody else sees it
+                if app.isPremium {
+                    Section(app.t("ios.dl.title")) {
+                        LabeledContent(app.t("ios.dl.title"), value: app.images.downloaded.isEmpty ? app.t("ios.dl.none") : app.t("ios.dl.count", ["n": app.images.downloaded.count, "mb": String(format: "%.1f", Double(app.images.totalBytes) / 1_048_576)]))
                         Button(bulk.map { app.t("ios.dl.busy", ["a": $0.0, "b": $0.1]) } ?? app.t("ios.dl.all")) { Task { await downloadAll() } }.disabled(bulk != nil)
                         Text(app.t("ios.dl.wifi")).font(.footnote).foregroundStyle(.secondary)
-                    }
-                    if !app.images.downloaded.isEmpty {
-                        Button(app.t("ios.dl.deleteAll"), role: .destructive) { Task { await app.images.deleteAll() } }
+                        if !app.images.downloaded.isEmpty {
+                            Button(app.t("ios.dl.deleteAll"), role: .destructive) { Task { await app.images.deleteAll() } }
+                        }
                     }
                 }
                 Section(app.t("ios.section.about")) {
