@@ -1,0 +1,30 @@
+{
+  "en": {
+    "ios.drive.title": "Google Drive",
+    "ios.drive.footer": "Optional. Syncs only ART SLIDE records, through the hidden app folder of your own Google Drive.",
+    "ios.drive.signedIn": "Signed in with Google",
+    "ios.drive.sync": "Sync records with Drive",
+    "ios.drive.off": "Drive sync is off. Records stay on this device.",
+    "ios.drive.noticeExpired": "Your Google sign-in expired. Sign in again to keep syncing.",
+    "ios.drive.noticeSignInFailed": "Could not sign in with Google. Try again later.",
+    "ios.drive.noticeDenied": "Drive access was not granted, so sync stays off.",
+    "ios.drive.switchTitle": "Another Google account was used here before",
+    "ios.drive.switchMessage": "The ART SLIDE records on this device were synced with a different Google account. Bringing them in adds this device's records to the Drive of the account you just signed in with. Nothing is deleted unless you choose to use only the account's records.",
+    "ios.drive.switchBringIn": "Bring this device's records into this Google account",
+    "ios.drive.switchReplace": "Use only this Google account's records"
+  },
+  "ja": {
+    "ios.drive.title": "Google ドライブ",
+    "ios.drive.footer": "任意です。ご自身の Google ドライブの非表示のアプリ用フォルダで、ART SLIDE の記録だけを同期します。",
+    "ios.drive.signedIn": "Google でサインイン済み",
+    "ios.drive.sync": "記録をドライブと同期",
+    "ios.drive.off": "ドライブ同期はオフです。記録はこの端末にだけ保存されます。",
+    "ios.drive.noticeExpired": "Google のサインインの有効期限が切れました。同期を続けるには、もう一度サインインしてください。",
+    "ios.drive.noticeSignInFailed": "Google でサインインできませんでした。しばらくしてからもう一度お試しください。",
+    "ios.drive.noticeDenied": "ドライブへのアクセスが許可されなかったため、同期はオフのままです。",
+    "ios.drive.switchTitle": "以前は別の Google アカウントが使われていました",
+    "ios.drive.switchMessage": "この端末の ART SLIDE の記録は別の Google アカウントと同期されたものです。「取り込む」を選ぶと、この端末の記録が今サインインしたアカウントのドライブに追加されます。アカウントの記録だけを使う場合を除き、何も削除されません。",
+    "ios.drive.switchBringIn": "この端末の記録をこの Google アカウントに取り込む",
+    "ios.drive.switchReplace": "この Google アカウントの記録だけを使う"
+  }
+}

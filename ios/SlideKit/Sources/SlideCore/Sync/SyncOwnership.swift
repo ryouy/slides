@@ -25,8 +25,9 @@ public struct SyncOwnership: Codable, Equatable, Sendable {
         SHA256.hash(data: Data(accountId.utf8)).map { String(format: "%02x", $0) }.joined()
     }
     /// SHA-256 of the records as encoded for sync (normalized, sorted keys, history in canonical order): stable across orderings.
-    public static func digest(_ doc: SyncDocument) -> String {
-        SHA256.hash(data: Data(doc.normalized().encode().utf8)).map { String(format: "%02x", $0) }.joined()
+    public static func digest(_ doc: SyncDocument) -> String { digest(raw: doc.normalized().encode()) }
+    public static func digest(raw: String) -> String {
+        SHA256.hash(data: Data(raw.utf8)).map { String(format: "%02x", $0) }.joined()
     }
 
     /// Records changed since the owner's last successful sync (or were never confirmed synced).

@@ -19,5 +19,10 @@ SLIDES_API_BASE = https:/$()/slides.ryouy.workers.dev
 ADMOB_APP_ID = ca-app-pub-3940256099942544~1458002511
 ADMOB_BANNER_UNIT_ID = ca-app-pub-3940256099942544/2435281174
 
+// Google Sign-In + Drive sync (optional). These are public identifiers (not secrets) of the iOS OAuth client in the same Cloud project as the web client.
+// Local.xcconfig can override them. If GOOGLE_IOS_CLIENT_ID is empty or `invalid.apps.googleusercontent.com`, the Google section in Settings is hidden.
+GOOGLE_IOS_CLIENT_ID = 206659959670-tkll3cb46ohed7350bcshhgi8osd15i6.apps.googleusercontent.com
+GOOGLE_REVERSED_CLIENT_ID = com.googleusercontent.apps.206659959670-tkll3cb46ohed7350bcshhgi8osd15i6
+
 // Optional, git-ignored file for your real values (Bundle ID, Team ID, product id, real AdMob ids).
 #include? "Local.xcconfig"

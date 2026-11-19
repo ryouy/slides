@@ -49,8 +49,23 @@ public struct ArtSave: Codable, Equatable, Sendable {
     public var records: [String: ArtKeyRecord] = [:]
     /// The visitor's own photos ("custom:<id>:<size>"): kept apart from the paintings.
     public var customRecords: [String: ArtKeyRecord] = [:]
+    /// Google Drive sync (same document as the web app): this install's id, clears per device in total, and clears per painting+size per device.
+    /// `records[k].clears` stays the total shown in the UI; these hold how it splits between devices so merging never counts a clear twice.
+    public var deviceId = ""
+    public var counters: [String: Int] = [:]
+    public var keyClears: [String: [String: Int]] = [:]
 
     public init() {}
+
+    /// Makes sure this install has a device id and per-device counts (older saves: everything so far belongs to this device). Returns true if anything changed.
+    @discardableResult
+    public mutating func ensureDriveFields() -> Bool {
+        var changed = false
+        if deviceId.isEmpty { deviceId = UUID().uuidString.lowercased(); changed = true }
+        if counters.isEmpty && completed > 0 { counters[deviceId] = completed; changed = true }
+        for (k, r) in records where keyClears[k] == nil && r.clears > 0 { keyClears[k] = [deviceId: r.clears]; changed = true }
+        return changed
+    }
 
     /// Decoding never fails on a damaged field: that field falls back to its default (nothing else is lost).
     public init(from d: Decoder) throws {
@@ -68,9 +83,12 @@ public struct ArtSave: Codable, Equatable, Sendable {
         gallery = (try? c.decode(ArtGalleryPrefs.self, forKey: .gallery)) ?? ArtGalleryPrefs()
         records = (try? c.decode([String: ArtKeyRecord].self, forKey: .records)) ?? [:]
         customRecords = (try? c.decode([String: ArtKeyRecord].self, forKey: .customRecords)) ?? [:]
+        deviceId = (try? c.decode(String.self, forKey: .deviceId)) ?? ""
+        counters = (try? c.decode([String: Int].self, forKey: .counters)) ?? [:]
+        keyClears = (try? c.decode([String: [String: Int]].self, forKey: .keyClears)) ?? [:]
         completed = max(completed, records.values.reduce(0) { $0 + $1.clears })
     }
-    enum K: String, CodingKey { case version, completed, dailyHistory, bests, history, inProgressDaily, inProgressFree, lastSize, showNumbers, gallery, records, customRecords }
+    enum K: String, CodingKey { case version, completed, dailyHistory, bests, history, inProgressDaily, inProgressFree, lastSize, showNumbers, gallery, records, customRecords, deviceId, counters, keyClears }
 
     public static func recordKey(_ artworkId: String, _ size: Int) -> String { "\(artworkId):\(size)" }
 
@@ -93,6 +111,10 @@ public struct ArtSave: Codable, Equatable, Sendable {
         if ArtRules.isCustom(p.artworkId) { customRecords[key] = rec; return outcome }
         records[key] = rec
         completed += 1
+        if !deviceId.isEmpty { // per-device split for Drive sync (the id is created at launch by ArtStore)
+            counters[deviceId, default: 0] += 1
+            keyClears[key, default: [:]][deviceId, default: 0] += 1
+        }
         history = Array((history + [ArtPlayRecord(date: dateKey, mode: p.mode, size: p.size, artworkId: p.artworkId, timeMs: state.elapsedMs, moves: state.moves)]).suffix(200))
         if p.mode == .daily {
             if dailyHistory[dateKey] == nil || dailyHistory[dateKey]!.artworkId != p.artworkId {

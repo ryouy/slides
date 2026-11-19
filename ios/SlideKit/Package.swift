@@ -16,6 +16,7 @@ let package = Package(
     dependencies: coreOnly ? [] : [
         .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", from: "13.0.0"),
         .package(url: "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git", from: "3.0.0"),
+        .package(url: "https://github.com/google/GoogleSignIn-iOS.git", from: "8.0.0"),
     ],
     targets: [
         .target(name: "SlideCore"),
@@ -26,6 +27,8 @@ let package = Package(
                 "SlideCore",
                 .product(name: "GoogleMobileAds", package: "swift-package-manager-google-mobile-ads", condition: .when(platforms: [.iOS])),
                 .product(name: "GoogleUserMessagingPlatform", package: "swift-package-manager-google-user-messaging-platform", condition: .when(platforms: [.iOS])),
+                .product(name: "GoogleSignIn", package: "GoogleSignIn-iOS", condition: .when(platforms: [.iOS])),
+                .product(name: "GoogleSignInSwift", package: "GoogleSignIn-iOS", condition: .when(platforms: [.iOS])),
             ]
         ),
     ]) + [

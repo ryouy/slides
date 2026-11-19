@@ -10,12 +10,19 @@ final class ArtStore {
     @ObservationIgnored private var reloadObserver: RecordsReloadObserver?
 
     init() {
-        save = file.load() ?? ArtSave()
+        var s = file.load() ?? ArtSave()
+        if s.ensureDriveFields() { file.save(s) } // this install's id for Drive sync is created once and kept
+        save = s
         reloadObserver = RecordsReloadObserver { [weak self] in self?.reloadFromDisk() }
     }
 
     /// After a sync merged records into the file: take the records, keep the unfinished puzzles and preferences as they are in memory.
-    func reloadFromDisk() { if let d = file.load() { ArtRecords(d).apply(to: &save) } }
+    func reloadFromDisk() {
+        guard let d = file.load() else { return }
+        ArtRecords(d).apply(to: &save)
+        save.counters = d.counters; save.keyClears = d.keyClears // the per-device split written by Drive sync
+        if save.deviceId.isEmpty { save.deviceId = d.deviceId }
+    }
 
     func update(_ f: (inout ArtSave) -> Void) { f(&save); if file.save(save) { NotificationCenter.default.post(name: .slideRecordsChanged, object: nil) } }
 

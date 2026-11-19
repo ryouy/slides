@@ -24,6 +24,8 @@ public final class AppModel {
     public let network: Reachability
     public let account: AccountStore
     public let sync: SyncStore
+    public let googleAccount: GoogleAccountStore
+    public let drive: DriveSyncStore
 
     private let store = JSONFileStore<AppSettings>(name: "settings")
 
@@ -44,6 +46,9 @@ public final class AppModel {
         let net = Reachability(), acct = AccountStore()
         network = net; account = acct
         sync = SyncStore(account: acct, network: net)
+        let g = GoogleAccountStore()
+        googleAccount = g
+        drive = DriveSyncStore(account: g, network: net)
     }
 
     private func persist() { store.save(AppSettings(lang: lang, theme: theme, colorblind: colorblind)) }
@@ -54,6 +59,7 @@ public final class AppModel {
     /// Called once at launch.
     public func start() async {
         sync.start()
+        drive.start()
         await premium.start()
         await images.refresh()
         await ads.prepare()

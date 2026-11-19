@@ -1,5 +1,6 @@
 import SwiftUI
 import AuthenticationServices
+import GoogleSignInSwift
 import SlideCore
 
 public struct SettingsView: View {
@@ -10,6 +11,7 @@ public struct SettingsView: View {
     @State private var bulk: (Int, Int)?
     @State private var nonce = ""
     @State private var confirmDelete = false
+    @Environment(\.colorScheme) private var scheme
     private let site = "https://slides.ryouy.workers.dev"
 
     public init() {}
@@ -19,6 +21,7 @@ public struct SettingsView: View {
         NavigationStack {
             Form {
                 accountSection
+                googleSection
                 Section(app.t("ios.section.plan")) {
                     if app.isPremium {
                         Label(app.t("ios.premium.active"), systemImage: "checkmark.seal.fill").foregroundStyle(.tint)
@@ -75,7 +78,7 @@ public struct SettingsView: View {
             } message: {
                 Text(app.t("ios.account.switchMessage") + (app.sync.switchPrompt?.canReplace == false ? "\n\n" + app.t("ios.account.switchKept") : ""))
             }
-            .onDisappear { app.account.clearNotice() }
+            .onDisappear { app.account.clearNotice(); app.googleAccount.clearNotice() }
         }
     }
 
@@ -124,8 +127,74 @@ public struct SettingsView: View {
             if let n = noticeText { Text(n).font(.footnote).foregroundStyle(.secondary) }
         } header: {
             Text(app.t("ios.account.title"))
-        } footer: {
-            if !app.account.isSignedIn { Text(app.t("ios.account.footer")) }
+        }
+    }
+
+    // MARK: Google Drive (optional; ART SLIDE records only, same file as the web version). Hidden until the owner configures a client id.
+
+    @ViewBuilder private var googleSection: some View {
+        if app.googleAccount.isConfigured {
+            Section {
+                if app.googleAccount.isSignedIn {
+                    Label(app.t("ios.drive.signedIn"), systemImage: "externaldrive.badge.icloud")
+                    Toggle(app.t("ios.drive.sync"), isOn: Binding(get: { app.drive.syncEnabled }, set: { on in Task { await app.drive.setEnabled(on) } }))
+                    if app.drive.syncEnabled {
+                        Button { Task { await app.drive.syncNow() } } label: {
+                            HStack {
+                                Text(app.t("ios.account.syncNow"))
+                                Spacer()
+                                if app.drive.status == .syncing { ProgressView() }
+                                else { Text(driveStatusText).font(.footnote).foregroundStyle(driveFailed ? Color.red : Color.secondary).multilineTextAlignment(.trailing) }
+                            }
+                        }
+                        .disabled(app.drive.status == .syncing)
+                    } else {
+                        Text(app.t("ios.drive.off")).font(.footnote).foregroundStyle(.secondary)
+                    }
+                    Button(app.t("ios.account.signOut")) { app.googleAccount.signOut() }.disabled(app.googleAccount.busy)
+                } else {
+                    GoogleSignInButton(scheme: scheme == .dark ? .dark : .light, style: .wide, state: app.googleAccount.busy ? .disabled : .normal) { Task { await app.googleAccount.signIn() } }
+                        .frame(maxWidth: .infinity)
+                        .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                        .listRowBackground(Color.clear)
+                }
+                if let n = driveNoticeText { Text(n).font(.footnote).foregroundStyle(.secondary) }
+            } header: {
+                Text(app.t("ios.drive.title"))
+            } footer: {
+                if !app.googleAccount.isSignedIn { Text(app.t("ios.drive.footer")) }
+            }
+            .confirmationDialog(app.t("ios.drive.switchTitle"), isPresented: Binding(
+                get: { app.drive.switchPrompt != nil },
+                set: { if !$0 { app.drive.cancelSwitch() } }
+            ), titleVisibility: .visible) {
+                Button(app.t("ios.drive.switchBringIn")) { app.drive.chooseBringIn() }
+                if app.drive.switchPrompt?.canReplace == true { Button(app.t("ios.drive.switchReplace")) { app.drive.chooseReplace() } }
+                Button(app.t("ios.account.cancel"), role: .cancel) { app.drive.cancelSwitch() }
+            } message: {
+                Text(app.t("ios.drive.switchMessage") + (app.drive.switchPrompt?.canReplace == false ? "\n\n" + app.t("ios.account.switchKept") : ""))
+            }
+        }
+    }
+
+    private var driveFailed: Bool { if case .failed = app.drive.status { return true }; return false }
+
+    private var driveStatusText: String {
+        switch app.drive.status {
+        case .idle: return app.t("ios.account.notSynced")
+        case .syncing: return app.t("ios.account.syncing")
+        case .lastSynced(let d): return app.t("ios.account.lastSynced", ["time": d.formatted(date: .abbreviated, time: .shortened)])
+        case .failed(.later): return app.t("ios.account.failedLater")
+        case .failed(.updateApp): return app.t("ios.account.failedUpdate")
+        }
+    }
+
+    private var driveNoticeText: String? {
+        switch app.googleAccount.notice {
+        case .sessionExpired: return app.t("ios.drive.noticeExpired")
+        case .signInFailed: return app.t("ios.drive.noticeSignInFailed")
+        case .driveDenied: return app.t("ios.drive.noticeDenied")
+        case nil: return nil
         }
     }
 

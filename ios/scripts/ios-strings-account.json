@@ -1,7 +1,6 @@
 {
   "en": {
     "ios.account.title": "Account",
-    "ios.account.footer": "Optional. Signing in only syncs your game records (best times, daily history) between your devices. It never includes purchases or your own photos, and nothing in the app requires an account.",
     "ios.account.signedIn": "Signed in with Apple",
     "ios.account.sync": "Sync records",
     "ios.account.syncNow": "Sync now",
@@ -30,7 +29,6 @@
   },
   "ja": {
     "ios.account.title": "アカウント",
-    "ios.account.footer": "任意です。サインインすると、ゲームの記録（ベストタイムや毎日のパズルの履歴）だけを端末間で同期します。購入情報やご自身の写真は含まれません。アカウントがなくてもアプリのすべてを利用できます。",
     "ios.account.signedIn": "Appleでサインイン済み",
     "ios.account.sync": "記録を同期",
     "ios.account.syncNow": "今すぐ同期",
