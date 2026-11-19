@@ -144,7 +144,7 @@ public struct SettingsView: View {
 
     @ViewBuilder private var appleTab: some View {
         if appleIn {
-            signedInRow("Apple", systemImage: "applelogo", canDelete: true)
+            signedInRow("Apple", systemImage: "applelogo", canDelete: true) { await signOutApple() }
             if googleIn, let token = app.googleAccount.idToken {
                 Button(app.t("ios.account.linkGoogle")) { Task { await app.account.linkGoogle(idToken: token) } }.disabled(app.account.busy)
             }
@@ -170,7 +170,7 @@ public struct SettingsView: View {
 
     @ViewBuilder private var googleTab: some View {
         if googleIn {
-            signedInRow("Google", systemImage: "g.circle", canDelete: false)
+            signedInRow("Google", systemImage: "g.circle", canDelete: false) { await signOutGoogle() }
         } else if app.googleAccount.isConfigured {
             Button { Task { await app.googleAccount.signIn() } } label: {
                 HStack(spacing: 10) {
@@ -188,11 +188,11 @@ public struct SettingsView: View {
     }
 
     /// "Signed in" on the left; sign out on the right; delete (Apple account) in a small menu.
-    private func signedInRow(_ name: String, systemImage: String, canDelete: Bool) -> some View {
+    private func signedInRow(_ name: String, systemImage: String, canDelete: Bool, signOut: @escaping () async -> Void) -> some View {
         HStack(spacing: 12) {
             Label(name, systemImage: systemImage).lineLimit(1).fixedSize()
             Spacer(minLength: 8)
-            Button(app.t("ios.account.signOut")) { Task { await signOutAll() } }
+            Button(app.t("ios.account.signOut")) { Task { await signOut() } }
                 .buttonStyle(.borderless).lineLimit(1).fixedSize().disabled(app.account.busy)
             if canDelete {
                 Menu {
@@ -203,11 +203,18 @@ public struct SettingsView: View {
         }
     }
 
-    private func signOutAll() async {
-        app.sync.setEnabled(false)
-        await app.drive.setEnabled(false)
-        if app.account.isSignedIn { await app.account.signOut() }
-        if app.googleAccount.isSignedIn { app.googleAccount.signOut() }
+    /// Signing out of Apple leaves Google signed in (and the other way round). The server session is shared, so when the other
+    /// account is still signed in on the device it takes over the session.
+    private func signOutApple() async {
+        let google = app.googleAccount.isSignedIn ? app.googleAccount.idToken : nil
+        await app.account.signOut()
+        if let google { await app.account.signInGoogle(idToken: google) }
+    }
+
+    private func signOutGoogle() async {
+        await app.drive.setEnabled(false)               // Drive sync needs the Google account
+        app.googleAccount.signOut()
+        if app.account.signedInWithGoogle { await app.account.signOut() }   // the session was made from Google; an Apple session stays
     }
 
     private var activeSyncFailed: Bool { app.drive.syncEnabled ? driveFailed : syncFailed }
