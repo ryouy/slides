@@ -58,6 +58,7 @@ public struct ArtRootView: View {
             VStack(spacing: 0) {
                 HStack(spacing: 8) {
                     Spacer()
+                    topButton(app.t("home.other"), "ellipsis") { showMenu = true }
                     topButton(app.t("home.settings"), "gearshape") { showSettings = true }
                 }
                 Text("ART SLIDE")
@@ -67,7 +68,6 @@ public struct ArtRootView: View {
                     .accessibilityAddTraits(.isHeader)
                 if let a = exhibit { exhibitCard(a) }
                 menu
-                moreSection
                 AdBannerSlot().padding(.top, 16)
             }
             .padding(.horizontal, 16).padding(.top, 8).padding(.bottom, 24)
@@ -76,11 +76,12 @@ public struct ArtRootView: View {
         .scrollBounceBehavior(.basedOnSize)
     }
 
+    /// Icon-only round button of the home's top row (the name is kept for VoiceOver).
     private func topButton(_ title: String, _ icon: String, _ action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            HStack(spacing: 5) { Image(systemName: icon).font(.system(size: 13)); Text(title).font(Web.font(12, .medium, relativeTo: .caption)) }
-                .foregroundStyle(Web.fg).padding(.horizontal, 14).frame(minHeight: 40)
-                .overlay(Capsule().stroke(Web.line, lineWidth: 1)).contentShape(Capsule())
+            Image(systemName: icon).font(.system(size: 17, weight: .regular))
+                .foregroundStyle(Web.fg).frame(width: 44, height: 44)
+                .overlay(Circle().stroke(Web.line, lineWidth: 1)).contentShape(Circle())
         }
         .accessibilityLabel(title)
     }
@@ -128,22 +129,6 @@ public struct ArtRootView: View {
     private func randomArtwork() -> String {
         let pool = app.catalog.artworks.filter { !ArtRules.isArtworkLocked($0.id, premium: app.isPremium, catalog: app.catalog) }
         return (pool.randomElement() ?? app.catalog.artworks[0]).id
-    }
-
-    private var moreSection: some View {
-        VStack(spacing: 0) {
-            Rectangle().fill(Web.line).frame(height: 1)
-            Button { showMenu = true } label: {
-                HStack {
-                    Text(app.t("home.other")).font(Web.font(12, relativeTo: .caption)).tracking(1.1)
-                    Spacer()
-                    Image(systemName: "chevron.right").font(.system(size: 11))
-                }
-                .foregroundStyle(Web.muted).padding(.horizontal, 2).frame(minHeight: 48).contentShape(Rectangle())
-            }
-            .accessibilityAddTraits(.isButton)
-            Rectangle().fill(Web.line).frame(height: 1)
-        }
     }
 
     private func perform(_ a: ArtMenuAction) {
