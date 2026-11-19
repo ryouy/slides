@@ -23,11 +23,12 @@ public struct SettingsView: View {
             Form {
                 accountSection
                 Section(app.t("ios.section.plan")) {
-                    if app.isPremium {
-                        Label(app.t("ios.premium.active"), systemImage: "checkmark.seal.fill").foregroundStyle(.tint)
-                    }
                     Button { showPremium = true } label: {
-                        Label("Premium", systemImage: "sparkles").frame(maxWidth: .infinity, alignment: .leading)
+                        HStack {
+                            Label(app.isPremium ? app.t("ios.premium.active") : "Premium", systemImage: app.isPremium ? "checkmark.seal.fill" : "sparkles")
+                            Spacer()
+                            Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
+                        }.contentShape(Rectangle())
                     }
                 }
                 Section(app.t("ios.section.display")) {
@@ -44,7 +45,6 @@ public struct SettingsView: View {
                     Section(app.t("ios.dl.title")) {
                         LabeledContent(app.t("ios.dl.title"), value: app.images.downloaded.isEmpty ? app.t("ios.dl.none") : app.t("ios.dl.count", ["n": app.images.downloaded.count, "mb": String(format: "%.1f", Double(app.images.totalBytes) / 1_048_576)]))
                         Button(bulk.map { app.t("ios.dl.busy", ["a": $0.0, "b": $0.1]) } ?? app.t("ios.dl.all")) { Task { await downloadAll() } }.disabled(bulk != nil)
-                        Text(app.t("ios.dl.wifi")).font(.footnote).foregroundStyle(.secondary)
                         if let downloadNotice { Text(downloadNotice).font(.footnote).foregroundStyle(.secondary) }
                         if !app.images.downloaded.isEmpty {
                             Button(app.t("ios.dl.deleteAll"), role: .destructive) { Task { await app.images.deleteAll() } }
@@ -109,62 +109,78 @@ public struct SettingsView: View {
         }
     }
 
+    private var appleIn: Bool { app.account.isSignedIn && !app.account.signedInWithGoogle }
+    private var googleIn: Bool { app.account.signedInWithGoogle || app.googleAccount.isSignedIn }
+    @State private var tab: Int? = nil   // 0 = Apple, 1 = Google
+    private var shownTab: Int { tab ?? ((googleIn && !appleIn) ? 1 : 0) }
+
+    /// One compact section: Apple | Google tabs, the sign-in button or the signed-in row, one sync switch, a link to the web version.
     @ViewBuilder private var accountSection: some View {
         Section(app.t("ios.account.title")) {
-            if !anySignedIn {
-                // two columns: Apple | Google
-                HStack(spacing: 10) {
-                    SignInWithAppleButton(.continue) { request in
-                        nonce = AppleNonce.random()
-                        request.requestedScopes = []
-                        request.nonce = AppleNonce.sha256Hex(nonce)
-                    } onCompletion: { result in
-                        guard case .success(let auth) = result, let cred = auth.credential as? ASAuthorizationAppleIDCredential,
-                              let tokenData = cred.identityToken, let token = String(data: tokenData, encoding: .utf8) else { return }
-                        let raw = nonce
-                        let code = cred.authorizationCode
-                        Task { await app.account.signIn(identityToken: token, nonce: raw, authorizationCode: code) }
-                    }
-                    .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
-                    .frame(height: 46)
-                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    .disabled(app.account.busy)
-                    if app.googleAccount.isConfigured {
-                        GoogleSignInButton(scheme: scheme == .dark ? .dark : .light, style: .standard, state: app.googleAccount.busy ? .disabled : .normal) { Task { await app.googleAccount.signIn() } }
-                            .frame(height: 46)
-                    }
-                }
-                .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                .listRowBackground(Color.clear)
-            } else {
-                // which accounts are signed in, in one row
-                HStack(spacing: 16) {
-                    if app.account.isSignedIn && !app.account.signedInWithGoogle { Label("Apple", systemImage: "applelogo") }
-                    if app.account.signedInWithGoogle || app.googleAccount.isSignedIn { Label("Google", systemImage: "g.circle") }
-                    Spacer()
-                    if app.account.isSignedIn && !app.account.signedInWithGoogle && app.googleAccount.isSignedIn, let token = app.googleAccount.idToken {
-                        Button(app.t("ios.account.linkGoogle")) { Task { await app.account.linkGoogle(idToken: token) } }.buttonStyle(.borderless).disabled(app.account.busy)
-                    }
-                }
-                // one sync switch; the last sync time sits under its label
+            Picker("", selection: Binding(get: { shownTab }, set: { tab = $0 })) {
+                Text("Apple").tag(0)
+                Text("Google").tag(1)
+            }
+            .pickerStyle(.segmented).labelsHidden()
+            if shownTab == 0 { appleTab } else { googleTab }
+            if anySignedIn {
                 Toggle(isOn: Binding(get: { syncOn }, set: { setSync($0) })) {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(app.t("ios.account.sync"))
                         if syncOn { Text(activeSyncStatusText).font(.caption).foregroundStyle(activeSyncFailed ? Color.red : Color.secondary) }
                     }
                 }
-                // two columns: sign out | delete account
-                HStack(spacing: 0) {
-                    Button(app.t("ios.account.signOut")) { Task { await signOutAll() } }
-                        .buttonStyle(.borderless).frame(maxWidth: .infinity).disabled(app.account.busy)
-                    if app.account.isSignedIn {
-                        Divider().frame(height: 22)
-                        Button(app.t("ios.account.delete"), role: .destructive) { confirmDelete = true }
-                            .buttonStyle(.borderless).frame(maxWidth: .infinity).disabled(app.account.busy)
-                    }
-                }
             }
+            webRow(app.t("ios.account.webApp"), "")
             if let n = noticeText ?? driveNoticeText { Text(n).font(.footnote).foregroundStyle(.secondary) }
+        }
+    }
+
+    @ViewBuilder private var appleTab: some View {
+        if appleIn {
+            signedInRow("Apple", systemImage: "applelogo", canDelete: true)
+            if googleIn, let token = app.googleAccount.idToken {
+                Button(app.t("ios.account.linkGoogle")) { Task { await app.account.linkGoogle(idToken: token) } }.disabled(app.account.busy)
+            }
+        } else {
+            SignInWithAppleButton(.continue) { request in
+                nonce = AppleNonce.random()
+                request.requestedScopes = []
+                request.nonce = AppleNonce.sha256Hex(nonce)
+            } onCompletion: { result in
+                guard case .success(let auth) = result, let cred = auth.credential as? ASAuthorizationAppleIDCredential,
+                      let tokenData = cred.identityToken, let token = String(data: tokenData, encoding: .utf8) else { return }
+                let raw = nonce
+                let code = cred.authorizationCode
+                Task { await app.account.signIn(identityToken: token, nonce: raw, authorizationCode: code) }
+            }
+            .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
+            .frame(height: 46)
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+            .disabled(app.account.busy)
+            .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+        }
+    }
+
+    @ViewBuilder private var googleTab: some View {
+        if googleIn {
+            signedInRow("Google", systemImage: "g.circle", canDelete: false)
+        } else if app.googleAccount.isConfigured {
+            GoogleSignInButton(scheme: scheme == .dark ? .dark : .light, style: .wide, state: app.googleAccount.busy ? .disabled : .normal) { Task { await app.googleAccount.signIn() } }
+                .frame(height: 46)
+                .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+        }
+    }
+
+    /// "Signed in" on the left; sign out (and delete, for an Apple account) on the right.
+    private func signedInRow(_ name: String, systemImage: String, canDelete: Bool) -> some View {
+        HStack(spacing: 14) {
+            Label(name, systemImage: systemImage)
+            Spacer()
+            Button(app.t("ios.account.signOut")) { Task { await signOutAll() } }.buttonStyle(.borderless).disabled(app.account.busy)
+            if canDelete {
+                Button(app.t("ios.account.delete"), role: .destructive) { confirmDelete = true }.buttonStyle(.borderless).disabled(app.account.busy)
+            }
         }
     }
 

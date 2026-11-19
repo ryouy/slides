@@ -125,24 +125,28 @@ public struct ArtRootView: View {
                 Button { path.append(.gallery) } label: { homeTile(app.t("art.gallery")) }.buttonStyle(HomeTileStyle())
                 Button { path.append(.play(randomArtwork())) } label: { homeTile(app.t("art.random")) }.buttonStyle(HomeTileStyle())
             }
-            Button {
-                if app.isPremium { path.append(.photos) } else { showPremium = true }
-            } label: {
-                HStack(spacing: 6) {
-                    Text(app.t("home.photos"))
-                    if !app.isPremium { Image(systemName: "lock.fill").font(.system(size: 12)) }
+            // quiet second row: Resume | My Photos (My Photos alone, centred, when there is nothing to resume)
+            HStack(spacing: 0) {
+                if resumable {
+                    Button { path.append(.resume) } label: {
+                        HStack(spacing: 4) { Text(app.t("art.resume")); Image(systemName: "chevron.right").font(.system(size: 11, weight: .semibold)) }
+                            .frame(maxWidth: .infinity, minHeight: 44)
+                    }
+                    .buttonStyle(.plain)
                 }
-                .font(Web.font(15, .medium, relativeTo: .body)).foregroundStyle(Web.fg).frame(maxWidth: .infinity, minHeight: 58)
-            }
-            .buttonStyle(HomeTileStyle())
-            .accessibilityHint(app.isPremium ? app.t("photos.empty") : app.t("premium.lockedPhotos"))
-            if resumable {
-                Button { path.append(.resume) } label: {
-                    HStack(spacing: 4) { Text(app.t("art.resume")); Image(systemName: "chevron.right").font(.system(size: 11, weight: .semibold)) }
-                        .font(Web.font(14, .medium, relativeTo: .subheadline)).foregroundStyle(Web.muted).frame(maxWidth: .infinity, minHeight: 44)
+                Button {
+                    if app.isPremium { path.append(.photos) } else { showPremium = true }
+                } label: {
+                    HStack(spacing: 5) {
+                        Text(app.t("home.photos"))
+                        if !app.isPremium { Image(systemName: "lock.fill").font(.system(size: 11)) }
+                    }
+                    .frame(maxWidth: .infinity, minHeight: 44)
                 }
                 .buttonStyle(.plain)
+                .accessibilityHint(app.isPremium ? app.t("photos.empty") : app.t("premium.lockedPhotos"))
             }
+            .font(Web.font(14, .medium, relativeTo: .subheadline)).foregroundStyle(Web.muted)
         }
         .multilineTextAlignment(.center)
         .padding(.bottom, 22)
