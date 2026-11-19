@@ -113,13 +113,13 @@ public struct ArtRootView: View {
         let resumable = store.save.inProgressFree.map { $0.status == .playing } ?? false
         return VStack(spacing: 10) {
             HStack(spacing: 10) {
-                Button { path.append(.gallery) } label: { homeTile(app.t("art.gallery"), "square.grid.2x2") }.buttonStyle(HomeTileStyle())
-                Button { path.append(.play(randomArtwork())) } label: { homeTile(app.t("art.random"), "dice") }.buttonStyle(HomeTileStyle())
+                Button { path.append(.gallery) } label: { homeTile(app.t("art.gallery")) }.buttonStyle(HomeTileStyle())
+                Button { path.append(.play(randomArtwork())) } label: { homeTile(app.t("art.random")) }.buttonStyle(HomeTileStyle())
             }
             if resumable {
                 Button { path.append(.resume) } label: {
-                    Label(app.t("art.resume"), systemImage: "play.fill").font(Web.font(15, .medium, relativeTo: .body)).frame(maxWidth: .infinity, minHeight: 52)
-                        .foregroundStyle(Web.bg).background(Web.fg, in: Capsule())
+                    HStack(spacing: 4) { Text(app.t("art.resume")); Image(systemName: "chevron.right").font(.system(size: 11, weight: .semibold)) }
+                        .font(Web.font(14, .medium, relativeTo: .subheadline)).foregroundStyle(Web.muted).frame(maxWidth: .infinity, minHeight: 44)
                 }
                 .buttonStyle(.plain)
             }
@@ -128,12 +128,9 @@ public struct ArtRootView: View {
         .padding(.bottom, 22)
     }
 
-    private func homeTile(_ title: String, _ symbol: String) -> some View {
-        VStack(spacing: 8) {
-            Image(systemName: symbol).font(.system(size: 22, weight: .regular))
-            Text(title).font(Web.font(14, .medium, relativeTo: .subheadline)).lineLimit(1).minimumScaleFactor(0.7)
-        }
-        .foregroundStyle(Web.fg).frame(maxWidth: .infinity, minHeight: 92)
+    private func homeTile(_ title: String) -> some View {
+        Text(title).font(Web.font(15, .medium, relativeTo: .body)).lineLimit(1).minimumScaleFactor(0.7)
+            .foregroundStyle(Web.fg).frame(maxWidth: .infinity, minHeight: 76)
     }
 
     private func randomArtwork() -> String {

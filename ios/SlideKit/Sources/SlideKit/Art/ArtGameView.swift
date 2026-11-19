@@ -26,7 +26,7 @@ struct ArtGameView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            header.padding(.horizontal, 16).padding(.top, 4).padding(.bottom, 2)
+            header.padding(.horizontal, 12).padding(.top, 2).padding(.bottom, 4)
             ArtBoardView(model: model, aspect: artwork.aspect, showNumbers: store.save.showNumbers)
                 .padding(.horizontal, 16).padding(.vertical, 6)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -67,8 +67,8 @@ struct ArtGameView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
-        // title row (the whole width is the title's) and, below it, Time / Moves on the left and icon buttons on the right
-        return VStack(spacing: 4) {
+        // simple header: back + title (full width), then Time / Moves on the left and three plain icons on the right, no boxes or outlines
+        return VStack(spacing: 2) {
             HStack(alignment: .center, spacing: 6) {
                 Button { dismiss() } label: { Image(systemName: "chevron.left").font(.system(size: 18)).foregroundStyle(Web.fg).frame(width: 36, height: 44).contentShape(Rectangle()) }
                     .accessibilityLabel(app.t("common.back"))
@@ -77,50 +77,51 @@ struct ArtGameView: View {
             if typeSize.isAccessibilitySize {
                 VStack(alignment: .leading, spacing: 6) { stats; actions }
             } else {
-                HStack(alignment: .center, spacing: 10) {
-                    stats.frame(width: 156)
+                HStack(alignment: .center, spacing: 8) {
+                    stats
                     Spacer(minLength: 0)
                     actions
                 }
-                .padding(.leading, 42) // lines up under the title, past the back arrow
+                .padding(.leading, 42) // under the title, past the back arrow
             }
         }
     }
 
     private var stats: some View {
-        HStack(spacing: 0) {
+        HStack(alignment: .bottom, spacing: 20) {
             stat(app.t("common.time"), ArtStats.formatTime(model.state.elapsedMs))
-            Rectangle().fill(Web.line).frame(width: 1, height: 26)
             stat(app.t("common.moves"), "\(model.state.moves)")
         }
-        .overlay(alignment: .top) { Rectangle().fill(Web.line).frame(height: 1) }
-        .overlay(alignment: .bottom) { Rectangle().fill(Web.line).frame(height: 1) }
         .accessibilityElement(children: .combine)
     }
     private func stat(_ label: String, _ value: String) -> some View {
-        VStack(spacing: 0) {
-            Text(label).font(Web.font(8, .semibold, relativeTo: .caption2)).tracking(1.4).foregroundStyle(Web.muted)
-            Text(value).font(Web.font(19, .light, relativeTo: .title3)).monospacedDigit().foregroundStyle(Web.fg).minimumScaleFactor(0.6).lineLimit(1)
+        VStack(alignment: .leading, spacing: 0) {
+            Text(label).font(Web.font(9, .semibold, relativeTo: .caption2)).tracking(1.4).foregroundStyle(Web.muted)
+            Text(value).font(Web.font(22, .light, relativeTo: .title3)).monospacedDigit().foregroundStyle(Web.fg).minimumScaleFactor(0.6).lineLimit(1)
         }
-        .frame(maxWidth: .infinity).padding(.vertical, 2)
     }
 
     private var actions: some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 2) {
             icon("info.circle", app.t("art.preview")) { showPreview = true }
             icon("shuffle", app.t("art.shuffle")) { model.shuffle(reduceMotion: reduceMotion) }.disabled(model.shuffling).opacity(model.shuffling ? 0.45 : 1)
             let on = store.save.showNumbers
             Button { Haptics.tap(); store.update { $0.showNumbers.toggle() } } label: {
-                Text("#").font(Web.font(17, .semibold)).frame(width: 40, height: 36)
+                Image(systemName: "number").font(.system(size: 18, weight: on ? .semibold : .regular))
+                    .foregroundStyle(on ? Web.bg : Web.fg).frame(width: 36, height: 36)
+                    .background(on ? Web.fg : Color.clear, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+                    .frame(width: 44, height: 44).contentShape(Rectangle())
             }
-            .buttonStyle(WebButtonStyle(filled: on, minHeight: 36)).frame(width: 40)
+            .buttonStyle(.plain)
             .accessibilityLabel(app.t("art.numbers")).accessibilityAddTraits(on ? .isSelected : [])
         }
     }
     private func icon(_ symbol: String, _ label: String, action: @escaping () -> Void) -> some View {
-        Button(action: { Haptics.tap(); action() }) { Image(systemName: symbol).font(.system(size: 16, weight: .regular)).frame(width: 40, height: 36) }
-            .buttonStyle(WebButtonStyle(minHeight: 36)).frame(width: 40)
-            .accessibilityLabel(label)
+        Button(action: { Haptics.tap(); action() }) {
+            Image(systemName: symbol).font(.system(size: 19, weight: .regular)).foregroundStyle(Web.fg).frame(width: 44, height: 44).contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(label)
     }
 
     // MARK: below the board
