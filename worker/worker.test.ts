@@ -718,6 +718,23 @@ describe('full-size paintings (Premium enforcement)', () => {
     expect((await img(locked())).status).toBe(403); // and still not without the cookie
   });
 
+  it('when ON: a verified StoreKit entitlement linked to the Web account gets the same private image access', async () => {
+    env = { ...env, PREMIUM_ENFORCED: 'true' };
+    const cookie = await login('apple-only-google-sub');
+    const userId = (raw.prepare('SELECT id FROM users WHERE google_sub = ?').get('apple-only-google-sub') as { id: string }).id;
+    // This represents the row written only after the signed StoreKit
+    // transaction was verified by /api/apple/entitlement.
+    raw.exec(readFileSync(new URL('../migrations/0003_apple_accounts.sql', import.meta.url), 'utf8'));
+    raw.exec(readFileSync(new URL('../migrations/0004_shared_entitlements.sql', import.meta.url), 'utf8'));
+    raw.prepare('INSERT INTO apple_accounts (id, apple_sub, created_at) VALUES (?, ?, ?)').run('apple-account-1', 'apple-sub-1', NOW());
+    raw.prepare('INSERT INTO apple_account_links (apple_account_id, user_id, linked_at) VALUES (?, ?, ?)').run('apple-account-1', userId, NOW());
+    raw.prepare('INSERT INTO apple_entitlements (original_transaction_id, apple_account_id, expires_ms, revoked, updated_at) VALUES (?, ?, ?, 0, ?)')
+      .run('original-transaction-1', 'apple-account-1', Date.now() + 3_600_000, Date.now());
+    const ok = await img(locked(), cookie);
+    expect(ok.status).toBe(200);
+    expect(ok.headers.get('cache-control')).toBe('private, no-store');
+  });
+
   it('when ON: an ended contract loses access; an unconfigured backend never hands out Premium images', async () => {
     env = { ...env, PREMIUM_ENFORCED: 'true' };
     const cookie = await premiumCookie();
