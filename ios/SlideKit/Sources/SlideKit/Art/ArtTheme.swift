@@ -89,9 +89,15 @@ extension UINavigationController: @retroactive UIGestureRecognizerDelegate {
 }
 
 enum Haptics {
-    @MainActor static func slide() { UIImpactFeedbackGenerator(style: .light).impactOccurred(intensity: 0.7) }
-    @MainActor static func success() { UINotificationFeedbackGenerator().notificationOccurred(.success) }
-    @MainActor static func tap() { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+    // Generators are kept and re-prepared so the tick fires at once and is not dropped when slides come quickly (user drags, SHUFFLE).
+    @MainActor private static let slideGen: UIImpactFeedbackGenerator = { let g = UIImpactFeedbackGenerator(style: .rigid); g.prepare(); return g }()
+    @MainActor private static let notifyGen = UINotificationFeedbackGenerator()
+    @MainActor private static let tapGen = UIImpactFeedbackGenerator(style: .soft)
+    /// A crisp tick for every tile that slides (by the player or by SHUFFLE).
+    @MainActor static func slide() { slideGen.impactOccurred(intensity: 0.85); slideGen.prepare() }
+    @MainActor static func success() { notifyGen.notificationOccurred(.success) }
+    @MainActor static func tap() { tapGen.impactOccurred() }
+    @MainActor static func prepare() { slideGen.prepare(); notifyGen.prepare() }
 }
 
 /// A square cell with the whole picture inside it (never cropped), like the web's `.gcard img`.

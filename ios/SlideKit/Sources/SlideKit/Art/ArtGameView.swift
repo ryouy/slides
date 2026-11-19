@@ -23,7 +23,6 @@ struct ArtGameView: View {
     @State private var shuffleHint = 0
 
     private var d: Dims { model.state.dims }
-    private var desc: String { artwork.artwork?.description(in: app.lang) ?? "" }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -34,7 +33,7 @@ struct ArtGameView: View {
             extra.padding(.horizontal, 16).padding(.bottom, 8)
         }
         .artScreen()
-        .task { await model.prepare() }
+        .task { Haptics.prepare(); await model.prepare() }
         .task(id: model.state.started && !model.state.cleared) {
             // the timer starts at the first move; every tick adds the real time since the last one
             while !Task.isCancelled { model.tick(); try? await Task.sleep(for: .milliseconds(200)) }
@@ -152,17 +151,6 @@ struct ArtGameView: View {
                             .font(Web.font(12, relativeTo: .caption)).foregroundStyle(Web.muted).frame(minHeight: 38)
                     }
                 }
-            }
-            if !artwork.isCustom, !desc.isEmpty {
-                Text(desc).font(Web.font(13, relativeTo: .footnote)).lineSpacing(2).lineLimit(typeSize.isAccessibilitySize ? 2 : 3).foregroundStyle(Web.fg)
-                    .onTapGesture { showPreview = true }
-                HStack(spacing: 4) {
-                    Text(artwork.artwork?.museum ?? "").lineLimit(1)
-                    Text("·"); creditLink("CC0", artwork.artwork?.licenseUrl)
-                    Text("·"); creditLink(app.t("art.source"), artwork.artwork?.sourceUrl)
-                    Spacer(minLength: 0)
-                }
-                .font(Web.font(11, relativeTo: .caption2)).foregroundStyle(Web.muted)
             }
         }
     }
