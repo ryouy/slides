@@ -1,0 +1,26 @@
+{
+  "en": {
+    "ios.big.board": "Puzzle board, {n} by {n}",
+    "ios.big.tile": "Tile {label}, row {r}, column {c}",
+    "ios.big.bigTile": "Big block {label}, row {r}, column {c}",
+    "ios.big.goalLabel": "Goal layout",
+    "ios.big.moveDir": "Move {label} {dir}",
+    "ios.big.dir.up": "up",
+    "ios.big.dir.down": "down",
+    "ios.big.dir.left": "left",
+    "ios.big.dir.right": "right",
+    "ios.big.failed": "The puzzle could not be built. Please try again."
+  },
+  "ja": {
+    "ios.big.board": "パズル盤面 {n}×{n}",
+    "ios.big.tile": "タイル {label}、{r}行{c}列",
+    "ios.big.bigTile": "大きなブロック {label}、{r}行{c}列",
+    "ios.big.goalLabel": "ゴールの配置",
+    "ios.big.moveDir": "{label}を{dir}へ動かす",
+    "ios.big.dir.up": "上",
+    "ios.big.dir.down": "下",
+    "ios.big.dir.left": "左",
+    "ios.big.dir.right": "右",
+    "ios.big.failed": "パズルを作成できませんでした。もう一度お試しください。"
+  }
+}
