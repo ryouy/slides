@@ -17,6 +17,9 @@ public final class AdsManager {
     public init() {}
 
     func prepare() async {
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("-skipConsent") { return } // DEBUG builds only: skip the UMP/ATT pop-ups for screenshots and UI tests
+        #endif
         let vc = Self.topViewController()
         _ = try? await ConsentInformation.shared.requestConsentInfoUpdate(with: RequestParameters())
         if let vc { try? await ConsentForm.loadAndPresentIfRequired(from: vc) }

@@ -1,0 +1,16 @@
+{
+  "en": {
+    "ios.art.board": "Puzzle board, {cols} by {rows}",
+    "ios.art.tile": "Tile {n}",
+    "ios.art.newBest": "New best!",
+    "ios.art.nothing": "There is no unfinished puzzle.",
+    "ios.art.errStorage": "The photo could not be saved on this device."
+  },
+  "ja": {
+    "ios.art.board": "パズル盤面 {cols}×{rows}",
+    "ios.art.tile": "ピース {n}",
+    "ios.art.newBest": "自己ベスト更新！",
+    "ios.art.nothing": "途中のパズルはありません。",
+    "ios.art.errStorage": "写真をこの端末に保存できませんでした。"
+  }
+}
