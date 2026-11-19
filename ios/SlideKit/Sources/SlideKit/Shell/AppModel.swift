@@ -49,6 +49,14 @@ public final class AppModel {
         let g = GoogleAccountStore()
         googleAccount = g
         drive = DriveSyncStore(account: g, network: net)
+        g.onIdentityToken = { [weak acct] token in
+            Task { @MainActor in
+                guard let acct else { return }
+                // A pre-existing Apple session is never linked implicitly: the
+                // Settings button makes that consequential action explicit.
+                if !acct.isSignedIn { await acct.signInGoogle(idToken: token) }
+            }
+        }
     }
 
     private func persist() { store.save(AppSettings(lang: lang, theme: theme, colorblind: colorblind)) }

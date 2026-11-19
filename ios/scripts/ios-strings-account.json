@@ -2,6 +2,8 @@
   "en": {
     "ios.account.title": "Account",
     "ios.account.signedIn": "Signed in with Apple",
+    "ios.account.signedInGoogle": "Signed in with Google",
+    "ios.account.linkGoogle": "Link this Google account",
     "ios.account.sync": "Sync records",
     "ios.account.syncNow": "Sync now",
     "ios.account.syncing": "Syncing…",
@@ -30,6 +32,8 @@
   "ja": {
     "ios.account.title": "アカウント",
     "ios.account.signedIn": "Appleでサインイン済み",
+    "ios.account.signedInGoogle": "Google でサインイン済み",
+    "ios.account.linkGoogle": "この Google アカウントを連携",
     "ios.account.sync": "記録を同期",
     "ios.account.syncNow": "今すぐ同期",
     "ios.account.syncing": "同期中…",

@@ -14,11 +14,15 @@ public final class GoogleAccountStore {
     public private(set) var isSignedIn = false
     public private(set) var busy = false
     public private(set) var notice: Notice?
+    /// Kept only in memory for an explicit common-account link.
+    public private(set) var idToken: String?
     /// DEBUG screenshots only: pretend to be configured / signed in; nothing touches the network.
     private(set) var isFake = false
 
     /// Called with a SHA-256 of Google's opaque account id after a sign-in (the id itself is never stored).
     var onSignedIn: ((String) -> Void)?
+    /// Short-lived OpenID token for the common-account service; never persisted.
+    var onIdentityToken: ((String) -> Void)?
     var onSessionEnded: (() -> Void)?
 
     public var isConfigured: Bool {
@@ -42,6 +46,8 @@ public final class GoogleAccountStore {
             let user = try await GIDSignIn.sharedInstance.restorePreviousSignIn()
             isSignedIn = true
             if let id = user.userID { onSignedIn?(SyncOwnership.hash(id)) }
+            idToken = user.idToken?.tokenString
+            if let token = idToken { onIdentityToken?(token) }
         } catch { isSignedIn = false }
     }
 
@@ -56,6 +62,8 @@ public final class GoogleAccountStore {
             guard let id = r.user.userID else { GIDSignIn.sharedInstance.signOut(); notice = .signInFailed; return }
             isSignedIn = true
             onSignedIn?(SyncOwnership.hash(id))
+            idToken = r.user.idToken?.tokenString
+            if let token = idToken { onIdentityToken?(token) }
         } catch let e as GIDSignInError where e.code == .canceled {
             // the person closed the sheet: nothing to say
         } catch { notice = .signInFailed }
@@ -106,6 +114,7 @@ public final class GoogleAccountStore {
 
     private func endSession(_ n: Notice?) {
         isSignedIn = false
+        idToken = nil
         notice = n
         onSessionEnded?()
     }

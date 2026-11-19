@@ -38,6 +38,7 @@ public final class AccountStore {
     /// Server-confirmed access from a linked Stripe or Apple subscription.  It
     /// complements (never replaces) StoreKit's local entitlement.
     public private(set) var remotePremium = false
+    public private(set) var signedInWithGoogle = false
     /// A short message for the UI (the sheet shows it and clears it with `clearNotice()`).
     public private(set) var notice: Notice?
     /// Called whenever the session ends (sign-out, deletion, 401) so sync can turn itself off.
@@ -68,9 +69,38 @@ public final class AccountStore {
             let (status, data) = try await api.send("POST", "/api/apple/auth", body: body)
             guard status == 200, let r = AccountWire.parseAuth(data), Keychain.write(tokenKey, r.token) else { notice = .signInFailed; return }
             state = .signedIn(accountId: r.accountId)
+            signedInWithGoogle = false
             onSignedIn?(r.accountId)
             await refreshStatus()
         } catch { notice = .signInFailed }
+    }
+
+    /// Google sign-in establishes the same common account as the web.  It uses
+    /// only the OpenID token; Drive access is requested elsewhere and only on
+    /// demand.
+    public func signInGoogle(idToken: String) async {
+        guard !busy else { return }
+        busy = true; notice = nil
+        defer { busy = false }
+        guard let body = try? JSONSerialization.data(withJSONObject: ["idToken": idToken]) else { notice = .signInFailed; return }
+        do {
+            let (status, data) = try await api.send("POST", "/api/apple/google/auth", body: body)
+            guard status == 200, let r = AccountWire.parseAuth(data), Keychain.write(tokenKey, r.token) else { notice = .signInFailed; return }
+            state = .signedIn(accountId: r.accountId)
+            signedInWithGoogle = true
+            onSignedIn?(r.accountId)
+            await refreshStatus()
+        } catch { notice = .signInFailed }
+    }
+
+    /// Explicitly joins a Google identity to the currently authenticated Apple
+    /// account.  The Worker rejects replacement of either existing link.
+    public func linkGoogle(idToken: String) async {
+        guard let t = token, !busy, let body = try? JSONSerialization.data(withJSONObject: ["idToken": idToken]) else { return }
+        busy = true; defer { busy = false }
+        guard let r = try? await api.send("POST", "/api/apple/link/google", token: t, body: body), r.status == 200,
+              let s = AccountWire.parseStatus(r.data) else { notice = .signInFailed; return }
+        remotePremium = s.premium
     }
 
     /// Best-effort server call; the local session is always cleared.
@@ -115,6 +145,7 @@ public final class AccountStore {
     private func endSession(_ n: Notice) {
         Keychain.delete(tokenKey)
         state = .signedOut
+        signedInWithGoogle = false
         remotePremium = false
         notice = n
         onSessionEnded?(n)

@@ -87,7 +87,10 @@ public struct SettingsView: View {
     @ViewBuilder private var accountSection: some View {
         Section {
             if app.account.isSignedIn {
-                Label(app.t("ios.account.signedIn"), systemImage: "applelogo")
+                Label(app.t(app.account.signedInWithGoogle ? "ios.account.signedInGoogle" : "ios.account.signedIn"), systemImage: app.account.signedInWithGoogle ? "g.circle" : "applelogo")
+                if !app.account.signedInWithGoogle, app.googleAccount.isSignedIn, let token = app.googleAccount.idToken {
+                    Button(app.t("ios.account.linkGoogle")) { Task { await app.account.linkGoogle(idToken: token) } }.disabled(app.account.busy)
+                }
                 Toggle(app.t("ios.account.sync"), isOn: Binding(get: { app.sync.syncEnabled }, set: { app.sync.setEnabled($0) }))
                 if app.sync.syncEnabled {
                     Button { Task { await app.sync.syncNow() } } label: {
@@ -123,6 +126,12 @@ public struct SettingsView: View {
                 .disabled(app.account.busy)
                 .listRowInsets(EdgeInsets())
                 .listRowBackground(Color.clear)
+                if app.googleAccount.isConfigured {
+                    GoogleSignInButton(scheme: scheme == .dark ? .dark : .light, style: .wide, state: app.googleAccount.busy ? .disabled : .normal) { Task { await app.googleAccount.signIn() } }
+                        .frame(maxWidth: .infinity)
+                        .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                        .listRowBackground(Color.clear)
+                }
             }
             if let n = noticeText { Text(n).font(.footnote).foregroundStyle(.secondary) }
         } header: {
@@ -152,17 +161,10 @@ public struct SettingsView: View {
                         Text(app.t("ios.drive.off")).font(.footnote).foregroundStyle(.secondary)
                     }
                     Button(app.t("ios.account.signOut")) { app.googleAccount.signOut() }.disabled(app.googleAccount.busy)
-                } else {
-                    GoogleSignInButton(scheme: scheme == .dark ? .dark : .light, style: .wide, state: app.googleAccount.busy ? .disabled : .normal) { Task { await app.googleAccount.signIn() } }
-                        .frame(maxWidth: .infinity)
-                        .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                        .listRowBackground(Color.clear)
-                }
+                } else { Text(app.t("ios.drive.footer")).font(.footnote).foregroundStyle(.secondary) }
                 if let n = driveNoticeText { Text(n).font(.footnote).foregroundStyle(.secondary) }
             } header: {
                 Text(app.t("ios.drive.title"))
-            } footer: {
-                if !app.googleAccount.isSignedIn { Text(app.t("ios.drive.footer")) }
             }
             .confirmationDialog(app.t("ios.drive.switchTitle"), isPresented: Binding(
                 get: { app.drive.switchPrompt != nil },
