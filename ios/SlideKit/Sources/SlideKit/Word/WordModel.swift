@@ -10,6 +10,7 @@ final class WordModel {
     private let store = JSONFileStore<WordSave>(name: "word-save")
     private var recorded: Set<String> = []
     private var lastTickSave = Date()
+    @ObservationIgnored private var reloadObserver: RecordsReloadObserver?
 
     init(catalogURL: URL = AppPaths.publicURL.appendingPathComponent("data/word/words.json")) {
         catalog = try? WordCatalog(url: catalogURL)
@@ -19,14 +20,18 @@ final class WordModel {
         s.sanitize(wordsVersion: catalog?.version ?? "", today: today)
         save = s
         for g in [s.inProgress.daily, s.inProgress.endless] { if let g, g.status == .cleared { recorded.insert(g.puzzle.id) } }
+        reloadObserver = RecordsReloadObserver { [weak self] in self?.reloadFromDisk() }
     }
+
+    /// After a sync merged records into the file: take the records, never the unfinished puzzle.
+    func reloadFromDisk() { if let d = store.load() { WordRecords(d).apply(to: &save) } }
 
     var today: String { DateKeys.jstDateKey() }
 
     func state(_ mode: WordMode) -> WordGameState? { mode == .daily ? save.inProgress.daily : save.inProgress.endless }
     private func set(_ mode: WordMode, _ s: WordGameState?) { if mode == .daily { save.inProgress.daily = s } else { save.inProgress.endless = s } }
 
-    func persist() { _ = store.save(save) }
+    func persist() { if store.save(save) { NotificationCenter.default.post(name: .slideRecordsChanged, object: nil) } }
 
     /// Open (or resume) today's daily. The date is JST; a stale saved game is discarded.
     func openDaily() {

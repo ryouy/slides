@@ -1,10 +1,13 @@
 import SwiftUI
+import AuthenticationServices
 import SlideCore
 
 public struct SettingsView: View {
     @Environment(AppModel.self) private var app
     @State private var showPremium = false
     @State private var bulk: (Int, Int)?
+    @State private var nonce = ""
+    @State private var confirmDelete = false
     private let site = "https://slides.ryouy.workers.dev"
 
     public init() {}
@@ -13,6 +16,7 @@ public struct SettingsView: View {
         @Bindable var app = app
         NavigationStack {
             Form {
+                accountSection
                 Section(app.t("ios.section.plan")) {
                     if app.isPremium {
                         Label(app.t("ios.premium.active"), systemImage: "checkmark.seal.fill").foregroundStyle(.tint)
@@ -51,6 +55,81 @@ public struct SettingsView: View {
             }
             .navigationTitle(app.t("home.settings"))
             .sheet(isPresented: $showPremium) { PremiumView() }
+            .confirmationDialog(app.t("ios.account.deleteTitle"), isPresented: $confirmDelete, titleVisibility: .visible) {
+                Button(app.t("ios.account.deleteConfirm"), role: .destructive) { Task { await app.account.deleteAccount() } }
+                Button(app.t("ios.account.cancel"), role: .cancel) {}
+            } message: { Text(app.t("ios.account.deleteMessage")) }
+            .onDisappear { app.account.clearNotice() }
+        }
+    }
+
+    // MARK: account (optional; syncs game records only)
+
+    @ViewBuilder private var accountSection: some View {
+        Section {
+            if app.account.isSignedIn {
+                Label(app.t("ios.account.signedIn"), systemImage: "applelogo")
+                Toggle(app.t("ios.account.sync"), isOn: Binding(get: { app.sync.syncEnabled }, set: { app.sync.setEnabled($0) }))
+                if app.sync.syncEnabled {
+                    Button { Task { await app.sync.syncNow() } } label: {
+                        HStack {
+                            Text(app.t("ios.account.syncNow"))
+                            Spacer()
+                            if app.sync.status == .syncing { ProgressView() }
+                            else { Text(syncStatusText).font(.footnote).foregroundStyle(syncFailed ? Color.red : Color.secondary).multilineTextAlignment(.trailing) }
+                        }
+                    }
+                    .disabled(app.sync.status == .syncing)
+                } else {
+                    Text(app.t("ios.account.syncOff")).font(.footnote).foregroundStyle(.secondary)
+                }
+                Button(app.t("ios.account.signOut")) { Task { await app.account.signOut() } }.disabled(app.account.busy)
+                Button(app.t("ios.account.delete"), role: .destructive) { confirmDelete = true }.disabled(app.account.busy)
+            } else {
+                SignInWithAppleButton(.signIn) { request in
+                    nonce = AppleNonce.random()
+                    request.requestedScopes = []
+                    request.nonce = AppleNonce.sha256Hex(nonce)
+                } onCompletion: { result in
+                    guard case .success(let auth) = result, let cred = auth.credential as? ASAuthorizationAppleIDCredential,
+                          let tokenData = cred.identityToken, let token = String(data: tokenData, encoding: .utf8) else { return }
+                    let raw = nonce
+                    let code = cred.authorizationCode
+                    Task { await app.account.signIn(identityToken: token, nonce: raw, authorizationCode: code) }
+                }
+                .signInWithAppleButtonStyle(.whiteOutline)
+                .frame(height: 44)
+                .disabled(app.account.busy)
+                .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+            }
+            if let n = noticeText { Text(n).font(.footnote).foregroundStyle(.secondary) }
+        } header: {
+            Text(app.t("ios.account.title"))
+        } footer: {
+            if !app.account.isSignedIn { Text(app.t("ios.account.footer")) }
+        }
+    }
+
+    private var syncFailed: Bool { if case .failed = app.sync.status { return true }; return false }
+
+    private var syncStatusText: String {
+        switch app.sync.status {
+        case .idle: return app.t("ios.account.notSynced")
+        case .syncing: return app.t("ios.account.syncing")
+        case .lastSynced(let d): return app.t("ios.account.lastSynced", ["time": d.formatted(date: .abbreviated, time: .shortened)])
+        case .failed(.later): return app.t("ios.account.failedLater")
+        case .failed(.updateApp): return app.t("ios.account.failedUpdate")
+        }
+    }
+
+    private var noticeText: String? {
+        switch app.account.notice {
+        case .sessionExpired: return app.t("ios.account.noticeExpired")
+        case .signInFailed: return app.t("ios.account.noticeSignInFailed")
+        case .deleteFailed: return app.t("ios.account.noticeDeleteFailed")
+        case .deleted: return app.t("ios.account.noticeDeleted")
+        case .deletedKeepApple: return app.t("ios.account.noticeDeletedApple")
+        case .signOutDone, nil: return nil
         }
     }
 

@@ -53,6 +53,16 @@ Also change `invalid.premium.monthly` in `ios/App/Premium.storekit` to your prod
 
 How Premium is decided: only from transactions StoreKit has verified on the device (works offline). The Worker re-verifies the Apple-signed transaction (certificate chain pinned to Apple Root CA G3, bundle id, product id, expiry, revocation, Sandbox flag) before it hands out a Premium painting.
 
+## Account & sync (optional)
+
+Nothing requires an account. Settings > Account offers Sign in with Apple; once signed in, **Sync records** (off by default, an explicit switch) keeps the game records in step between devices.
+- **Syncs:** per game the daily history, personal bests, play history (newest 200), clear counters and per-painting records. **Never syncs:** Premium / purchases (StoreKit decides that on each device), the visitor's own photos and their records, unfinished puzzles, preferences, the current endless streak.
+- **Merging** (`SlideCore/Sync`, pure and unit-tested: idempotent, commutative, associative): daily history = union by date, the better clear (lower time, then fewer moves) wins; bests = per-key minimum of time and of moves; play history = union (an identical record on two devices is one play), capped at 200; counters = max (an undercount is possible, double counting is not); per-painting clears = max; daily streaks are computed from the merged history. Flow: GET, merge with the local files, write locally (only after the remote document decoded; a newer `schema` is left untouched and shows "update the app"), PUT with `baseVersion`; HTTP 409 merges the returned document and retries (at most 3). Runs at launch, on returning to the foreground, when the network is back, and about 5 s after a game saves records. Any failure shows "try later" and keeps local records as they are.
+- The session token is stored only in the Keychain (this device, `AfterFirstUnlock`, not iCloud). Sign out clears it and turns sync off; Delete account asks the server first (records on the device stay). A 401 drops the session.
+- **Server setup:** the Worker needs `APPLE_BUNDLE_ID` and the D1 migration `npx wrangler d1 migrations apply slides-db --remote`; until then the endpoints answer 503 and the app just reports it could not sync. The app needs the Sign in with Apple capability (already in the entitlements). Follow-up: on account deletion also revoke the Apple tokens (Apple's `/auth/revoke` with a client secret); not done yet.
+- Privacy manifest and App Store Connect answers: User ID and Gameplay Content, linked to the user, not used for tracking, purpose App Functionality.
+- Debug launch arguments: `-openSettings`, `-debugSignedIn` (shows the signed-in layout; no token, nothing is sent).
+
 ## Ads (AdMob)
 
 Adaptive banner only (no interstitial / rewarded / app-open). Shown to Free users on calm screens (home, gallery, results), never next to a board in play; hidden for Premium (and until StoreKit has answered once), offline, when ads are not allowed, or when an ad fails (no blank space).

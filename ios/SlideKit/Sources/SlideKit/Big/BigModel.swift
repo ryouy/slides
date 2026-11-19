@@ -15,6 +15,7 @@ final class BigModel {
     var shake: (id: Int, tick: Int)?
     private var lastTick: Date?
     private var clearTask: Task<Void, Never>?
+    @ObservationIgnored private var reloadObserver: RecordsReloadObserver?
 
     init() {
         var s = store.load() ?? BigSave()
@@ -22,7 +23,11 @@ final class BigModel {
         save = s
         endless = s.inProgress.endless
         daily = s.inProgress.daily
+        reloadObserver = RecordsReloadObserver { [weak self] in self?.reloadFromDisk() }
     }
+
+    /// After a sync merged records into the file: take the records, never the games being played.
+    func reloadFromDisk() { if let d = store.load() { BigRecords(d).apply(to: &save) } }
 
     var today: String { DateKeys.jstDateKey() }
 
@@ -31,7 +36,7 @@ final class BigModel {
     private func persist() {
         save.inProgress.daily = daily
         save.inProgress.endless = endless
-        store.save(save) // a failed write never crashes; the game keeps running in memory
+        if store.save(save) { NotificationCenter.default.post(name: .slideRecordsChanged, object: nil) } // a failed write never crashes; the game keeps running in memory
     }
 
     func flush() { persist() }

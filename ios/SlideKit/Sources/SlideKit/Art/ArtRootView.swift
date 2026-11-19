@@ -12,7 +12,7 @@ public struct ArtRootView: View {
     @State private var store = ArtStore()
     @State private var photos = CustomPhotoStore()
     @State private var path: [ArtRoute] = ArtRootView.debugRoute()
-    @State private var showSettings = false
+    @State private var showSettings = ArtRootView.debugSettings()
     @State private var showPremium = false
     @State private var showMenu = ArtRootView.debugMenu()
     @State private var pending: ArtMenuAction?
@@ -145,6 +145,14 @@ public struct ArtRootView: View {
         case .word: cover = .word
         case .big: cover = .big
         }
+    }
+
+    static func debugSettings() -> Bool {
+        #if DEBUG
+        return ProcessInfo.processInfo.arguments.contains("-openSettings")
+        #else
+        return false
+        #endif
     }
 
     static func debugMenu() -> Bool {

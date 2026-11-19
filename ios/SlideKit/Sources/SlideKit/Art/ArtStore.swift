@@ -7,10 +7,17 @@ import SlideCore
 final class ArtStore {
     private(set) var save: ArtSave
     private let file = JSONFileStore<ArtSave>(name: "art-save")
+    @ObservationIgnored private var reloadObserver: RecordsReloadObserver?
 
-    init() { save = file.load() ?? ArtSave() }
+    init() {
+        save = file.load() ?? ArtSave()
+        reloadObserver = RecordsReloadObserver { [weak self] in self?.reloadFromDisk() }
+    }
 
-    func update(_ f: (inout ArtSave) -> Void) { f(&save); file.save(save) }
+    /// After a sync merged records into the file: take the records, keep the unfinished puzzles and preferences as they are in memory.
+    func reloadFromDisk() { if let d = file.load() { ArtRecords(d).apply(to: &save) } }
+
+    func update(_ f: (inout ArtSave) -> Void) { f(&save); if file.save(save) { NotificationCenter.default.post(name: .slideRecordsChanged, object: nil) } }
 
     func setProgress(daily: Bool, _ s: ArtState?) {
         // the progress of a running puzzle is saved silently (no UI depends on it every move)

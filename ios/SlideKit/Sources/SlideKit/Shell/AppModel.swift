@@ -21,7 +21,9 @@ public final class AppModel {
     public let premium: PremiumStore
     public let ads: AdsManager
     public let images: ImageStore
-    public let network = Reachability()
+    public let network: Reachability
+    public let account: AccountStore
+    public let sync: SyncStore
 
     private let store = JSONFileStore<AppSettings>(name: "settings")
 
@@ -39,6 +41,9 @@ public final class AppModel {
         premium = PremiumStore()
         ads = AdsManager()
         images = ImageStore(catalog: catalog)
+        let net = Reachability(), acct = AccountStore()
+        network = net; account = acct
+        sync = SyncStore(account: acct, network: net)
     }
 
     private func persist() { store.save(AppSettings(lang: lang, theme: theme, colorblind: colorblind)) }
@@ -48,6 +53,7 @@ public final class AppModel {
 
     /// Called once at launch.
     public func start() async {
+        sync.start()
         await premium.start()
         await images.refresh()
         await ads.prepare()

@@ -2,52 +2,33 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<!-- The app itself does not track. Google Mobile Ads (personalised ads, only after the user's UMP consent and ATT permission) does:
-	     NSPrivacyTracking is therefore true. The SDKs ship their own manifests with their tracking domains, so none are repeated here. -->
+	<!-- This manifest describes what the APP ITSELF collects. The advertising SDKs (Google Mobile Ads, Google UMP) ship their own
+	     PrivacyInfo.xcprivacy with their data types, linking and required-reason APIs; Xcode merges them into the Privacy Report, so
+	     they are deliberately not repeated here. See docs/IOS_PRIVACY.md for the full App Store Connect answers.
+	     NSPrivacyTracking is true because the embedded Google Mobile Ads SDK uses the advertising identifier for tracking when the user
+	     allows it (App Tracking Transparency); the SDKs declare no tracking domains, so none are listed. -->
 	<key>NSPrivacyTracking</key>
 	<true/>
 	<key>NSPrivacyTrackingDomains</key>
 	<array/>
 	<key>NSPrivacyCollectedDataTypes</key>
 	<array>
+		<!-- Sign in with Apple (optional): Apple's user id and our own account id are stored on our server. -->
 		<dict>
-			<key>NSPrivacyCollectedDataType</key><string>NSPrivacyCollectedDataTypeDeviceID</string>
-			<key>NSPrivacyCollectedDataTypeLinked</key><false/>
-			<key>NSPrivacyCollectedDataTypeTracking</key><true/>
-			<key>NSPrivacyCollectedDataTypePurposes</key><array><string>NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising</string></array>
-		</dict>
-		<dict>
-			<key>NSPrivacyCollectedDataType</key><string>NSPrivacyCollectedDataTypeAdvertisingData</string>
-			<key>NSPrivacyCollectedDataTypeLinked</key><false/>
-			<key>NSPrivacyCollectedDataTypeTracking</key><true/>
-			<key>NSPrivacyCollectedDataTypePurposes</key><array><string>NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising</string></array>
-		</dict>
-		<dict>
-			<key>NSPrivacyCollectedDataType</key><string>NSPrivacyCollectedDataTypeProductInteraction</string>
-			<key>NSPrivacyCollectedDataTypeLinked</key><false/>
-			<key>NSPrivacyCollectedDataTypeTracking</key><false/>
-			<key>NSPrivacyCollectedDataTypePurposes</key><array><string>NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising</string><string>NSPrivacyCollectedDataTypePurposeAnalytics</string></array>
-		</dict>
-		<dict>
-			<key>NSPrivacyCollectedDataType</key><string>NSPrivacyCollectedDataTypeCoarseLocation</string>
-			<key>NSPrivacyCollectedDataTypeLinked</key><false/>
-			<key>NSPrivacyCollectedDataTypeTracking</key><false/>
-			<key>NSPrivacyCollectedDataTypePurposes</key><array><string>NSPrivacyCollectedDataTypePurposeThirdPartyAdvertising</string></array>
-		</dict>
-		<dict>
-			<key>NSPrivacyCollectedDataType</key><string>NSPrivacyCollectedDataTypeCrashData</string>
-			<key>NSPrivacyCollectedDataTypeLinked</key><false/>
+			<key>NSPrivacyCollectedDataType</key><string>NSPrivacyCollectedDataTypeUserID</string>
+			<key>NSPrivacyCollectedDataTypeLinked</key><true/>
 			<key>NSPrivacyCollectedDataTypeTracking</key><false/>
 			<key>NSPrivacyCollectedDataTypePurposes</key><array><string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string></array>
 		</dict>
+		<!-- Records sync (optional, off by default): the three games' records are stored on our server. -->
 		<dict>
-			<key>NSPrivacyCollectedDataType</key><string>NSPrivacyCollectedDataTypePerformanceData</string>
-			<key>NSPrivacyCollectedDataTypeLinked</key><false/>
+			<key>NSPrivacyCollectedDataType</key><string>NSPrivacyCollectedDataTypeGameplayContent</string>
+			<key>NSPrivacyCollectedDataTypeLinked</key><true/>
 			<key>NSPrivacyCollectedDataTypeTracking</key><false/>
 			<key>NSPrivacyCollectedDataTypePurposes</key><array><string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string></array>
 		</dict>
 	</array>
-	<!-- No "required reason" API is used by the app's own code (checked: no UserDefaults, no file timestamps, no boot time, no disk space). -->
+	<!-- No "required reason" API is used by the app's own code (no UserDefaults, file timestamps, boot time or disk-space calls). -->
 	<key>NSPrivacyAccessedAPITypes</key>
 	<array/>
 </dict>
