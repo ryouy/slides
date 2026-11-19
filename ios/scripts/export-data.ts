@@ -25,6 +25,8 @@ import zh from '../../src/i18n/zh';
 const fail = (m: string): never => { console.error(`export-data: ${m}`); process.exit(1); };
 const PUB = 'ios/App/App/public';
 const ART = `${PUB}/artworks`;
+// the folder is generated: drop anything that is not ours (e.g. files left by the old WebView build) so it can never ship in the app
+if (existsSync(PUB)) for (const f of readdirSync(PUB)) if (!['artworks', 'data'].includes(f)) rmSync(`${PUB}/${f}`, { recursive: true, force: true });
 rmSync(ART, { recursive: true, force: true });
 mkdirSync(`${PUB}/data`, { recursive: true });
 mkdirSync(ART, { recursive: true });

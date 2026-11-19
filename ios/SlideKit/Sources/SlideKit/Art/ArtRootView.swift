@@ -24,7 +24,17 @@ public struct ArtRootView: View {
     public var body: some View {
         NavigationStack(path: $path) {
             home
-                .artScreen()
+                .background(Web.bg.ignoresSafeArea())
+                .toolbarBackground(.hidden, for: .navigationBar)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItemGroup(placement: .topBarTrailing) {
+                        Button { showMenu = true } label: { Image(systemName: "ellipsis") }
+                            .accessibilityLabel(app.t("home.other"))
+                        Button { showSettings = true } label: { Image(systemName: "gearshape") }
+                            .accessibilityLabel(app.t("home.settings"))
+                    }
+                }
                 .navigationDestination(for: ArtRoute.self) { route in
                     switch route {
                     case .daily: ArtPlayHost(kind: .daily, onGallery: { path = [.gallery] })
@@ -56,15 +66,10 @@ public struct ArtRootView: View {
     private var home: some View {
         ScrollView {
             VStack(spacing: 0) {
-                HStack(spacing: 8) {
-                    Spacer()
-                    topButton(app.t("home.other"), "ellipsis") { showMenu = true }
-                    topButton(app.t("home.settings"), "gearshape") { showSettings = true }
-                }
                 Text("ART SLIDE")
                     .font(Web.font(40, .light, relativeTo: .largeTitle)).tracking(13).padding(.leading, 13)
                     .lineLimit(1).minimumScaleFactor(0.5).foregroundStyle(Web.fg)
-                    .frame(maxWidth: .infinity).padding(.top, 14).padding(.bottom, 28)
+                    .frame(maxWidth: .infinity).padding(.top, 6).padding(.bottom, 26)
                     .accessibilityAddTraits(.isHeader)
                 if let a = exhibit { exhibitCard(a) }
                 menu
@@ -76,16 +81,6 @@ public struct ArtRootView: View {
         .scrollBounceBehavior(.basedOnSize)
     }
 
-    /// Icon-only round button of the home's top row (the name is kept for VoiceOver).
-    private func topButton(_ title: String, _ icon: String, _ action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Image(systemName: icon).font(.system(size: 17, weight: .regular))
-                .foregroundStyle(Web.fg).frame(width: 44, height: 44)
-                .overlay(Circle().stroke(Web.line, lineWidth: 1)).contentShape(Circle())
-        }
-        .accessibilityLabel(title)
-    }
-
     private func exhibitCard(_ a: Artwork) -> some View {
         let done = store.save.dailyHistory[today]?.artworkId == a.id
         let streak = ArtStats.currentDailyStreak(store.save.dailyHistory, today: today)
@@ -95,6 +90,7 @@ public struct ArtRootView: View {
                     if let t = app.images.thumbnail(a.id) { Image(uiImage: t).resizable().scaledToFill() } else { Web.surface }
                 }
                 .frame(width: 112, height: 124).clipped().background(Web.surface)
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                 VStack(alignment: .leading, spacing: 8) {
                     Text(app.t("art.exhibitN", ["n": DateKeys.dailyNumber(today)]) + (done ? " ✓" : "") + (streak > 0 ? " · " + app.t("home.streak", ["n": streak]) : ""))
                         .font(Web.font(10, .semibold, relativeTo: .caption2)).tracking(2).foregroundStyle(Web.muted).fixedSize(horizontal: false, vertical: true)
@@ -104,8 +100,8 @@ public struct ArtRootView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(12)
-            .overlay(Rectangle().stroke(Web.line, lineWidth: 1))
-            .contentShape(Rectangle())
+            .background(Web.surface.opacity(0.7), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+            .contentShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
         }
         .buttonStyle(.plain)
         .padding(.bottom, 14)
@@ -117,13 +113,27 @@ public struct ArtRootView: View {
         let resumable = store.save.inProgressFree.map { $0.status == .playing } ?? false
         return VStack(spacing: 10) {
             HStack(spacing: 10) {
-                Button(app.t("art.gallery")) { path.append(.gallery) }.buttonStyle(WebButtonStyle(minHeight: 66))
-                Button(app.t("art.random")) { path.append(.play(randomArtwork())) }.buttonStyle(WebButtonStyle(minHeight: 66))
+                Button { path.append(.gallery) } label: { homeTile(app.t("art.gallery"), "square.grid.2x2") }.buttonStyle(HomeTileStyle())
+                Button { path.append(.play(randomArtwork())) } label: { homeTile(app.t("art.random"), "dice") }.buttonStyle(HomeTileStyle())
             }
-            if resumable { Button(app.t("art.resume")) { path.append(.resume) }.buttonStyle(WebButtonStyle(minHeight: 48)) }
+            if resumable {
+                Button { path.append(.resume) } label: {
+                    Label(app.t("art.resume"), systemImage: "play.fill").font(Web.font(15, .medium, relativeTo: .body)).frame(maxWidth: .infinity, minHeight: 52)
+                        .foregroundStyle(Web.bg).background(Web.fg, in: Capsule())
+                }
+                .buttonStyle(.plain)
+            }
         }
         .multilineTextAlignment(.center)
         .padding(.bottom, 22)
+    }
+
+    private func homeTile(_ title: String, _ symbol: String) -> some View {
+        VStack(spacing: 8) {
+            Image(systemName: symbol).font(.system(size: 22, weight: .regular))
+            Text(title).font(Web.font(14, .medium, relativeTo: .subheadline)).lineLimit(1).minimumScaleFactor(0.7)
+        }
+        .foregroundStyle(Web.fg).frame(maxWidth: .infinity, minHeight: 92)
     }
 
     private func randomArtwork() -> String {
@@ -183,3 +193,14 @@ public struct ArtRootView: View {
     }
 }
 
+
+/// The home's two big tiles: a soft rounded surface that dips a little when pressed.
+struct HomeTileStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(Web.surface.opacity(0.7), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+            .scaleEffect(configuration.isPressed ? 0.97 : 1)
+            .animation(.easeOut(duration: 0.14), value: configuration.isPressed)
+            .contentShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+    }
+}

@@ -200,11 +200,11 @@ export function termsSections(l: LegalLang, o: OperatorInfo): Section[] {
 
 /** プライバシーポリシー */
 export function privacySections(l: LegalLang, o: OperatorInfo): Section[] {
-  const who = operatorLabel(l, o);
+  // the privacy policy names no person and no e-mail address: "we" are the operator of the games, and the only contact is the form
   const mail = contactRef(l, o);
   if (l === 'ja') {
     return [
-      { id: 'who', title: '1. 事業者', body: [`${who}（以下「当方」）は、ゲームサイト「ART SLIDE」「BIG SLIDE」「WORD SLIDE」（以下「本サービス」）における、利用者の情報を、次のとおり取り扱います。`] },
+      { id: 'who', title: '1. 事業者', body: [`本サービスの運営者（以下「当方」）は、ゲームサイト「ART SLIDE」「BIG SLIDE」「WORD SLIDE」（以下「本サービス」）における、利用者の情報を、次のとおり取り扱います。`] },
       { id: 'device', title: '2. 端末の中だけに保存される情報', body: ['設定、言語、プレイの記録（クリアした作品、ベストの時間・手数など）、遊びかけのパズルは、お使いの端末のブラウザ（localStorage）に保存されます。これらは、当方のサーバーには送信されません。', 'Premiumプランの「マイフォト」で追加した写真は、お使いの端末のブラウザ（IndexedDB）の中だけに保存されます。当方のサーバーへの送信、共有、Googleドライブへの保存は行いません。ブラウザのデータを消去すると失われます。'] },
       { id: 'collected', title: '3. 当方が取得する情報', body: ['ログインしない場合：当方は、利用者を識別する情報を取得しません（ただし、下記の接続ログと広告を除きます）。', 'Googleでログインした場合：Googleアカウントの識別子（sub）と、表示名を取得します。メールアドレスは保存しません。ログイン状態を保つため、ログインの確認情報（Cookie）を使い、サーバー側にはそのハッシュ値だけを、最長30日間保存します。', 'Premiumプランを申し込んだ場合：決済代行会社Stripeの顧客ID、契約の状態、契約期間の終了日を保存します。カード番号等の決済情報は、Stripeが取得・管理し、当方は取得しません。', 'Googleドライブの同期を、利用者が自分で有効にした場合：プレイの記録（クリアした作品ごとのベスト、クリア回数、日付、直近の履歴）を、利用者ご自身のGoogleドライブの、このアプリ専用の非表示の領域に保存します。写真、契約の状態、メールアドレスは含みません。', 'お問い合わせ：お問い合わせフォーム（Googleフォーム）から送信された、お問い合わせの種類と内容、および、任意で入力された返信先メールアドレスを取得します。メールでご連絡いただいた場合は、そのメールアドレスと内容を取得します。返信と、事業者情報（住所・電話番号）の開示請求への対応のためだけに使い、対応に必要な期間が過ぎたら削除します。フォームの回答とメールは、Google LLCのサービス上で受け付けます。','接続ログ：サイトの提供と、不正利用の防止のため、通信に伴い、IPアドレス、日時、アクセス先などが、ホスティング事業者（Cloudflare）に記録されます。ログイン試行の回数を制限する際は、IPアドレスそのものではなく、鍵付きのハッシュ値だけを、短期間（最長10分の集計期間。古い集計は削除）使います。'] },
       { id: 'purpose', title: '4. 利用目的', body: [['本サービスの提供、ログイン、Premiumプランの契約・請求・解約の管理のため', 'プレイの記録の同期（利用者が有効にした場合）のため', '不正利用の防止、障害の調査、本サービスの安全な運営のため', 'お問い合わせへの対応のため', '広告の表示のため（下記9）']] },
@@ -216,11 +216,11 @@ export function privacySections(l: LegalLang, o: OperatorInfo): Section[] {
       { id: 'rights', title: '10. 開示・訂正・利用停止・削除の請求', body: [`ご自身の個人情報について、開示、訂正、利用停止、削除などをご希望の場合は、${mail}からご連絡ください（本人確認のため、返信先メールアドレスの入力をお願いします）。本人であることを確認したうえで、法令に従って、遅滞なく対応します。アカウントの削除は、サイト内の「アカウント」からも行えます。`] },
       { id: 'minors', title: '11. 未成年の方', body: ['未成年の方が有料プランを申し込む場合は、親権者等の同意を得てください。'] },
       { id: 'changes', title: '12. 改定', body: ['本ポリシーは、必要に応じて改定します。改定後の内容は、このページに掲載します。'] },
-      { id: 'contact', title: '13. お問い合わせ窓口', body: [`${who}　${mail}`, `制定・最終改定日：${formatDate(l, o.effectiveDate)}`] },
+      { id: 'contact', title: '13. お問い合わせ窓口', body: [`${mail}`, `制定・最終改定日：${formatDate(l, o.effectiveDate)}`] },
     ];
   }
   return [
-    { id: 'who', title: '1. Operator', body: [`${who} (“we”) handles users’ information on the game site “ART SLIDE”, “BIG SLIDE” and “WORD SLIDE” (the “Service”) as described here.`] },
+    { id: 'who', title: '1. Operator', body: [`The operator of the Service (“we”) handles users’ information on the game site “ART SLIDE”, “BIG SLIDE” and “WORD SLIDE” (the “Service”) as described here.`] },
     { id: 'device', title: '2. Information that stays on your device', body: ['Your settings, language, play records (paintings cleared, best time and moves) and unfinished puzzles are stored in your browser (localStorage). They are not sent to our servers.', 'Photos you add in “My Photos” (Premium) are stored only in your browser (IndexedDB) on your device. They are not uploaded to our servers, shared, or saved to Google Drive. They are lost if you clear your browser data.'] },
     { id: 'collected', title: '3. Information we collect', body: ['If you do not sign in: we collect nothing that identifies you (apart from the connection logs and advertising described below).', 'If you sign in with Google: we receive your Google account identifier (sub) and display name. We do not store your e-mail address. To keep you signed in we use a login cookie; on the server only a hash of it is stored, for at most 30 days.', 'If you subscribe to Premium: we store the Stripe customer ID, the state of your contract and the end date of the paid period. Card details are collected and managed by the payment provider Stripe; we never receive them.', 'If you turn on Google Drive sync yourself: your play records (best results per painting, number of clears, dates, recent history) are saved in a hidden area of your own Google Drive reserved for this app. Photos, contract state and e-mail address are not included.', 'Contact: we receive the inquiry type and content you send through the contact form (Google Forms), and the reply e-mail address if you choose to enter one. If you write to us by e-mail we receive your e-mail address and message. We use it only to reply and to answer requests for the operator’s address and telephone, and delete it once it is no longer needed. Form answers and e-mails are received on Google LLC’s service.', 'Connection logs: to deliver the site and prevent abuse, the hosting provider (Cloudflare) records the IP address, time and requested address of each request. To limit login attempts we use only a keyed hash of the IP address, for a short time (a counting window of at most 10 minutes; old counters are deleted), never the address itself.'] },
     { id: 'purpose', title: '4. Purposes', body: [['Providing the Service, signing in, and managing the Premium contract, billing and cancellation', 'Syncing your play records (if you turn it on)', 'Preventing abuse, investigating faults and running the Service safely', 'Answering your enquiries and requests for the operator’s details', 'Showing advertising (see 9)']] },
@@ -232,7 +232,7 @@ export function privacySections(l: LegalLang, o: OperatorInfo): Section[] {
     { id: 'rights', title: '10. Requests to access, correct, stop using or delete your information', body: [`To ask for disclosure, correction, suspension of use or deletion of your personal information, use ${mail} (please enter a reply e-mail address so that we can confirm it is you). After confirming it is you we will respond without delay in accordance with the law. You can also delete your account under “Account” in the Service.`] },
     { id: 'minors', title: '11. Minors', body: ['If you are a minor, please get the consent of a parent or guardian before subscribing to a paid plan.'] },
     { id: 'changes', title: '12. Changes', body: ['We may revise this policy when needed. The revised policy will be published on this page.'] },
-    { id: 'contact', title: '13. Contact', body: [`${who}  ${mail}`, `Established / last revised: ${formatDate(l, o.effectiveDate)}`] },
+    { id: 'contact', title: '13. Contact', body: [`${mail}`, `Established / last revised: ${formatDate(l, o.effectiveDate)}`] },
   ];
 }
 

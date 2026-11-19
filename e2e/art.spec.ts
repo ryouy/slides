@@ -519,7 +519,7 @@ test('language: switch in Settings, it applies everywhere and is remembered', as
   await expect(page.locator('html')).toHaveAttribute('lang', 'ja');
   await expect(page.locator('.topbar h1')).toHaveText('設定');
   await page.goto('/art-slide');
-  await expect(page.getByTestId('exhibit')).toContainText('今日の一枚');
+  await expect(page.getByTestId('exhibit')).toContainText('今日の展示');
   await expect(page.getByTestId('art-gallery')).toHaveText('ギャラリー');
   await page.goto('/art-slide/play/van-gogh-bedroom');
   await expect(page.getByTestId('shuffle')).toHaveText('シャッフル');
