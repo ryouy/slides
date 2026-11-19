@@ -78,7 +78,7 @@ private struct BannerRepresentable: UIViewRepresentable {
 
     func makeCoordinator() -> Coordinator { Coordinator(height: $height) }
     func makeUIView(context: Context) -> BannerView {
-        let b = BannerView(adSize: currentOrientationAnchoredAdaptiveBanner(width: max(width, 320)))
+        let b = BannerView(adSize: GADLargeAnchoredAdaptiveBannerAdSizeWithWidth(max(width, 320)))
         b.adUnitID = AdsManager.bannerUnitID
         b.rootViewController = AdsManager.topViewController()
         b.delegate = context.coordinator

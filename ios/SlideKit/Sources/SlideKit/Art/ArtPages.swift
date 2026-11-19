@@ -2,7 +2,7 @@ import SwiftUI
 import PhotosUI
 import SlideCore
 
-private struct PageScaffold<Content: View>: View {
+@MainActor private struct PageScaffold<Content: View>: View {
     let title: String
     @ViewBuilder var content: Content
     var body: some View {
@@ -14,7 +14,7 @@ private struct PageScaffold<Content: View>: View {
     }
 }
 
-struct ArtHowView: View {
+@MainActor struct ArtHowView: View {
     @Environment(AppModel.self) private var app
     var body: some View {
         PageScaffold(title: app.t("how.title")) {
@@ -30,7 +30,7 @@ struct ArtHowView: View {
     }
 }
 
-struct ArtStatsView: View {
+@MainActor struct ArtStatsView: View {
     @Environment(AppModel.self) private var app
     @Environment(ArtStore.self) private var store
     var body: some View {
@@ -78,7 +78,7 @@ struct ArtStatsView: View {
     }
 }
 
-struct ArtCreditsView: View {
+@MainActor struct ArtCreditsView: View {
     @Environment(AppModel.self) private var app
     var body: some View {
         VStack(spacing: 0) {
@@ -118,7 +118,7 @@ struct ArtCreditsView: View {
 }
 
 /// "My Photos" (Premium): pick pictures with the system photo picker (no photo-library permission needed). They stay on this device.
-struct ArtPhotosView: View {
+@MainActor struct ArtPhotosView: View {
     @Environment(AppModel.self) private var app
     @Environment(ArtStore.self) private var store
     @Environment(CustomPhotoStore.self) private var photos
