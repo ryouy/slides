@@ -264,7 +264,7 @@ describe('signout and account delete', () => {
 describe('configuration and wiring', () => {
   it('answers 503 not_configured without APPLE_BUNDLE_ID or without the DB', async () => {
     for (const e of [env({ APPLE_BUNDLE_ID: undefined }), env({ DB: undefined })]) {
-      for (const [m, p] of [['POST', '/api/apple/auth'], ['GET', '/api/apple/sync'], ['PUT', '/api/apple/sync'], ['POST', '/api/apple/signout'], ['POST', '/api/apple/account/delete']] as const) {
+      for (const [m, p] of [['POST', '/api/apple/auth'], ['POST', '/api/apple/google/auth'], ['GET', '/api/apple/sync'], ['PUT', '/api/apple/sync'], ['POST', '/api/apple/signout'], ['POST', '/api/apple/account/delete'], ['GET', '/api/apple/status'], ['POST', '/api/apple/link/google'], ['POST', '/api/apple/entitlement']] as const) {
         const r = await call(req(m, p, m === 'GET' ? undefined : {}, 'tok'), e);
         expect(r.status).toBe(503);
         expect(await r.json()).toEqual({ error: 'not_configured' });
