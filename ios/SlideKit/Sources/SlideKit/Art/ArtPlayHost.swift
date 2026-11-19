@@ -202,7 +202,7 @@ struct ArtDownloadView: View {
     private func go() async {
         s = .busy(0)
         do {
-            try await app.images.download(artwork.id, premium: app.premium) { p in s = .busy(p) }
+            try await app.images.download(artwork.id, premium: app.premium, account: app.account) { p in s = .busy(p) }
             onDone()
         } catch let e as ImageStore.DownloadError {
             switch e {

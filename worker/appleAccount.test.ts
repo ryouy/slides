@@ -261,6 +261,34 @@ describe('signout and account delete', () => {
   });
 });
 
+describe('account-session artwork downloads', () => {
+  it('requires a live account entitlement and serves the artwork privately', async () => {
+    const { body } = await signIn('stripe-linked-user');
+    expect((await call(req('GET', '/api/apple/account-artwork/monet-stacks', undefined, body.token))).status).toBe(403);
+    raw.prepare('INSERT INTO apple_entitlements (original_transaction_id, apple_account_id, expires_ms, revoked, updated_at) VALUES (?, ?, ?, 0, ?)')
+      .run('tx-download-1', body.accountId, Date.now() + 3_600_000, Date.now());
+    const ok = await call(req('GET', '/api/apple/account-artwork/monet-stacks', undefined, body.token));
+    expect(ok.status).toBe(200);
+    expect(await ok.text()).toBe('x');
+    expect(ok.headers.get('cache-control')).toBe('private, no-store');
+    expect((await call(req('GET', '/api/apple/account-artwork/monet-stacks'))).status).toBe(401);
+    expect((await call(req('POST', '/api/apple/account-artwork/monet-stacks', {}, body.token))).status).toBe(405);
+  });
+  it('accepts a Stripe entitlement on the Google account linked to the iOS session', async () => {
+    const { body } = await signIn('apple-linked-to-google');
+    // The first request creates the idempotent mode/entitlement tables, just
+    // like a fresh Worker instance does in production.
+    expect((await call(req('GET', '/api/apple/account-artwork/monet-stacks', undefined, body.token))).status).toBe(403);
+    raw.prepare('INSERT INTO users (id, google_sub, name, created_at, updated_at) VALUES (?, ?, NULL, ?, ?)')
+      .run('web-user-1', 'google-sub-1', nowS(), nowS());
+    raw.prepare('INSERT INTO apple_account_links (apple_account_id, user_id, linked_at) VALUES (?, ?, ?)')
+      .run(body.accountId, 'web-user-1', nowS());
+    raw.prepare('INSERT INTO stripe_subscriptions (user_id, livemode, stripe_subscription_id, status, current_period_end, cancel_at_period_end, updated_at) VALUES (?, 1, ?, ?, ?, 0, ?)')
+      .run('web-user-1', 'sub-google-1', 'active', nowS() + 3600, nowS());
+    expect((await call(req('GET', '/api/apple/account-artwork/monet-stacks', undefined, body.token))).status).toBe(200);
+  });
+});
+
 describe('configuration and wiring', () => {
   it('answers 503 not_configured without APPLE_BUNDLE_ID or without the DB', async () => {
     for (const e of [env({ APPLE_BUNDLE_ID: undefined }), env({ DB: undefined })]) {

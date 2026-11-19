@@ -76,9 +76,17 @@ public final class ImageStore {
     }
 
     /// Fetches a Premium painting. `progress` is 0…1. Throws `DownloadError`; a failed or cancelled download leaves nothing behind.
-    public func download(_ id: String, premium: PremiumStore, progress: @escaping @MainActor (Double) -> Void) async throws {
-        guard Self.validID(id), let token = premium.signedTransaction, premium.isPremium else { throw DownloadError.notPremium }
-        guard let url = URL(string: "\(apiBase)/api/apple/artwork/\(id)"), url.scheme == "https" else { throw DownloadError.io }
+    public func download(_ id: String, premium: PremiumStore, account: AccountStore, progress: @escaping @MainActor (Double) -> Void) async throws {
+        guard Self.validID(id) else { throw DownloadError.notPremium }
+        // A StoreKit entitlement proves itself with Apple's signed transaction.
+        // A Google/Stripe entitlement instead uses the iOS account session; the
+        // Worker resolves that session to the linked web account and verifies
+        // its current contract before serving the image.
+        let accountToken = account.remotePremium ? account.token : nil
+        let token = accountToken ?? premium.signedTransaction
+        guard let token, premium.isPremium || accountToken != nil else { throw DownloadError.notPremium }
+        let path = accountToken == nil ? "/api/apple/artwork/\(id)" : "/api/apple/account-artwork/\(id)"
+        guard let url = URL(string: "\(apiBase)\(path)"), url.scheme == "https" else { throw DownloadError.io }
         var req = URLRequest(url: url, timeoutInterval: 60)
         req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         let (bytes, resp): (URLSession.AsyncBytes, URLResponse)

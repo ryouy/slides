@@ -9,6 +9,7 @@ public struct SettingsView: View {
     @State private var showPremium = false
     @State private var web: WebPage?
     @State private var bulk: (Int, Int)?
+    @State private var downloadNotice: String?
     @State private var nonce = ""
     @State private var confirmDelete = false
     @Environment(\.colorScheme) private var scheme
@@ -45,6 +46,7 @@ public struct SettingsView: View {
                         LabeledContent(app.t("ios.dl.title"), value: app.images.downloaded.isEmpty ? app.t("ios.dl.none") : app.t("ios.dl.count", ["n": app.images.downloaded.count, "mb": String(format: "%.1f", Double(app.images.totalBytes) / 1_048_576)]))
                         Button(bulk.map { app.t("ios.dl.busy", ["a": $0.0, "b": $0.1]) } ?? app.t("ios.dl.all")) { Task { await downloadAll() } }.disabled(bulk != nil)
                         Text(app.t("ios.dl.wifi")).font(.footnote).foregroundStyle(.secondary)
+                        if let downloadNotice { Text(downloadNotice).font(.footnote).foregroundStyle(.secondary) }
                         if !app.images.downloaded.isEmpty {
                             Button(app.t("ios.dl.deleteAll"), role: .destructive) { Task { await app.images.deleteAll() } }
                         }
@@ -133,15 +135,13 @@ public struct SettingsView: View {
                         .listRowBackground(Color.clear)
                 }
             }
-            Section {
-                Text(app.t("ios.account.commonPremium")).font(.footnote).foregroundStyle(.secondary)
-                Link(app.t("ios.account.webApp"), destination: URL(string: "https://slides.ryouy.workers.dev/art-slide")!)
-            } header: {
-                Text(app.t("ios.account.webTitle"))
-            }
             if let n = noticeText { Text(n).font(.footnote).foregroundStyle(.secondary) }
         } header: {
             Text(app.t("ios.account.title"))
+        }
+        Section(app.t("ios.account.webTitle")) {
+            Text(app.t("ios.account.commonPremium")).font(.footnote).foregroundStyle(.secondary)
+            Link(app.t("ios.account.webApp"), destination: URL(string: "https://slides.ryouy.workers.dev/art-slide")!)
         }
     }
 
@@ -240,10 +240,22 @@ public struct SettingsView: View {
     }
 
     private func downloadAll() async {
+        downloadNotice = nil
         let todo = app.catalog.artworks.filter { !app.catalog.isFree($0.id) && !app.images.downloaded.contains($0.id) }
         for (i, a) in todo.enumerated() {
             bulk = (i + 1, todo.count)
-            do { try await app.images.download(a.id, premium: app.premium) { _ in } } catch { break } // stop at the first failure; finished ones are kept
+            do { try await app.images.download(a.id, premium: app.premium, account: app.account) { _ in }
+            } catch let e as ImageStore.DownloadError {
+                switch e {
+                case .notPremium: downloadNotice = app.t("ios.dl.premiumOnly")
+                case .offline: downloadNotice = app.t("ios.dl.offline")
+                default: downloadNotice = app.t("ios.dl.failed")
+                }
+                break // stop at the first failure; finished ones are kept and the reason is shown
+            } catch {
+                downloadNotice = app.t("ios.dl.failed")
+                break
+            }
         }
         bulk = nil
     }

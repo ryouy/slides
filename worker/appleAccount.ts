@@ -285,6 +285,22 @@ async function linkedUser(db: D1Database, accountId: string): Promise<string | n
   return (await db.prepare('SELECT user_id FROM apple_account_links WHERE apple_account_id = ?').bind(accountId).first<{ user_id: string }>())?.user_id ?? null;
 }
 
+/** The entitlement for an iOS bearer-session account. It deliberately covers
+ * both an attached StoreKit transaction and the Stripe contract of its linked
+ * Google account. */
+async function premiumForAccount(db: D1Database, accountId: string): Promise<boolean> {
+  await ensureModeTables(db);
+  const userId = await linkedUser(db, accountId);
+  const apple = await db.prepare('SELECT expires_ms, revoked FROM apple_entitlements WHERE apple_account_id = ? ORDER BY expires_ms DESC LIMIT 1')
+    .bind(accountId).first<{ expires_ms: number; revoked: number }>();
+  const applePremium = !!apple && apple.revoked === 0 && apple.expires_ms > Date.now();
+  if (!userId) return applePremium;
+  const now = nowSec();
+  const subs = await db.prepare('SELECT status, current_period_end, cancel_at_period_end FROM stripe_subscriptions WHERE user_id = ?')
+    .bind(userId).all<{ status: string; current_period_end: number | null; cancel_at_period_end: number }>();
+  return applePremium || (subs.results ?? []).some((s) => hasPremium(s, now));
+}
+
 /** App Store entitlement attached to an explicitly linked Apple account. */
 export async function applePremiumForUser(db: D1Database, userId: string): Promise<boolean> {
   await ensureTables(db);
@@ -304,6 +320,18 @@ async function status(db: D1Database, accountId: string): Promise<Response> {
     stripe = (subs.results ?? []).some((s) => hasPremium(s, now));
   }
   return json({ signedIn: true, linkedGoogle: !!userId, premium: stripe || !!apple && apple.revoked === 0 && apple.expires_ms > Date.now(), sources: { stripe, apple: !!apple && apple.revoked === 0 && apple.expires_ms > Date.now() } });
+}
+
+/** Premium artwork for the native app when it authenticated with its account
+ * session rather than a StoreKit JWS. The session is checked server-side, so a
+ * Google/Stripe Premium account never needs a fabricated Apple transaction. */
+async function serveAccountArtwork(request: Request, env: Env, db: D1Database, accountId: string, id: string): Promise<Response> {
+  if (!(await premiumForAccount(db, accountId))) return err(403, 'premium_required');
+  const res = await env.ASSETS.fetch(new Request(new URL(`/artworks/${id}.webp`, request.url)));
+  if (!res.ok) return err(404, 'not_found');
+  const headers = new Headers(res.headers);
+  headers.set('cache-control', 'private, no-store');
+  return new Response(res.body, { status: 200, headers });
 }
 
 async function linkGoogle(request: Request, env: Env, db: D1Database, accountId: string, fetchFn: FetchFn): Promise<Response> {
@@ -346,6 +374,20 @@ async function claimEntitlement(request: Request, env: Env, db: D1Database, acco
 export async function handleAppleAccount(request: Request, env: Env, fetchFn: FetchFn = (i, init) => fetch(i, init)): Promise<Response> {
   const path = new URL(request.url).pathname;
   const method = request.method;
+  const artwork = /^\/api\/apple\/account-artwork\/([A-Za-z0-9_-]+)$/.exec(path);
+  if (artwork) {
+    if (!env.APPLE_BUNDLE_ID || !env.DB) return err(503, 'not_configured');
+    if (method !== 'GET') return err(405, 'method');
+    try {
+      await ensureTables(env.DB);
+      const accountId = await accountFor(env.DB, bearer(request));
+      if (!accountId) return err(401, 'signin_required');
+      return await serveAccountArtwork(request, env, env.DB, accountId, artwork[1]);
+    } catch (e) {
+      logError('account artwork check failed', e);
+      return err(503, 'unavailable');
+    }
+  }
   const allowed: Record<string, string[]> = { '/api/apple/auth': ['POST'], '/api/apple/google/auth': ['POST'], '/api/apple/sync': ['GET', 'PUT'], '/api/apple/signout': ['POST'], '/api/apple/account/delete': ['POST'], '/api/apple/status': ['GET'], '/api/apple/link/google': ['POST'], '/api/apple/entitlement': ['POST'] };
   const methods = allowed[path];
   if (!methods) return err(404, 'not_found');

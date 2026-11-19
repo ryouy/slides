@@ -31,6 +31,7 @@ export async function handle(request: Request, env: Env, deps: Deps = {}): Promi
     if (method !== 'POST') return err(405, 'method');
     return handleAppleNotification(request, env); // authenticated by Apple's signature, not by a session
   }
+  if (path.startsWith('/api/apple/account-artwork/')) return handleAppleAccount(request, env, deps.fetchFn);
   // iOS account + entitlement API: bearer token, no cookies.  Keep this list
   // explicit so unrelated /api/apple/* paths stay closed, but include every
   // route implemented by appleAccount.ts.
