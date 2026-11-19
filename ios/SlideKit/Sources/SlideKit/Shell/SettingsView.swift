@@ -42,7 +42,9 @@ public struct SettingsView: View {
                 // Downloaded Premium paintings: only matters to Premium users, so nobody else sees it
                 if app.isPremium {
                     Section(app.t("ios.dl.title")) {
-                        LabeledContent(app.t("ios.dl.title"), value: app.images.downloaded.isEmpty ? app.t("ios.dl.none") : app.t("ios.dl.count", ["n": app.images.downloaded.count, "mb": String(format: "%.1f", Double(app.images.totalBytes) / 1_048_576)]))
+                        // the section header already says "Downloaded paintings": the row holds only the count, on one line
+                        Text(app.images.downloaded.isEmpty ? app.t("ios.dl.none") : app.t("ios.dl.count", ["n": app.images.downloaded.count, "mb": String(format: "%.1f", Double(app.images.totalBytes) / 1_048_576)]))
+                            .lineLimit(1).minimumScaleFactor(0.8).foregroundStyle(.secondary)
                         Button(bulk.map { app.t("ios.dl.busy", ["a": $0.0, "b": $0.1]) } ?? app.t("ios.dl.all")) { Task { await downloadAll() } }.disabled(bulk != nil)
                         if let downloadNotice { Text(downloadNotice).font(.footnote).foregroundStyle(.secondary) }
                         if !app.images.downloaded.isEmpty {
