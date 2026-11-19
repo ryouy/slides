@@ -2031,6 +2031,12 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .contact-mail { font-size: 18px; }
 .purchase-facts { border: 1px solid var(--line); padding: 14px 14px 10px; display: grid; gap: 10px; text-align: left; }
 .purchase-facts h2 { margin: 0; font-size: 13px; letter-spacing: .06em; }
+.purchase-details { display: grid; gap: 10px; }
+.purchase-details summary { cursor: pointer; color: var(--fg); font-size: 13px; font-weight: 600; list-style: none; }
+.purchase-details summary::-webkit-details-marker { display: none; }
+.purchase-details summary::after { content: '⌄'; float: right; color: var(--muted); transition: transform .18s ease; }
+.purchase-details[open] summary::after { transform: rotate(180deg); }
+.purchase-details summary:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
 .purchase-facts dl { margin: 0; display: grid; gap: 8px; }
 .purchase-facts dl > div { display: grid; gap: 1px; }
 .purchase-facts dt { font-size: 11px; color: var(--muted); letter-spacing: .04em; }

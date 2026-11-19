@@ -73,6 +73,7 @@ const zh: Partial<Dict> = {
   'premium.agree': '我已阅读使用条款和《特定商取引法》相关表示，并同意每月支付 ¥200，在取消前自动续订。',
   'premium.subscribeFull': '订阅 · 每月 ¥200，自动续订',
   'premium.beforeTitle': '订阅前请确认',
+  'premium.details': '查看方案、续订和取消详情',
   'common.commerce': '特定商取引法相关表示',
   'common.commerceShort': '特定商取引法表示',
   'sync.title': 'Google 云端硬盘同步',

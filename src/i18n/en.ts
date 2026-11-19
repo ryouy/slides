@@ -327,6 +327,7 @@ const en = {
   'premium.agree': 'I have read the Terms of Use and the Notice under the Act on Specified Commercial Transactions, and agree to pay ¥200 per month, renewed automatically until I cancel.',
   'premium.subscribeFull': 'Subscribe · ¥200 / month, auto-renewing',
   'premium.beforeTitle': 'Before you subscribe',
+  'premium.details': 'View plan, renewal and cancellation details',
   'common.commerce': 'Commercial transactions notice',
   'common.commerceShort': 'Legal notice',
 } as const;

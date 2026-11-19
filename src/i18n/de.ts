@@ -73,6 +73,7 @@ const de: Partial<Dict> = {
   'premium.agree': 'Ich habe die Nutzungsbedingungen und den Hinweis nach dem japanischen Gesetz über spezifizierte Handelsgeschäfte gelesen und stimme zu, ¥200 pro Monat zu zahlen, automatisch verlängert bis zur Kündigung.',
   'premium.subscribeFull': 'Abonnieren · ¥200 / Monat, automatische Verlängerung',
   'premium.beforeTitle': 'Vor dem Abonnieren',
+  'premium.details': 'Tarif, Verlängerung und Kündigung anzeigen',
   'common.commerce': 'Hinweis zu Handelsgeschäften',
   'common.commerceShort': 'Rechtshinweis',
   'sync.title': 'Google-Drive-Synchronisierung',

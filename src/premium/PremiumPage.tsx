@@ -101,15 +101,18 @@ export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' })
           {sheet && (
             <Sheet title={t('premium.beforeTitle')} closeLabel={t('common.close')} onClose={() => setSheet(false)}>
               <section className="purchase-facts" data-testid="purchase-facts" aria-label={t('premium.beforeTitle')}>
-                <dl>
-                  {planFacts(l, OPERATOR).map(([k, v]) => (
-                    <div key={k}>
-                      <dt>{k}</dt>
-                      <dd>{withMarks(v)}</dd>
-                    </div>
-                  ))}
-                </dl>
-                <p className="muted purchase-seller" data-testid="purchase-seller">{withMarks(disclosureNote(l, OPERATOR))}</p>
+                <details className="purchase-details" data-testid="purchase-details">
+                  <summary>{t('premium.details')}</summary>
+                  <dl>
+                    {planFacts(l, OPERATOR).map(([k, v]) => (
+                      <div key={k}>
+                        <dt>{k}</dt>
+                        <dd>{withMarks(v)}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                  <p className="muted purchase-seller" data-testid="purchase-seller">{withMarks(disclosureNote(l, OPERATOR))}</p>
+                </details>
                 <label className="agree">
                   <input type="checkbox" data-testid="premium-agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
                   <span>{t('premium.agree')}</span>

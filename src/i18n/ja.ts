@@ -73,6 +73,7 @@ const ja: Partial<Dict> = {
   'premium.agree': '利用規約と特定商取引法に基づく表記を読み、月額200円が解約するまで毎月自動で請求されることに同意します。',
   'premium.subscribeFull': '申し込む · 月額200円・自動更新',
   'premium.beforeTitle': 'お申し込み前にご確認ください',
+  'premium.details': '料金・自動更新・解約・返金について',
   'common.commerce': '特定商取引法に基づく表記',
   'common.commerceShort': '特商法表記',
   'sync.title': 'Googleドライブ同期',

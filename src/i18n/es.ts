@@ -73,6 +73,7 @@ const es: Partial<Dict> = {
   'premium.agree': 'He leído las Condiciones de uso y el aviso conforme a la ley japonesa de transacciones comerciales, y acepto pagar ¥200 al mes, con renovación automática hasta que cancele.',
   'premium.subscribeFull': 'Suscribirse · ¥200 / mes, renovación automática',
   'premium.beforeTitle': 'Antes de suscribirte',
+  'premium.details': 'Ver plan, renovación y cancelación',
   'common.commerce': 'Aviso de transacciones comerciales',
   'common.commerceShort': 'Aviso legal',
   'sync.title': 'Sincronización con Google Drive',

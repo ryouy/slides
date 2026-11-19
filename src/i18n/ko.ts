@@ -73,6 +73,7 @@ const ko: Partial<Dict> = {
   'premium.agree': '이용약관과 특정상거래법에 따른 표기를 읽었으며, 해지할 때까지 매월 ¥200이 자동으로 갱신·청구되는 데 동의합니다.',
   'premium.subscribeFull': '구독 · 월 ¥200, 자동 갱신',
   'premium.beforeTitle': '구독 전에 확인해 주세요',
+  'premium.details': '요금, 자동 갱신 및 해지 세부 정보',
   'common.commerce': '특정상거래법에 따른 표기',
   'common.commerceShort': '특정상거래법 표기',
   'sync.title': 'Google 드라이브 동기화',
