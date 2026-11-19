@@ -29,7 +29,7 @@ public final class AppModel {
 
     private let store = JSONFileStore<AppSettings>(name: "settings")
 
-    public var isPremium: Bool { premium.isPremium }
+    public var isPremium: Bool { premium.isPremium || account.remotePremium }
     public var preferredScheme: ColorScheme? { theme == .system ? nil : (theme == .dark ? .dark : .light) }
 
     public init() {
@@ -61,6 +61,7 @@ public final class AppModel {
         sync.start()
         drive.start()
         await premium.start()
+        await account.claim(premium.signedTransaction)
         await images.refresh()
         await ads.prepare()
     }

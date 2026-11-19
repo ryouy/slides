@@ -16,6 +16,7 @@ public enum AccountWire {
         }
     }
     public struct AuthReply: Decodable, Equatable { public let token: String; public let accountId: String }
+    public struct StatusReply: Decodable, Equatable { public let premium: Bool }
 
     public enum Revoked: String, Equatable, Sendable { case revoked, skipped, failed, unknown }
     public struct DeleteReply: Equatable, Sendable { public let ok: Bool; public let revoked: Revoked }
@@ -35,4 +36,5 @@ public enum AccountWire {
         guard let o = try? JSONSerialization.jsonObject(with: d) as? [String: Any], o["ok"] as? Bool == true else { return nil }
         return DeleteReply(ok: true, revoked: (o["revoked"] as? String).flatMap(Revoked.init(rawValue:)) ?? .unknown)
     }
+    public static func parseStatus(_ d: Data) -> StatusReply? { try? JSONDecoder().decode(StatusReply.self, from: d) }
 }

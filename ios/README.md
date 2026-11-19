@@ -51,7 +51,7 @@ Also change `invalid.premium.monthly` in `ios/App/Premium.storekit` to your prod
 5. Server (Cloudflare Worker): set `APPLE_BUNDLE_ID` and `APPLE_PRODUCT_ID` as Secrets/Variables. Premium painting downloads answer 503 until both are set. Set `APPLE_ALLOW_SANDBOX=true` **only** while testing with Sandbox/TestFlight; remove it for production.
 6. App Store Connect → App → App Information → App Store Server Notifications → set the **Production** and **Sandbox** URL to `https://<your worker>/api/apple/notifications` (version 2). This delivers renewals, expiry and refunds. (The table `apple_subs` is created automatically.)
 
-How Premium is decided: only from transactions StoreKit has verified on the device (works offline). The Worker re-verifies the Apple-signed transaction (certificate chain pinned to Apple Root CA G3, bundle id, product id, expiry, revocation, Sandbox flag) before it hands out a Premium painting.
+How Premium is decided: StoreKit remains authoritative on the device (including offline use). After optional account sign-in, the app sends its Apple-signed transaction to the Worker; it is re-verified (certificate chain pinned to Apple Root CA G3, bundle id, product id, expiry, revocation, Sandbox flag) and can be explicitly linked to the existing Google/Stripe account. A valid linked Stripe subscription or a valid linked Apple subscription grants Premium. The two subscriptions are never converted or automatically cancelled.
 
 ## Account & sync (optional)
 
@@ -98,6 +98,6 @@ The web site keeps using AdMax.
 
 ## Not done yet / verify by hand
 
-* Sign in with Apple / Google Sign-In, Drive sync, linking an Apple purchase to a web (Stripe) account.
+* Real-device and sandbox validation of the shared Premium linking flow remains required before release.
 * Interactive checks on a device/simulator that were NOT run: tapping/dragging tiles in all three games, clear sheets, haptics, resume, Premium purchase + download, photos, dark mode, test ads (the consent dialog cannot be dismissed from the command line).
 * App icon, launch screen, App Store privacy answers (see the Ads section) and age rating.

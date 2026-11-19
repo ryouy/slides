@@ -26,7 +26,7 @@ public struct PremiumView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     Text(app.t("premium.free")).font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
 
-                    if p.isPremium {
+                    if app.isPremium {
                         VStack(spacing: 6) {
                             Label(app.t("ios.premium.active"), systemImage: "checkmark.seal.fill").font(.headline).foregroundStyle(.tint)
                             if let d = p.expiresAt {
@@ -64,7 +64,7 @@ public struct PremiumView: View {
     private func buy() async {
         busy = true; defer { busy = false }
         switch await app.premium.purchase() {
-        case .success: message = nil
+        case .success: await app.account.claim(app.premium.signedTransaction); message = nil
         case .cancelled: message = app.t("ios.premium.cancelled")
         case .pending: message = app.t("ios.premium.pending")
         case .unavailable: message = app.t("ios.premium.unavailable")
@@ -73,6 +73,8 @@ public struct PremiumView: View {
     }
     private func restore() async {
         busy = true; defer { busy = false }
-        message = await app.premium.restore() ? app.t("ios.premium.restored") : app.t("ios.premium.restoreFailed")
+        let ok = await app.premium.restore()
+        if ok { await app.account.claim(app.premium.signedTransaction) }
+        message = ok ? app.t("ios.premium.restored") : app.t("ios.premium.restoreFailed")
     }
 }

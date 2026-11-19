@@ -35,6 +35,9 @@ public final class AccountStore {
 
     public private(set) var state: State = .signedOut
     public private(set) var busy = false
+    /// Server-confirmed access from a linked Stripe or Apple subscription.  It
+    /// complements (never replaces) StoreKit's local entitlement.
+    public private(set) var remotePremium = false
     /// A short message for the UI (the sheet shows it and clears it with `clearNotice()`).
     public private(set) var notice: Notice?
     /// Called whenever the session ends (sign-out, deletion, 401) so sync can turn itself off.
@@ -66,6 +69,7 @@ public final class AccountStore {
             guard status == 200, let r = AccountWire.parseAuth(data), Keychain.write(tokenKey, r.token) else { notice = .signInFailed; return }
             state = .signedIn(accountId: r.accountId)
             onSignedIn?(r.accountId)
+            await refreshStatus()
         } catch { notice = .signInFailed }
     }
 
@@ -92,9 +96,26 @@ public final class AccountStore {
     /// A call answered 401: the session is gone.
     func sessionExpired() { if isSignedIn { endSession(.sessionExpired) } }
 
+    /// Claims a StoreKit-signed transaction only after the user chose to sign
+    /// in.  The Worker verifies it and refuses a transaction owned elsewhere.
+    public func claim(_ signedTransaction: String?) async {
+        guard let t = token, let signedTransaction, !signedTransaction.isEmpty else { return }
+        let body = try? JSONSerialization.data(withJSONObject: ["signedTransaction": signedTransaction])
+        guard let body, let r = try? await api.send("POST", "/api/apple/entitlement", token: t, body: body), r.status == 200,
+              let s = AccountWire.parseStatus(r.data) else { return }
+        remotePremium = s.premium
+    }
+
+    public func refreshStatus() async {
+        guard let t = token, let r = try? await api.send("GET", "/api/apple/status", token: t), r.status == 200,
+              let s = AccountWire.parseStatus(r.data) else { return }
+        remotePremium = s.premium
+    }
+
     private func endSession(_ n: Notice) {
         Keychain.delete(tokenKey)
         state = .signedOut
+        remotePremium = false
         notice = n
         onSessionEnded?(n)
     }

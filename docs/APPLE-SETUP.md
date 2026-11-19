@@ -20,3 +20,12 @@ App Store の規則 5.1.1(v) により、アカウント削除時に Apple 側�
    `https://<worker>/api/apple/notifications` を設定し、バージョンは V2 を選ぶ(購入用で実装済みのエンドポイント)。
 7. 動作: アプリがサインイン時に `authorizationCode` を送ると、Worker が refresh token を取得し AES-GCM で暗号化して保存します。
    削除時はまずサーバー上の全データを削除し、その後 Apple の revoke を呼びます。応答は `{ "ok": true, "revoked": "revoked" | "skipped" | "failed" }` です。
+
+## 共通Premium利用権
+
+`migrations/0004_shared_entitlements.sql` を先に適用してください。これは既存の `users`、Stripe customer、subscription を変更・削除しません。
+
+- iOS は StoreKit が返す署名付き取引を `/api/apple/entitlement` に送ります。Worker は Apple の署名、bundle ID、product ID、期限と取り消しを検証してから、original transaction ID を Apple アカウントへ一度だけ登録します。
+- Google / Stripe アカウントとの対応付けは、Apple セッションと検証済み Google ID token を同時に提示する `/api/apple/link/google` でのみ作られます。メールアドレスや表示名では統合されません。既存リンクを別アカウントへ置換することもありません。
+- App Store Server Notifications V2 は、返金・失効を共有利用権にも反映します。Stripe と Apple は別の契約のままで、どちらか一方が有効ならPremiumです。
+- Worker の `GOOGLE_IOS_CLIENT_ID` に iOS OAuth client ID を設定します（Web の `GOOGLE_CLIENT_ID` は変更しません）。
