@@ -1,0 +1,35 @@
+{
+  "identifier" : "A1B2C3D4",
+  "nonRenewingSubscriptions" : [],
+  "products" : [],
+  "settings" : { "_failTransactionsEnabled" : false, "_locale" : "ja_JP", "_storefront" : "JPN", "_storeKitErrors" : [] },
+  "subscriptionGroups" : [
+    {
+      "id" : "21000001",
+      "localizations" : [],
+      "name" : "Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "200",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6700000001",
+          "introductoryOffer" : null,
+          "localizations" : [
+            { "description" : "All paintings, levels 3-7, no ads, your own photos", "displayName" : "Premium (monthly)", "locale" : "ja" },
+            { "description" : "All paintings, levels 3-7, no ads, your own photos", "displayName" : "Premium (monthly)", "locale" : "en_US" }
+          ],
+          "productID" : "invalid.premium.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Premium monthly",
+          "subscriptionGroupID" : "21000001",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : []
+        }
+      ]
+    }
+  ],
+  "version" : { "major" : 4, "minor" : 0 }
+}

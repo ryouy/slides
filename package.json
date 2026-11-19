@@ -12,7 +12,8 @@
     "e2e": "playwright test",
     "legal:date": "node scripts/set-effective-date.mjs",
     "check:deploy": "node scripts/check-deploy.mjs",
-    "share-assets": "vite-node scripts/make-share-assets.ts --dir public"
+    "share-assets": "vite-node scripts/make-share-assets.ts --dir public",
+    "ios:data": "for f in ios/scripts/export-*.ts; do vite-node $f || exit 1; done"
   },
   "dependencies": {
     "react": "^19.3.1",

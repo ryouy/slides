@@ -12,3 +12,9 @@ public/og/
 public/s/
 .dev.vars
 .wrangler/
+ios/App/App/public
+ios/App/build
+ios/App/build-rel
+ios/Config/Local.xcconfig
+ios/SlideKit/.build
+.DS_Store

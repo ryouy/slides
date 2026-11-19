@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`iOS daily painting > pins published dates (algorithm must never change silently) 1`] = `
+[
+  "hiroshige-arai",
+  "vermeer-water-pitcher",
+  "harnett-just-dessert",
+]
+`;

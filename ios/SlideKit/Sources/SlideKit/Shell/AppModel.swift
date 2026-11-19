@@ -1,0 +1,60 @@
+import SwiftUI
+import SlideCore
+
+public enum ThemePref: String, Codable, CaseIterable, Sendable { case system, light, dark }
+
+struct AppSettings: Codable {
+    var lang: Lang?
+    var theme: ThemePref = .system
+    var colorblind = false
+}
+
+/// App-wide state shared by every screen: language, appearance, plan, services. Injected with `.environment(app)`.
+@MainActor @Observable
+public final class AppModel {
+    public var lang: Lang { didSet { persist() } }
+    public var theme: ThemePref { didSet { persist() } }
+    public var colorblind: Bool { didSet { persist() } }
+
+    public let strings: Strings
+    public let catalog: ArtCatalog
+    public let premium: PremiumStore
+    public let ads: AdsManager
+    public let images: ImageStore
+    public let network = Reachability()
+
+    private let store = JSONFileStore<AppSettings>(name: "settings")
+
+    public var isPremium: Bool { premium.isPremium }
+    public var preferredScheme: ColorScheme? { theme == .system ? nil : (theme == .dark ? .dark : .light) }
+
+    public init() {
+        let pub = AppPaths.publicURL
+        strings = (try? Strings(url: pub.appendingPathComponent("data/strings.json"))) ?? Strings(dicts: [:])
+        catalog = (try? ArtCatalog(url: pub.appendingPathComponent("data/artworks.json"))) ?? ArtCatalog(artworks: [], free: [], dailyPools: [])
+        let s = store.load() ?? AppSettings()
+        lang = s.lang ?? Lang.detect()
+        theme = s.theme
+        colorblind = s.colorblind
+        premium = PremiumStore()
+        ads = AdsManager()
+        images = ImageStore(catalog: catalog)
+    }
+
+    private func persist() { store.save(AppSettings(lang: lang, theme: theme, colorblind: colorblind)) }
+
+    /// Translate a UI text key (same keys as the web app's dictionaries).
+    public func t(_ key: String, _ vars: [String: CustomStringConvertible] = [:]) -> String { strings.t(key, lang, vars) }
+
+    /// Called once at launch.
+    public func start() async {
+        await premium.start()
+        await images.refresh()
+        await ads.prepare()
+    }
+}
+
+public enum AppPaths {
+    /// The folder of generated data and paintings bundled into the app (ios/App/App/public).
+    public static var publicURL: URL { Bundle.main.bundleURL.appendingPathComponent("public", isDirectory: true) }
+}

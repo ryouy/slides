@@ -42,6 +42,11 @@ export interface Env {
   PUBLIC_SALES?: string;
   /** "true" allows a LIVE Stripe key (real money). Absent/anything else: only test keys can start a Checkout. */
   ALLOW_LIVE_PAYMENTS?: string;
+  /** iOS app (App Store): the app's Bundle ID and the Premium subscription product id. Both unset = the Apple endpoints answer 503. */
+  APPLE_BUNDLE_ID?: string;
+  APPLE_PRODUCT_ID?: string;
+  /** "true" also accepts Sandbox/TestFlight transactions (for testing only; leave unset in production). */
+  APPLE_ALLOW_SANDBOX?: string;
 }
 
 const ALLOW_ID = /^[A-Za-z0-9_-]{8,64}$/;

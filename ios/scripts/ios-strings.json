@@ -1,0 +1,42 @@
+{
+  "en": {
+    "ios.tab.art": "Art", "ios.tab.word": "Word", "ios.tab.big": "Big", "ios.tab.settings": "Settings",
+    "ios.premium.perMonth": "{price} / month",
+    "ios.premium.priceUnknown": "The price is shown by the App Store",
+    "ios.premium.autoRenew": "Auto-renewing monthly subscription. Payment is charged to your Apple Account when you confirm the purchase. It renews automatically unless cancelled at least 24 hours before the end of the current period. Manage or cancel it any time in your Apple Account settings.",
+    "ios.premium.subscribe": "Subscribe", "ios.premium.restore": "Restore purchases", "ios.premium.manage": "Manage subscription",
+    "ios.premium.active": "Premium is active", "ios.premium.renewsOn": "Renews on {date}", "ios.premium.endsOn": "Ends on {date} (will not renew)",
+    "ios.premium.grace": "Payment problem: please update your payment method in your Apple Account settings.",
+    "ios.premium.cancelled": "Purchase cancelled.", "ios.premium.pending": "The purchase is waiting for approval (for example Ask to Buy).",
+    "ios.premium.failed": "The purchase could not be completed. Please try again.", "ios.premium.unavailable": "The subscription is not available right now. Check your connection and try again.",
+    "ios.premium.restored": "Your purchases were checked.", "ios.premium.restoreFailed": "Could not check your purchases. Please try again.",
+    "ios.terms": "Terms of Use", "ios.privacy": "Privacy Policy", "ios.eula": "Apple Standard EULA",
+    "ios.dl.title": "Downloaded paintings", "ios.dl.none": "None yet", "ios.dl.count": "{n} paintings · {mb} MB",
+    "ios.dl.deleteAll": "Delete all downloads", "ios.dl.all": "Download all Premium paintings", "ios.dl.busy": "Downloading {a} / {b}…",
+    "ios.dl.wifi": "Uses a lot of data: Wi-Fi is recommended.", "ios.dl.needed": "This painting is downloaded once, then plays offline.",
+    "ios.dl.start": "Download", "ios.dl.retry": "Retry", "ios.dl.offline": "No connection. Connect to the internet to download this painting.",
+    "ios.dl.failed": "The download failed.", "ios.dl.premiumOnly": "Premium is required to download this painting.",
+    "ios.ads.privacy": "Ad privacy settings", "ios.version": "Version", "ios.offline.note": "The 40 free paintings and all three games work without a connection.",
+    "ios.section.plan": "Plan", "ios.section.display": "Display", "ios.section.offline": "Offline", "ios.section.about": "About"
+  },
+  "ja": {
+    "ios.tab.art": "アート", "ios.tab.word": "ワード", "ios.tab.big": "ビッグ", "ios.tab.settings": "設定",
+    "ios.premium.perMonth": "{price} / 月",
+    "ios.premium.priceUnknown": "価格はApp Storeに表示されます",
+    "ios.premium.autoRenew": "自動更新される月額サブスクリプションです。購入の確認時にApple Accountへ請求されます。現在の期間が終了する24時間前までに解約しない限り自動的に更新されます。管理・解約はApple Accountの設定からいつでも行えます。",
+    "ios.premium.subscribe": "登録する", "ios.premium.restore": "購入を復元", "ios.premium.manage": "サブスクリプションを管理",
+    "ios.premium.active": "Premiumは有効です", "ios.premium.renewsOn": "{date} に更新", "ios.premium.endsOn": "{date} で終了（更新されません）",
+    "ios.premium.grace": "お支払いに問題があります。Apple Accountの設定で支払い方法を更新してください。",
+    "ios.premium.cancelled": "購入をキャンセルしました。", "ios.premium.pending": "購入は承認待ちです（「承認と購入のリクエスト」など）。",
+    "ios.premium.failed": "購入を完了できませんでした。もう一度お試しください。", "ios.premium.unavailable": "現在サブスクリプションを利用できません。接続を確認してもう一度お試しください。",
+    "ios.premium.restored": "購入状況を確認しました。", "ios.premium.restoreFailed": "購入状況を確認できませんでした。もう一度お試しください。",
+    "ios.terms": "利用規約", "ios.privacy": "プライバシーポリシー", "ios.eula": "Apple標準EULA",
+    "ios.dl.title": "ダウンロード済みの作品", "ios.dl.none": "まだありません", "ios.dl.count": "{n}点 · {mb} MB",
+    "ios.dl.deleteAll": "ダウンロードをすべて削除", "ios.dl.all": "Premium作品をすべてダウンロード", "ios.dl.busy": "ダウンロード中 {a} / {b}…",
+    "ios.dl.wifi": "通信量が大きいため、Wi-Fiでの利用をおすすめします。", "ios.dl.needed": "この作品は一度ダウンロードすると、オフラインでも遊べます。",
+    "ios.dl.start": "ダウンロード", "ios.dl.retry": "再試行", "ios.dl.offline": "通信できません。この作品をダウンロードするにはインターネットに接続してください。",
+    "ios.dl.failed": "ダウンロードに失敗しました。", "ios.dl.premiumOnly": "この作品のダウンロードにはPremiumが必要です。",
+    "ios.ads.privacy": "広告のプライバシー設定", "ios.version": "バージョン", "ios.offline.note": "無料の40作品と3つのゲームは、通信なしで遊べます。",
+    "ios.section.plan": "プラン", "ios.section.display": "表示", "ios.section.offline": "オフライン", "ios.section.about": "このアプリについて"
+  }
+}

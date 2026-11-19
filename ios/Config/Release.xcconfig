@@ -1,0 +1,3 @@
+#include "Shared.xcconfig"
+CAPACITOR_DEBUG = false
+// Release uses whatever Local.xcconfig sets for ADMOB_*; without it the Google test ids stay (test ads only, never real ads by accident).

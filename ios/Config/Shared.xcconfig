@@ -1,0 +1,23 @@
+// Settings shared by Debug and Release. Edit the "YOU MUST SET" values (see ios/README.md); keep secrets out of this file.
+
+// ---- YOU MUST SET: your own Bundle ID (reverse-DNS, e.g. com.yourname.artslide). Placeholder until then; it cannot be uploaded. ----
+PRODUCT_BUNDLE_IDENTIFIER = invalid.placeholder.artslide
+// ---- YOU MUST SET: your Apple Developer Team ID (10 characters) for signing on a real device / App Store ----
+DEVELOPMENT_TEAM =
+
+// Version shown to users / build number (raise the build number for every upload).
+MARKETING_VERSION = 1.0
+CURRENT_PROJECT_VERSION = 1
+
+// App Store Connect product id of the monthly auto-renewing subscription (must match exactly).
+PREMIUM_PRODUCT_ID = invalid.premium.monthly
+
+// Worker that serves Premium paintings and verifies purchases.
+SLIDES_API_BASE = https:/$()/slides.ryouy.workers.dev
+
+// Google's published TEST ids (safe, public). Release overrides them from Local.xcconfig.
+ADMOB_APP_ID = ca-app-pub-3940256099942544~1458002511
+ADMOB_BANNER_UNIT_ID = ca-app-pub-3940256099942544/2435281174
+
+// Optional, git-ignored file for your real values (Bundle ID, Team ID, product id, real AdMob ids).
+#include? "Local.xcconfig"
