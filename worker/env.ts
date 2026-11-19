@@ -45,6 +45,7 @@ export interface Env {
   /** iOS app (App Store): the app's Bundle ID and the Premium subscription product id. Both unset = the Apple endpoints answer 503. */
   APPLE_BUNDLE_ID?: string;
   APPLE_PRODUCT_ID?: string;
+  // (the optional iOS account + sync endpoints, /api/apple/auth|sync|signout|account/delete, need only APPLE_BUNDLE_ID and DB; see worker/appleAccount.ts)
   /** "true" also accepts Sandbox/TestFlight transactions (for testing only; leave unset in production). */
   APPLE_ALLOW_SANDBOX?: string;
 }

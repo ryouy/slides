@@ -4,6 +4,7 @@ import { currentUser, finishLogin, logout, startLogin } from './auth';
 import { createCheckout, createPortal, deleteAccount, handleWebhook, planFor } from './billing';
 import { serveArtwork } from './artwork';
 import { handleAppleNotification, serveAppleArtwork } from './apple';
+import { handleAppleAccount } from './appleAccount';
 import { hmacHex } from './crypto';
 import { allow } from './db';
 import { err, json, sameOrigin } from './http';
@@ -30,6 +31,7 @@ export async function handle(request: Request, env: Env, deps: Deps = {}): Promi
     if (method !== 'POST') return err(405, 'method');
     return handleAppleNotification(request, env); // authenticated by Apple's signature, not by a session
   }
+  if (['/api/apple/auth', '/api/apple/sync', '/api/apple/signout', '/api/apple/account/delete'].includes(path)) return handleAppleAccount(request, env, deps.fetchFn); // iOS account + sync: bearer token, no cookies
   if (path.startsWith('/api/apple/artwork/')) return serveAppleArtwork(request, env); // authenticated by an Apple-signed transaction
   if (!path.startsWith('/api/auth/') && !['/api/me', '/api/billing/status', '/api/billing/checkout', '/api/billing/portal', '/api/account/delete'].includes(path)) return err(404, 'not_found');
   if (!authConfigured(env)) return err(503, 'not_configured');
