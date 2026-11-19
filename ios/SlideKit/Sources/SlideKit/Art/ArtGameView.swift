@@ -184,7 +184,7 @@ struct ArtGameView: View {
     // MARK: below the board
     private var extra: some View {
         VStack(alignment: .leading, spacing: 6) {
-            if !daily {
+            if !daily && !artwork.isCustom {
                 HStack {
                     Spacer()
                     Button { onNext() } label: {

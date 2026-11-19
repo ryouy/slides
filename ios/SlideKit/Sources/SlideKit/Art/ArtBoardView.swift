@@ -21,7 +21,7 @@ struct ArtBoardView: View {
                     let total = d.count
                     let cellOf = cellMap(model.state.board)
                     ZStack(alignment: .topLeading) {
-                        Rectangle().fill(Web.surface)
+                        Rectangle().fill(Web.bg)
                         if model.ready {
                             ForEach(0..<total, id: \.self) { id in
                                 let isGhost = id == total - 1

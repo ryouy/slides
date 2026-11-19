@@ -102,6 +102,7 @@ const en = {
 
   // settings
   'settings.title': 'SETTINGS',
+  'home.iosApp': 'Get the iPhone app on the App Store',
   'settings.language': 'Language',
   'settings.theme': 'Theme',
   'settings.system': 'System',

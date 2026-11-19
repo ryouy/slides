@@ -105,6 +105,7 @@ const de: Partial<Dict> = {
   'stats.bests': 'Bestleistungen', 'stats.recent': 'Zuletzt', 'stats.noGames': 'Noch keine Spiele.', 'stats.moves': '{n} Züge',
   'credits.title': 'QUELLEN', 'credits.intro': 'Alle Gemälde sind gemeinfrei (CC0) und stammen aus den Open-Access-Programmen des Art Institute of Chicago und des Metropolitan Museum of Art.',
   'credits.source': 'Quellseite', 'credits.checked': 'geprüft am {date}',
+  'home.iosApp': 'iPhone-App im App Store laden',
   'settings.title': 'EINSTELLUNGEN', 'settings.language': 'Sprache', 'settings.theme': 'Design', 'settings.system': 'System', 'settings.light': 'Hell', 'settings.dark': 'Dunkel',
   'settings.colorblind': 'Farbenblind-Modus', 'settings.adCookies': 'Werbe-Cookies erlauben', 'settings.reset': 'Alle Daten löschen', 'settings.resetConfirm': 'Alle gespeicherten Fortschritte und Statistiken auf diesem Gerät löschen?',
   'about.title': 'ÜBER', 'about.text': 'ART SLIDE ist ein kostenloses Schiebepuzzle mit berühmten Gemälden. Dazu gibt es BIG SLIDE und WORD SLIDE. Kein Konto nötig; dein Fortschritt wird nur in deinem Browser gespeichert.',

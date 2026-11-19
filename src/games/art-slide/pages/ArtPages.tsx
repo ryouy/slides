@@ -97,6 +97,7 @@ export function ArtHome() {
             </nav>
           </div>
         </details>
+        <a className="appstore-link" data-testid="appstore-link" href="https://apps.apple.com/app/art-slide" target="_blank" rel="noopener noreferrer">{t('home.iosApp')}</a>
       </div>
       {/* wide screens only (hidden by CSS on phones, where the images are then never loaded) */}
       <section className="art-home-strip" aria-label={t('home.fromGallery')} data-testid="home-picks">

@@ -105,6 +105,7 @@ const zh: Partial<Dict> = {
   'stats.bests': '个人最佳', 'stats.recent': '最近', 'stats.noGames': '还没有记录。', 'stats.moves': '{n} 步',
   'credits.title': '作品出处', 'credits.intro': '所有画作均属公有领域（CC0），来自芝加哥艺术博物馆和大都会艺术博物馆的开放获取项目。',
   'credits.source': '来源页面', 'credits.checked': '{date} 核对',
+  'home.iosApp': '在 App Store 下载 iPhone 版',
   'settings.title': '设置', 'settings.language': '语言', 'settings.theme': '主题', 'settings.system': '跟随系统', 'settings.light': '浅色', 'settings.dark': '深色',
   'settings.colorblind': '色盲模式', 'settings.adCookies': '允许广告 Cookie', 'settings.reset': '清除所有数据', 'settings.resetConfirm': '要删除此设备上的所有进度和统计吗？',
   'about.title': '关于', 'about.text': 'ART SLIDE 是用名画制作的免费滑块拼图，另外还有 BIG SLIDE 和 WORD SLIDE。无需账号，进度只保存在你的浏览器中。',

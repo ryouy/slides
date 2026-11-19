@@ -105,6 +105,7 @@ const ja: Partial<Dict> = {
   'stats.bests': '自己ベスト', 'stats.recent': '最近', 'stats.noGames': 'まだ記録がありません。', 'stats.moves': '{n}手',
   'credits.title': 'クレジット', 'credits.intro': 'すべての絵画はパブリックドメイン（CC0）で、シカゴ美術館とメトロポリタン美術館のオープンアクセスで公開されている画像です。',
   'credits.source': '出典ページ', 'credits.checked': '{date} 確認',
+  'home.iosApp': 'iPhone アプリを App Store で入手',
   'settings.title': '設定', 'settings.language': '言語', 'settings.theme': 'テーマ', 'settings.system': 'システム', 'settings.light': 'ライト', 'settings.dark': 'ダーク',
   'settings.colorblind': '色覚サポート', 'settings.adCookies': '広告クッキーを許可', 'settings.reset': 'すべてのデータを削除', 'settings.resetConfirm': 'この端末の保存データと統計をすべて削除しますか？',
   'about.title': '概要', 'about.text': 'ART SLIDE は有名な絵画で遊ぶ無料のスライドパズルです。BIG SLIDE と WORD SLIDE も遊べます。アカウントは不要で、進行状況はブラウザにだけ保存されます。',

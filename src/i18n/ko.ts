@@ -105,6 +105,7 @@ const ko: Partial<Dict> = {
   'stats.bests': '개인 최고 기록', 'stats.recent': '최근', 'stats.noGames': '아직 기록이 없습니다.', 'stats.moves': '{n}회',
   'credits.title': '출처', 'credits.intro': '모든 그림은 퍼블릭 도메인(CC0)이며 시카고 미술관과 메트로폴리탄 미술관의 오픈 액세스 이미지입니다.',
   'credits.source': '출처 페이지', 'credits.checked': '{date} 확인',
+  'home.iosApp': 'App Store에서 iPhone 앱 받기',
   'settings.title': '설정', 'settings.language': '언어', 'settings.theme': '테마', 'settings.system': '시스템', 'settings.light': '라이트', 'settings.dark': '다크',
   'settings.colorblind': '색약 모드', 'settings.adCookies': '광고 쿠키 허용', 'settings.reset': '모든 데이터 삭제', 'settings.resetConfirm': '이 기기의 모든 진행 상황과 통계를 삭제할까요?',
   'about.title': '소개', 'about.text': 'ART SLIDE는 명화로 즐기는 무료 슬라이드 퍼즐입니다. BIG SLIDE와 WORD SLIDE도 있습니다. 계정이 필요 없으며 진행 상황은 브라우저에만 저장됩니다.',

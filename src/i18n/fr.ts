@@ -105,6 +105,7 @@ const fr: Partial<Dict> = {
   'stats.bests': 'Meilleurs scores', 'stats.recent': 'Récents', 'stats.noGames': 'Aucune partie pour l’instant.', 'stats.moves': '{n} coups',
   'credits.title': 'CRÉDITS', 'credits.intro': 'Tous les tableaux sont dans le domaine public (CC0) et proviennent des programmes d’accès libre de l’Art Institute of Chicago et du Metropolitan Museum of Art.',
   'credits.source': 'Page source', 'credits.checked': 'vérifié le {date}',
+  'home.iosApp': "Obtenir l'app iPhone sur l'App Store",
   'settings.title': 'RÉGLAGES', 'settings.language': 'Langue', 'settings.theme': 'Thème', 'settings.system': 'Système', 'settings.light': 'Clair', 'settings.dark': 'Sombre',
   'settings.colorblind': 'Mode daltonien', 'settings.adCookies': 'Autoriser les cookies publicitaires', 'settings.reset': 'Effacer toutes les données', 'settings.resetConfirm': 'Supprimer toute la progression et les statistiques de cet appareil ?',
   'about.title': 'À PROPOS', 'about.text': 'ART SLIDE est un taquin gratuit avec des tableaux célèbres. BIG SLIDE et WORD SLIDE sont deux autres puzzles. Aucun compte requis ; la progression reste dans votre navigateur.',
