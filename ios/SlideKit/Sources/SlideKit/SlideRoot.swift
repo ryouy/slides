@@ -6,6 +6,7 @@ import GoogleSignIn
 /// Settings and Premium are opened as sheets from the home screen (`SettingsView()`, `PremiumView()`).
 public struct SlideRoot: View {
     @State private var app = AppModel()
+    @Environment(\.scenePhase) private var scenePhase
     @State private var splash = !ProcessInfo.processInfo.arguments.contains("-artScreen") && !ProcessInfo.processInfo.arguments.contains("-openSettings")
     public init() {}
 
@@ -17,6 +18,7 @@ public struct SlideRoot: View {
             .environment(app)
             .preferredColorScheme(app.preferredScheme)
             .task { await app.start() }
+            .onChange(of: scenePhase) { _, p in if p == .active { Task { await app.account.refreshStatus() } } }
             .onOpenURL { _ = GIDSignIn.sharedInstance.handle($0) } // Google sign-in redirect
     }
 }

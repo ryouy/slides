@@ -144,8 +144,9 @@ public final class AccountStore {
     }
 
     public func refreshStatus() async {
-        guard let t = token, let r = try? await api.send("GET", "/api/apple/status", token: t), r.status == 200,
-              let s = AccountWire.parseStatus(r.data) else { return }
+        guard let t = token, let r = try? await api.send("GET", "/api/apple/status", token: t) else { return }
+        if r.status == 401 { sessionExpired(); return }
+        guard r.status == 200, let s = AccountWire.parseStatus(r.data) else { return }
         remotePremium = s.premium
     }
 

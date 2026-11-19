@@ -40,7 +40,7 @@ npm run typecheck && npm test && npm run build                                  
 ## Values you provide
 
 `ios/Config/Local.xcconfig` (git-ignored) overrides `Shared.xcconfig`: `PRODUCT_BUNDLE_IDENTIFIER`, `DEVELOPMENT_TEAM`, `PREMIUM_PRODUCT_ID`, and (for testing a Release build with other ids) `ADMOB_*`. The Bundle ID `com.ryouy.artslide` and the team are set in the Xcode project.
-Also change `invalid.premium.monthly` in `ios/App/Premium.storekit` to your product id when testing purchases locally.
+Also change `com.ryouy.artslide.premium.monthly` in `ios/App/Premium.storekit` to your product id when testing purchases locally.
 
 ## Premium / in-app purchase (StoreKit 2)
 

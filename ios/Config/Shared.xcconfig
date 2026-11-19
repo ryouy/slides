@@ -10,7 +10,7 @@ MARKETING_VERSION = 1.0
 CURRENT_PROJECT_VERSION = 1
 
 // App Store Connect product id of the monthly auto-renewing subscription (must match exactly).
-PREMIUM_PRODUCT_ID = invalid.premium.monthly
+PREMIUM_PRODUCT_ID = com.ryouy.artslide.premium.monthly
 
 // Worker that serves Premium paintings and verifies purchases.
 SLIDES_API_BASE = https:/$()/slides.ryouy.workers.dev

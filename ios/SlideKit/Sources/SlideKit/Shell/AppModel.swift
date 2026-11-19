@@ -77,6 +77,7 @@ public final class AppModel {
         drive.start()
         await premium.start()
         await account.claim(premium.signedTransaction)
+        await account.refreshStatus()   // a session kept from the last launch: ask the server whether it is Premium (Stripe / App Store)
         await images.refresh()
         #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("-noAds") { return } // DEBUG only: skip the consent dialog for screenshots

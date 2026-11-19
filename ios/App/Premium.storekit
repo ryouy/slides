@@ -21,7 +21,7 @@
             { "description" : "All paintings, levels 3-7, no ads, your own photos", "displayName" : "Premium (monthly)", "locale" : "ja" },
             { "description" : "All paintings, levels 3-7, no ads, your own photos", "displayName" : "Premium (monthly)", "locale" : "en_US" }
           ],
-          "productID" : "invalid.premium.monthly",
+          "productID" : "com.ryouy.artslide.premium.monthly",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Premium monthly",
           "subscriptionGroupID" : "21000001",
