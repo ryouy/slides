@@ -133,6 +133,12 @@ public struct SettingsView: View {
                         .listRowBackground(Color.clear)
                 }
             }
+            Section {
+                Text(app.t("ios.account.commonPremium")).font(.footnote).foregroundStyle(.secondary)
+                Link(app.t("ios.account.webApp"), destination: URL(string: "https://slides.ryouy.workers.dev/art-slide")!)
+            } header: {
+                Text(app.t("ios.account.webTitle"))
+            }
             if let n = noticeText { Text(n).font(.footnote).foregroundStyle(.secondary) }
         } header: {
             Text(app.t("ios.account.title"))

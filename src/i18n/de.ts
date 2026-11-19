@@ -45,6 +45,8 @@ const de: Partial<Dict> = {
   'acct.error': 'Etwas ist schiefgelaufen. Bitte versuche es erneut.',
   'acct.delete': 'Konto löschen',
   'acct.deleteConfirm': 'Konto löschen? Dein Abo endet sofort und die Kontodaten werden gelöscht. Spielstände auf diesem Gerät und in deinem Google Drive bleiben erhalten.',
+  'acct.commonPremium': 'Melde dich in der iOS-App mit demselben Google-Konto an, um deine Premium-Vorteile mitzunehmen.',
+  'acct.iosApp': 'iOS-App holen',
   'premium.signIn': 'Bitte zuerst mit Google anmelden.',
   'home.login': 'Anmelden', 'home.account': 'Konto',
   'home.fromGallery': 'Aus der Galerie',

@@ -285,6 +285,8 @@ const en = {
   'acct.error': 'Something went wrong. Please try again.',
   'acct.delete': 'Delete account',
   'acct.deleteConfirm': 'Delete your account? Your subscription ends now and your account data is removed. Play records on this device and in your Google Drive are kept.',
+  'acct.commonPremium': 'Use the same Google account in the iOS app to keep your Premium benefits.',
+  'acct.iosApp': 'Get the iOS app',
   'premium.signIn': 'Sign in with Google first.',
   'home.login': 'Sign in', 'home.account': 'Account',
   'sync.title': 'Google Drive sync',

@@ -45,6 +45,8 @@ const ja: Partial<Dict> = {
   'acct.error': '問題が発生しました。もう一度お試しください。',
   'acct.delete': 'アカウントを削除',
   'acct.deleteConfirm': 'アカウントを削除しますか？ サブスクリプションは直ちに終了し、アカウント情報が削除されます。この端末とGoogleドライブのプレイ記録は残ります。',
+  'acct.commonPremium': 'iOSアプリでも同じGoogleアカウントでログインすると、Premiumを引き継げます。',
+  'acct.iosApp': 'iOSアプリ版はこちら',
   'premium.signIn': 'まずGoogleでログインしてください。',
   'home.login': 'ログイン', 'home.account': 'アカウント',
   'home.fromGallery': 'ギャラリーから',

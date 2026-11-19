@@ -45,6 +45,8 @@ const zh: Partial<Dict> = {
   'acct.error': '出现问题，请重试。',
   'acct.delete': '删除账户',
   'acct.deleteConfirm': '要删除账户吗？订阅将立即结束，账户数据将被删除。本设备和 Google 云端硬盘中的游戏记录会保留。',
+  'acct.commonPremium': '在 iOS 应用中使用同一 Google 账户登录，即可继续使用 Premium 权益。',
+  'acct.iosApp': '获取 iOS 应用',
   'premium.signIn': '请先使用 Google 登录。',
   'home.login': '登录', 'home.account': '账户',
   'home.fromGallery': '画廊精选',

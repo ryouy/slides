@@ -2010,6 +2010,8 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .link-quiet:hover:not(:disabled), .link-quiet:focus-visible { color: var(--fg); }
 .link-quiet:disabled { opacity: .5; cursor: default; }
 .account .btn.wide, .drive-sync .btn.wide { margin: 0; }
+.account-platform-note { display: grid; gap: 8px; padding-top: 4px; }
+.account-platform-note p { margin: 0; text-align: center; font-size: 13px; }
 
 /* Legal pages and the purchase facts */
 .legal-tbd { background: #ffe9a8; color: #5a3b00; padding: 0 3px; border-radius: 2px; font-weight: 600; }

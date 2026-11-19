@@ -45,6 +45,8 @@ const fr: Partial<Dict> = {
   'acct.error': 'Un problème est survenu. Veuillez réessayer.',
   'acct.delete': 'Supprimer le compte',
   'acct.deleteConfirm': 'Supprimer votre compte ? Votre abonnement prend fin maintenant et les données du compte sont supprimées. Les scores de cet appareil et de votre Google Drive sont conservés.',
+  'acct.commonPremium': 'Connectez-vous dans l’app iOS avec le même compte Google pour conserver vos avantages Premium.',
+  'acct.iosApp': 'Obtenir l’app iOS',
   'premium.signIn': 'Connectez-vous d’abord avec Google.',
   'home.login': 'Connexion', 'home.account': 'Compte',
   'home.fromGallery': 'Depuis la galerie',

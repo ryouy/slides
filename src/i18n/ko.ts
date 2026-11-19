@@ -45,6 +45,8 @@ const ko: Partial<Dict> = {
   'acct.error': '문제가 발생했습니다. 다시 시도해 주세요.',
   'acct.delete': '계정 삭제',
   'acct.deleteConfirm': '계정을 삭제할까요? 구독이 즉시 종료되고 계정 데이터가 삭제됩니다. 이 기기와 Google 드라이브의 플레이 기록은 유지됩니다.',
+  'acct.commonPremium': 'iOS 앱에서도 같은 Google 계정으로 로그인하면 Premium 혜택을 이어서 사용할 수 있습니다.',
+  'acct.iosApp': 'iOS 앱 받기',
   'premium.signIn': '먼저 Google로 로그인해 주세요.',
   'home.login': '로그인', 'home.account': '계정',
   'home.fromGallery': '갤러리에서',

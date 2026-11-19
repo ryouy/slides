@@ -45,6 +45,8 @@ const es: Partial<Dict> = {
   'acct.error': 'Algo salió mal. Inténtalo de nuevo.',
   'acct.delete': 'Eliminar cuenta',
   'acct.deleteConfirm': '¿Eliminar tu cuenta? Tu suscripción termina ahora y se borran los datos de la cuenta. Se conservan los registros de juego de este dispositivo y de tu Google Drive.',
+  'acct.commonPremium': 'Inicia sesión en la app para iOS con la misma cuenta de Google para conservar tus ventajas Premium.',
+  'acct.iosApp': 'Obtener la app para iOS',
   'premium.signIn': 'Primero inicia sesión con Google.',
   'home.login': 'Entrar', 'home.account': 'Cuenta',
   'home.fromGallery': 'Desde la galería',
