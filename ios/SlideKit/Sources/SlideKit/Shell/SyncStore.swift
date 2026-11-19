@@ -57,6 +57,10 @@ public final class SyncStore {
 
     public private(set) var status: Status = .idle
     public private(set) var syncEnabled: Bool
+    /// Set while a different account has signed in on a device whose records belong to another account: sync is paused until the person chooses.
+    public struct SwitchPrompt: Equatable { public var canReplace: Bool }
+    public private(set) var switchPrompt: SwitchPrompt?
+    private var debugKeepPrompt = false // DEBUG screenshots only
     private let account: AccountStore
     private let network: Reachability
     private let settings = JSONFileStore<SyncSettings>(name: "sync-settings")
@@ -79,6 +83,11 @@ public final class SyncStore {
         ownership = saved?.ownership ?? SyncOwnership()
         account.onSessionEnded = { [weak self] n in self?.sessionEnded(n) }
         account.onSignedIn = { [weak self] id in self?.signedIn(accountId: id) }
+        #if DEBUG
+        let args = ProcessInfo.processInfo.arguments // screenshots only
+        if args.contains("-debugSwitchPrompt") { switchPrompt = SwitchPrompt(canReplace: true); debugKeepPrompt = true }
+        if args.contains("-debugSwitchPromptKept") { switchPrompt = SwitchPrompt(canReplace: false); debugKeepPrompt = true }
+        #endif
     }
 
     public var isActive: Bool { syncEnabled && account.isSignedIn }
@@ -93,6 +102,7 @@ public final class SyncStore {
             MainActor.assumeIsolated { self?.recordsChanged() }
         })
         watchNetwork()
+        if evaluateSwitch() { return }
         trigger()
     }
 
@@ -106,15 +116,58 @@ public final class SyncStore {
 
     private func persistSettings() { settings.save(SyncSettings(enabled: syncEnabled, ownership: ownership)) }
 
-    /// Records that were synced with another account are cleared before this account's first sync: accounts never mix.
+    /// A different account may have signed in: never clear anything here, only ask (see `evaluateSwitch`).
     private func signedIn(accountId: String) {
-        if ownership.signedIn(accountId: accountId) { _ = fileLocal.resetRecords(); NotificationCenter.default.post(name: .slideRecordsReloaded, object: nil) }
+        ownership.signedIn(accountId: accountId)
         lastDoc = nil
         persistSettings()
+        evaluateSwitch()
+    }
+
+    /// Pauses sync and raises the prompt when the signed-in account differs from the owner of the records on this device. Returns true if paused.
+    @discardableResult
+    private func evaluateSwitch() -> Bool {
+        if debugKeepPrompt, switchPrompt != nil { return true }
+        guard account.isSignedIn else { switchPrompt = nil; return false }
+        if case .ask(let canReplace) = ownership.decision(localDigest: SyncOwnership.digest(local.read())) {
+            switchPrompt = SwitchPrompt(canReplace: canReplace)
+            return true
+        }
+        switchPrompt = nil
+        return false
+    }
+
+    /// (a) The records of this device are added to the new account by the normal merge sync.
+    public func chooseBringIn() {
+        debugKeepPrompt = false
+        AccountSwitch.bringIn(&ownership)
+        persistSettings(); switchPrompt = nil
+        trigger()
+    }
+
+    /// (b) Only offered without unsynced records: safety copy, then the records of the three games are cleared, then the new account's copy is restored.
+    public func chooseReplace() {
+        debugKeepPrompt = false
+        let r = AccountSwitch.replace(&ownership, store: fileLocal)
+        persistSettings()
+        if r == .ok {
+            switchPrompt = nil
+            NotificationCenter.default.post(name: .slideRecordsReloaded, object: nil)
+            trigger()
+        } else { evaluateSwitch() } // refused or the safety copy failed: nothing was touched, ask again
+    }
+
+    /// (c) Also what dismissing the dialog means: the new session is ended again; nothing local changes.
+    public func cancelSwitch() {
+        guard switchPrompt != nil else { return }
+        debugKeepPrompt = false
+        switchPrompt = nil
+        Task { await account.signOut() }
     }
 
     private func sessionEnded(_ n: AccountStore.Notice) {
         debounce?.cancel()
+        switchPrompt = nil
         if n == .deleted || n == .deletedKeepApple { ownership.deleted() } else { ownership.signedOut() }
         syncEnabled = false
         persistSettings()
@@ -147,6 +200,7 @@ public final class SyncStore {
 
     public func syncNow() async {
         guard isActive else { return }
+        if evaluateSwitch() { return } // paused until the person chooses
         guard network.isOnline else { return } // offline: skip silently, retried when the network is back
         if running { rerun = true; return }
         running = true
@@ -163,7 +217,7 @@ public final class SyncStore {
         do {
             let r = try await SyncEngine(transport: HTTPSyncTransport(token: token), local: local).run()
             lastDoc = r.document
-            ownership.synced(); persistSettings()
+            ownership.synced(digest: SyncOwnership.digest(r.document)); persistSettings()
             status = .lastSynced(Date())
             if r.changedLocal { NotificationCenter.default.post(name: .slideRecordsReloaded, object: nil) }
         } catch SyncError.signinRequired {

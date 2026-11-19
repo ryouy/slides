@@ -21,7 +21,12 @@
     "ios.account.noticeSignInFailed": "Could not sign in. Try again later.",
     "ios.account.noticeDeleteFailed": "Could not delete the account. Try again later.",
     "ios.account.noticeDeleted": "Your account was deleted.",
-    "ios.account.noticeDeletedApple": "Your account data was deleted. If you want to remove the Apple authorization too, open Settings > [your name] > Sign in with Apple > ART SLIDE > Stop Using Apple Account."
+    "ios.account.noticeDeletedApple": "Your account data was deleted. If you want to remove the Apple authorization too, open Settings > [your name] > Sign in with Apple > ART SLIDE > Stop Using Apple Account.",
+    "ios.account.switchTitle": "Another account was used here before",
+    "ios.account.switchMessage": "The records on this device were synced with a different account. Bringing them in adds this device's records to the account you just signed in with. Nothing is deleted unless you choose to use only the account's records.",
+    "ios.account.switchBringIn": "Bring this device's records into the new account",
+    "ios.account.switchReplace": "Use only the new account's records",
+    "ios.account.switchKept": "This device has records that were not synced yet, so they are kept."
   },
   "ja": {
     "ios.account.title": "アカウント",
@@ -45,6 +50,11 @@
     "ios.account.noticeSignInFailed": "サインインできませんでした。しばらくしてからもう一度お試しください。",
     "ios.account.noticeDeleteFailed": "アカウントを削除できませんでした。しばらくしてからもう一度お試しください。",
     "ios.account.noticeDeleted": "アカウントを削除しました。",
-    "ios.account.noticeDeletedApple": "アカウントのデータを削除しました。Appleの連携も解除する場合は、設定 > [あなたの名前] > サインインとセキュリティ > Appleでサインイン > ART SLIDE > 「Apple Accountの使用を停止」を開いてください。"
+    "ios.account.noticeDeletedApple": "アカウントのデータを削除しました。Appleの連携も解除する場合は、設定 > [あなたの名前] > サインインとセキュリティ > Appleでサインイン > ART SLIDE > 「Apple Accountの使用を停止」を開いてください。",
+    "ios.account.switchTitle": "以前は別のアカウントが使われていました",
+    "ios.account.switchMessage": "この端末の記録は別のアカウントと同期されたものです。「取り込む」を選ぶと、この端末の記録が今サインインしたアカウントに追加されます。アカウントの記録だけを使う場合を除き、何も削除されません。",
+    "ios.account.switchBringIn": "この端末の記録を新しいアカウントに取り込む",
+    "ios.account.switchReplace": "新しいアカウントの記録だけを使う",
+    "ios.account.switchKept": "この端末には未同期の記録があるため、記録はそのまま残されます。"
   }
 }

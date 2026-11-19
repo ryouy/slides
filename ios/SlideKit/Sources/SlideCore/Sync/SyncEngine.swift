@@ -98,10 +98,14 @@ public struct SyncEngine {
 @MainActor
 public final class FileSyncLocalStore: SyncLocalStore {
     private let art: JSONFileStore<ArtSave>, word: JSONFileStore<WordSave>, big: JSONFileStore<BigSave>
+    public let directory: URL
+    public static let backupName = "switch-backup.json"
     public init(directory: URL? = nil) {
-        art = JSONFileStore(name: "art-save", directory: directory)
-        word = JSONFileStore(name: "word-save", directory: directory)
-        big = JSONFileStore(name: "big-save", directory: directory)
+        let dir = directory ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("Records", isDirectory: true)
+        self.directory = dir
+        art = JSONFileStore(name: "art-save", directory: dir)
+        word = JSONFileStore(name: "word-save", directory: dir)
+        big = JSONFileStore(name: "big-save", directory: dir)
     }
     public func read() -> SyncDocument {
         SyncDocument(art: ArtRecords(art.load() ?? ArtSave()), word: WordRecords(word.load() ?? WordSave()), big: BigRecords(big.load() ?? BigSave()))
@@ -117,4 +121,15 @@ public final class FileSyncLocalStore: SyncLocalStore {
         if force || doc.big != cur.big { var s = big.load() ?? BigSave(); doc.big.apply(to: &s); ok = big.save(s) && ok }
         return ok
     }
+
+    /// One-slot safety copy of the records of all three games (overwritten by the next one). Returns false if it could not be written.
+    public func backupRecords() -> Bool {
+        let data = Data(read().encode().utf8)
+        do { try data.write(to: directory.appendingPathComponent(Self.backupName), options: .atomic); return true } catch { return false }
+    }
+    public func backupDocument() -> SyncDocument? {
+        (try? String(contentsOf: directory.appendingPathComponent(Self.backupName), encoding: .utf8)).flatMap { try? SyncDocument.decode($0) }
+    }
+    /// Puts the safety copy's records back (replacing the current ones).
+    public func restoreBackup() -> Bool { backupDocument().map { write($0, force: true) } ?? false }
 }

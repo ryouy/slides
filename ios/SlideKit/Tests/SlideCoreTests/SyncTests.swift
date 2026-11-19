@@ -403,46 +403,150 @@ final class SyncTestsAccount: XCTestCase {
         XCTAssertNil(AccountWire.parseDelete(Data("nope".utf8)))
     }
 
-    func testOwnershipFirstSignInThenSameAccountAgain() {
-        var o = SyncOwnership()
-        XCTAssertFalse(o.signedIn(accountId: "A"))   // first sign-in: the device's records are adopted
-        o.synced(); XCTAssertEqual(o.owner, SyncOwnership.hash("A"))
-        o.signedOut(); XCTAssertNil(o.current); XCTAssertNotNil(o.owner)
-        XCTAssertFalse(o.signedIn(accountId: "A"))   // same account returns: keep everything
+    func testDecisionTable() {
+        let a = SyncOwnership.hash("A"), b = SyncOwnership.hash("B")
+        XCTAssertEqual(AccountSwitchPolicy.decide(owner: nil, newAccount: a, hasUnsynced: false), .proceed)
+        XCTAssertEqual(AccountSwitchPolicy.decide(owner: nil, newAccount: a, hasUnsynced: true), .proceed)
+        XCTAssertEqual(AccountSwitchPolicy.decide(owner: a, newAccount: a, hasUnsynced: true), .proceed)
+        XCTAssertEqual(AccountSwitchPolicy.decide(owner: a, newAccount: a, hasUnsynced: false), .proceed)
+        XCTAssertEqual(AccountSwitchPolicy.decide(owner: a, newAccount: b, hasUnsynced: false), .ask(canReplace: true))
+        XCTAssertEqual(AccountSwitchPolicy.decide(owner: a, newAccount: b, hasUnsynced: true), .ask(canReplace: false))
     }
 
-    func testDifferentAccountNeverInheritsRecordsOfTheFirst() {
-        var o = SyncOwnership()
-        _ = o.signedIn(accountId: "A"); o.synced(); o.signedOut()
-        XCTAssertTrue(o.signedIn(accountId: "B"))     // must clear the local records first
-        XCTAssertNil(o.owner)
-        o.synced(); XCTAssertEqual(o.owner, SyncOwnership.hash("B"))
+    func testDigestChangesStableAndEqualsAfterSync() {
+        var g = LCG(s: 11)
+        let d = randDoc(&g)
+        let base = SyncOwnership.digest(d)
+        var more = d; more.big.dailyHistory["2027-01-01"] = BigDailyRecord(number: 9, timeMs: 1, moves: 1, bigMoves: 0)
+        XCTAssertNotEqual(SyncOwnership.digest(more), base)             // a clear
+        var best = d; best.art.bests["3"] = ArtBest(timeMs: 1, moves: 1)
+        XCTAssertNotEqual(SyncOwnership.digest(best), base)             // a best
+        var shuffled = d; shuffled.art.history.reverse(); shuffled.word.history.reverse(); shuffled.big.history.shuffle(using: &g)
+        XCTAssertEqual(SyncOwnership.digest(shuffled), base)            // ordering does not matter
     }
 
-    func testDeletedAccountReleasesTheRecordsToTheDevice() {
-        var o = SyncOwnership()
-        _ = o.signedIn(accountId: "A"); o.synced(); o.deleted()
-        XCTAssertFalse(o.signedIn(accountId: "B"))
-    }
-
-    @MainActor func testTwoAccountsOnOneDeviceDoNotMix() async throws {
+    @MainActor func testDigestEqualsStoredOneRightAfterSync() async throws {
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent("sync-\(UUID().uuidString)")
         defer { try? FileManager.default.removeItem(at: dir) }
         let store = FileSyncLocalStore(directory: dir)
-        var own = SyncOwnership()
-        // account A syncs this device's clear
+        var d = store.read(); d.word.completed = 2; d.word.dailyHistory["2026-11-02"] = WordDailyRecord(number: 2, timeMs: 8, moves: 3, checks: 0); XCTAssertTrue(store.write(d))
+        var o = SyncOwnership(); o.signedIn(accountId: "A")
+        let r = try await SyncEngine(transport: FakeNet(), local: store).run()
+        o.synced(digest: SyncOwnership.digest(r.document))
+        XCTAssertFalse(o.hasUnsynced(localDigest: SyncOwnership.digest(store.read())))
+        var d2 = store.read(); d2.word.completed = 3; XCTAssertTrue(store.write(d2))   // a new clear after the sync
+        XCTAssertTrue(o.hasUnsynced(localDigest: SyncOwnership.digest(store.read())))
+    }
+
+    func testOwnershipLifecycle() {
+        var o = SyncOwnership()
+        o.signedIn(accountId: "A")
+        XCTAssertNil(o.owner)                                  // never synced: nothing to protect, first account adopts
+        o.synced(digest: "d1"); XCTAssertEqual(o.owner, SyncOwnership.hash("A"))
+        o.signedOut(); XCTAssertNil(o.current); XCTAssertNotNil(o.owner); XCTAssertEqual(o.syncedDigest, "d1") // sign-out keeps it
+        o.signedIn(accountId: "A"); XCTAssertEqual(o.decision(localDigest: "d2"), .proceed)
+        o.signedOut(); o.signedIn(accountId: "B")
+        XCTAssertEqual(o.decision(localDigest: "d1"), .ask(canReplace: true))
+        XCTAssertEqual(o.decision(localDigest: "d2"), .ask(canReplace: false))
+        o.adopt(); XCTAssertEqual(o.owner, SyncOwnership.hash("B")); XCTAssertEqual(o.decision(localDigest: "d2"), .proceed)
+        o.deleted(); XCTAssertNil(o.owner); XCTAssertNil(o.syncedDigest)
+        o.signedIn(accountId: "C"); XCTAssertEqual(o.decision(localDigest: "x"), .proceed)
+    }
+
+    private func bytes(_ dir: URL) -> [String: Data] {
+        var m: [String: Data] = [:]
+        for f in (try? FileManager.default.contentsOfDirectory(atPath: dir.path)) ?? [] { m[f] = try? Data(contentsOf: dir.appendingPathComponent(f)) }
+        return m
+    }
+
+    @MainActor func testReplaceRefusedWhenUnsyncedAndTouchesNothing() throws {
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("sync-\(UUID().uuidString)")
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let store = FileSyncLocalStore(directory: dir)
         var d = store.read(); d.big.dailyHistory["2026-11-01"] = BigDailyRecord(number: 1, timeMs: 5, moves: 1, bigMoves: 0); XCTAssertTrue(store.write(d))
-        _ = own.signedIn(accountId: "A")
-        let netA = FakeNet()
-        _ = try await SyncEngine(transport: netA, local: store).run(); own.synced()
-        // sign out, then account B (empty server) signs in on the same device
-        own.signedOut()
-        if own.signedIn(accountId: "B") { XCTAssertTrue(store.resetRecords()) }
+        var o = SyncOwnership(owner: SyncOwnership.hash("A"), current: SyncOwnership.hash("B"), syncedDigest: SyncOwnership.digest(SyncDocument())) // local has a clear A never synced
+        let before = bytes(dir)
+        XCTAssertEqual(AccountSwitch.replace(&o, store: store), .refusedUnsynced)
+        XCTAssertEqual(bytes(dir), before)
+        XCTAssertEqual(o.owner, SyncOwnership.hash("A"))
+        XCTAssertNil(store.backupDocument())
+    }
+
+    @MainActor func testReplaceWritesSafetyCopyFirstAndItRestoresTheSameRecords() throws {
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("sync-\(UUID().uuidString)")
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let store = FileSyncLocalStore(directory: dir)
+        // puzzle in progress + preference live in the same file and must survive
+        let words = JSONFileStore<WordSave>(name: "word-save", directory: dir)
+        var w = WordSave(); w.lastDifficulty = .hard; words.save(w)
+        var d = store.read(); d.big.dailyHistory["2026-11-01"] = BigDailyRecord(number: 1, timeMs: 5, moves: 1, bigMoves: 0); d.word.completed = 3
+        d.art.records["p:3"] = ArtKeyRecord(bestTimeMs: 4, bestMoves: 4, clears: 1); XCTAssertTrue(store.write(d))
+        let recordsBefore = store.read()
+        var o = SyncOwnership(owner: SyncOwnership.hash("A"), current: SyncOwnership.hash("B"), syncedDigest: SyncOwnership.digest(recordsBefore))
+        XCTAssertEqual(AccountSwitch.replace(&o, store: store), .ok)
+        XCTAssertTrue(store.read().big.dailyHistory.isEmpty); XCTAssertEqual(store.read().word.completed, 0)
+        XCTAssertEqual(words.load()?.lastDifficulty, .hard)                  // preferences stay
+        XCTAssertEqual(store.backupDocument(), recordsBefore)                // the copy holds exactly the records
+        XCTAssertEqual(o.owner, SyncOwnership.hash("B"))
+        XCTAssertTrue(store.restoreBackup()); XCTAssertEqual(store.read(), recordsBefore)
+    }
+
+    @MainActor func testCancelLeavesFilesByteIdentical() {
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("sync-\(UUID().uuidString)")
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let store = FileSyncLocalStore(directory: dir)
+        var d = store.read(); d.word.completed = 2; XCTAssertTrue(store.write(d))
+        var o = SyncOwnership(owner: SyncOwnership.hash("A"), current: SyncOwnership.hash("B"), syncedDigest: "x")
+        let before = bytes(dir)
+        // cancel = ask, then end the new session: only the ownership's `current` changes
+        XCTAssertEqual(o.decision(localDigest: SyncOwnership.digest(store.read())), .ask(canReplace: false))
+        o.signedOut()
+        XCTAssertEqual(bytes(dir), before)
+        XCTAssertEqual(o.owner, SyncOwnership.hash("A"))
+    }
+
+    @MainActor func testAThenBThenANeverLosesRecords() async throws {
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("sync-\(UUID().uuidString)")
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let store = FileSyncLocalStore(directory: dir)
+        let netA = FakeNet(), netB = FakeNet()
+        var o = SyncOwnership()
+        var d = store.read(); d.big.dailyHistory["2026-11-01"] = BigDailyRecord(number: 1, timeMs: 5, moves: 1, bigMoves: 0); XCTAssertTrue(store.write(d))
+        // A signs in and syncs
+        o.signedIn(accountId: "A"); XCTAssertEqual(o.decision(localDigest: SyncOwnership.digest(store.read())), .proceed)
+        var r = try await SyncEngine(transport: netA, local: store).run(); o.synced(digest: SyncOwnership.digest(r.document))
+        o.signedOut()
+        // B signs in: asked; nothing unsynced so replacing is offered; person picks it
+        o.signedIn(accountId: "B")
+        XCTAssertEqual(o.decision(localDigest: SyncOwnership.digest(store.read())), .ask(canReplace: true))
+        XCTAssertEqual(AccountSwitch.replace(&o, store: store), .ok)
+        r = try await SyncEngine(transport: netB, local: store).run(); o.synced(digest: SyncOwnership.digest(r.document))
         XCTAssertTrue(store.read().big.dailyHistory.isEmpty)
-        let netB = FakeNet()
+        // B plays one clear, signs out, A returns: A's server copy restores A's record; B's clear is still on B's server copy
+        var d2 = store.read(); d2.word.dailyHistory["2026-11-03"] = WordDailyRecord(number: 3, timeMs: 7, moves: 2, checks: 0); XCTAssertTrue(store.write(d2))
+        r = try await SyncEngine(transport: netB, local: store).run(); o.synced(digest: SyncOwnership.digest(r.document))
+        o.signedOut(); o.signedIn(accountId: "A")
+        XCTAssertEqual(o.decision(localDigest: SyncOwnership.digest(store.read())), .ask(canReplace: true))
+        XCTAssertEqual(AccountSwitch.replace(&o, store: store), .ok)
+        _ = try await SyncEngine(transport: netA, local: store).run()
+        XCTAssertEqual(store.read().big.dailyHistory["2026-11-01"]?.timeMs, 5)
+        XCTAssertNil(store.read().word.dailyHistory["2026-11-03"])
+        XCTAssertNotNil(try SyncDocument.decode(netB.doc!).word.dailyHistory["2026-11-03"])
+        XCTAssertNil(try SyncDocument.decode(netA.doc!).word.dailyHistory["2026-11-03"])
+        // and had A chosen "bring in" instead, B's clear would simply be added to A: nothing is lost either way
+    }
+
+    @MainActor func testBringInMergesDeviceRecordsIntoNewAccount() async throws {
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("sync-\(UUID().uuidString)")
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let store = FileSyncLocalStore(directory: dir)
+        var d = store.read(); d.big.dailyHistory["2026-11-01"] = BigDailyRecord(number: 1, timeMs: 5, moves: 1, bigMoves: 0); XCTAssertTrue(store.write(d))
+        var o = SyncOwnership(owner: SyncOwnership.hash("A"), current: SyncOwnership.hash("B"), syncedDigest: "old")
+        let netB = FakeNet(); netB.version = 1; netB.doc = docWith(daily: ["2026-11-02": 3]).encode()
+        AccountSwitch.bringIn(&o)
+        XCTAssertEqual(o.decision(localDigest: "anything"), .proceed)
         _ = try await SyncEngine(transport: netB, local: store).run()
-        XCTAssertNil(try SyncDocument.decode(netB.doc!).big.dailyHistory["2026-11-01"], "A's record never reaches B's server copy")
-        XCTAssertNotNil(try SyncDocument.decode(netA.doc!).big.dailyHistory["2026-11-01"], "and stays in A's")
+        XCTAssertEqual(try SyncDocument.decode(netB.doc!).big.dailyHistory.keys.sorted(), ["2026-11-01", "2026-11-02"])
     }
 
     @MainActor func testRestoreOnSecondDeviceAndRetryAfterFailure() async throws {

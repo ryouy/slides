@@ -59,6 +59,18 @@ public struct SettingsView: View {
                 Button(app.t("ios.account.deleteConfirm"), role: .destructive) { Task { await app.account.deleteAccount() } }
                 Button(app.t("ios.account.cancel"), role: .cancel) {}
             } message: { Text(app.t("ios.account.deleteMessage")) }
+            .confirmationDialog(app.t("ios.account.switchTitle"), isPresented: Binding(
+                get: { app.sync.switchPrompt != nil },
+                set: { if !$0 { app.sync.cancelSwitch() } } // dismissing without a choice = cancel (choices clear the prompt first)
+            ), titleVisibility: .visible) {
+                Button(app.t("ios.account.switchBringIn")) { app.sync.chooseBringIn() }
+                if app.sync.switchPrompt?.canReplace == true {
+                    Button(app.t("ios.account.switchReplace")) { app.sync.chooseReplace() }
+                }
+                Button(app.t("ios.account.cancel"), role: .cancel) { app.sync.cancelSwitch() }
+            } message: {
+                Text(app.t("ios.account.switchMessage") + (app.sync.switchPrompt?.canReplace == false ? "\n\n" + app.t("ios.account.switchKept") : ""))
+            }
             .onDisappear { app.account.clearNotice() }
         }
     }
