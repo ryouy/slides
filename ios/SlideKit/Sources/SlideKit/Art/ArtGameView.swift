@@ -26,19 +26,15 @@ struct ArtGameView: View {
 
     var body: some View {
         GeometryReader { geo in
-            // landscape (iPhone) and wide iPad windows: the board takes the left, the header and the controls the right
+            // landscape (iPhone) and wide iPad windows: like the web's wide layout: one top bar (title on the left, time / moves and the
+            // buttons on the right), the board under it taking all the rest
             if geo.size.width > geo.size.height * 1.15 {
-                HStack(spacing: 8) {
+                VStack(spacing: 0) {
+                    wideHeader.padding(.horizontal, 12).padding(.top, 2)
                     ArtBoardView(model: model, aspect: artwork.aspect, showNumbers: store.save.showNumbers)
-                        .padding(.leading, 16).padding(.vertical, 8)
+                        .padding(.horizontal, 16).padding(.vertical, 6)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    VStack(spacing: 0) {
-                        header.padding(.top, 2)
-                        Spacer(minLength: 0)
-                        extra.padding(.bottom, 8)
-                    }
-                    .frame(width: min(360, max(260, geo.size.width * 0.34)))
-                    .padding(.trailing, 12)
+                    if geo.size.height > 560 { extra.padding(.horizontal, 16).padding(.bottom, 8) }
                 }
             } else {
                 VStack(spacing: 0) {
@@ -100,6 +96,27 @@ struct ArtGameView: View {
                     VStack(alignment: .leading, spacing: 4) { stats; actions }
                 }
                 .padding(.leading, 42) // under the title, past the back arrow
+            }
+        }
+    }
+
+    /// The top bar of wide windows: back + title (left), time / moves, piece count and the three icons (right), and the next painting on iPhone landscape
+    private var wideHeader: some View {
+        HStack(alignment: .center, spacing: 8) {
+            Button { dismiss() } label: { Image(systemName: "chevron.left").font(.system(size: 18)).foregroundStyle(Web.fg).frame(width: 36, height: 44).contentShape(Rectangle()) }
+                .accessibilityLabel(app.t("common.back"))
+            VStack(alignment: .leading, spacing: 1) {
+                if daily { Text(app.t("art.dailyTitle", ["n": model.state.puzzle.number ?? 0])).font(Web.font(9, .semibold, relativeTo: .caption2)).tracking(2).foregroundStyle(Web.muted) }
+                Text(artwork.title).font(Web.font(14, .semibold, relativeTo: .subheadline)).foregroundStyle(Web.fg).lineLimit(1)
+                if !artwork.isCustom { Text("\(artwork.artist), \(artwork.year)").font(Web.font(10, relativeTo: .caption2)).foregroundStyle(Web.muted).lineLimit(1) }
+            }
+            .accessibilityElement(children: .combine)
+            Spacer(minLength: 8)
+            stats
+            actions
+            if !daily {
+                Button { onNext() } label: { Image(systemName: "forward.end").font(.system(size: 17)).foregroundStyle(Web.fg).frame(width: 44, height: 44).contentShape(Rectangle()) }
+                    .accessibilityLabel(app.t(artwork.isCustom ? "photos.title" : "art.nextArtwork"))
             }
         }
     }
