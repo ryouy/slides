@@ -56,9 +56,9 @@ export interface OperatorInfo {
 }
 
 export const OPERATOR: OperatorInfo = {
-  // Decided by the operator (policy updated 2026-11-17): the seller name, the person responsible and the e-mail address are
-  // published (Stripe's public requirements); address and telephone stay private and are provided without delay on request;
-  // general enquiries and such requests may use the contact form or the e-mail address.
+  // Decided by the operator (policy updated 2026-11-17): the seller name and the person responsible are
+  // published (Stripe's public requirements); address, telephone and the e-mail address stay private (updated 2026-11-19: the e-mail
+  // address is no longer published); address and telephone are provided without delay on request; every enquiry goes through the contact form.
   legalForm: 'individual',
   name: { mode: 'public', value: 'Ryo Matsushita' },
   tradeName: '',
@@ -66,7 +66,7 @@ export const OPERATOR: OperatorInfo = {
   address: { mode: 'on-request' },
   phone: { mode: 'on-request' },
   contactFormUrl: 'https://forms.gle/vksFVB2QUzdzKeEu6',
-  email: '[removed]',
+  email: '', // not published: enquiries only through the contact form
   supportHours: '',
   disclosureTarget: '',
   // Tax treatment: tax-exempt business. Set on the operator's own statement (an individual, no business-start notification,
@@ -76,7 +76,7 @@ export const OPERATOR: OperatorInfo = {
   invoiceNumber: '',
   court: '',
   // The effective date is the day the texts are really published: set it on that day with `npm run legal:date`.
-  effectiveDate: '2026-11-17',
+  effectiveDate: '2026-11-19',
 };
 
 export type OperatorField = 'legalForm' | 'name' | 'representative' | 'address' | 'phone' | 'contactFormUrl' | 'tax' | 'effectiveDate';

@@ -25,7 +25,7 @@ describe('the shipped operator details', () => {
     expect(OPERATOR.address).toEqual({ mode: 'on-request' }); // address and telephone: provided without delay on request
     expect(OPERATOR.phone).toEqual({ mode: 'on-request' });
     expect(OPERATOR.contactFormUrl).toBe('https://forms.gle/vksFVB2QUzdzKeEu6');
-    expect(OPERATOR.email).toBe('[removed]'); // published
+    expect(OPERATOR.email).toBe(''); // not published: contact form only
     expect(OPERATOR.representative).toBe('Ryo Matsushita');
     expect(OPERATOR.tradeName).toBe('');
   });

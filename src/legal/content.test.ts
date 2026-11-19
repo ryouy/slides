@@ -20,8 +20,8 @@ describe('nothing is invented', () => {
       const rows = Object.fromEntries(commerceRows(l, OPERATOR));
       expect(rows[l === 'ja' ? '販売事業者' : 'Seller']).toBe('Ryo Matsushita');
       expect(rows[l === 'ja' ? '運営統括責任者' : 'Person responsible for operations']).toBe('Ryo Matsushita');
-      expect(rows[l === 'ja' ? 'お問い合わせ先' : 'Contact']).toContain('[removed]');
-      expect([...all.matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[a-z]{2,}/g)].map((m) => m[0]).filter((a) => a !== '[removed]')).toEqual([]); // no other e-mail address
+      expect(rows[l === 'ja' ? 'お問い合わせ先' : 'Contact']).not.toContain('@'); // the e-mail address is not published: contact form only
+      expect([...all.matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[a-z]{2,}/g)].map((m) => m[0]).map((a) => a)).toEqual([]); // no e-mail address at all address
       expect(all).not.toMatch(/\d{2,4}-\d{2,4}-\d{3,4}/); // no phone number
       expect(all).not.toMatch(/〒|東京都|大阪府/); // no address
       for (const k of l === 'ja' ? ['所在地', '電話番号'] : ['Address', 'Telephone']) expect(rows[k], k).toMatch(/請求があった場合には、遅滞なく開示いたします|without delay on request/);

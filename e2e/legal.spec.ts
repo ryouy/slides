@@ -31,7 +31,7 @@ test('the notice lists every item, in Japanese and in English, and marks what th
   // published: seller, person responsible, e-mail address
   await expect(ja.locator('.commerce-row', { hasText: '販売事業者' }).first()).toContainText('Ryo Matsushita');
   await expect(ja.locator('.commerce-row', { hasText: '運営統括責任者' }).first()).toContainText('Ryo Matsushita');
-  await expect(ja.locator('.commerce-row', { hasText: 'お問い合わせ先' }).first()).toContainText('[removed]');
+  await expect(ja.locator('.commerce-row', { hasText: 'お問い合わせ先' }).first()).not.toContainText('@');
   await expect(ja).not.toContainText('個人で運営しているため');
   // what is still undecided is marked, and listed above
   await expect(ja).toContainText('月額200円（税込・追加の消費税請求なし）');
@@ -68,7 +68,7 @@ test('terms and privacy: complete texts in Japanese and English, with unset item
   expect(text).toContain('月額200円');
   expect(text).toContain('自動で請求');
   expect(text).toContain('サブスクリプションを管理');
-  expect([...text.matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[a-z]{2,}/g)].map((m) => m[0]).filter((a) => a !== '[removed]')).toEqual([]); // no other e-mail address
+  expect([...text.matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[a-z]{2,}/g)].map((m) => m[0])).toEqual([]); // no other e-mail address
 });
 
 test('the interface language picks the legal language: Japanese gets Japanese, everything else English', async ({ page }) => {
@@ -97,7 +97,7 @@ test('contact page: the form and the published e-mail address are the channels',
   await page.goto('/contact');
   await expect(page.getByTestId('contact')).toBeVisible();
   await expect(page.getByTestId('contact-form').getByTestId('legal-link')).toHaveAttribute('href', 'https://forms.gle/vksFVB2QUzdzKeEu6');
-  await expect(page.getByTestId('contact-mail')).toHaveAttribute('href', 'mailto:[removed]');
+  await expect(page.getByTestId('contact-mail')).toHaveCount(0); // no e-mail address is published
   await page.getByTestId('legal-lang-ja').click();
   await expect(page.getByTestId('contact')).toContainText('事業者情報の開示請求');
 });
@@ -127,7 +127,7 @@ test('terms and privacy: the only e-mail address published is the operator\u2019
     await page.goto(path);
     for (const l of ['ja', 'en']) {
       await page.getByTestId(`legal-lang-${l}`).click();
-      const found = [...(await page.locator('.prose').innerText()).matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[a-z]{2,}/g)].map((m) => m[0]).filter((a) => a !== '[removed]');
+      const found = [...(await page.locator('.prose').innerText()).matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[a-z]{2,}/g)].map((m) => m[0]);
       expect(found, `${path} ${l}`).toEqual([]);
     }
   }
