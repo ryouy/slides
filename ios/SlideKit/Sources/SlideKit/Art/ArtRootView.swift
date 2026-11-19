@@ -100,7 +100,7 @@ public struct ArtRootView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(12)
-            .background(Web.surface.opacity(0.7), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).stroke(Web.line, lineWidth: 1))
             .contentShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
         }
         .buttonStyle(.plain)
@@ -191,11 +191,11 @@ public struct ArtRootView: View {
 }
 
 
-/// The home's two big tiles: a soft rounded surface that dips a little when pressed.
+/// The home's two big tiles: a rounded outline that dips a little when pressed.
 struct HomeTileStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .background(Web.surface.opacity(0.7), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).stroke(Web.line, lineWidth: 1))
             .scaleEffect(configuration.isPressed ? 0.97 : 1)
             .animation(.easeOut(duration: 0.14), value: configuration.isPressed)
             .contentShape(RoundedRectangle(cornerRadius: 22, style: .continuous))

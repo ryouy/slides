@@ -4,6 +4,7 @@ import SlideCore
 
 public struct SettingsView: View {
     @Environment(AppModel.self) private var app
+    @Environment(\.colorScheme) private var colorScheme
     @State private var showPremium = false
     @State private var web: WebPage?
     @State private var bulk: (Int, Int)?
@@ -112,10 +113,13 @@ public struct SettingsView: View {
                     let code = cred.authorizationCode
                     Task { await app.account.signIn(identityToken: token, nonce: raw, authorizationCode: code) }
                 }
-                .signInWithAppleButtonStyle(.black)
-                .frame(height: 44)
+                // a stand-alone button (no card around it): black on light, white on dark, as Apple recommends for the two backgrounds
+                .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
+                .frame(height: 50)
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                 .disabled(app.account.busy)
-                .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                .listRowInsets(EdgeInsets())
+                .listRowBackground(Color.clear)
             }
             if let n = noticeText { Text(n).font(.footnote).foregroundStyle(.secondary) }
         } header: {
