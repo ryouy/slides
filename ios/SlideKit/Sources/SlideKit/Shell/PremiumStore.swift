@@ -8,6 +8,8 @@ public final class PremiumStore {
     public enum Outcome { case success, cancelled, pending, failed, unavailable }
 
     public private(set) var isPremium = false
+    /// True once StoreKit has been asked at least once. Until then ads stay hidden, so a Premium user never sees a flash of ad space.
+    public private(set) var hasResolved = false
     public private(set) var expiresAt: Date?
     public private(set) var willRenew: Bool?
     public private(set) var inGrace = false
@@ -25,7 +27,7 @@ public final class PremiumStore {
 
     func start() async {
         #if DEBUG
-        if ProcessInfo.processInfo.arguments.contains("-debugPremium") { isPremium = true; return } // DEBUG builds only: never in Release
+        if ProcessInfo.processInfo.arguments.contains("-debugPremium") { isPremium = true; hasResolved = true; return } // DEBUG builds only: never in Release
         #endif
         updates = Task { [weak self] in
             for await result in Transaction.updates {
@@ -46,6 +48,7 @@ public final class PremiumStore {
             premium = true; exp = t.expirationDate; jws = result.jwsRepresentation
         }
         isPremium = premium; expiresAt = exp; signedTransaction = jws
+        hasResolved = true // (offline is fine: StoreKit answers from the transactions already on the device)
         let p = await product()
         productFound = p != nil
         displayPrice = p?.displayPrice

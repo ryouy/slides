@@ -15,7 +15,7 @@ PREMIUM_PRODUCT_ID = invalid.premium.monthly
 // Worker that serves Premium paintings and verifies purchases.
 SLIDES_API_BASE = https:/$()/slides.ryouy.workers.dev
 
-// Google's published TEST ids (safe, public). Release overrides them from Local.xcconfig.
+// Google's published TEST ids (safe, public). Release.xcconfig overrides them with the production ids; Local.xcconfig (git-ignored) can override both.
 ADMOB_APP_ID = ca-app-pub-3940256099942544~1458002511
 ADMOB_BANNER_UNIT_ID = ca-app-pub-3940256099942544/2435281174
 

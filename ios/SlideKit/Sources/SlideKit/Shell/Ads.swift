@@ -14,7 +14,10 @@ public final class AdsManager {
         (Bundle.main.object(forInfoDictionaryKey: "AdMobBannerUnitID") as? String).flatMap { $0.isEmpty || $0.hasPrefix("$(") ? nil : $0 }
     }()
 
-    public init() {}
+    public init() {
+        // consent given in an earlier session lets the SDK start at once, without waiting for the network
+        refreshState()
+    }
 
     func prepare() async {
         #if DEBUG
@@ -23,8 +26,11 @@ public final class AdsManager {
         let vc = Self.topViewController()
         _ = try? await ConsentInformation.shared.requestConsentInfoUpdate(with: RequestParameters())
         if let vc { try? await ConsentForm.loadAndPresentIfRequired(from: vc) }
+        // ATT: only when ads may be requested, only while the app is active (otherwise iOS silently ignores the request),
+        // and the answer changes nothing in the app: no reward, no feature locked.
         if ConsentInformation.shared.canRequestAds, ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
-            _ = await ATTrackingManager.requestTrackingAuthorization()
+            for _ in 0..<20 where UIApplication.shared.applicationState != .active { try? await Task.sleep(nanoseconds: 250_000_000) }
+            if UIApplication.shared.applicationState == .active { _ = await ATTrackingManager.requestTrackingAuthorization() }
         }
         refreshState()
     }
@@ -54,7 +60,7 @@ public struct AdBannerSlot: View {
     @State private var height: CGFloat = 0
     public init() {}
     public var body: some View {
-        if !app.isPremium && app.ads.canShowAds && app.network.isOnline {
+        if app.premium.hasResolved && !app.isPremium && app.ads.canShowAds && app.network.isOnline {
             GeometryReader { geo in
                 BannerRepresentable(width: geo.size.width, height: $height)
                     .frame(width: geo.size.width, height: height)

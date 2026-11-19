@@ -1,3 +1,6 @@
 #include "Shared.xcconfig"
-CAPACITOR_DEBUG = false
-// Release uses whatever Local.xcconfig sets for ADMOB_*; without it the Google test ids stay (test ads only, never real ads by accident).
+
+// RELEASE / App Store builds use the real AdMob ids (public identifiers, safe to keep in the repo).
+// Debug builds keep Google's TEST ids from Shared.xcconfig, so developing never shows or clicks real ads.
+ADMOB_APP_ID = ca-app-pub-5121019112887429~2282860353
+ADMOB_BANNER_UNIT_ID = ca-app-pub-5121019112887429/2800193115

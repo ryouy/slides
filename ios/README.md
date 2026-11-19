@@ -62,8 +62,15 @@ How Premium is decided: only from transactions StoreKit has verified on the devi
 
 ## Ads (AdMob)
 
-Adaptive banner only. Shown to Free users on calm screens (home, gallery, stats, settings), never during a puzzle; hidden for Premium, offline, or when an ad fails (no blank space). Google UMP asks for consent where required (EU/UK), then iOS App Tracking Transparency; the games work whatever is answered. Settings shows "Ad privacy settings" when UMP requires it.
-Set the AdMob ids in `Local.xcconfig` (see above); create the app + a banner unit in the AdMob console. The web site keeps using AdMax; its scripts never run in the app.
+Adaptive banner only (no interstitial / rewarded / app-open). Shown to Free users on calm screens (home, gallery, results), never next to a board in play; hidden for Premium (and until StoreKit has answered once), offline, when ads are not allowed, or when an ad fails (no blank space).
+Order at launch: Google UMP consent (where required) → App Tracking Transparency (only if ads may be requested, only while the app is active; the answer changes nothing in the app) → SDK start. If consent was given in an earlier session the SDK starts immediately. Settings shows "Ad privacy settings" when UMP requires it.
+
+* **Debug builds use Google's TEST ids** (Shared.xcconfig). **Release builds use the production ids** (Release.xcconfig): app id `ca-app-pub-5121019112887429~2282860353`, banner unit `ca-app-pub-5121019112887429/2800193115`, publisher `pub-5121019112887429`. Never click real ads while testing; register your device as a test device in AdMob if you run Release on it.
+* DEBUG-only launch arguments (compiled out of Release): `-skipConsent` (skips UMP/ATT pop-ups for screenshots), `-debugPremium`.
+* `PrivacyInfo.xcprivacy` declares tracking = true (Google Mobile Ads, after consent) with the data types Google documents for AdMob; the SDKs ship their own manifests and tracking domains. Keep App Store Connect → App Privacy answers consistent with it (Device ID, Advertising Data, Product Interaction, Coarse Location for third-party advertising; Crash/Performance data for app functionality; tracking: yes).
+* `app-ads.txt` lives at the domain root `https://ryouy.github.io/app-ads.txt` (repo `ryouy/ryouy.github.io`) with `google.com, pub-5121019112887429, DIRECT, f08c47fec0942fa0`. In App Store Connect set the app's **Marketing/Developer website to `https://ryouy.github.io/`** so AdMob looks at that domain, then press "Check for updates" in AdMob → Apps → app-ads.txt (verification can take up to 24 h after the app is live on the App Store).
+The web site keeps using AdMax.
+
 
 ## Offline behaviour
 
