@@ -17,7 +17,8 @@ public struct SlideRoot: View {
         }
             .environment(app)
             .preferredColorScheme(app.preferredScheme)
-            .task { await app.start() }
+            .task { await app.start(); if !splash { await app.askAdConsent() } }
+            .onChange(of: splash) { _, now in if !now { Task { await app.askAdConsent() } } }
             .onChange(of: scenePhase) { _, p in if p == .active { Task { await app.account.refreshStatus() } } }
             .onOpenURL { _ = GIDSignIn.sharedInstance.handle($0) } // Google sign-in redirect
     }

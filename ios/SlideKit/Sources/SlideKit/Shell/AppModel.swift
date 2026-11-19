@@ -79,9 +79,14 @@ public final class AppModel {
         await account.claim(premium.signedTransaction)
         await account.refreshStatus()   // a session kept from the last launch: ask the server whether it is Premium (Stripe / App Store)
         await images.refresh()
+    }
+
+    /// Consent (UMP) and tracking (ATT) are asked once the home screen has settled, never over the splash or a board.
+    public func askAdConsent() async {
         #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("-noAds") { return } // DEBUG only: skip the consent dialog for screenshots
         #endif
+        try? await Task.sleep(for: .seconds(1))
         await ads.prepare()
     }
 }
