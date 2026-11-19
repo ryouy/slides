@@ -50,6 +50,15 @@ public struct ArtRootView: View {
         }
         .environment(store)
         .environment(photos)
+        #if DEBUG
+        .onAppear {
+            // DEBUG only: `-forceLandscape` rotates the app at launch (for screenshots)
+            if ProcessInfo.processInfo.arguments.contains("-forceLandscape"),
+               let scene = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).first {
+                scene.requestGeometryUpdate(.iOS(interfaceOrientations: .landscapeRight))
+            }
+        }
+        #endif
         .tint(Web.fg)
         .sheet(isPresented: $showSettings) { SettingsView() }
         .sheet(isPresented: $showPremium) { PremiumView() }

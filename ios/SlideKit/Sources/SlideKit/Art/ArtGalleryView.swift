@@ -5,7 +5,6 @@ import SlideCore
 struct ArtGalleryView: View {
     @Environment(AppModel.self) private var app
     @Environment(ArtStore.self) private var store
-    @Environment(\.horizontalSizeClass) private var hSize
     @Binding var path: [ArtRoute]
 
     @State private var query = ""
@@ -19,7 +18,7 @@ struct ArtGalleryView: View {
         ArtGallery.group(filtered, by: prefs.groupBy, sortBy: prefs.randomized ? .random : .artist, randomSeed: prefs.randomSeed,
                          isLocked: { ArtRules.isArtworkLocked($0.id, premium: app.isPremium, catalog: app.catalog) })
     }
-    private var columns: Int { prefs.columns == 0 ? (hSize == .regular ? 3 : 2) : prefs.columns }
+    private var columns: Int { prefs.columns }
 
     var body: some View {
         let groups = self.groups
@@ -118,7 +117,10 @@ struct ArtGalleryView: View {
     }
 
     private func grid(_ items: [Artwork]) -> some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12, alignment: .top), count: columns), spacing: 14) {
+        // "auto": as many paintings per row as fit (like the web on a wide window): 2 on a phone in portrait, 6 in landscape, 8+ on a big iPad
+        let cols = prefs.columns == 0 ? [GridItem(.adaptive(minimum: 120, maximum: 180), spacing: 12, alignment: .top)]
+                                      : Array(repeating: GridItem(.flexible(), spacing: 12, alignment: .top), count: prefs.columns)
+        return LazyVGrid(columns: cols, spacing: 14) {
             ForEach(items) { a in card(a) }
         }
     }

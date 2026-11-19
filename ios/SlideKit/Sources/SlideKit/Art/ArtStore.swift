@@ -17,12 +17,7 @@ final class ArtStore {
     }
 
     /// After a sync merged records into the file: take the records, keep the unfinished puzzles and preferences as they are in memory.
-    func reloadFromDisk() {
-        guard let d = file.load() else { return }
-        ArtRecords(d).apply(to: &save)
-        save.counters = d.counters; save.keyClears = d.keyClears // the per-device split written by Drive sync
-        if save.deviceId.isEmpty { save.deviceId = d.deviceId }
-    }
+    func reloadFromDisk() { if let d = file.load() { save.adoptRecords(from: d) } }
 
     func update(_ f: (inout ArtSave) -> Void) { f(&save); if file.save(save) { NotificationCenter.default.post(name: .slideRecordsChanged, object: nil) } }
 

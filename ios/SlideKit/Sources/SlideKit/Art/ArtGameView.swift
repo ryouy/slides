@@ -25,12 +25,30 @@ struct ArtGameView: View {
     private var d: Dims { model.state.dims }
 
     var body: some View {
-        VStack(spacing: 0) {
-            header.padding(.horizontal, 12).padding(.top, 2).padding(.bottom, 4)
-            ArtBoardView(model: model, aspect: artwork.aspect, showNumbers: store.save.showNumbers)
-                .padding(.horizontal, 16).padding(.vertical, 6)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            extra.padding(.horizontal, 16).padding(.bottom, 8)
+        GeometryReader { geo in
+            // landscape (iPhone) and wide iPad windows: the board takes the left, the header and the controls the right
+            if geo.size.width > geo.size.height * 1.15 {
+                HStack(spacing: 8) {
+                    ArtBoardView(model: model, aspect: artwork.aspect, showNumbers: store.save.showNumbers)
+                        .padding(.leading, 16).padding(.vertical, 8)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    VStack(spacing: 0) {
+                        header.padding(.top, 2)
+                        Spacer(minLength: 0)
+                        extra.padding(.bottom, 8)
+                    }
+                    .frame(width: min(360, max(260, geo.size.width * 0.34)))
+                    .padding(.trailing, 12)
+                }
+            } else {
+                VStack(spacing: 0) {
+                    header.padding(.horizontal, 12).padding(.top, 2).padding(.bottom, 4)
+                    ArtBoardView(model: model, aspect: artwork.aspect, showNumbers: store.save.showNumbers)
+                        .padding(.horizontal, 16).padding(.vertical, 6)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    extra.padding(.horizontal, 16).padding(.bottom, 8)
+                }
+            }
         }
         .artScreen()
         .task { Haptics.prepare(); await model.prepare() }
@@ -77,10 +95,9 @@ struct ArtGameView: View {
             if typeSize.isAccessibilitySize {
                 VStack(alignment: .leading, spacing: 6) { stats; actions }
             } else {
-                HStack(alignment: .center, spacing: 8) {
-                    stats
-                    Spacer(minLength: 0)
-                    actions
+                ViewThatFits(in: .horizontal) {
+                    HStack(alignment: .center, spacing: 8) { stats; Spacer(minLength: 0); actions }
+                    VStack(alignment: .leading, spacing: 4) { stats; actions }
                 }
                 .padding(.leading, 42) // under the title, past the back arrow
             }
