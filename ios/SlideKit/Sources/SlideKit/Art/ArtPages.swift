@@ -142,8 +142,9 @@ import SlideCore
                             Button(app.t("premium.subscribe")) { showPremium = true }.buttonStyle(WebButtonStyle(filled: true, minHeight: 50))
                         }.foregroundStyle(Web.fg).frame(maxWidth: .infinity).padding(.vertical, 12)
                     } else {
+                        let addTitle = busy ? "…" : app.t("photos.add") // read here (main actor), not inside the picker's non-isolated label closure
                         PhotosPicker(selection: $picks, maxSelectionCount: max(1, CustomPhotoRules.maxPhotos - photos.photos.count), matching: .images) {
-                            Text(busy ? "…" : app.t("photos.add")).frame(maxWidth: .infinity, minHeight: 50)
+                            Text(addTitle).frame(maxWidth: .infinity, minHeight: 50)
                         }
                         .buttonStyle(WebButtonStyle(filled: true, minHeight: 50))
                         .disabled(busy || photos.photos.count >= CustomPhotoRules.maxPhotos)

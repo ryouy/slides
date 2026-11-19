@@ -22,7 +22,6 @@ public struct SettingsView: View {
         NavigationStack {
             Form {
                 accountSection
-                googleSection
                 Section(app.t("ios.section.plan")) {
                     if app.isPremium {
                         Label(app.t("ios.premium.active"), systemImage: "checkmark.seal.fill").foregroundStyle(.tint)
@@ -80,98 +79,6 @@ public struct SettingsView: View {
             } message: {
                 Text(app.t("ios.account.switchMessage") + (app.sync.switchPrompt?.canReplace == false ? "\n\n" + app.t("ios.account.switchKept") : ""))
             }
-            .onDisappear { app.account.clearNotice(); app.googleAccount.clearNotice() }
-        }
-    }
-
-    // MARK: account (optional; syncs game records only)
-
-    @ViewBuilder private var accountSection: some View {
-        Section {
-            if app.account.isSignedIn {
-                Label(app.t(app.account.signedInWithGoogle ? "ios.account.signedInGoogle" : "ios.account.signedIn"), systemImage: app.account.signedInWithGoogle ? "g.circle" : "applelogo")
-                if !app.account.signedInWithGoogle, app.googleAccount.isSignedIn, let token = app.googleAccount.idToken {
-                    Button(app.t("ios.account.linkGoogle")) { Task { await app.account.linkGoogle(idToken: token) } }.disabled(app.account.busy)
-                }
-                Toggle(app.t("ios.account.sync"), isOn: Binding(get: { app.sync.syncEnabled }, set: { app.sync.setEnabled($0) }))
-                if app.sync.syncEnabled {
-                    Button { Task { await app.sync.syncNow() } } label: {
-                        HStack {
-                            Text(app.t("ios.account.syncNow"))
-                            Spacer()
-                            if app.sync.status == .syncing { ProgressView() }
-                            else { Text(syncStatusText).font(.footnote).foregroundStyle(syncFailed ? Color.red : Color.secondary).multilineTextAlignment(.trailing) }
-                        }
-                    }
-                    .disabled(app.sync.status == .syncing)
-                }
-                Button(app.t("ios.account.signOut")) { Task { await app.account.signOut() } }.disabled(app.account.busy)
-                Button(app.t("ios.account.delete"), role: .destructive) { confirmDelete = true }.disabled(app.account.busy)
-            } else {
-                SignInWithAppleButton(.signIn) { request in
-                    nonce = AppleNonce.random()
-                    request.requestedScopes = []
-                    request.nonce = AppleNonce.sha256Hex(nonce)
-                } onCompletion: { result in
-                    guard case .success(let auth) = result, let cred = auth.credential as? ASAuthorizationAppleIDCredential,
-                          let tokenData = cred.identityToken, let token = String(data: tokenData, encoding: .utf8) else { return }
-                    let raw = nonce
-                    let code = cred.authorizationCode
-                    Task { await app.account.signIn(identityToken: token, nonce: raw, authorizationCode: code) }
-                }
-                // a stand-alone button (no card around it): black on light, white on dark, as Apple recommends for the two backgrounds
-                .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
-                .frame(height: 50)
-                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                .disabled(app.account.busy)
-                .listRowInsets(EdgeInsets())
-                .listRowBackground(Color.clear)
-                if app.googleAccount.isConfigured {
-                    GoogleSignInButton(scheme: scheme == .dark ? .dark : .light, style: .wide, state: app.googleAccount.busy ? .disabled : .normal) { Task { await app.googleAccount.signIn() } }
-                        .frame(maxWidth: .infinity)
-                        .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                        .listRowBackground(Color.clear)
-                }
-            }
-            if let n = noticeText { Text(n).font(.footnote).foregroundStyle(.secondary) }
-        } header: {
-            Text(app.t("ios.account.title"))
-        }
-        Section(app.t("ios.account.webTitle")) {
-            HStack {
-                Link(app.t("ios.account.webApp"), destination: URL(string: "https://slides.ryouy.workers.dev/art-slide")!)
-                Spacer()
-                Image(systemName: "arrow.up.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
-            }
-            Text(app.t("ios.account.commonPremium")).font(.footnote).foregroundStyle(.secondary)
-        }
-    }
-
-    // MARK: Google Drive (optional; ART SLIDE records only, same file as the web version). Hidden until the owner configures a client id.
-
-    @ViewBuilder private var googleSection: some View {
-        if app.googleAccount.isConfigured {
-            Section {
-                if app.googleAccount.isSignedIn {
-                    Label(app.t("ios.drive.signedIn"), systemImage: "externaldrive.badge.icloud")
-                    Toggle(app.t("ios.drive.sync"), isOn: Binding(get: { app.drive.syncEnabled }, set: { on in Task { await app.drive.setEnabled(on) } }))
-                    if app.drive.syncEnabled {
-                        Button { Task { await app.drive.syncNow() } } label: {
-                            HStack {
-                                Text(app.t("ios.account.syncNow"))
-                                Spacer()
-                                if app.drive.status == .syncing { ProgressView() }
-                                else { Text(driveStatusText).font(.footnote).foregroundStyle(driveFailed ? Color.red : Color.secondary).multilineTextAlignment(.trailing) }
-                            }
-                        }
-                        .disabled(app.drive.status == .syncing)
-                    }
-                    Button(app.t("ios.account.signOut")) { app.googleAccount.signOut() }.disabled(app.googleAccount.busy)
-                }
-                if let n = driveNoticeText { Text(n).font(.footnote).foregroundStyle(.secondary) }
-            } header: {
-                Text(app.t("ios.drive.title"))
-            }
             .confirmationDialog(app.t("ios.drive.switchTitle"), isPresented: Binding(
                 get: { app.drive.switchPrompt != nil },
                 set: { if !$0 { app.drive.cancelSwitch() } }
@@ -182,8 +89,94 @@ public struct SettingsView: View {
             } message: {
                 Text(app.t("ios.drive.switchMessage") + (app.drive.switchPrompt?.canReplace == false ? "\n\n" + app.t("ios.account.switchKept") : ""))
             }
+            .onDisappear { app.account.clearNotice(); app.googleAccount.clearNotice() }
         }
     }
+
+    // MARK: account (optional): one compact section. Records sync goes to Google Drive when a Google account is signed in
+    // (the same file as the web version), otherwise to our server for an Apple account; never both at once.
+
+    private var anySignedIn: Bool { app.account.isSignedIn || app.googleAccount.isSignedIn }
+    private var googleActive: Bool { app.googleAccount.isSignedIn }
+    private var syncOn: Bool { app.drive.syncEnabled || app.sync.syncEnabled }
+
+    private func setSync(_ on: Bool) {
+        Task {
+            if on {
+                if googleActive { app.sync.setEnabled(false); await app.drive.setEnabled(true) }   // never both: records would be counted twice
+                else { await app.drive.setEnabled(false); app.sync.setEnabled(true) }
+            } else { app.sync.setEnabled(false); await app.drive.setEnabled(false) }
+        }
+    }
+
+    @ViewBuilder private var accountSection: some View {
+        Section(app.t("ios.account.title")) {
+            if !anySignedIn {
+                // two columns: Apple | Google
+                HStack(spacing: 10) {
+                    SignInWithAppleButton(.continue) { request in
+                        nonce = AppleNonce.random()
+                        request.requestedScopes = []
+                        request.nonce = AppleNonce.sha256Hex(nonce)
+                    } onCompletion: { result in
+                        guard case .success(let auth) = result, let cred = auth.credential as? ASAuthorizationAppleIDCredential,
+                              let tokenData = cred.identityToken, let token = String(data: tokenData, encoding: .utf8) else { return }
+                        let raw = nonce
+                        let code = cred.authorizationCode
+                        Task { await app.account.signIn(identityToken: token, nonce: raw, authorizationCode: code) }
+                    }
+                    .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
+                    .frame(height: 46)
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .disabled(app.account.busy)
+                    if app.googleAccount.isConfigured {
+                        GoogleSignInButton(scheme: scheme == .dark ? .dark : .light, style: .standard, state: app.googleAccount.busy ? .disabled : .normal) { Task { await app.googleAccount.signIn() } }
+                            .frame(height: 46)
+                    }
+                }
+                .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                .listRowBackground(Color.clear)
+            } else {
+                // which accounts are signed in, in one row
+                HStack(spacing: 16) {
+                    if app.account.isSignedIn && !app.account.signedInWithGoogle { Label("Apple", systemImage: "applelogo") }
+                    if app.account.signedInWithGoogle || app.googleAccount.isSignedIn { Label("Google", systemImage: "g.circle") }
+                    Spacer()
+                    if app.account.isSignedIn && !app.account.signedInWithGoogle && app.googleAccount.isSignedIn, let token = app.googleAccount.idToken {
+                        Button(app.t("ios.account.linkGoogle")) { Task { await app.account.linkGoogle(idToken: token) } }.buttonStyle(.borderless).disabled(app.account.busy)
+                    }
+                }
+                // one sync switch; the last sync time sits under its label
+                Toggle(isOn: Binding(get: { syncOn }, set: { setSync($0) })) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(app.t("ios.account.sync"))
+                        if syncOn { Text(activeSyncStatusText).font(.caption).foregroundStyle(activeSyncFailed ? Color.red : Color.secondary) }
+                    }
+                }
+                // two columns: sign out | delete account
+                HStack(spacing: 0) {
+                    Button(app.t("ios.account.signOut")) { Task { await signOutAll() } }
+                        .buttonStyle(.borderless).frame(maxWidth: .infinity).disabled(app.account.busy)
+                    if app.account.isSignedIn {
+                        Divider().frame(height: 22)
+                        Button(app.t("ios.account.delete"), role: .destructive) { confirmDelete = true }
+                            .buttonStyle(.borderless).frame(maxWidth: .infinity).disabled(app.account.busy)
+                    }
+                }
+            }
+            if let n = noticeText ?? driveNoticeText { Text(n).font(.footnote).foregroundStyle(.secondary) }
+        }
+    }
+
+    private func signOutAll() async {
+        app.sync.setEnabled(false)
+        await app.drive.setEnabled(false)
+        if app.account.isSignedIn { await app.account.signOut() }
+        if app.googleAccount.isSignedIn { app.googleAccount.signOut() }
+    }
+
+    private var activeSyncFailed: Bool { app.drive.syncEnabled ? driveFailed : syncFailed }
+    private var activeSyncStatusText: String { app.drive.syncEnabled ? driveStatusText : syncStatusText }
 
     private var driveFailed: Bool { if case .failed = app.drive.status { return true }; return false }
 
