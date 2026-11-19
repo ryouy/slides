@@ -125,6 +125,22 @@ public struct ArtRootView: View {
                 Button { path.append(.gallery) } label: { homeTile(app.t("art.gallery")) }.buttonStyle(HomeTileStyle())
                 Button { path.append(.play(randomArtwork())) } label: { homeTile(app.t("art.random")) }.buttonStyle(HomeTileStyle())
             }
+            Button {
+                if app.isPremium { path.append(.photos) } else { showPremium = true }
+            } label: {
+                HStack(spacing: 10) {
+                    Image(systemName: "photo.on.rectangle.angled")
+                    Text(app.t("home.photos"))
+                    if !app.isPremium { Image(systemName: "lock.fill").font(.footnote) }
+                    Spacer()
+                    Image(systemName: "chevron.right").font(.footnote.weight(.semibold))
+                }
+                .font(Web.font(14, .medium, relativeTo: .subheadline))
+                .foregroundStyle(Web.fg)
+                .frame(maxWidth: .infinity, minHeight: 48)
+            }
+            .buttonStyle(.plain)
+            .accessibilityHint(app.isPremium ? app.t("photos.empty") : app.t("premium.lockedPhotos"))
             if resumable {
                 Button { path.append(.resume) } label: {
                     HStack(spacing: 4) { Text(app.t("art.resume")); Image(systemName: "chevron.right").font(.system(size: 11, weight: .semibold)) }

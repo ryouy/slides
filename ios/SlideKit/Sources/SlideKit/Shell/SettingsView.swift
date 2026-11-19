@@ -104,8 +104,6 @@ public struct SettingsView: View {
                         }
                     }
                     .disabled(app.sync.status == .syncing)
-                } else {
-                    Text(app.t("ios.account.syncOff")).font(.footnote).foregroundStyle(.secondary)
                 }
                 Button(app.t("ios.account.signOut")) { Task { await app.account.signOut() } }.disabled(app.account.busy)
                 Button(app.t("ios.account.delete"), role: .destructive) { confirmDelete = true }.disabled(app.account.busy)
@@ -140,8 +138,12 @@ public struct SettingsView: View {
             Text(app.t("ios.account.title"))
         }
         Section(app.t("ios.account.webTitle")) {
+            HStack {
+                Link(app.t("ios.account.webApp"), destination: URL(string: "https://slides.ryouy.workers.dev/art-slide")!)
+                Spacer()
+                Image(systemName: "arrow.up.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
+            }
             Text(app.t("ios.account.commonPremium")).font(.footnote).foregroundStyle(.secondary)
-            Link(app.t("ios.account.webApp"), destination: URL(string: "https://slides.ryouy.workers.dev/art-slide")!)
         }
     }
 
@@ -163,11 +165,9 @@ public struct SettingsView: View {
                             }
                         }
                         .disabled(app.drive.status == .syncing)
-                    } else {
-                        Text(app.t("ios.drive.off")).font(.footnote).foregroundStyle(.secondary)
                     }
                     Button(app.t("ios.account.signOut")) { app.googleAccount.signOut() }.disabled(app.googleAccount.busy)
-                } else { Text(app.t("ios.drive.footer")).font(.footnote).foregroundStyle(.secondary) }
+                }
                 if let n = driveNoticeText { Text(n).font(.footnote).foregroundStyle(.secondary) }
             } header: {
                 Text(app.t("ios.drive.title"))
