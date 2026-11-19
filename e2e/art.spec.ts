@@ -747,8 +747,7 @@ test.describe('home on wide screens', () => {
     await page.waitForTimeout(600);
     const tall = await boxes();
     expect(tall.more.y).toBeGreaterThanOrEqual(tall.strip.y + tall.strip.height - 1); // below the paintings
-    expect(tall.settings.y).toBeGreaterThanOrEqual(tall.strip.y + tall.strip.height - 1);
-    expect(tall.more.x).toBeLessThan(tall.settings.x); // More left, Settings right
+    expect(tall.settings.y + tall.settings.height).toBeLessThanOrEqual(tall.exhibit.y + 1); // Settings is in the top row beside Sign in / Account
     await page.setViewportSize({ width: 1280, height: 650 });
     await page.waitForTimeout(300);
     await expect(page.getByTestId('home-picks')).toBeHidden();
@@ -758,8 +757,7 @@ test.describe('home on wide screens', () => {
     });
     expect(m.more.y).toBeGreaterThanOrEqual(m.exhibit.y + m.exhibit.height - 1); // under today's exhibit...
     expect(m.more.x).toBeLessThan(m.exhibit.x + m.exhibit.width / 2); // ...at its left
-    expect(m.settings.y).toBeGreaterThanOrEqual(m.random.y + m.random.height - 1); // under the two links...
-    expect(m.settings.x + m.settings.width).toBeGreaterThan(m.random.x + m.random.width - 40); // ...at their right
+    expect(m.settings.y + m.settings.height).toBeLessThanOrEqual(m.exhibit.y + 1); // Settings stays in the top row
   });
 
   test('desktop: the two links are frameless lines of type with a drawn chevron', async ({ page }, info) => {

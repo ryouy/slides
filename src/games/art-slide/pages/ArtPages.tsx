@@ -37,7 +37,7 @@ export function ArtHome() {
   return (
     <div className="screen home art-home">
       <header className="art-home-head">
-        <h1 className="art-home-title">ART SLIDE</h1>
+        <div className="art-home-actions">
         {gating && (
           loggedOut ? (
             // signed out: the button says so and starts the Google sign-in straight away (back to this page afterwards)
@@ -52,6 +52,12 @@ export function ArtHome() {
             </Link>
           )
         )}
+          <Link to="/settings" className="art-home-account" data-testid="art-settings" aria-label={t('home.settings')} title={t('home.settings')}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3" /><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7" /></svg>
+            <span>{t('home.settings')}</span>
+          </Link>
+        </div>
+        <h1 className="art-home-title">ART SLIDE</h1>
       </header>
       <Link to="/art-slide/daily" className="exhibit-card" data-testid="exhibit">
         <img src={exhibit.thumbnailUrl} alt="" width={96} height={96} />
@@ -91,9 +97,6 @@ export function ArtHome() {
             </nav>
           </div>
         </details>
-        <Link to="/settings" className="art-home-settings" data-testid="art-settings">
-          <span>{t('home.settings')}</span>
-        </Link>
       </div>
       {/* wide screens only (hidden by CSS on phones, where the images are then never loaded) */}
       <section className="art-home-strip" aria-label={t('home.fromGallery')} data-testid="home-picks">

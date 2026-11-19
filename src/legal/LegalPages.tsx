@@ -129,10 +129,10 @@ export function ContactPage({ operator = OPERATOR }: { operator?: OperatorInfo }
         const mail = operator.email.trim();
         return (
           <div data-testid="contact">
-            <p>{l === 'ja' ? 'ご質問・不具合のご報告・ご意見、お支払いやアカウントに関するお問い合わせ、個人情報の開示等のご請求、事業者の住所・電話番号の開示請求は、次のお問い合わせフォーム（またはメール）からお願いします。' : 'For questions, bug reports, feedback, payment or account enquiries, requests about your personal information, and requests for the operator’s address and telephone, please use the contact form (or e-mail):'}</p>
+            <p>{l === 'ja' ? 'ご質問・不具合のご報告・ご意見、お支払いやアカウントに関するお問い合わせ、個人情報の開示等のご請求、事業者の住所・電話番号の開示請求は、次のお問い合わせフォームからお願いします。' : 'For questions, bug reports, feedback, payment or account enquiries, requests about your personal information, and requests for the operator’s address and telephone, please use the contact form (or e-mail):'}</p>
             <p className="contact-mail" data-testid="contact-form">{withMarks(form)}</p>
             <ul>
-              <li>{l === 'ja' ? '住所・電話番号の開示請求は、内容に「事業者情報の開示請求」と書き、返信先メールアドレスを入力してください（メールでも受け付けます）。請求があった場合には、遅滞なく開示します。' : 'To ask for the address and telephone, write “Request for the operator’s details” in your message and enter an e-mail address for the reply (e-mail works too). We provide them without delay.'}</li>
+              <li>{l === 'ja' ? '住所・電話番号の開示請求は、内容に「事業者情報の開示請求」と書き、返信先メールアドレスを入力してください。請求があった場合には、遅滞なく開示します。' : 'To ask for the address and telephone, write “Request for the operator’s details” in your message and enter an e-mail address for the reply (e-mail works too). We provide them without delay.'}</li>
               {operator.disclosureTarget.trim() && <li>{l === 'ja' ? `開示の目安：${operator.disclosureTarget.trim()}` : `Target time to provide them: ${operator.disclosureTarget.trim()}`}</li>}
               {operator.supportHours.trim() && <li>{operator.supportHours.trim()}</li>}
             </ul>

@@ -117,6 +117,7 @@ for (const [name, { me, premium }] of Object.entries(STATES)) {
         await expect(page.getByTestId('purchase-facts')).toHaveCount(0);
         await expect(page.getByTestId('premium-soon')).toBeVisible();
       } else {
+        await openSheet(page);
         await expect(page.getByTestId('premium-subscribe')).toBeDisabled();
         await page.getByTestId('premium-agree').check();
         await expect(page.getByTestId('premium-subscribe')).toBeEnabled();
@@ -125,6 +126,13 @@ for (const [name, { me, premium }] of Object.entries(STATES)) {
       }
     });
   });
+}
+
+/** Opens the "before you subscribe" sheet (once; harmless if it is already open). */
+async function openSheet(page: import('@playwright/test').Page) {
+  if (await page.getByTestId('purchase-sheet').count()) return; // already open
+  const open = page.getByTestId('premium-open');
+  if (await open.count()) await open.click();
 }
 
 test('after Checkout the page says it is confirming, then shows Premium once the server says so', async ({ page }) => {
@@ -139,6 +147,7 @@ test('after Checkout the page says it is confirming, then shows Premium once the
   });
   await page.goto('/art-slide/premium?checkout=success');
   await expect(page.getByTestId('premium-thanks')).toBeVisible();
+  await openSheet(page);
   await expect(page.getByTestId('premium-subscribe')).toBeVisible(); // not Premium until the server says so
   premium = true; // the webhook arrived
   await expect(page.getByTestId('premium-active')).toBeVisible({ timeout: 15000 });

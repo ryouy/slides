@@ -17,6 +17,13 @@ async function mockApi(page: Page, me: object) {
   });
 }
 
+/** Opens the "before you subscribe" sheet (once; harmless if it is already open). */
+async function openSheet(page: import('@playwright/test').Page) {
+  if (await page.getByTestId('purchase-sheet').count()) return; // already open
+  const open = page.getByTestId('premium-open');
+  if (await open.count()) await open.click();
+}
+
 test('the notice lists every item, in Japanese and in English, and marks what the operator has not supplied', async ({ page }) => {
   await page.goto('/commerce');
   await page.getByTestId('legal-lang-ja').click();
@@ -31,7 +38,7 @@ test('the notice lists every item, in Japanese and in English, and marks what th
   // published: seller, person responsible, e-mail address
   await expect(ja.locator('.commerce-row', { hasText: '販売事業者' }).first()).toContainText('Ryo Matsushita');
   await expect(ja.locator('.commerce-row', { hasText: '運営統括責任者' }).first()).toContainText('Ryo Matsushita');
-  await expect(ja.locator('.commerce-row', { hasText: 'お問い合わせ先' }).first()).toContainText('[removed]');
+  await expect(ja.locator('.commerce-row', { hasText: 'お問い合わせ先' }).first()).not.toContainText('@');
   await expect(ja).not.toContainText('個人で運営しているため');
   // what is still undecided is marked, and listed above
   await expect(ja).toContainText('月額200円（税込・追加の消費税請求なし）');
@@ -68,7 +75,7 @@ test('terms and privacy: complete texts in Japanese and English, with unset item
   expect(text).toContain('月額200円');
   expect(text).toContain('自動で請求');
   expect(text).toContain('サブスクリプションを管理');
-  expect([...text.matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[a-z]{2,}/g)].map((m) => m[0]).filter((a) => a !== '[removed]')).toEqual([]); // no other e-mail address
+  expect([...text.matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[a-z]{2,}/g)].map((m) => m[0])).toEqual([]); // no other e-mail address
 });
 
 test('the interface language picks the legal language: Japanese gets Japanese, everything else English', async ({ page }) => {
@@ -97,7 +104,7 @@ test('contact page: the form and the published e-mail address are the channels',
   await page.goto('/contact');
   await expect(page.getByTestId('contact')).toBeVisible();
   await expect(page.getByTestId('contact-form').getByTestId('legal-link')).toHaveAttribute('href', 'https://forms.gle/vksFVB2QUzdzKeEu6');
-  await expect(page.getByTestId('contact-mail')).toHaveAttribute('href', 'mailto:[removed]');
+  await expect(page.getByTestId('contact-mail')).toHaveCount(0); // no e-mail address is published
   await page.getByTestId('legal-lang-ja').click();
   await expect(page.getByTestId('contact')).toContainText('事業者情報の開示請求');
 });
@@ -127,7 +134,7 @@ test('terms and privacy: the only e-mail address published is the operator\u2019
     await page.goto(path);
     for (const l of ['ja', 'en']) {
       await page.getByTestId(`legal-lang-${l}`).click();
-      const found = [...(await page.locator('.prose').innerText()).matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[a-z]{2,}/g)].map((m) => m[0]).filter((a) => a !== '[removed]');
+      const found = [...(await page.locator('.prose').innerText()).matchAll(/[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[a-z]{2,}/g)].map((m) => m[0]);
       expect(found, `${path} ${l}`).toEqual([]);
     }
   }
@@ -139,6 +146,7 @@ for (const lang of ['en', 'ja'] as const) {
     await page.addInitScript((l) => localStorage.setItem('wordslide:save', JSON.stringify({ version: 1, settings: { lang: l, theme: 'system', colorblind: false, adConsent: null }, completed: 0, noHintClears: 0, dailyHistory: {}, endlessStreak: 0, maxEndlessStreak: 0, bests: { easy: {}, normal: {}, hard: {} }, history: [], inProgress: {}, lastDifficulty: 'normal' })), lang);
     await mockApi(page, { signedIn: true, canPurchase: true, id: 'u', name: 'Ann', premium: false, status: null });
     await page.goto('/art-slide/premium');
+    await openSheet(page);
     const facts = page.getByTestId('purchase-facts');
     await expect(facts).toBeVisible();
     const t = await facts.innerText();
@@ -165,6 +173,7 @@ test('the account screen sends a visitor to the purchase screen (with all the fa
   await page.goto('/art-slide/account');
   await page.getByTestId('account-subscribe').click();
   await expect(page).toHaveURL(/\/art-slide\/premium$/);
+  await openSheet(page);
   await expect(page.getByTestId('purchase-facts')).toBeVisible();
 });
 

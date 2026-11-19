@@ -1209,25 +1209,6 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   margin: 0;
   border-top: 0;
 }
-.art-home .art-home-settings {
-  display: inline-flex;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 6px;
-  min-height: 46px;
-  padding: 11px 2px;
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: .04em;
-  line-height: 1.4;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color .18s ease;
-}
-.art-home .art-home-settings:hover { color: var(--fg); }
-.art-home .art-home-settings:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 .credits-description { font-size: 12px; color: var(--muted); }
 
 
@@ -2162,19 +2143,20 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   .screen.artgame .confirm-bar .confirm-actions .btn { min-height: 44px; }
 }
 
-/* the account / sign-in button of the ART SLIDE home (only when the paid plan is on): its own small row above the title on phones,
-   top right beside the title on wide screens. It always carries its word ("Sign in" / "Account"). */
+/* the top row of the ART SLIDE home: Sign in / Account and Settings side by side, right-aligned ABOVE the title (never over it), at any screen size.
+   Each button always carries its word. */
 .art-home-head { display: flex; flex-direction: column; }
+.art-home-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 8px; margin: 0 0 4px; }
 .art-home-account {
-  order: -1; align-self: flex-end; margin: 0 0 4px;
   display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 14px 0 12px; box-sizing: border-box;
   justify-content: center; border: 1px solid var(--line); border-radius: 999px; color: var(--fg); text-decoration: none; font-size: 13px; white-space: nowrap;
 }
 .art-home-account svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; flex: none; }
 .art-home-account:hover, .art-home-account:focus-visible { background: var(--surface); }
-@media (min-width: 640px) {
+/* very wide screens: the pair sits at the top right beside the (centred) title, far from its letters, so the page does not grow taller */
+@media (min-width: 1100px) {
   .art-home-head { position: relative; }
-  .art-home-account { position: absolute; right: 0; top: 50%; transform: translateY(-50%); order: 0; margin: 0; }
+  .art-home-actions { position: absolute; right: 0; top: 50%; transform: translateY(-50%); margin: 0; flex-wrap: nowrap; }
 }
 
 /* two buttons side by side (Sync on/off and Sign out) */
@@ -2184,3 +2166,16 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 
 .drive-sync h3 { text-transform: none; letter-spacing: 0; } /* "Googleドライブ", not "GOOGLEドライブ" */
 .drive-sync p { text-wrap: balance; word-break: auto-phrase; line-break: strict; }
+
+/* "Before you subscribe" sheet: fades and rises over the page */
+.sheet-backdrop { position: fixed; inset: 0; z-index: 50; display: flex; align-items: flex-end; justify-content: center; background: rgba(0, 0, 0, .45); animation: sheet-fade .22s ease-out both; }
+.sheet { width: 100%; max-width: 520px; max-height: 88dvh; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); border-radius: 18px 18px 0 0; box-shadow: 0 -8px 32px rgba(0, 0, 0, .25); animation: sheet-rise .28s cubic-bezier(.2, .8, .2, 1) both; padding-bottom: env(safe-area-inset-bottom, 0px); }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 8px 8px 18px; border-bottom: 1px solid var(--line); }
+.sheet-head h2 { margin: 0; font-size: 14px; letter-spacing: .06em; }
+.sheet-close { width: 44px; height: 44px; border: 0; background: none; color: inherit; font-size: 26px; line-height: 1; cursor: pointer; }
+.sheet-body { overflow-y: auto; padding: 14px 18px 18px; display: grid; gap: 14px; }
+.sheet .purchase-facts { border: 0; padding: 0; }
+@media (min-width: 640px) { .sheet-backdrop { align-items: center; } .sheet { border-radius: 18px; } }
+@keyframes sheet-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sheet-rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .sheet-backdrop, .sheet { animation: none; } }

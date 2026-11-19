@@ -30,6 +30,13 @@ const gating = (page: Page) => page.addInitScript(() => { localStorage.setItem('
 const PREMIUM: Me = { signedIn: true, premium: true, name: 'Ann Example', status: 'active', currentPeriodEnd: Math.floor(Date.now() / 1000) + 20 * 86400, cancelAtPeriodEnd: false };
 const LOCKED = 'monet-stacks-of-wheat-end-of-summer';
 
+/** Opens the "before you subscribe" sheet (once; harmless if it is already open). */
+async function openSheet(page: import('@playwright/test').Page) {
+  if (await page.getByTestId('purchase-sheet').count()) return; // already open
+  const open = page.getByTestId('premium-open');
+  if (await open.count()) await open.click();
+}
+
 test('without the paid plan switched on, the site never calls the API', async ({ page }) => {
   const calls = await mockApi(page);
   await page.goto('/art-slide/gallery');
@@ -60,6 +67,7 @@ test('signed out: sign in with Google; Subscribe needs it first', async ({ page 
   expect(await a.getAttribute('href')).toBe('/api/auth/google?return=%2Fart-slide%2Faccount');
   await page.goto('/art-slide/premium');
   await expect(page.getByTestId('premium-signin')).toBeVisible();
+  await openSheet(page);
   await expect(page.getByTestId('premium-subscribe')).toBeDisabled(); // not before the visitor has read and agreed
   await page.getByTestId('premium-agree').check();
   await expect(page.getByTestId('premium-subscribe')).toBeEnabled();
@@ -71,6 +79,7 @@ test('signed in on the Free plan: Subscribe starts Checkout through the server',
   const calls = await mockApi(page, { me: { signedIn: true, premium: false, canPurchase: true, name: 'Ann Example', status: null } });
   await page.goto('/art-slide/premium');
   await expect(page.getByTestId('premium-signin')).toHaveCount(0);
+  await openSheet(page);
   await page.getByTestId('premium-agree').check();
   await page.getByTestId('premium-subscribe').click();
   await expect(page).toHaveURL(/checkout=mock/);
@@ -134,6 +143,7 @@ test('after Checkout the page re-checks with the server instead of trusting the 
   await page.goto('/art-slide/premium?checkout=success');
   await expect(page.getByTestId('premium')).toBeVisible();
   await expect.poll(() => calls).toContain('GET /api/billing/status?refresh=1');
+  await openSheet(page);
   await expect(page.getByTestId('premium-subscribe')).toBeVisible(); // still Free until the server says otherwise
 });
 
@@ -200,6 +210,7 @@ test('allowlist: an account the server allows sees the button (after the consent
   await gating(page);
   await mockApi(page, { me: { signedIn: true, premium: false, canPurchase: true, name: 'Ann Example', status: null } });
   await page.goto('/art-slide/premium');
+  await openSheet(page);
   await expect(page.getByTestId('premium-subscribe')).toBeDisabled();
   await page.getByTestId('premium-agree').check();
   await expect(page.getByTestId('premium-subscribe')).toBeEnabled();
@@ -262,9 +273,9 @@ for (const vw of [320, 390]) test(`the account button on the ART SLIDE home at $
   expect(box.width).toBeGreaterThanOrEqual(40);
   expect(box.height).toBeGreaterThanOrEqual(44);
   const title = (await page.locator('.art-home-title').boundingBox())!;
-  expect(box.y + box.height).toBeLessThanOrEqual(title.y + 1); // on a phone it has its own row above the title: never on top of the letters
+  expect(box.y + box.height).toBeLessThanOrEqual(title.y + 1); // on a phone it shares a row (with Settings) above the title: never on top of the letters
   expect(box.x + box.width).toBeLessThanOrEqual(vw); // inside the screen
-  expect(box.x).toBeGreaterThan(vw / 2); // at the right
+  expect(box.x + box.width).toBeGreaterThan(vw / 2); // at the right (Settings sits beside it)
   await expect(btn.locator('span')).toBeVisible(); // with its word, not just an icon
   await expect(btn.locator('span')).toHaveText('Sign in');
   expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
@@ -318,6 +329,7 @@ async function tryToBuy(page: Page, checkout: { status: number; body?: unknown }
   await gating(page);
   const calls = await mockApi(page, { me: FREE_BUYER, checkout });
   await page.goto('/art-slide/premium');
+  await openSheet(page);
   await page.getByTestId('premium-agree').check();
   await page.getByTestId('premium-subscribe').click();
   return calls;
@@ -337,6 +349,7 @@ for (const [name, checkout, text, code] of [
     await expect(box).toContainText(text);
     await expect(page.getByTestId('checkout-error-code')).toContainText(code);
     await expect(page).toHaveURL(/\/art-slide\/premium$/); // still here
+    await openSheet(page);
     await expect(page.getByTestId('premium-subscribe')).toBeEnabled(); // and can try again
     expect(calls.filter((c) => c === 'POST /api/billing/checkout')).toHaveLength(1);
   });
@@ -361,6 +374,7 @@ test('checkout: the button cannot be pressed twice while the request is running'
   await mockApi(page, { me: FREE_BUYER });
   await page.route('**/api/billing/checkout', async (route) => { posts++; await new Promise((r) => setTimeout(r, 800)); await route.fulfill({ status: 503, contentType: 'application/json', body: '{"error":"x_y"}' }); });
   await page.goto('/art-slide/premium');
+  await openSheet(page);
   await page.getByTestId('premium-agree').check();
   const btn = page.getByTestId('premium-subscribe');
   await btn.click();
@@ -374,6 +388,7 @@ test('the Stripe address is only followed when it is https (or on this site)', a
   await mockApi(page, { me: FREE_BUYER });
   await page.route('**/api/billing/checkout', (route) => route.fulfill({ contentType: 'application/json', body: '{"url":"javascript:alert(1)"}' }));
   await page.goto('/art-slide/premium');
+  await openSheet(page);
   await page.getByTestId('premium-agree').check();
   await page.getByTestId('premium-subscribe').click();
   await expect(page.getByTestId('checkout-error-code')).toContainText('no_url');
@@ -421,4 +436,23 @@ test('gallery: a Premium visitor sees no locks and the order is the normal one',
   await page.goto('/art-slide/gallery');
   await expect(page.locator('a.gcard').first()).toBeVisible();
   await expect(page.locator('[data-testid^="lock-"]')).toHaveCount(0);
+});
+
+test('the long "before you subscribe" text is behind a button: it opens as a sheet and closes with ×, Escape or the backdrop', async ({ page }) => {
+  await gating(page);
+  await mockApi(page, { me: { signedIn: true, premium: false, canPurchase: true, name: 'Ann Example', status: null } });
+  await page.goto('/art-slide/premium');
+  await expect(page.getByTestId('purchase-facts')).toHaveCount(0); // not on the page itself
+  await expect(page.getByTestId('premium-subscribe')).toHaveCount(0);
+  await page.getByTestId('premium-open').click();
+  await expect(page.getByTestId('purchase-sheet')).toBeVisible();
+  await expect(page.getByTestId('purchase-facts')).toBeVisible();
+  await page.getByTestId('sheet-close').click();
+  await expect(page.getByTestId('purchase-sheet')).toHaveCount(0);
+  await page.getByTestId('premium-open').click();
+  await page.keyboard.press('Escape');
+  await expect(page.getByTestId('purchase-sheet')).toHaveCount(0);
+  await page.getByTestId('premium-open').click();
+  await page.getByTestId('purchase-sheet').click({ position: { x: 5, y: 5 } }); // the dim area outside the sheet
+  await expect(page.getByTestId('purchase-sheet')).toHaveCount(0);
 });

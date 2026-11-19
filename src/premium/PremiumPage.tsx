@@ -20,6 +20,28 @@ function Phrases({ text, lang }: { text: string; lang: string }) {
   return <>{text.split(/(?<=[、。，,])/).map((c, i) => <span key={i} className="phrase">{c}</span>)}</>;
 }
 
+/** A page that fades up over the current one (Escape, the backdrop or the close button dismiss it). */
+function Sheet({ title, closeLabel, onClose, children }: { title: string; closeLabel: string; onClose: () => void; children: React.ReactNode }) {
+  useEffect(() => {
+    const key = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', key);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { window.removeEventListener('keydown', key); document.body.style.overflow = prev; };
+  }, [onClose]);
+  return (
+    <div className="sheet-backdrop" data-testid="purchase-sheet" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="sheet" role="dialog" aria-modal="true" aria-label={title}>
+        <header className="sheet-head">
+          <h2>{title}</h2>
+          <button className="sheet-close" data-testid="sheet-close" aria-label={closeLabel} onClick={onClose}>×</button>
+        </header>
+        <div className="sheet-body">{children}</div>
+      </div>
+    </div>
+  );
+}
+
 /** The Premium offer: price, what it includes and how it renews. `reason` explains a lock the visitor just ran into. */
 export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' }) {
   const t = useT();
@@ -29,6 +51,7 @@ export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' })
   const lang = useLang();
   const l = legalLang(lang);
   const [agreed, setAgreed] = useState(false);
+  const [sheet, setSheet] = useState(false);
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState<PurchaseOutcome | null>(null);
   /** Runs a purchase/portal action. A failure is SHOWN (never silent): what to do, plus the short server code for support. */
@@ -44,6 +67,14 @@ export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' })
     }
     setBusy(false); // (on success the browser is already leaving for Stripe)
   };
+  const problemEl = !problem ? null : (
+        <div className="premium-error" role="alert" data-testid="checkout-error">
+          <p>{t(`premium.err.${problem.failure ?? 'failed'}` as 'premium.err.failed')}</p>
+          {problem.failure === 'signin' && <a className="btn wide" href={signInUrl(location.pathname + location.search)}>{t('acct.signIn')}</a>}
+          {problem.failure === 'already' && <button className="btn wide" onClick={() => go('account')}>{t('home.account')}</button>}
+          {problem.code && <small data-testid="checkout-error-code">{t('premium.err.code')}: {problem.code}</small>}
+        </div>
+  );
   return (
     <div className="premium" data-testid="premium">
       {reason && <p className="premium-reason" data-testid="premium-reason"><LockIcon size={16} /> {t(reason === 'art' ? 'premium.lockedArt' : reason === 'photos' ? 'premium.lockedPhotos' : 'premium.lockedSize')}</p>}
@@ -64,34 +95,33 @@ export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' })
         </>
       ) : state === 'off' ? null : (
         <>
-          {/* what the visitor must see before the button: price, renewal, payment, total, how to cancel, refunds (特商法11条・12条の6) */}
-          <section className="purchase-facts" data-testid="purchase-facts" aria-label={t('premium.beforeTitle')}>
-            <h2>{t('premium.beforeTitle')}</h2>
-            <dl>
-              {planFacts(l, OPERATOR).map(([k, v]) => (
-                <div key={k}>
-                  <dt>{k}</dt>
-                  <dd>{withMarks(v)}</dd>
-                </div>
-              ))}
-            </dl>
-            <p className="muted purchase-seller" data-testid="purchase-seller">{withMarks(disclosureNote(l, OPERATOR))}</p>
-            <label className="agree">
-              <input type="checkbox" data-testid="premium-agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
-              <span>{t('premium.agree')}</span>
-            </label>
-          </section>
-          <button className="btn primary wide" data-testid="premium-subscribe" disabled={!agreed || busy} aria-busy={busy} onClick={() => void run(startCheckout)}>{busy ? t('art.loading') : t('premium.subscribeFull')}</button>
+          {/* the long "before you subscribe" text (特商法11条・12条の6: price, renewal, payment, total, how to cancel, refunds) sits in a sheet that
+              fades in when the visitor taps the button; the final button and the agreement are inside it */}
+          <button className="btn primary wide" data-testid="premium-open" aria-haspopup="dialog" onClick={() => setSheet(true)}>{t('premium.subscribeFull')}</button>
+          {sheet && (
+            <Sheet title={t('premium.beforeTitle')} closeLabel={t('common.close')} onClose={() => setSheet(false)}>
+              <section className="purchase-facts" data-testid="purchase-facts" aria-label={t('premium.beforeTitle')}>
+                <dl>
+                  {planFacts(l, OPERATOR).map(([k, v]) => (
+                    <div key={k}>
+                      <dt>{k}</dt>
+                      <dd>{withMarks(v)}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <p className="muted purchase-seller" data-testid="purchase-seller">{withMarks(disclosureNote(l, OPERATOR))}</p>
+                <label className="agree">
+                  <input type="checkbox" data-testid="premium-agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
+                  <span>{t('premium.agree')}</span>
+                </label>
+              </section>
+              <button className="btn primary wide" data-testid="premium-subscribe" disabled={!agreed || busy} aria-busy={busy} onClick={() => void run(startCheckout)}>{busy ? t('art.loading') : t('premium.subscribeFull')}</button>
+              {problemEl}
+            </Sheet>
+          )}
         </>
       )}
-      {problem && (
-        <div className="premium-error" role="alert" data-testid="checkout-error">
-          <p>{t(`premium.err.${problem.failure ?? 'failed'}` as 'premium.err.failed')}</p>
-          {problem.failure === 'signin' && <a className="btn wide" href={signInUrl(location.pathname + location.search)}>{t('acct.signIn')}</a>}
-          {problem.failure === 'already' && <button className="btn wide" onClick={() => go('account')}>{t('home.account')}</button>}
-          {problem.code && <small data-testid="checkout-error-code">{t('premium.err.code')}: {problem.code}</small>}
-        </div>
-      )}
+      {!sheet && problemEl}
       {state === 'off' && !premium && <p className="muted" data-testid="premium-soon">{t('premium.soon')}</p>}
       {state === 'signin' && !premium && <p className="muted" data-testid="premium-signin">{t('premium.signIn')}</p>}
       <p className="premium-free"><Phrases text={t('premium.free')} lang={lang} /></p>
