@@ -162,11 +162,6 @@ export async function handleAppleNotification(request: Request, env: Env, rootSh
     'INSERT INTO apple_subs (original_transaction_id, expires_ms, revoked, last_type, updated_at) VALUES (?, ?, ?, ?, ?) ' +
     'ON CONFLICT(original_transaction_id) DO UPDATE SET expires_ms = excluded.expires_ms, revoked = excluded.revoked, last_type = excluded.last_type, updated_at = excluded.updated_at',
   ).bind(String(tx.originalTransactionId), Number(tx.expiresDate ?? 0), revoked, type, Date.now()).run();
-  // The notification is also authoritative for a transaction that was explicitly
-  // attached to a shared account.  Do not create an entitlement here: an Apple
-  // notification alone is not proof of which ART SLIDE account owns it.
-  await env.DB.prepare('UPDATE apple_entitlements SET expires_ms = ?, revoked = ?, updated_at = ? WHERE original_transaction_id = ?')
-    .bind(Number(tx.expiresDate ?? 0), revoked, Date.now(), String(tx.originalTransactionId)).run().catch(() => undefined);
   return json({ ok: true });
 }
 

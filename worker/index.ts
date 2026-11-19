@@ -31,11 +31,7 @@ export async function handle(request: Request, env: Env, deps: Deps = {}): Promi
     if (method !== 'POST') return err(405, 'method');
     return handleAppleNotification(request, env); // authenticated by Apple's signature, not by a session
   }
-  if (path.startsWith('/api/apple/account-artwork/')) return handleAppleAccount(request, env, deps.fetchFn);
-  // iOS account + entitlement API: bearer token, no cookies.  Keep this list
-  // explicit so unrelated /api/apple/* paths stay closed, but include every
-  // route implemented by appleAccount.ts.
-  if (['/api/apple/auth', '/api/apple/google/auth', '/api/apple/sync', '/api/apple/signout', '/api/apple/account/delete', '/api/apple/status', '/api/apple/link/google', '/api/apple/entitlement'].includes(path)) return handleAppleAccount(request, env, deps.fetchFn);
+  if (['/api/apple/auth', '/api/apple/sync', '/api/apple/signout', '/api/apple/account/delete'].includes(path)) return handleAppleAccount(request, env, deps.fetchFn); // iOS account + sync: bearer token, no cookies
   if (path.startsWith('/api/apple/artwork/')) return serveAppleArtwork(request, env); // authenticated by an Apple-signed transaction
   if (!path.startsWith('/api/auth/') && !['/api/me', '/api/billing/status', '/api/billing/checkout', '/api/billing/portal', '/api/account/delete'].includes(path)) return err(404, 'not_found');
   if (!authConfigured(env)) return err(503, 'not_configured');

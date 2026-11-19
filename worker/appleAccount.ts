@@ -1,9 +1,6 @@
 import { logError } from './safeLog';
 import { err, json } from './http';
 import { allow, nowSec } from './db';
-import { ensureModeTables, upsertGoogleUser, userByGoogleSub } from './db';
-import { activeAppleTransaction } from './apple';
-import { hasPremium } from './entitlement';
 import { b64url, b64urlDecode, hmacHex, randomId, randomToken, safeEqual, sha256Hex } from './crypto';
 import type { D1Database, Env } from './env';
 import type { FetchFn } from './stripe';
@@ -53,8 +50,6 @@ const TABLES = [
   'CREATE TABLE IF NOT EXISTS apple_sessions (token_hash TEXT PRIMARY KEY, account_id TEXT NOT NULL, created_at INTEGER NOT NULL, expires_at INTEGER NOT NULL)',
   'CREATE TABLE IF NOT EXISTS apple_sync (account_id TEXT PRIMARY KEY, version INTEGER NOT NULL, doc TEXT NOT NULL, updated_at INTEGER NOT NULL)',
   'CREATE TABLE IF NOT EXISTS apple_tokens (account_id TEXT PRIMARY KEY, enc TEXT NOT NULL, created_at INTEGER NOT NULL)',
-  'CREATE TABLE IF NOT EXISTS apple_account_links (apple_account_id TEXT PRIMARY KEY REFERENCES apple_accounts(id) ON DELETE CASCADE, user_id TEXT NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE, linked_at INTEGER NOT NULL)',
-  'CREATE TABLE IF NOT EXISTS apple_entitlements (original_transaction_id TEXT PRIMARY KEY, apple_account_id TEXT NOT NULL REFERENCES apple_accounts(id) ON DELETE CASCADE, expires_ms INTEGER NOT NULL, revoked INTEGER NOT NULL DEFAULT 0, updated_at INTEGER NOT NULL)',
 ];
 const ready = new WeakMap<object, Promise<void>>();
 function ensureTables(db: D1Database): Promise<void> {
@@ -224,31 +219,6 @@ async function signIn(request: Request, env: Env, db: D1Database, fetchFn: Fetch
   return json({ token, accountId: acc.id });
 }
 
-/** Native Google sign-in is an account sign-in, not a Drive permission grant.
- * A Google identity is mapped to the existing web user id; the tiny internal
- * account is only a bearer-session container for the iOS API. */
-async function signInGoogle(request: Request, env: Env, db: D1Database, fetchFn: FetchFn): Promise<Response> {
-  const body = await readJson(request, 16 * 1024);
-  if (!body || typeof body.idToken !== 'string') return err(400, 'bad_request');
-  const sub = await googleSubject(body.idToken, env, fetchFn);
-  if (!sub) return err(401, 'invalid_token');
-  const user = (await userByGoogleSub(db, sub)) ?? await upsertGoogleUser(db, sub, null);
-  // If this Google account was explicitly linked to an Apple account already,
-  // always resume that account rather than silently making a second one.
-  let acc = await db.prepare('SELECT apple_account_id AS id FROM apple_account_links WHERE user_id = ?').bind(user.id).first<{ id: string }>();
-  if (!acc) {
-    const virtualSub = `google:${sub}`;
-    await db.prepare('INSERT INTO apple_accounts (id, apple_sub, created_at) VALUES (?, ?, ?) ON CONFLICT(apple_sub) DO NOTHING').bind(randomId(), virtualSub, nowSec()).run();
-    acc = await db.prepare('SELECT id FROM apple_accounts WHERE apple_sub = ?').bind(virtualSub).first<{ id: string }>();
-    if (!acc) return err(500, 'server_error');
-    await db.prepare('INSERT OR IGNORE INTO apple_account_links (apple_account_id, user_id, linked_at) VALUES (?, ?, ?)').bind(acc.id, user.id, nowSec()).run();
-  }
-  const now = nowSec(), token = randomToken(32);
-  await db.prepare('INSERT INTO apple_sessions (token_hash, account_id, created_at, expires_at) VALUES (?, ?, ?, ?)').bind(await sha256Hex(token), acc.id, now, now + APPLE_SESSION_SECONDS).run();
-  await db.prepare('DELETE FROM apple_sessions WHERE expires_at < ?').bind(now).run();
-  return json({ token, accountId: acc.id });
-}
-
 async function getSync(db: D1Database, accountId: string): Promise<Response> {
   const row = await db.prepare('SELECT version, doc, updated_at FROM apple_sync WHERE account_id = ?').bind(accountId).first<{ version: number; doc: string; updated_at: number }>();
   return json(row ? { version: row.version, doc: row.doc, updatedAt: row.updated_at } : { version: 0, doc: null, updatedAt: null });
@@ -270,125 +240,11 @@ async function putSync(request: Request, db: D1Database, accountId: string): Pro
   return json({ error: 'conflict', version: cur?.version ?? 0, doc: cur?.doc ?? null }, 409);
 }
 
-/** Server-side Google verification for the native SDK's signed ID token.  Google only returns claims after validating its signature. */
-async function googleSubject(idToken: string, env: Env, fetchFn: FetchFn): Promise<string | null> {
-  if (!idToken || idToken.length > 8192) return null;
-  const r = await fetchFn(`https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`);
-  if (!r.ok) return null;
-  const c = await r.json().catch(() => null) as { sub?: unknown; aud?: unknown; exp?: unknown } | null;
-  const audiences = [env.GOOGLE_CLIENT_ID, env.GOOGLE_IOS_CLIENT_ID].filter((v): v is string => !!v);
-  if (!c || typeof c.sub !== 'string' || !audiences.includes(String(c.aud)) || Number(c.exp) <= nowSec()) return null;
-  return c.sub;
-}
-
-async function linkedUser(db: D1Database, accountId: string): Promise<string | null> {
-  return (await db.prepare('SELECT user_id FROM apple_account_links WHERE apple_account_id = ?').bind(accountId).first<{ user_id: string }>())?.user_id ?? null;
-}
-
-/** The entitlement for an iOS bearer-session account. It deliberately covers
- * both an attached StoreKit transaction and the Stripe contract of its linked
- * Google account. */
-async function premiumForAccount(db: D1Database, accountId: string): Promise<boolean> {
-  await ensureModeTables(db);
-  const userId = await linkedUser(db, accountId);
-  const apple = await db.prepare('SELECT expires_ms, revoked FROM apple_entitlements WHERE apple_account_id = ? ORDER BY expires_ms DESC LIMIT 1')
-    .bind(accountId).first<{ expires_ms: number; revoked: number }>();
-  const applePremium = !!apple && apple.revoked === 0 && apple.expires_ms > Date.now();
-  if (!userId) return applePremium;
-  const now = nowSec();
-  const subs = await db.prepare('SELECT status, current_period_end, cancel_at_period_end FROM stripe_subscriptions WHERE user_id = ?')
-    .bind(userId).all<{ status: string; current_period_end: number | null; cancel_at_period_end: number }>();
-  return applePremium || (subs.results ?? []).some((s) => hasPremium(s, now));
-}
-
-/** App Store entitlement attached to an explicitly linked Apple account. */
-export async function applePremiumForUser(db: D1Database, userId: string): Promise<boolean> {
-  await ensureTables(db);
-  const row = await db.prepare('SELECT e.expires_ms, e.revoked FROM apple_entitlements e JOIN apple_account_links l ON l.apple_account_id = e.apple_account_id WHERE l.user_id = ? ORDER BY e.expires_ms DESC LIMIT 1')
-    .bind(userId).first<{ expires_ms: number; revoked: number }>();
-  return !!row && row.revoked === 0 && row.expires_ms > Date.now();
-}
-
-async function status(db: D1Database, accountId: string): Promise<Response> {
-  await ensureModeTables(db);
-  const userId = await linkedUser(db, accountId);
-  const apple = (await db.prepare('SELECT expires_ms, revoked FROM apple_entitlements WHERE apple_account_id = ? ORDER BY expires_ms DESC LIMIT 1').bind(accountId).first<{ expires_ms: number; revoked: number }>()) ?? null;
-  let stripe = false;
-  if (userId) {
-    const now = nowSec();
-    const subs = await db.prepare('SELECT status, current_period_end, cancel_at_period_end FROM stripe_subscriptions WHERE user_id = ?').bind(userId).all<{ status: string; current_period_end: number | null; cancel_at_period_end: number }>();
-    stripe = (subs.results ?? []).some((s) => hasPremium(s, now));
-  }
-  return json({ signedIn: true, linkedGoogle: !!userId, premium: stripe || !!apple && apple.revoked === 0 && apple.expires_ms > Date.now(), sources: { stripe, apple: !!apple && apple.revoked === 0 && apple.expires_ms > Date.now() } });
-}
-
-/** Premium artwork for the native app when it authenticated with its account
- * session rather than a StoreKit JWS. The session is checked server-side, so a
- * Google/Stripe Premium account never needs a fabricated Apple transaction. */
-async function serveAccountArtwork(request: Request, env: Env, db: D1Database, accountId: string, id: string): Promise<Response> {
-  if (!(await premiumForAccount(db, accountId))) return err(403, 'premium_required');
-  const res = await env.ASSETS.fetch(new Request(new URL(`/artworks/${id}.webp`, request.url)));
-  if (!res.ok) return err(404, 'not_found');
-  const headers = new Headers(res.headers);
-  headers.set('cache-control', 'private, no-store');
-  return new Response(res.body, { status: 200, headers });
-}
-
-async function linkGoogle(request: Request, env: Env, db: D1Database, accountId: string, fetchFn: FetchFn): Promise<Response> {
-  const body = await readJson(request, 16 * 1024);
-  if (!body || typeof body.idToken !== 'string') return err(400, 'bad_request');
-  const sub = await googleSubject(body.idToken, env, fetchFn);
-  if (!sub) return err(401, 'invalid_token');
-  const user = (await userByGoogleSub(db, sub)) ?? await upsertGoogleUser(db, sub, null);
-  const current = await linkedUser(db, accountId);
-  if (current === user.id) return status(db, accountId);
-  // Both credentials were presented in this request. Never replace either side of an existing link.
-  const owner = await db.prepare('SELECT apple_account_id FROM apple_account_links WHERE user_id = ?').bind(user.id).first<{ apple_account_id: string }>();
-  if (current) return err(409, 'already_linked');
-  if (owner && owner.apple_account_id !== accountId) {
-    // A Google-only iOS session has an internal session container. Both
-    // credentials are present now, so move its verified purchases to the
-    // Apple account and replace only that internal link; nothing is deleted.
-    await db.batch([
-      db.prepare('UPDATE apple_entitlements SET apple_account_id = ? WHERE apple_account_id = ?').bind(accountId, owner.apple_account_id),
-      db.prepare('DELETE FROM apple_account_links WHERE apple_account_id = ?').bind(owner.apple_account_id),
-    ]);
-  }
-  await db.prepare('INSERT INTO apple_account_links (apple_account_id, user_id, linked_at) VALUES (?, ?, ?)').bind(accountId, user.id, nowSec()).run();
-  return status(db, accountId);
-}
-
-async function claimEntitlement(request: Request, env: Env, db: D1Database, accountId: string): Promise<Response> {
-  const body = await readJson(request, 32 * 1024);
-  if (!body || typeof body.signedTransaction !== 'string') return err(400, 'bad_request');
-  const tx = await activeAppleTransaction(body.signedTransaction, env);
-  if (!tx) return err(403, 'invalid_transaction');
-  const existing = await db.prepare('SELECT apple_account_id FROM apple_entitlements WHERE original_transaction_id = ?').bind(tx.originalTransactionId).first<{ apple_account_id: string }>();
-  if (existing && existing.apple_account_id !== accountId) return err(409, 'transaction_linked');
-  await db.prepare('INSERT INTO apple_entitlements (original_transaction_id, apple_account_id, expires_ms, revoked, updated_at) VALUES (?, ?, ?, 0, ?) ON CONFLICT(original_transaction_id) DO UPDATE SET expires_ms = excluded.expires_ms, revoked = 0, updated_at = excluded.updated_at')
-    .bind(tx.originalTransactionId, accountId, tx.expiresMs, Date.now()).run();
-  return status(db, accountId);
-}
-
 /** Routes /api/apple/auth|sync|signout|account/delete. Fails closed. */
 export async function handleAppleAccount(request: Request, env: Env, fetchFn: FetchFn = (i, init) => fetch(i, init)): Promise<Response> {
   const path = new URL(request.url).pathname;
   const method = request.method;
-  const artwork = /^\/api\/apple\/account-artwork\/([A-Za-z0-9_-]+)$/.exec(path);
-  if (artwork) {
-    if (!env.APPLE_BUNDLE_ID || !env.DB) return err(503, 'not_configured');
-    if (method !== 'GET') return err(405, 'method');
-    try {
-      await ensureTables(env.DB);
-      const accountId = await accountFor(env.DB, bearer(request));
-      if (!accountId) return err(401, 'signin_required');
-      return await serveAccountArtwork(request, env, env.DB, accountId, artwork[1]);
-    } catch (e) {
-      logError('account artwork check failed', e);
-      return err(503, 'unavailable');
-    }
-  }
-  const allowed: Record<string, string[]> = { '/api/apple/auth': ['POST'], '/api/apple/google/auth': ['POST'], '/api/apple/sync': ['GET', 'PUT'], '/api/apple/signout': ['POST'], '/api/apple/account/delete': ['POST'], '/api/apple/status': ['GET'], '/api/apple/link/google': ['POST'], '/api/apple/entitlement': ['POST'] };
+  const allowed: Record<string, string[]> = { '/api/apple/auth': ['POST'], '/api/apple/sync': ['GET', 'PUT'], '/api/apple/signout': ['POST'], '/api/apple/account/delete': ['POST'] };
   const methods = allowed[path];
   if (!methods) return err(404, 'not_found');
   if (!env.APPLE_BUNDLE_ID || !env.DB) return err(503, 'not_configured');
@@ -397,14 +253,10 @@ export async function handleAppleAccount(request: Request, env: Env, fetchFn: Fe
   try {
     await ensureTables(db);
     if (path === '/api/apple/auth') return await signIn(request, env, db, fetchFn);
-    if (path === '/api/apple/google/auth') return await signInGoogle(request, env, db, fetchFn);
     const token = bearer(request);
     const accountId = await accountFor(db, token);
     if (!accountId) return err(401, 'signin_required');
     if (path === '/api/apple/sync') return method === 'GET' ? await getSync(db, accountId) : await putSync(request, db, accountId);
-    if (path === '/api/apple/status') return status(db, accountId);
-    if (path === '/api/apple/link/google') return linkGoogle(request, env, db, accountId, fetchFn);
-    if (path === '/api/apple/entitlement') return claimEntitlement(request, env, db, accountId);
     if (path === '/api/apple/signout') {
       await db.prepare('DELETE FROM apple_sessions WHERE token_hash = ?').bind(await sha256Hex(token)).run();
       return json({ ok: true });

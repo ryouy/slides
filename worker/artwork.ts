@@ -6,7 +6,6 @@ import { currentUser } from './auth';
 import { authConfigured, stripeLivemode, type Env } from './env';
 import { getSubscription, nowSec } from './db';
 import { hasPremium } from './entitlement';
-import { applePremiumForUser } from './appleAccount';
 
 /**
  * Full-size paintings are served through the Worker so that Premium paintings need a Premium account.
@@ -37,12 +36,7 @@ export async function serveArtwork(request: Request, env: Env): Promise<Response
   try {
     if (authConfigured(env)) {
       const user = await currentUser(request, env);
-      if (user) {
-        const stripePremium = hasPremium(await getSubscription(env.DB!, user.id, stripeLivemode(env)), nowSec());
-        // Keep the image gate identical to the plan API: a verified StoreKit
-        // entitlement linked to this Google/Web account is Premium too.
-        premium = stripePremium || await applePremiumForUser(env.DB!, user.id);
-      }
+      if (user) premium = hasPremium(await getSubscription(env.DB!, user.id, stripeLivemode(env)), nowSec());
     }
   } catch (e) {
     logError('artwork check failed', e); // fail closed: never hand out a Premium image on an error

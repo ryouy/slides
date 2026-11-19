@@ -20,8 +20,6 @@ export interface Env {
   // Secrets / variables (see README "Premium: setup")
   SITE_URL?: string;
   GOOGLE_CLIENT_ID?: string;
-  /** iOS OAuth client id.  Its ID tokens are accepted only by the native account-link endpoint. */
-  GOOGLE_IOS_CLIENT_ID?: string;
   GOOGLE_CLIENT_SECRET?: string;
   SESSION_SECRET?: string;
   STRIPE_SECRET_KEY?: string;

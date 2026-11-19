@@ -96,8 +96,6 @@ export async function userByCustomer(db: D1Database, customerId: string): Promis
 }
 export const userById = (db: D1Database, id: string) =>
   db.prepare('SELECT id, google_sub, name, stripe_customer_id FROM users WHERE id = ?').bind(id).first<UserRow>();
-export const userByGoogleSub = (db: D1Database, sub: string) =>
-  db.prepare('SELECT id, google_sub, name, stripe_customer_id FROM users WHERE google_sub = ?').bind(sub).first<UserRow>();
 
 export interface SubscriptionInput {
   stripe_subscription_id: string;

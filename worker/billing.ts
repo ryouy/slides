@@ -5,7 +5,6 @@ import { hasPremium, isOpenSubscription, type SubscriptionRow } from './entitlem
 import { err, json } from './http';
 import { priceProblem } from './priceCheck';
 import { logError } from './safeLog';
-import { applePremiumForUser } from './appleAccount';
 import { customerId, periodEnd, StripeError, stripeClient, verifyStripeSignature, type FetchFn, type StripeClient, type StripeSubscription } from './stripe';
 
 const REFRESH_AFTER = 600; // seconds: how old a row may be before an expired period is re-checked with Stripe
@@ -95,14 +94,12 @@ export async function planFor(env: Env, user: UserRow, opts: { refresh?: boolean
       logError('stripe refresh failed', e);
     }
   }
-  const stripePremium = hasPremium(sub, nowSec());
-  const applePremium = await applePremiumForUser(env.DB!, user.id).catch(() => false);
   return {
     signedIn: true,
     id: user.id,
     googleSub: user.google_sub,
     name: user.name,
-    premium: stripePremium || applePremium,
+    premium: hasPremium(sub, nowSec()),
     status: sub?.status ?? null,
     currentPeriodEnd: sub?.current_period_end ?? null,
     cancelAtPeriodEnd: !!sub?.cancel_at_period_end,
