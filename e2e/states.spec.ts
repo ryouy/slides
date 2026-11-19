@@ -128,11 +128,17 @@ for (const [name, { me, premium }] of Object.entries(STATES)) {
   });
 }
 
-/** Opens the "before you subscribe" sheet (once; harmless if it is already open). */
+/** Opens the "before you subscribe" pull-down (harmless if it is already open). */
 async function openSheet(page: import('@playwright/test').Page) {
-  if (await page.getByTestId('purchase-sheet').count()) return; // already open
-  const open = page.getByTestId('premium-open');
-  if (await open.count()) await open.click();
+  const d = page.getByTestId('purchase-details');
+  await d.waitFor({ timeout: 8000 }).catch(() => {}); // not every visitor gets the purchase panel
+  if (!(await d.count())) return;
+  await page.waitForLoadState('networkidle'); // the account answer has arrived: the panel will not be rebuilt (and folded) any more
+  // the panel can re-render while the account answer arrives (that closes the element again): retry until it stays open
+  await expect(async () => {
+    if (!(await d.evaluate((el) => (el as HTMLDetailsElement).open))) await d.locator('summary').click();
+    await expect(d).toHaveJSProperty('open', true);
+  }).toPass({ timeout: 20000 });
 }
 
 test('after Checkout the page says it is confirming, then shows Premium once the server says so', async ({ page }) => {

@@ -30,11 +30,17 @@ const gating = (page: Page) => page.addInitScript(() => { localStorage.setItem('
 const PREMIUM: Me = { signedIn: true, premium: true, name: 'Ann Example', status: 'active', currentPeriodEnd: Math.floor(Date.now() / 1000) + 20 * 86400, cancelAtPeriodEnd: false };
 const LOCKED = 'monet-stacks-of-wheat-end-of-summer';
 
-/** Opens the "before you subscribe" sheet (once; harmless if it is already open). */
+/** Opens the "before you subscribe" pull-down (harmless if it is already open). */
 async function openSheet(page: import('@playwright/test').Page) {
-  if (await page.getByTestId('purchase-sheet').count()) return; // already open
-  const open = page.getByTestId('premium-open');
-  if (await open.count()) await open.click();
+  const d = page.getByTestId('purchase-details');
+  await d.waitFor({ timeout: 8000 }).catch(() => {}); // not every visitor gets the purchase panel
+  if (!(await d.count())) return;
+  await page.waitForLoadState('networkidle'); // the account answer has arrived: the panel will not be rebuilt (and folded) any more
+  // the panel can re-render while the account answer arrives (that closes the element again): retry until it stays open
+  await expect(async () => {
+    if (!(await d.evaluate((el) => (el as HTMLDetailsElement).open))) await d.locator('summary').click();
+    await expect(d).toHaveJSProperty('open', true);
+  }).toPass({ timeout: 20000 });
 }
 
 test('without the paid plan switched on, the site never calls the API', async ({ page }) => {
@@ -438,21 +444,17 @@ test('gallery: a Premium visitor sees no locks and the order is the normal one',
   await expect(page.locator('[data-testid^="lock-"]')).toHaveCount(0);
 });
 
-test('the long "before you subscribe" text is behind a button: it opens as a sheet and closes with ×, Escape or the backdrop', async ({ page }) => {
+test('the long "before you subscribe" text is a pull-down: closed by default, the agreement and the button stay visible', async ({ page }) => {
   await gating(page);
   await mockApi(page, { me: { signedIn: true, premium: false, canPurchase: true, name: 'Ann Example', status: null } });
   await page.goto('/art-slide/premium');
-  await expect(page.getByTestId('purchase-facts')).toHaveCount(0); // not on the page itself
-  await expect(page.getByTestId('premium-subscribe')).toHaveCount(0);
-  await page.getByTestId('premium-open').click();
-  await expect(page.getByTestId('purchase-sheet')).toBeVisible();
-  await expect(page.getByTestId('purchase-facts')).toBeVisible();
-  await page.getByTestId('sheet-close').click();
-  await expect(page.getByTestId('purchase-sheet')).toHaveCount(0);
-  await page.getByTestId('premium-open').click();
-  await page.keyboard.press('Escape');
-  await expect(page.getByTestId('purchase-sheet')).toHaveCount(0);
-  await page.getByTestId('premium-open').click();
-  await page.getByTestId('purchase-sheet').click({ position: { x: 5, y: 5 } }); // the dim area outside the sheet
-  await expect(page.getByTestId('purchase-sheet')).toHaveCount(0);
+  const d = page.getByTestId('purchase-details');
+  await expect(d).toBeVisible();
+  await expect(page.getByTestId('purchase-seller')).toBeHidden(); // the long text is folded away
+  await expect(page.getByTestId('premium-agree')).toBeVisible();
+  await expect(page.getByTestId('premium-subscribe')).toBeVisible();
+  await d.locator('summary').click();
+  await expect(page.getByTestId('purchase-seller')).toBeVisible();
+  await d.locator('summary').click();
+  await expect(page.getByTestId('purchase-seller')).toBeHidden();
 });

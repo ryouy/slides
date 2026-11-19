@@ -128,18 +128,13 @@ public struct ArtRootView: View {
             Button {
                 if app.isPremium { path.append(.photos) } else { showPremium = true }
             } label: {
-                HStack(spacing: 10) {
-                    Image(systemName: "photo.on.rectangle.angled")
+                HStack(spacing: 6) {
                     Text(app.t("home.photos"))
-                    if !app.isPremium { Image(systemName: "lock.fill").font(.footnote) }
-                    Spacer()
-                    Image(systemName: "chevron.right").font(.footnote.weight(.semibold))
+                    if !app.isPremium { Image(systemName: "lock.fill").font(.system(size: 12)) }
                 }
-                .font(Web.font(14, .medium, relativeTo: .subheadline))
-                .foregroundStyle(Web.fg)
-                .frame(maxWidth: .infinity, minHeight: 48)
+                .font(Web.font(15, .medium, relativeTo: .body)).foregroundStyle(Web.fg).frame(maxWidth: .infinity, minHeight: 58)
             }
-            .buttonStyle(.plain)
+            .buttonStyle(HomeTileStyle())
             .accessibilityHint(app.isPremium ? app.t("photos.empty") : app.t("premium.lockedPhotos"))
             if resumable {
                 Button { path.append(.resume) } label: {

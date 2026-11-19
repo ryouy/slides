@@ -20,28 +20,6 @@ function Phrases({ text, lang }: { text: string; lang: string }) {
   return <>{text.split(/(?<=[、。，,])/).map((c, i) => <span key={i} className="phrase">{c}</span>)}</>;
 }
 
-/** A page that fades up over the current one (Escape, the backdrop or the close button dismiss it). */
-function Sheet({ title, closeLabel, onClose, children }: { title: string; closeLabel: string; onClose: () => void; children: React.ReactNode }) {
-  useEffect(() => {
-    const key = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
-    window.addEventListener('keydown', key);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { window.removeEventListener('keydown', key); document.body.style.overflow = prev; };
-  }, [onClose]);
-  return (
-    <div className="sheet-backdrop" data-testid="purchase-sheet" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="sheet" role="dialog" aria-modal="true" aria-label={title}>
-        <header className="sheet-head">
-          <h2>{title}</h2>
-          <button className="sheet-close" data-testid="sheet-close" aria-label={closeLabel} onClick={onClose}>×</button>
-        </header>
-        <div className="sheet-body">{children}</div>
-      </div>
-    </div>
-  );
-}
-
 /** The Premium offer: price, what it includes and how it renews. `reason` explains a lock the visitor just ran into. */
 export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' }) {
   const t = useT();
@@ -51,7 +29,6 @@ export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' })
   const lang = useLang();
   const l = legalLang(lang);
   const [agreed, setAgreed] = useState(false);
-  const [sheet, setSheet] = useState(false);
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState<PurchaseOutcome | null>(null);
   /** Runs a purchase/portal action. A failure is SHOWN (never silent): what to do, plus the short server code for support. */
@@ -95,36 +72,30 @@ export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' })
         </>
       ) : state === 'off' ? null : (
         <>
-          {/* the long "before you subscribe" text (特商法11条・12条の6: price, renewal, payment, total, how to cancel, refunds) sits in a sheet that
-              fades in when the visitor taps the button; the final button and the agreement are inside it */}
-          <button className="btn primary wide" data-testid="premium-open" aria-haspopup="dialog" onClick={() => setSheet(true)}>{t('premium.subscribeFull')}</button>
-          {sheet && (
-            <Sheet title={t('premium.beforeTitle')} closeLabel={t('common.close')} onClose={() => setSheet(false)}>
-              <section className="purchase-facts" data-testid="purchase-facts" aria-label={t('premium.beforeTitle')}>
-                <details className="purchase-details" data-testid="purchase-details">
-                  <summary>{t('premium.details')}</summary>
-                  <dl>
-                    {planFacts(l, OPERATOR).map(([k, v]) => (
-                      <div key={k}>
-                        <dt>{k}</dt>
-                        <dd>{withMarks(v)}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                  <p className="muted purchase-seller" data-testid="purchase-seller">{withMarks(disclosureNote(l, OPERATOR))}</p>
-                </details>
-                <label className="agree">
-                  <input type="checkbox" data-testid="premium-agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
-                  <span>{t('premium.agree')}</span>
-                </label>
-              </section>
-              <button className="btn primary wide" data-testid="premium-subscribe" disabled={!agreed || busy} aria-busy={busy} onClick={() => void run(startCheckout)}>{busy ? t('art.loading') : t('premium.subscribeFull')}</button>
-              {problemEl}
-            </Sheet>
-          )}
+          {/* the long "before you subscribe" text (特商法11条・12条の6: price, renewal, payment, total, how to cancel, refunds) is a pull-down:
+              it is one tap away, and the agreement and the button stay visible */}
+          <section className="purchase-facts" data-testid="purchase-facts" aria-label={t('premium.beforeTitle')}>
+            <details className="purchase-details" data-testid="purchase-details">
+              <summary>{t('premium.beforeTitle')}</summary>
+              <dl>
+                {planFacts(l, OPERATOR).map(([k, v]) => (
+                  <div key={k}>
+                    <dt>{k}</dt>
+                    <dd>{withMarks(v)}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="muted purchase-seller" data-testid="purchase-seller">{withMarks(disclosureNote(l, OPERATOR))}</p>
+            </details>
+            <label className="agree">
+              <input type="checkbox" data-testid="premium-agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
+              <span>{t('premium.agree')}</span>
+            </label>
+          </section>
+          <button className="btn primary wide" data-testid="premium-subscribe" disabled={!agreed || busy} aria-busy={busy} onClick={() => void run(startCheckout)}>{busy ? t('art.loading') : t('premium.subscribeFull')}</button>
         </>
       )}
-      {!sheet && problemEl}
+      {problemEl}
       {state === 'off' && !premium && <p className="muted" data-testid="premium-soon">{t('premium.soon')}</p>}
       {state === 'signin' && !premium && <p className="muted" data-testid="premium-signin">{t('premium.signIn')}</p>}
       <p className="premium-free"><Phrases text={t('premium.free')} lang={lang} /></p>

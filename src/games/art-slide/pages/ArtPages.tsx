@@ -70,6 +70,7 @@ export function ArtHome() {
       <nav className="menu art-home-menu" aria-label={t('home.explore')}>
         <button className="btn big" data-testid="art-gallery" onClick={() => go('gallery')}>{t('art.gallery')}<ChevronRight size={26} className="btn-chev" /></button>
         <button className="btn big" data-testid="art-random" onClick={() => go(`play/${pickRandomArtwork(undefined, Math.random, premium, gating).id}`)}>{t('art.random')}<ChevronRight size={26} className="btn-chev" /></button>
+        {gating && <button className="btn big" data-testid="art-photos" onClick={() => go('photos')}>{t('home.photos')}{!premium && <LockIcon size={15} />}<ChevronRight size={26} className="btn-chev" /></button>}
         {resumable && <button className="btn big" data-testid="art-resume" onClick={() => go('play')}>{t('art.resume')}<ChevronRight size={26} className="btn-chev" /></button>}
       </nav>
       <div className="art-home-secondary">
@@ -80,7 +81,6 @@ export function ArtHome() {
               <Link to="/art-slide/how">{t('home.howTo')}</Link>
               <Link to="/art-slide/stats">{t('home.stats')}</Link>
               <Link to="/art-slide/credits">{t('home.credits')}</Link>
-              {gating && <Link to="/art-slide/photos" data-testid="more-photos">{t('home.photos')}</Link>}
               {gating && <Link to="/art-slide/premium" data-testid="more-premium">{t('home.premium')}</Link>}
               {gating && <Link to="/art-slide/account" data-testid="more-account">{t('home.account')}</Link>}
             </nav>

@@ -2187,3 +2187,13 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 @keyframes sheet-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes sheet-rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .sheet-backdrop, .sheet { animation: none; } }
+
+/* lock mark inside a home menu line */
+.art-home .art-home-menu .btn > svg:not(.btn-chev) { margin-left: 8px; vertical-align: -2px; }
+
+/* "Before you subscribe": one pull-down line; the facts open under it */
+.purchase-details > summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; min-height: 44px; font-size: 13px; letter-spacing: .06em; font-weight: 700; }
+.purchase-details > summary::-webkit-details-marker { display: none; }
+.purchase-details > summary::after { content: ''; width: 8px; height: 8px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); margin: -3px 4px 0 0; transition: transform .18s ease; }
+.purchase-details[open] > summary::after { transform: rotate(-135deg); margin-top: 3px; }
+.purchase-details dl { margin-top: 4px; }
