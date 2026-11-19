@@ -1,7 +1,7 @@
 import { logError } from './safeLog';
 import { err, json } from './http';
 import { allow, nowSec } from './db';
-import { b64urlDecode, hmacHex, randomId, randomToken, safeEqual, sha256Hex } from './crypto';
+import { b64url, b64urlDecode, hmacHex, randomId, randomToken, safeEqual, sha256Hex } from './crypto';
 import type { D1Database, Env } from './env';
 import type { FetchFn } from './stripe';
 
@@ -15,14 +15,23 @@ import type { FetchFn } from './stripe';
  *    The Worker also creates the three tables idempotently, so a missing migration never breaks the endpoints.
  *  - The iOS app's Sign in with Apple capability must be on for the same Bundle ID (the token's `aud`).
  *
- * NOT IMPLEMENTED (manual follow-up): revoking the Sign in with Apple token on account deletion (App Store rule 5.1.1(v)).
- *  That calls POST https://appleid.apple.com/auth/revoke with client_id (Bundle ID), a client_secret and the user's refresh
- *  token. Missing for it: (1) a Sign in with Apple private key (.p8) + its Key ID + the Team ID, stored as Secrets, to sign
- *  the ES256 client_secret JWT (iss=Team ID, sub=Bundle ID, aud=https://appleid.apple.com); (2) the app sending the
- *  authorization code at sign-in so the Worker can exchange it (POST /auth/token) for a refresh token, and storing it
- *  (e.g. an extra column in apple_accounts) until deletion.
+ * REVOCATION ON ACCOUNT DELETION (App Store rule 5.1.1(v)) is optional and needs four Worker Secrets (never in the repo):
+ *    APPLE_TEAM_ID, APPLE_KEY_ID, APPLE_PRIVATE_KEY (full .p8 text), APPLE_TOKEN_KEY (long random string, >= 32 chars, only used to
+ *    encrypt stored refresh tokens). Without all four everything else works and revoke is reported as "skipped".
+ *  1. Apple Developer -> Certificates, Identifiers & Profiles -> Keys -> "+" -> enable "Sign in with Apple" -> Configure and choose
+ *     the app's primary App ID -> Continue/Register -> Download the .p8 ONCE and note its Key ID. The Team ID is under Membership.
+ *  2. npx wrangler secret put APPLE_TEAM_ID
+ *     npx wrangler secret put APPLE_KEY_ID
+ *     npx wrangler secret put APPLE_TOKEN_KEY          (e.g. the output of: openssl rand -base64 48)
+ *     npx wrangler secret put APPLE_PRIVATE_KEY < AuthKey_XXXXXXXXXX.p8
+ *  3. NEVER commit the .p8 file (or paste it anywhere public). Keep it only in your password manager / secure backup.
+ *  How it works: the app sends `authorizationCode` with POST /api/apple/auth; the Worker exchanges it at
+ *  https://appleid.apple.com/auth/token (client_secret = ES256 JWT signed with the .p8) and stores the refresh token AES-GCM
+ *  encrypted in apple_tokens. A failed exchange never blocks sign-in. On POST /api/apple/account/delete all server data is deleted
+ *  FIRST (never blocked by Apple), then https://appleid.apple.com/auth/revoke is called best effort; the answer is
+ *  { ok: true, revoked: "revoked" | "skipped" | "failed" } (always HTTP 200 once the data is gone). Tokens/bodies are never logged.
  *
- * Endpoints: POST /api/apple/auth, GET|PUT /api/apple/sync, POST /api/apple/signout, POST /api/apple/account/delete.
+ * Endpoints: POST /api/apple/auth {identityToken, nonce, authorizationCode?}, GET|PUT /api/apple/sync, POST /api/apple/signout, POST /api/apple/account/delete.
  * Tokens are never logged; only the SHA-256 hash of a session token is stored.
  */
 
@@ -40,6 +49,7 @@ const TABLES = [
   'CREATE TABLE IF NOT EXISTS apple_accounts (id TEXT PRIMARY KEY, apple_sub TEXT NOT NULL UNIQUE, created_at INTEGER NOT NULL)',
   'CREATE TABLE IF NOT EXISTS apple_sessions (token_hash TEXT PRIMARY KEY, account_id TEXT NOT NULL, created_at INTEGER NOT NULL, expires_at INTEGER NOT NULL)',
   'CREATE TABLE IF NOT EXISTS apple_sync (account_id TEXT PRIMARY KEY, version INTEGER NOT NULL, doc TEXT NOT NULL, updated_at INTEGER NOT NULL)',
+  'CREATE TABLE IF NOT EXISTS apple_tokens (account_id TEXT PRIMARY KEY, enc TEXT NOT NULL, created_at INTEGER NOT NULL)',
 ];
 const ready = new WeakMap<object, Promise<void>>();
 function ensureTables(db: D1Database): Promise<void> {
@@ -100,6 +110,72 @@ export async function verifyIdentityToken(token: string, nonce: string, bundleId
   return typeof claims.sub === 'string' && claims.sub ? claims.sub : null;
 }
 
+// ---- revocation (client secret, refresh token encryption, token/revoke calls) ----
+export const APPLE_TOKEN_URL = 'https://appleid.apple.com/auth/token';
+export const APPLE_REVOKE_URL = 'https://appleid.apple.com/auth/revoke';
+const CLIENT_SECRET_SECONDS = 600;
+const nonEmpty = (v: string | undefined): v is string => typeof v === 'string' && v.trim().length > 0;
+const revocationConfigured = (env: Env): boolean => nonEmpty(env.APPLE_TEAM_ID) && nonEmpty(env.APPLE_KEY_ID) && nonEmpty(env.APPLE_PRIVATE_KEY) && nonEmpty(env.APPLE_TOKEN_KEY);
+
+function pemToDer(pem: string): Uint8Array<ArrayBuffer> {
+  const body = pem.replace(/\\n/g, '\n').replace(/-----(BEGIN|END)[^-]*-----/g, '').replace(/\s+/g, '');
+  const bin = atob(body);
+  return Uint8Array.from(bin, (c) => c.charCodeAt(0)) as Uint8Array<ArrayBuffer>;
+}
+
+/** The ES256 JWT Apple wants as `client_secret` (valid ~10 minutes). */
+export async function makeClientSecret(env: Env, nowMs = Date.now()): Promise<string> {
+  const key = await crypto.subtle.importKey('pkcs8', pemToDer(env.APPLE_PRIVATE_KEY!), { name: 'ECDSA', namedCurve: 'P-256' }, false, ['sign']);
+  const iat = Math.floor(nowMs / 1000);
+  const h = b64url(enc.encode(JSON.stringify({ alg: 'ES256', kid: env.APPLE_KEY_ID })));
+  const p = b64url(enc.encode(JSON.stringify({ iss: env.APPLE_TEAM_ID, iat, exp: iat + CLIENT_SECRET_SECONDS, aud: ISSUER, sub: env.APPLE_BUNDLE_ID })));
+  const sig = await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, key, enc.encode(`${h}.${p}`)); // raw r||s, as JWS wants
+  return `${h}.${p}.${b64url(sig)}`;
+}
+
+async function tokenCryptoKey(secret: string): Promise<CryptoKey> {
+  const base = await crypto.subtle.importKey('raw', enc.encode(secret), 'HKDF', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name: 'HKDF', hash: 'SHA-256', salt: new Uint8Array(0), info: enc.encode('slidewords apple refresh token v1') }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+}
+export async function encryptToken(secret: string, plain: string): Promise<string> {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await tokenCryptoKey(secret), enc.encode(plain));
+  return `${b64url(iv)}.${b64url(ct)}`;
+}
+export async function decryptToken(secret: string, stored: string): Promise<string> {
+  const [iv, ct] = stored.split('.');
+  const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64urlDecode(iv) as Uint8Array<ArrayBuffer> }, await tokenCryptoKey(secret), b64urlDecode(ct) as Uint8Array<ArrayBuffer>);
+  return new TextDecoder().decode(pt);
+}
+
+const form = (o: Record<string, string>): RequestInit => ({ method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(o).toString() });
+
+/** Exchanges the authorization code for a refresh token and stores it encrypted. Never throws, never blocks sign-in, never logs a body. */
+async function storeRefreshToken(env: Env, db: D1Database, fetchFn: FetchFn, accountId: string, code: string): Promise<void> {
+  try {
+    const res = await fetchFn(APPLE_TOKEN_URL, form({ client_id: env.APPLE_BUNDLE_ID!, client_secret: await makeClientSecret(env), code, grant_type: 'authorization_code' }));
+    if (!res.ok) { console.error(`apple token exchange failed: status=${res.status}`); return; }
+    const refresh = ((await res.json()) as { refresh_token?: unknown }).refresh_token;
+    if (typeof refresh !== 'string' || !refresh) { console.error('apple token exchange: no refresh token'); return; }
+    await db.prepare('INSERT INTO apple_tokens (account_id, enc, created_at) VALUES (?, ?, ?) ON CONFLICT(account_id) DO UPDATE SET enc = excluded.enc, created_at = excluded.created_at')
+      .bind(accountId, await encryptToken(env.APPLE_TOKEN_KEY!, refresh), nowSec()).run();
+  } catch (e) {
+    logError('apple token exchange error', e);
+  }
+}
+
+type Revoked = 'revoked' | 'skipped' | 'failed';
+async function revokeToken(env: Env, fetchFn: FetchFn, refresh: string): Promise<Revoked> {
+  try {
+    const res = await fetchFn(APPLE_REVOKE_URL, form({ client_id: env.APPLE_BUNDLE_ID!, client_secret: await makeClientSecret(env), token: refresh, token_type_hint: 'refresh_token' }));
+    if (!res.ok) { console.error(`apple revoke failed: status=${res.status}`); return 'failed'; }
+    return 'revoked';
+  } catch (e) {
+    logError('apple revoke error', e);
+    return 'failed';
+  }
+}
+
 // ---- helpers ----
 const bearer = (request: Request): string => {
   const a = request.headers.get('authorization') ?? '';
@@ -137,6 +213,9 @@ async function signIn(request: Request, env: Env, db: D1Database, fetchFn: Fetch
   const token = randomToken(32);
   await db.prepare('INSERT INTO apple_sessions (token_hash, account_id, created_at, expires_at) VALUES (?, ?, ?, ?)').bind(await sha256Hex(token), acc.id, now, now + APPLE_SESSION_SECONDS).run();
   await db.prepare('DELETE FROM apple_sessions WHERE expires_at < ?').bind(now).run(); // housekeeping
+  if (typeof body.authorizationCode === 'string' && body.authorizationCode && body.authorizationCode.length <= 4096 && revocationConfigured(env)) {
+    await storeRefreshToken(env, db, fetchFn, acc.id, body.authorizationCode);
+  }
   return json({ token, accountId: acc.id });
 }
 
@@ -182,13 +261,21 @@ export async function handleAppleAccount(request: Request, env: Env, fetchFn: Fe
       await db.prepare('DELETE FROM apple_sessions WHERE token_hash = ?').bind(await sha256Hex(token)).run();
       return json({ ok: true });
     }
-    // account delete: everything of this account (the Sign in with Apple token revocation is a manual follow-up, see the top of this file)
+    // account delete: read the (encrypted) refresh token first, delete ALL server data (never blocked by Apple), then revoke best effort
+    let refresh: string | null = null;
+    let undecryptable = false;
+    if (revocationConfigured(env)) {
+      const row = await db.prepare('SELECT enc FROM apple_tokens WHERE account_id = ?').bind(accountId).first<{ enc: string }>();
+      if (row) { try { refresh = await decryptToken(env.APPLE_TOKEN_KEY!, row.enc); } catch (e) { undecryptable = true; logError('apple token decrypt error', e); } }
+    }
     await db.batch([
       db.prepare('DELETE FROM apple_sessions WHERE account_id = ?').bind(accountId),
       db.prepare('DELETE FROM apple_sync WHERE account_id = ?').bind(accountId),
+      db.prepare('DELETE FROM apple_tokens WHERE account_id = ?').bind(accountId),
       db.prepare('DELETE FROM apple_accounts WHERE id = ?').bind(accountId),
     ]);
-    return json({ ok: true });
+    const revoked: Revoked = refresh ? await revokeToken(env, fetchFn, refresh) : undecryptable ? 'failed' : 'skipped';
+    return json({ ok: true, revoked });
   } catch (e) {
     logError('apple account error', e);
     return err(503, 'unavailable');

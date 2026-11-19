@@ -250,7 +250,7 @@ describe('signout and account delete', () => {
     await call(req('PUT', '/api/apple/sync', { baseVersion: 0, doc: '{"a":1}' }, a1.token));
     await call(req('PUT', '/api/apple/sync', { baseVersion: 0, doc: '{"b":1}' }, b.token));
     const r = await call(req('POST', '/api/apple/account/delete', undefined, a1.token));
-    expect(await r.json()).toEqual({ ok: true });
+    expect(await r.json()).toEqual({ ok: true, revoked: 'skipped' });
     expect(raw.prepare('SELECT COUNT(*) AS n FROM apple_accounts WHERE id = ?').get(a1.accountId)).toEqual({ n: 0 });
     expect(raw.prepare('SELECT COUNT(*) AS n FROM apple_sessions WHERE account_id = ?').get(a1.accountId)).toEqual({ n: 0 });
     expect(raw.prepare('SELECT COUNT(*) AS n FROM apple_sync WHERE account_id = ?').get(a1.accountId)).toEqual({ n: 0 });

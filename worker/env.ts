@@ -46,6 +46,16 @@ export interface Env {
   APPLE_BUNDLE_ID?: string;
   APPLE_PRODUCT_ID?: string;
   // (the optional iOS account + sync endpoints, /api/apple/auth|sync|signout|account/delete, need only APPLE_BUNDLE_ID and DB; see worker/appleAccount.ts)
+  /**
+   * Optional Sign in with Apple token revocation on account deletion (Worker Secrets, never in the repo). All four must be non-empty,
+   * else revoke is "skipped". APPLE_TEAM_ID: Team ID; APPLE_KEY_ID: Key ID of the Sign in with Apple key; APPLE_PRIVATE_KEY: full text
+   * of its .p8 file (PEM; literal "\n" escapes accepted); APPLE_TOKEN_KEY: long random string (>= 32 chars) that only encrypts stored
+   * refresh tokens. See worker/appleAccount.ts and docs/APPLE-SETUP.md.
+   */
+  APPLE_TEAM_ID?: string;
+  APPLE_KEY_ID?: string;
+  APPLE_PRIVATE_KEY?: string;
+  APPLE_TOKEN_KEY?: string;
   /** "true" also accepts Sandbox/TestFlight transactions (for testing only; leave unset in production). */
   APPLE_ALLOW_SANDBOX?: string;
 }

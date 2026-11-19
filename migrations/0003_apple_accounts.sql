@@ -21,3 +21,10 @@ CREATE TABLE IF NOT EXISTS apple_sync (
   doc        TEXT NOT NULL,
   updated_at INTEGER NOT NULL
 );
+
+-- Sign in with Apple refresh token, AES-GCM encrypted (key from the APPLE_TOKEN_KEY secret); used only to revoke on account deletion.
+CREATE TABLE IF NOT EXISTS apple_tokens (
+  account_id TEXT PRIMARY KEY,
+  enc        TEXT NOT NULL,
+  created_at INTEGER NOT NULL
+);
