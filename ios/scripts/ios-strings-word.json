@@ -1,0 +1,12 @@
+{
+  "en": {
+    "ios.word.board": "Puzzle board",
+    "ios.word.tile": "{letter}, row {row}, column {col}",
+    "ios.word.noData": "The word list is missing. Reinstall the app."
+  },
+  "ja": {
+    "ios.word.board": "パズルボード",
+    "ios.word.tile": "{letter}、{row}行目、{col}列目",
+    "ios.word.noData": "単語リストが見つかりません。アプリを再インストールしてください。"
+  }
+}
