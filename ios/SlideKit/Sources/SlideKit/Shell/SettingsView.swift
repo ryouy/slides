@@ -1,6 +1,5 @@
 import SwiftUI
 import AuthenticationServices
-import GoogleSignInSwift
 import SlideCore
 
 public struct SettingsView: View {
@@ -112,7 +111,14 @@ public struct SettingsView: View {
     private var appleIn: Bool { app.account.isSignedIn && !app.account.signedInWithGoogle }
     private var googleIn: Bool { app.account.signedInWithGoogle || app.googleAccount.isSignedIn }
     @State private var tab: Int? = nil   // 0 = Apple, 1 = Google
-    private var shownTab: Int { tab ?? ((googleIn && !appleIn) ? 1 : 0) }
+    private var shownTab: Int { tab ?? (debugGoogleTab || (googleIn && !appleIn) ? 1 : 0) }
+    private var debugGoogleTab: Bool {
+        #if DEBUG
+        return ProcessInfo.processInfo.arguments.contains("-settingsGoogle")
+        #else
+        return false
+        #endif
+    }
 
     /// One compact section: Apple | Google tabs, the sign-in button or the signed-in row, one sync switch, a link to the web version.
     @ViewBuilder private var accountSection: some View {
@@ -166,20 +172,33 @@ public struct SettingsView: View {
         if googleIn {
             signedInRow("Google", systemImage: "g.circle", canDelete: false)
         } else if app.googleAccount.isConfigured {
-            GoogleSignInButton(scheme: scheme == .dark ? .dark : .light, style: .wide, state: app.googleAccount.busy ? .disabled : .normal) { Task { await app.googleAccount.signIn() } }
-                .frame(height: 46)
-                .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+            Button { Task { await app.googleAccount.signIn() } } label: {
+                HStack(spacing: 10) {
+                    GoogleGMark().frame(width: 18, height: 18)
+                    Text(app.t("ios.account.continueGoogle")).font(.system(size: 17, weight: .medium))
+                }
+                .foregroundStyle(Color(red: 0.12, green: 0.12, blue: 0.13))
+                .frame(maxWidth: .infinity, minHeight: 46)
+                .background(Color.white, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(Color.gray.opacity(0.45), lineWidth: 1))
+            }
+            .buttonStyle(.plain).disabled(app.googleAccount.busy)
+            .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
         }
     }
 
-    /// "Signed in" on the left; sign out (and delete, for an Apple account) on the right.
+    /// "Signed in" on the left; sign out on the right; delete (Apple account) in a small menu.
     private func signedInRow(_ name: String, systemImage: String, canDelete: Bool) -> some View {
-        HStack(spacing: 14) {
-            Label(name, systemImage: systemImage)
-            Spacer()
-            Button(app.t("ios.account.signOut")) { Task { await signOutAll() } }.buttonStyle(.borderless).disabled(app.account.busy)
+        HStack(spacing: 12) {
+            Label(name, systemImage: systemImage).lineLimit(1).fixedSize()
+            Spacer(minLength: 8)
+            Button(app.t("ios.account.signOut")) { Task { await signOutAll() } }
+                .buttonStyle(.borderless).lineLimit(1).fixedSize().disabled(app.account.busy)
             if canDelete {
-                Button(app.t("ios.account.delete"), role: .destructive) { confirmDelete = true }.buttonStyle(.borderless).disabled(app.account.busy)
+                Menu {
+                    Button(app.t("ios.account.delete"), role: .destructive) { confirmDelete = true }
+                } label: { Image(systemName: "ellipsis.circle").font(.title3) }
+                .buttonStyle(.borderless).disabled(app.account.busy)
             }
         }
     }

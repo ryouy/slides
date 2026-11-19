@@ -30,7 +30,8 @@
     "ios.account.switchMessage": "The records on this device were synced with a different account. Bringing them in adds this device's records to the account you just signed in with. Nothing is deleted unless you choose to use only the account's records.",
     "ios.account.switchBringIn": "Bring this device's records into the new account",
     "ios.account.switchReplace": "Use only the new account's records",
-    "ios.account.switchKept": "This device has records that were not synced yet, so they are kept."
+    "ios.account.switchKept": "This device has records that were not synced yet, so they are kept.",
+    "ios.account.continueGoogle": "Continue with Google"
   },
   "ja": {
     "ios.account.title": "アカウント",
@@ -63,6 +64,7 @@
     "ios.account.switchMessage": "この端末の記録は別のアカウントと同期されたものです。「取り込む」を選ぶと、この端末の記録が今サインインしたアカウントに追加されます。アカウントの記録だけを使う場合を除き、何も削除されません。",
     "ios.account.switchBringIn": "この端末の記録を新しいアカウントに取り込む",
     "ios.account.switchReplace": "新しいアカウントの記録だけを使う",
-    "ios.account.switchKept": "この端末には未同期の記録があるため、記録はそのまま残されます。"
+    "ios.account.switchKept": "この端末には未同期の記録があるため、記録はそのまま残されます。",
+    "ios.account.continueGoogle": "Googleで続ける"
   }
 }

@@ -78,6 +78,9 @@ public final class AppModel {
         await premium.start()
         await account.claim(premium.signedTransaction)
         await images.refresh()
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("-noAds") { return } // DEBUG only: skip the consent dialog for screenshots
+        #endif
         await ads.prepare()
     }
 }
