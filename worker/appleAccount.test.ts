@@ -289,6 +289,42 @@ describe('account-session artwork downloads', () => {
   });
 });
 
+describe('shared StoreKit entitlements', () => {
+  const googleFetch = async (url: string) => {
+    if (url.startsWith('https://oauth2.googleapis.com/tokeninfo?')) {
+      return new Response(JSON.stringify({ sub: 'google-premium-user', aud: 'ios-google-client', exp: nowS() + 600 }), { status: 200 });
+    }
+    return fetchFn(url);
+  };
+  const googleEnv = () => env({ GOOGLE_IOS_CLIENT_ID: 'ios-google-client' });
+
+  it('makes a verified StoreKit entitlement on a Google iOS session available to that common account', async () => {
+    const signedIn = await handle(req('POST', '/api/apple/google/auth', { idToken: 'google-id-token' }), googleEnv(), { fetchFn: googleFetch });
+    expect(signedIn.status).toBe(200);
+    const session = await signedIn.json() as { token: string; accountId: string };
+    // This row represents the result of the separately tested signed-JWS
+    // verification in POST /api/apple/entitlement.
+    raw.prepare('INSERT INTO apple_entitlements (original_transaction_id, apple_account_id, expires_ms, revoked, updated_at) VALUES (?, ?, ?, 0, ?)')
+      .run('google-purchase-1', session.accountId, Date.now() + 3_600_000, Date.now());
+    const status = await call(req('GET', '/api/apple/status', undefined, session.token), googleEnv());
+    expect(await status.json()).toMatchObject({ signedIn: true, linkedGoogle: true, premium: true, sources: { apple: true } });
+    const link = raw.prepare('SELECT user_id FROM apple_account_links WHERE apple_account_id = ?').get(session.accountId) as { user_id: string };
+    expect(raw.prepare('SELECT google_sub FROM users WHERE id = ?').get(link.user_id)).toEqual({ google_sub: 'google-premium-user' });
+  });
+
+  it('preserves a Google-session StoreKit entitlement when the user explicitly links Apple and Google', async () => {
+    const apple = (await signIn('real-apple-user')).body;
+    const google = await handle(req('POST', '/api/apple/google/auth', { idToken: 'google-id-token' }), googleEnv(), { fetchFn: googleFetch });
+    const googleSession = await google.json() as { accountId: string };
+    raw.prepare('INSERT INTO apple_entitlements (original_transaction_id, apple_account_id, expires_ms, revoked, updated_at) VALUES (?, ?, ?, 0, ?)')
+      .run('move-on-link-1', googleSession.accountId, Date.now() + 3_600_000, Date.now());
+    const linked = await handle(req('POST', '/api/apple/link/google', { idToken: 'google-id-token' }, apple.token), googleEnv(), { fetchFn: googleFetch });
+    expect(linked.status).toBe(200);
+    expect(await linked.json()).toMatchObject({ premium: true, sources: { apple: true } });
+    expect(raw.prepare('SELECT apple_account_id FROM apple_entitlements WHERE original_transaction_id = ?').get('move-on-link-1')).toEqual({ apple_account_id: apple.accountId });
+  });
+});
+
 describe('configuration and wiring', () => {
   it('answers 503 not_configured without APPLE_BUNDLE_ID or without the DB', async () => {
     for (const e of [env({ APPLE_BUNDLE_ID: undefined }), env({ DB: undefined })]) {

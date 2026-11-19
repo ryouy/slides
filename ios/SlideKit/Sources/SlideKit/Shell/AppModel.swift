@@ -45,6 +45,13 @@ public final class AppModel {
         images = ImageStore(catalog: catalog)
         let net = Reachability(), acct = AccountStore()
         network = net; account = acct
+        acct.claimCurrentEntitlement = { [weak acct, weak premium] in
+            guard let acct, let premium else { return }
+            // Refresh first: this also covers an entitlement restored or
+            // purchased while the person was still signed out.
+            await premium.refresh()
+            await acct.claim(premium.signedTransaction)
+        }
         sync = SyncStore(account: acct, network: net)
         let g = GoogleAccountStore()
         googleAccount = g

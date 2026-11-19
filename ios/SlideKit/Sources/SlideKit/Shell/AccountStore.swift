@@ -44,6 +44,11 @@ public final class AccountStore {
     /// Called whenever the session ends (sign-out, deletion, 401) so sync can turn itself off.
     var onSessionEnded: ((Notice) -> Void)?
     var onSignedIn: ((String) -> Void)?
+    /// Installed by `AppModel`. A StoreKit entitlement may have been acquired
+    /// before this optional account was selected, so claim it immediately after
+    /// a successful, explicit sign-in. The closure only observes StoreKit; it
+    /// never starts a purchase or links identities.
+    var claimCurrentEntitlement: (() async -> Void)?
 
     private let tokenKey = "session"
     private let api = APIClient()
@@ -71,6 +76,7 @@ public final class AccountStore {
             state = .signedIn(accountId: r.accountId)
             signedInWithGoogle = false
             onSignedIn?(r.accountId)
+            if let claimCurrentEntitlement { await claimCurrentEntitlement() }
             await refreshStatus()
         } catch { notice = .signInFailed }
     }
@@ -89,6 +95,7 @@ public final class AccountStore {
             state = .signedIn(accountId: r.accountId)
             signedInWithGoogle = true
             onSignedIn?(r.accountId)
+            if let claimCurrentEntitlement { await claimCurrentEntitlement() }
             await refreshStatus()
         } catch { notice = .signInFailed }
     }
