@@ -19,10 +19,18 @@ struct ArtPreviewOverlay: View {
             let top = max(6, boardFrame.minY - lift)
             // a hair larger than the puzzle: the top edge is a little above the puzzle's, the bottom edge stays where the puzzle's is (nothing of it peeks out)
             let k = (boardFrame.maxY - top) / boardFrame.height
-            let w = boardFrame.width * k, h = boardFrame.height * k
-            let left = boardFrame.midX - w / 2
+            let fullW = boardFrame.width * k, fullH = boardFrame.height * k
+            let descW: CGFloat = 300
+            // a wide painting at the puzzle's size leaves no room on its right: make it smaller so the description fits beside it
+            let availW = geo.width - 24 - 18 - descW
+            let fullLeft = boardFrame.midX - fullW / 2
+            let fits = geo.width - (fullLeft + fullW) - 28 >= 260
+            let shrink = !fits && !artwork.isCustom && availW >= 300
+            let w = shrink ? min(fullW, availW) : fullW
+            let h = fullH * (w / fullW)
+            let left = shrink ? max(12, (geo.width - (w + 18 + descW)) / 2) : fullLeft
             let room = geo.width - (left + w) - 28           // beside the picture
-            let beside = room >= 260
+            let beside = fits || shrink
             ZStack(alignment: .topLeading) {
                 Color.black.opacity(0.42).ignoresSafeArea().onTapGesture(perform: onClose)
                 Image(uiImage: image).resizable().scaledToFit()
@@ -36,7 +44,7 @@ struct ArtPreviewOverlay: View {
                     ScrollView {
                         ArtDetailsView(artwork: artwork).padding(16)
                     }
-                    .frame(width: beside ? min(room, 400) : w, height: beside ? h : min(260, max(120, geo.height - (top + h) - 24)))
+                    .frame(width: beside ? (shrink ? descW : min(room, 400)) : w, height: beside ? h : min(260, max(120, geo.height - (top + h) - 24)))
                     .background(Web.bg, in: RoundedRectangle(cornerRadius: 4))
                     .offset(x: beside ? left + w + 18 : left, y: beside ? top : top + h + 14)
                 }
