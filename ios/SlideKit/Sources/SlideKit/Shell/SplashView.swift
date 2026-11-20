@@ -1,32 +1,31 @@
 import SwiftUI
 
-/// Shown for a moment at launch: the icon's painting, cut into 3×3, slides itself into place, then fades out.
+/// Shown for a moment at launch. It starts on the app icon's picture (Mona Lisa's face in 5x5 tiles, scrambled, one tile missing),
+/// the tiles slide to their places one after another, and the face is whole. Then it fades out.
 struct SplashView: View {
     var onDone: () -> Void
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    /// The blank's walk through the board (each step is one slide). The puzzle starts after the walk and is played back to solved.
     private static let n = 5
-    private static let walk = [24, 23, 22, 17, 18, 19, 14, 13, 12, 7, 8, 9, 4, 3, 2, 1, 6, 11]
-    @State private var cellOf: [Int]        // tile → cell
+    /// cell -> tile of the first frame. Must match START in ios/scripts/make-app-icon.mjs (that script draws the app icon from it).
+    private static let start = [14, 6, 21, 9, 2, 17, 11, 3, 19, 0, 8, 23, 5, 15, 12, 1, 22, 7, 13, 20, 4, 10, 24, 16, 18]
+    @State private var cellOf: [Int]        // tile -> cell
     @State private var complete = false
     @State private var fade = false
     @State private var started = false
 
     init(onDone: @escaping () -> Void) {
         self.onDone = onDone
-        var board = Array(0..<(Self.n * Self.n))            // cell → tile
-        var blank = Self.walk[0]
-        for next in Self.walk.dropFirst() { board.swapAt(blank, next); blank = next }
         var c = Array(repeating: 0, count: Self.n * Self.n)
-        for (cell, tile) in board.enumerated() { c[tile] = cell }
+        for (cell, tile) in Self.start.enumerated() { c[tile] = cell }
         _cellOf = State(initialValue: c)
     }
 
     var body: some View {
         GeometryReader { geo in
-            let side = min(min(geo.size.width, geo.size.height) * 0.56, 300)
-            let gap: CGFloat = complete ? 0 : 2
-            let n = CGFloat(Self.n), t = (side - gap * (n - 1)) / n, last = Self.n * Self.n - 1
+            let side = min(min(geo.size.width, geo.size.height) * 0.62, 340)
+            let n = CGFloat(Self.n), last = Self.n * Self.n - 1
+            let gap: CGFloat = complete ? 0 : side * 0.008
+            let t = (side - gap * (n - 1)) / n
             ZStack {
                 Web.bg.ignoresSafeArea()
                 VStack(spacing: 28) {
@@ -38,12 +37,13 @@ struct SplashView: View {
                                 .offset(x: -CGFloat(tile % Self.n) * (side / n), y: -CGFloat(tile / Self.n) * (side / n))
                                 .frame(width: side / n, height: side / n, alignment: .topLeading).clipped()
                                 .frame(width: t, height: t, alignment: .topLeading).clipped()
+                                .clipShape(RoundedRectangle(cornerRadius: complete ? 0 : side * 0.018, style: .continuous))
                                 .opacity(tile == last && !complete ? 0 : 1)
                                 .offset(x: CGFloat(cell % Self.n) * (t + gap), y: CGFloat(cell / Self.n) * (t + gap))
                         }
                     }
                     .frame(width: side, height: side, alignment: .topLeading)
-                    .clipShape(RoundedRectangle(cornerRadius: side * 0.1, style: .continuous))
+                    .shadow(color: .black.opacity(complete ? 0.28 : 0), radius: 18, y: 8)
                     Text("ART SLIDE").font(Web.font(22, .light, relativeTo: .title2)).tracking(8).padding(.leading, 8).foregroundStyle(Web.fg)
                 }
                 .scaleEffect(fade ? 1.04 : 1)
@@ -63,16 +63,14 @@ struct SplashView: View {
             cellOf = Array(0..<(Self.n * Self.n)); complete = true
             try? await Task.sleep(for: .milliseconds(600)); finish(); return
         }
-        try? await Task.sleep(for: .milliseconds(350))
-        var blank = Self.walk.last!
-        for next in Self.walk.reversed().dropFirst() {
-            guard let tile = cellOf.firstIndex(of: next) else { continue }
-            withAnimation(.easeInOut(duration: 0.13)) { cellOf[tile] = blank }
-            blank = next
-            try? await Task.sleep(for: .milliseconds(150))
+        try? await Task.sleep(for: .milliseconds(450))   // a beat on the icon's picture
+        // every tile glides to its place, the top-left ones first
+        for tile in 0..<(Self.n * Self.n) {
+            withAnimation(.timingCurve(0.3, 0, 0.2, 1, duration: 0.5).delay(Double(tile) * 0.03)) { cellOf[tile] = tile }
         }
-        withAnimation(.easeOut(duration: 0.35)) { complete = true }
-        try? await Task.sleep(for: .milliseconds(650))
+        try? await Task.sleep(for: .milliseconds(Int(0.5 * 1000 + Double(Self.n * Self.n) * 30) + 80))
+        withAnimation(.easeOut(duration: 0.45)) { complete = true }
+        try? await Task.sleep(for: .milliseconds(1000))  // the face, whole
         finish()
     }
 
