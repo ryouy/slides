@@ -9,7 +9,7 @@ struct SplashView: View {
     /// The blank's walk from the solved picture (tile 24, the last one, is the blank). The first frame is the picture after this walk, so it is
     /// still clearly the face; the animation plays the walk backwards, one real slide at a time, like the game. The icon is drawn from the same
     /// walk (WALK in ios/scripts/make-app-icon.mjs): keep the two identical.
-    private static let walk = [24, 23, 22, 21, 20, 15, 16, 17, 18, 19, 14, 13, 12, 11, 10]
+    private static let walk = [24, 19, 18, 23, 22, 17, 16, 11, 12, 7, 6, 1, 0, 5, 6, 7, 12, 11, 16, 17, 22, 21, 16, 15, 20, 21, 16]
     @State private var cellOf: [Int]        // tile -> cell
     @State private var complete = false
     @State private var fade = false
@@ -74,11 +74,11 @@ struct SplashView: View {
         var blank = Self.walk.last!
         for next in Self.walk.reversed().dropFirst() {
             guard let tile = cellOf.firstIndex(of: next) else { continue }
-            withAnimation(.timingCurve(0.22, 0.8, 0.2, 1, duration: 0.17)) { cellOf[tile] = blank }
+            withAnimation(.timingCurve(0.22, 0.8, 0.2, 1, duration: 0.12)) { cellOf[tile] = blank }
             blank = next
-            try? await Task.sleep(for: .milliseconds(150))
+            try? await Task.sleep(for: .milliseconds(88))
         }
-        try? await Task.sleep(for: .milliseconds(120))
+        try? await Task.sleep(for: .milliseconds(150))
         withAnimation(.easeOut(duration: 0.45)) { complete = true }
         try? await Task.sleep(for: .milliseconds(1000))  // the face, whole
         finish()
