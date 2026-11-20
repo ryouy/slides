@@ -25,9 +25,10 @@ struct ArtPlayHost: View {
         Group {
             switch phase {
             case .ready:
-                if let art, let model { ArtGameView(artwork: art, model: model, onLevel: { next(art, level: $0) }, onNext: { nextArtwork(from: art) }, onMore: { dismiss(); onGallery() }).id(sessionKey).transition(.opacity.combined(with: .scale(scale: 0.985))) }
+                if let art, let model { ArtGameView(artwork: art, model: model, onLevel: { next(art, level: $0) }, onNext: { nextArtwork(from: art) }, onMore: { dismiss(); onGallery() }).id(sessionKey).transition(.opacity.combined(with: .scale(scale: 0.97))) }
             case .download:
-                if let art { ArtDownloadView(artwork: art) { phase = .loading; Task { await open() } } }
+                // stay on this page until the puzzle is ready: one soft cross-fade, no spinner in between
+                if let art { ArtDownloadView(artwork: art) { Task { await open() } } }
             case .locked:
                 LockedView(art: art, reasonKey: art?.isCustom == true ? "premium.lockedPhotos" : "premium.lockedArt")
             case .missing:
@@ -38,7 +39,7 @@ struct ArtPlayHost: View {
                 VStack { ArtTopBar(""); Spacer(); ProgressView(); Spacer() }.artScreen()
             }
         }
-        .animation(.easeInOut(duration: 0.5), value: phase)   // the download screen melts into the puzzle instead of cutting to it
+        .animation(.easeInOut(duration: 0.9), value: phase)   // the download screen melts into the puzzle instead of cutting to it
         .task { if !started { started = true; await open() } }
     }
 
@@ -180,7 +181,6 @@ struct ArtDownloadView: View {
                     Image(uiImage: t).resizable().scaledToFit().frame(maxHeight: 220).opacity(0.9)
                 }
                 Text(artwork.title).font(Web.font(17, .semibold)).multilineTextAlignment(.center).foregroundStyle(Web.fg)
-                Text(app.t("ios.dl.needed")).font(Web.font(14)).foregroundStyle(Web.muted).multilineTextAlignment(.center)
                 switch s {
                 case .idle:
                     if app.network.isOnline { Button(app.t("ios.dl.start")) { Task { await go() } }.buttonStyle(WebButtonStyle(filled: true, minHeight: 50)) }
@@ -207,8 +207,8 @@ struct ArtDownloadView: View {
         s = .busy(0)
         do {
             try await app.images.download(artwork.id, premium: app.premium, account: app.account) { p in s = .busy(p) }
-            withAnimation(.easeOut(duration: 0.3)) { s = .done }   // a quiet tick, then the page fades into the puzzle
-            try? await Task.sleep(for: .milliseconds(450))
+            withAnimation(.easeOut(duration: 0.5)) { s = .done }   // a quiet tick, then the page fades into the puzzle
+            try? await Task.sleep(for: .milliseconds(750))
             onDone()
         } catch let e as ImageStore.DownloadError {
             switch e {

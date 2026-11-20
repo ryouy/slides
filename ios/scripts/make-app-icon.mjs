@@ -8,7 +8,7 @@
 import sharp from 'sharp';
 const N = 5, ICON = 1024, MARGIN = 8, GAP = 3;
 // The blank's walk from the solved picture (tile 24 is the blank). Must match `walk` in SplashView.swift.
-const WALK = [24, 19, 18, 23, 22, 17, 16, 11, 12, 7, 6, 1, 0, 5, 6, 7, 12, 11, 16, 17, 22, 21, 16, 15, 20, 21, 16];
+const WALK = [24, 23, 18, 17, 22, 21, 16, 15, 10, 11, 6, 7, 12, 13, 18, 19, 14, 13, 8, 9, 4, 3, 8, 13, 12, 7, 6];
 const tileAt = Array.from({ length: N * N }, (_, i) => i); // cell -> tile
 { let blank = WALK[0]; for (const next of WALK.slice(1)) { tileAt[blank] = tileAt[next]; tileAt[next] = N * N - 1; blank = next; } }
 const START = tileAt;

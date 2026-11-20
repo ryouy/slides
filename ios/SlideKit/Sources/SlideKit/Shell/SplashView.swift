@@ -9,7 +9,7 @@ struct SplashView: View {
     /// The blank's walk from the solved picture (tile 24, the last one, is the blank). The first frame is the picture after this walk, so it is
     /// still clearly the face; the animation plays the walk backwards, one real slide at a time, like the game. The icon is drawn from the same
     /// walk (WALK in ios/scripts/make-app-icon.mjs): keep the two identical.
-    private static let walk = [24, 19, 18, 23, 22, 17, 16, 11, 12, 7, 6, 1, 0, 5, 6, 7, 12, 11, 16, 17, 22, 21, 16, 15, 20, 21, 16]
+    private static let walk = [24, 23, 18, 17, 22, 21, 16, 15, 10, 11, 6, 7, 12, 13, 18, 19, 14, 13, 8, 9, 4, 3, 8, 13, 12, 7, 6]
     @State private var cellOf: [Int]        // tile -> cell
     @State private var complete = false
     @State private var fade = false
@@ -30,7 +30,7 @@ struct SplashView: View {
         GeometryReader { geo in
             let side = min(min(geo.size.width, geo.size.height) * 0.62, 340)
             let n = CGFloat(Self.n), last = Self.n * Self.n - 1
-            let gap: CGFloat = complete ? 0 : side * 0.004
+            let gap: CGFloat = complete ? 0 : side * 0.006
             let t = (side - gap * (n - 1)) / n
             ZStack {
                 Web.bg.ignoresSafeArea()
@@ -43,7 +43,14 @@ struct SplashView: View {
                                 .offset(x: -CGFloat(tile % Self.n) * (side / n), y: -CGFloat(tile / Self.n) * (side / n))
                                 .frame(width: side / n, height: side / n, alignment: .topLeading).clipped()
                                 .frame(width: t, height: t, alignment: .topLeading).clipped()
-                                .clipShape(RoundedRectangle(cornerRadius: complete ? 0 : side * 0.004, style: .continuous))
+                                .clipShape(RoundedRectangle(cornerRadius: complete ? 0 : t * 0.045, style: .continuous))
+                                // a little polish: a faint light edge on top, a darker one below, and a soft shadow, so each piece reads as a tile
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: t * 0.045, style: .continuous)
+                                        .strokeBorder(LinearGradient(colors: [.white.opacity(0.28), .clear, .black.opacity(0.32)], startPoint: .top, endPoint: .bottom), lineWidth: max(0.6, t * 0.012))
+                                        .opacity(complete ? 0 : 1)
+                                }
+                                .shadow(color: .black.opacity(complete ? 0 : 0.30), radius: t * 0.03, x: 0, y: t * 0.018)
                                 .opacity(tile == last && !complete ? 0 : 1)
                                 .offset(x: CGFloat(cell % Self.n) * (t + gap), y: CGFloat(cell / Self.n) * (t + gap))
                         }
@@ -69,18 +76,18 @@ struct SplashView: View {
             cellOf = Array(0..<(Self.n * Self.n)); complete = true
             try? await Task.sleep(for: .milliseconds(600)); finish(); return
         }
-        try? await Task.sleep(for: .milliseconds(500))   // a beat on the first frame
+        try? await Task.sleep(for: .milliseconds(400))   // a beat on the first frame
         // the walk backwards: each step one tile slides into the blank, with the game's own easing
         var blank = Self.walk.last!
         for next in Self.walk.reversed().dropFirst() {
             guard let tile = cellOf.firstIndex(of: next) else { continue }
-            withAnimation(.timingCurve(0.22, 0.8, 0.2, 1, duration: 0.12)) { cellOf[tile] = blank }
+            withAnimation(.timingCurve(0.22, 0.8, 0.2, 1, duration: 0.096)) { cellOf[tile] = blank }
             blank = next
-            try? await Task.sleep(for: .milliseconds(88))
+            try? await Task.sleep(for: .milliseconds(70))
         }
-        try? await Task.sleep(for: .milliseconds(150))
-        withAnimation(.easeOut(duration: 0.45)) { complete = true }
-        try? await Task.sleep(for: .milliseconds(1000))  // the face, whole
+        try? await Task.sleep(for: .milliseconds(120))
+        withAnimation(.easeOut(duration: 0.36)) { complete = true }
+        try? await Task.sleep(for: .milliseconds(800))  // the face, whole
         finish()
     }
 
