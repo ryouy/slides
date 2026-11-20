@@ -10,7 +10,7 @@ struct SplashView: View {
     /// (WALK in ios/scripts/make-app-icon.mjs, identical). The splash does not start from the icon but already close to done: it starts after
     /// only the first `steps` moves and plays them backwards, one real slide at a time, like the game. The face is almost whole at first.
     private static let walk = [24, 23, 18, 17, 22, 21, 16, 15, 10, 11, 6, 7, 12, 13, 18, 19, 14, 13, 8, 9, 4, 3, 8, 13, 12, 7, 6]
-    private static let steps = 7
+    private static let steps = 9
     /// the part of the walk the splash replays (the blank starts at its last cell)
     private static var path: [Int] { Array(walk.prefix(steps + 1)) }
     @State private var cellOf: [Int]        // tile -> cell
@@ -50,7 +50,7 @@ struct SplashView: View {
                                 // a little polish: a faint light edge on top, a darker one below, and a soft shadow, so each piece reads as a tile
                                 .overlay {
                                     RoundedRectangle(cornerRadius: t * 0.045, style: .continuous)
-                                        .strokeBorder(LinearGradient(colors: [.white.opacity(0.28), .clear, .black.opacity(0.32)], startPoint: .top, endPoint: .bottom), lineWidth: max(0.6, t * 0.012))
+                                        .strokeBorder(LinearGradient(colors: [.white.opacity(0.20), .clear, .black.opacity(0.32)], startPoint: .top, endPoint: .bottom), lineWidth: max(0.6, t * 0.012))
                                         .opacity(complete ? 0 : 1)
                                 }
                                 .shadow(color: .black.opacity(complete ? 0 : 0.30), radius: t * 0.03, x: 0, y: t * 0.018)
@@ -86,7 +86,7 @@ struct SplashView: View {
             guard let tile = cellOf.firstIndex(of: next) else { continue }
             withAnimation(.timingCurve(0.22, 0.8, 0.2, 1, duration: 0.28)) { cellOf[tile] = blank }
             blank = next
-            try? await Task.sleep(for: .milliseconds(310))
+            try? await Task.sleep(for: .milliseconds(220))
         }
         try? await Task.sleep(for: .milliseconds(180))
         withAnimation(.easeOut(duration: 0.36)) { complete = true }
