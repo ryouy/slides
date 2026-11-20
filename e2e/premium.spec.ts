@@ -306,7 +306,7 @@ test('the home button says "Sign in" in Japanese when signed out', async ({ page
   await expect(page.getByTestId('home-account')).toHaveAttribute('aria-label', 'ログイン');
 });
 
-test('account page: Sync on/off and Sign out sit side by side, and the sync text is short', async ({ page }) => {
+test('account page: Sync on/off and Sign out sit side by side, and the section has no explanatory text', async ({ page }) => {
   await gating(page);
   await mockApi(page, { config: { auth: true, billing: true, purchases: true, googleClientId: 'cid.apps.googleusercontent.com' } as never, me: { signedIn: true, premium: false, name: 'Ann', status: null } });
   await page.goto('/art-slide/account');
@@ -318,9 +318,8 @@ test('account page: Sync on/off and Sign out sit side by side, and the sync text
   expect(b!.x).toBeGreaterThan(a!.x + a!.width - 1);
   expect(Math.abs(a!.width - b!.width)).toBeLessThan(2); // equal widths
   expect(a!.height).toBeGreaterThanOrEqual(40);
-  const desc = await page.getByTestId('sync').locator('p').first().innerText();
-  expect(desc.length).toBeLessThan(80); // one short sentence
-  expect(desc).toContain('Google Drive');
+  await expect(page.getByTestId('sync').locator('p')).toHaveCount(0); // no explanatory sentences: the heading and the buttons say it
+  await expect(page.getByTestId('sync').locator('h3')).toContainText('Google Drive');
 });
 
 test('without the paid plan the home has no account button (nothing to sign in for)', async ({ page }) => {

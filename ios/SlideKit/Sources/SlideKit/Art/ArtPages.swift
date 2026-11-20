@@ -2,6 +2,7 @@ import SwiftUI
 import PhotosUI
 import SlideCore
 
+
 @MainActor private struct PageScaffold<Content: View>: View {
     let title: String
     @ViewBuilder var content: Content

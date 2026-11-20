@@ -168,7 +168,7 @@ public struct ArtRootView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                 VStack(alignment: .leading, spacing: 12 * k) {
                     Text(exhibitLine).font(Web.font(11 * k, .semibold, relativeTo: .caption2)).tracking(2).foregroundStyle(Web.muted).fixedSize(horizontal: false, vertical: true)
-                    Text(a.title).font(Web.font(26 * k, .medium, relativeTo: .title)).foregroundStyle(Web.fg).multilineTextAlignment(.leading).lineLimit(3).minimumScaleFactor(0.8)
+                    Text(a.title).font(Web.font(26 * k, .regular, relativeTo: .title)).foregroundStyle(Web.fg).multilineTextAlignment(.leading).lineLimit(3).minimumScaleFactor(0.8)
                     Text("\(a.artist), \(a.year)").font(Web.font(13 * k, relativeTo: .caption)).foregroundStyle(Web.muted).multilineTextAlignment(.leading)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -189,7 +189,7 @@ public struct ArtRootView: View {
         func line(_ title: String, lock: Bool = false, small: Bool = false, chevron: Bool = true, action: @escaping () -> Void) -> some View {
             Button(action: action) {
                 HStack(spacing: 10) {
-                    Text(title).font(Web.font((small ? 18 : 24) * k, .medium, relativeTo: .title3)).foregroundStyle(small ? Web.muted : Web.fg).lineLimit(1).minimumScaleFactor(0.7)
+                    Text(title).font(Web.font((small ? 18 : 24) * k, .regular, relativeTo: .title3)).foregroundStyle(small ? Web.muted : Web.fg).lineLimit(1).minimumScaleFactor(0.7)
                     if lock { Image(systemName: "lock.fill").font(.system(size: 13 * k)).foregroundStyle(Web.muted) }
                     Spacer(minLength: 8)
                     if chevron { Image(systemName: "chevron.right").font(.system(size: (small ? 14 : 18) * k, weight: .light)).foregroundStyle(Web.muted) }

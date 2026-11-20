@@ -50,6 +50,7 @@ export function ArtGameView(p: Props) {
   const [state, dispatch] = useReducer(artReducer, initial);
   const [preview, setPreview] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
   const boardRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
   const [pending, setPending] = useState<ArtLevel | null>(null);
   const [showResult, setShowResult] = useState(initial.status === 'cleared');
   const [shuffling, setShuffling] = useState(false);
@@ -170,12 +171,32 @@ export function ArtGameView(p: Props) {
     );
   };
 
+  // wide screens: a board lower than the screen (a wide painting) is centred vertically; the same offset moves the right column, so the
+  // time / moves line stays level with the painting's top edge (CSS: --art-center, only used from 900px up)
+  useEffect(() => {
+    const root = rootRef.current;
+    const board = boardRef.current;
+    if (!root || !board) return;
+    const apply = () => {
+      if (window.innerWidth < 900) { root.style.removeProperty('--art-center'); return; }
+      const bar = root.querySelector('.topbar')?.getBoundingClientRect().bottom ?? 0;
+      const free = window.innerHeight - bar - 6 - 34; // the height a tall painting would take
+      const h = board.getBoundingClientRect().height;
+      root.style.setProperty('--art-center', `${Math.max(0, Math.round((free - h) / 2))}px`);
+    };
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(board);
+    window.addEventListener('resize', apply);
+    return () => { ro.disconnect(); window.removeEventListener('resize', apply); root.style.removeProperty('--art-center'); };
+  }, [artwork.id, img.status]);
+
   const shareText = daily
     ? t('share.artDaily', { title: artwork.title, artist: artwork.artist, time: formatTime(state.elapsedMs), moves: state.moves, n: state.puzzle.number ?? '' })
     : t('share.artFree', { title: artwork.title, artist: artwork.artist, grid: `${dims.cols}×${dims.rows}`, time: formatTime(state.elapsedMs), moves: state.moves });
 
   return (
-    <div className="screen game artgame">
+    <div className="screen game artgame" ref={rootRef}>
       <header className={`topbar art-top${daily ? ' art-daily-top' : ''}`}>
         <BackButton onClick={p.onBack} label={t('common.back')} />
         <div className="top-titles">

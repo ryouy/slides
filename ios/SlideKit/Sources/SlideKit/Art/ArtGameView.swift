@@ -90,11 +90,11 @@ struct ArtGameView: View {
                 starButton
             }
             if typeSize.isAccessibilitySize {
-                VStack(alignment: .leading, spacing: 6) { stats; actions(star: false) }
+                VStack(alignment: .leading, spacing: 6) { stats; actions(star: false, next: isPad) }
             } else {
                 ViewThatFits(in: .horizontal) {
-                    HStack(alignment: .center, spacing: 8) { stats; Spacer(minLength: 0); actions(star: false) }
-                    VStack(alignment: .leading, spacing: 4) { stats; actions(star: false) }
+                    HStack(alignment: .center, spacing: 8) { stats; Spacer(minLength: 0); actions(star: false, next: isPad) }
+                    VStack(alignment: .leading, spacing: 4) { stats; actions(star: false, next: isPad) }
                 }
                 .padding(.leading, 42) // under the title, past the back arrow
             }
@@ -138,7 +138,7 @@ struct ArtGameView: View {
         .frame(width: width)
     }
 
-    private func actions(star: Bool = true) -> some View {
+    private func actions(star: Bool = true, next: Bool = false) -> some View {
         HStack(spacing: 2) {
             if !daily { levelMenu }
             if star { starButton }
@@ -153,6 +153,9 @@ struct ArtGameView: View {
             }
             .buttonStyle(.plain)
             .accessibilityLabel(app.t("art.numbers")).accessibilityAddTraits(on ? .isSelected : [])
+            if next && !daily {
+                icon("forward.end", app.t(artwork.isCustom ? "photos.title" : "art.nextArtwork")) { onNext() }
+            }
         }
     }
     /// The favourite toggle (not for the visitor's own photos).
@@ -194,9 +197,10 @@ struct ArtGameView: View {
     }
 
     // MARK: below the board
+    private var isPad: Bool { UIDevice.current.userInterfaceIdiom == .pad }
     private var extra: some View {
         VStack(alignment: .leading, spacing: 6) {
-            if !daily && !artwork.isCustom {
+            if !daily && !artwork.isCustom && !isPad {
                 HStack {
                     Spacer()
                     Button { onNext() } label: {

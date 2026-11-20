@@ -2260,5 +2260,11 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .screen.artgame .art-header-controls .art-actions .fav-btn.on .art-action-icon { fill: currentColor; }
 
 /* the account page, with fewer words: when it last synced is a small line inside the Sync now button */
-.drive-sync .btn.sync-now, .drive-sync .btn.wide.sync-now { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
-.drive-sync .sync-now .sync-when { display: block; font-size: 11px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted); }
+.drive-sync .btn.sync-now, .drive-sync .btn.wide.sync-now { display: flex; flex-direction: row; flex-wrap: wrap; align-items: baseline; justify-content: center; column-gap: 10px; }
+.drive-sync .sync-now .sync-when { display: inline; font-size: 11px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted); }
+
+/* wide screens: a puzzle shorter than the screen (a wide painting) sits in the vertical middle, and the right column starts level with its top edge */
+@media (min-width: 900px) {
+  .artgame > .aboard-wrap { margin-top: calc(6px + var(--art-center, 0px)); }
+  .artgame > .art-extra { margin-top: calc(6px + var(--art-center, 0px)); }
+}
