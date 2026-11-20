@@ -62,6 +62,15 @@ public struct SettingsView: View {
                 }
             }
             .navigationTitle(app.t("home.settings"))
+            .toolbar {
+                // the web version: a small link beside the title, not a row of its own
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button { if let u = URL(string: site) { web = WebPage(url: u) } } label: {
+                        HStack(spacing: 4) { Image(systemName: "globe"); Text("Web") }.font(.subheadline.weight(.medium))
+                    }
+                    .accessibilityLabel(app.t("ios.account.webApp"))
+                }
+            }
             .sheet(isPresented: $showPremium) { PremiumView() }
             .sheet(item: $web) { w in SafariView(url: w.url).ignoresSafeArea() }
             .confirmationDialog(app.t("ios.account.deleteTitle"), isPresented: $confirmDelete, titleVisibility: .visible) {
@@ -139,7 +148,6 @@ public struct SettingsView: View {
                     }
                 }
             }
-            webRow(app.t("ios.account.webApp"), "")
             if let n = noticeText ?? driveNoticeText { Text(n).font(.footnote).foregroundStyle(.secondary) }
         }
     }
