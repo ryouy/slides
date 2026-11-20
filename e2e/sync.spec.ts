@@ -191,3 +191,20 @@ test('a star set on the play screen is uploaded to Drive (so the iOS app can get
   await page.goto('/art-slide/play/hokusai-great-wave');
   await expect(page.getByTestId('favorite-toggle')).toHaveAttribute('aria-pressed', 'true');
 });
+
+test('reloading the page does not ask Google for a token again right after a sync (it would flash Google\'s sign-in window)', async ({ page }) => {
+  const d = fakeDrive();
+  await setup(page, d, ME);
+  await page.goto('/art-slide/account');
+  await page.getByTestId('sync-enable').click();
+  await expect(page.getByTestId('sync-status')).toHaveAttribute('data-status', 'ok');
+  const calls = d.st.tokens.length;
+  await page.evaluate(() => { (window as unknown as { __asked?: number }).__asked = 0; });
+  let googleScripts = 0;
+  page.on('request', (r) => r.url().includes('gsi/client') && googleScripts++);
+  await page.reload();
+  await expect(page.getByTestId('sync-status')).toHaveAttribute('data-status', 'ok');
+  await page.waitForTimeout(800);
+  expect(d.st.tokens.length).toBe(calls); // no Drive request, so no token was asked for
+  expect(googleScripts).toBe(0);          // and Google's script was not even loaded
+});

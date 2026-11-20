@@ -67,6 +67,13 @@ let running = false;
 let timer: number | undefined;
 let backoff = 0;
 const BACKOFF_STEPS = [30_000, 120_000, 600_000];
+/**
+ * Asking Google for a token without a click opens a small Google window for an instant (it flashes the sign-in page and closes), and the
+ * token is only kept in memory, so every reload would flash it. A page load or a return to the tab therefore syncs only when the last
+ * sync is older than this; changes (a clear, a star) and the "Sync now" button still sync at once.
+ */
+const STALE_MS = 30 * 60_000;
+const isFresh = (): boolean => !!state.lastSyncAt && Date.now() - state.lastSyncAt < STALE_MS;
 
 export function localStore(): LocalStore {
   return artLocalStore;
@@ -173,15 +180,15 @@ export function initSync(): void {
   started = true;
   const reevaluate = () => {
     const el = eligibility();
-    if (el === 'ok') void runOnce();
+    if (el === 'ok') { if (isFresh()) set({ status: 'ok' }); else void runOnce(); }
     else if (el === 'other-account') set({ status: 'other-account' });
     else if (el === 'signed-out') onSignedOut();
     else set({ status: 'off' });
   };
   subscribeAccount(reevaluate);
-  window.addEventListener('online', () => void runOnce());
+  window.addEventListener('online', () => { if (!isFresh()) void runOnce(); });
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible' && (!state.lastSyncAt || Date.now() - state.lastSyncAt > 5 * 60_000)) void runOnce();
+    if (document.visibilityState === 'visible' && !isFresh()) void runOnce();
   });
   reevaluate();
 }
