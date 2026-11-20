@@ -9,9 +9,11 @@ private struct SendableImages: @unchecked Sendable { let list: [UIImage] }
 final class ArtGameModel {
     private(set) var state: ArtState
     private(set) var tiles: [UIImage] = []        // by tile id; empty until the picture is prepared
+    /// One slide, the same as the web's (217 ms, cubic-bezier .22 .8 .2 1).
+    static let moveDuration = 0.217
     private(set) var shuffling = false
     private(set) var lineMoving = false
-    private(set) var tileAnimationDuration = 0.26
+    private(set) var tileAnimationDuration = ArtGameModel.moveDuration
     var showResult = false
     /// The running clock. It lives apart from `state` on purpose: ticking `state` every 200 ms made the whole board rebuild five times
     /// a second (jank while tiles slide). `state.elapsedMs` catches up whenever the board changes, is saved or is cleared.
@@ -76,7 +78,7 @@ final class ArtGameModel {
         else {
             lineMoving = true
             change { _ = $0.lineMove(cell) }
-            Task { try? await Task.sleep(for: .milliseconds(300)); lineMoving = false; afterChange() }
+            Task { try? await Task.sleep(for: .milliseconds(240)); lineMoving = false; afterChange() }
         }
         Haptics.slide()
     }
@@ -91,8 +93,8 @@ final class ArtGameModel {
 
     private func change(_ f: (inout ArtState) -> Void) {
         syncClock()
-        tileAnimationDuration = 0.26
-        withAnimation(.smooth(duration: tileAnimationDuration)) { f(&state) }
+        tileAnimationDuration = Self.moveDuration
+        withAnimation(.timingCurve(0.22, 0.8, 0.2, 1, duration: tileAnimationDuration)) { f(&state) }
         afterChange()
     }
 
@@ -156,7 +158,7 @@ final class ArtGameModel {
         state = ArtState(puzzle: plan.puzzle)
         clockMs = state.elapsedMs
         shuffling = false
-        tileAnimationDuration = 0.26
+        tileAnimationDuration = Self.moveDuration
         onProgress(state)
     }
 }

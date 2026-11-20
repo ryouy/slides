@@ -1,19 +1,23 @@
 // Makes the iOS app icon (1024x1024, opaque) and the splash picture from ios/scripts/mona-face.jpg.
-//   * the icon is the FIRST FRAME of the launch animation: the face cut into 5x5 tiles in the scrambled arrangement START below,
+//   * the icon is the FIRST FRAME of the launch animation: the face cut into 5x5 tiles after the blank has walked a few steps (still clearly the face),
 //     one tile missing (the blank), rounded tiles on black;
 //   * the splash picture is the clean, complete face (the animation ends on it).
 // The face is a crop of "Mona Lisa, by Leonardo da Vinci, from C2RMF retouched" (public domain, Wikimedia Commons).
-// START (cell -> tile) must match `SplashView.start` in ios/SlideKit/Sources/SlideKit/Shell/SplashView.swift.
+// WALK must match `SplashView.walk` in ios/SlideKit/Sources/SlideKit/Shell/SplashView.swift.
 // Usage: node ios/scripts/make-app-icon.mjs
 import sharp from 'sharp';
-const N = 5, ICON = 1024, MARGIN = 10, GAP = 8;
-const START = [14, 6, 21, 9, 2, 17, 11, 3, 19, 0, 8, 23, 5, 15, 12, 1, 22, 7, 13, 20, 4, 10, 24, 16, 18]; // tile 24 (the blank, bottom-right tile) starts at cell 22
+const N = 5, ICON = 1024, MARGIN = 8, GAP = 3;
+// The blank's walk from the solved picture (tile 24 is the blank). Must match `walk` in SplashView.swift.
+const WALK = [24, 23, 22, 21, 20, 15, 16, 17, 18, 19, 14, 13, 12, 11, 10];
+const tileAt = Array.from({ length: N * N }, (_, i) => i); // cell -> tile
+{ let blank = WALK[0]; for (const next of WALK.slice(1)) { tileAt[blank] = tileAt[next]; tileAt[next] = N * N - 1; blank = next; } }
+const START = tileAt;
 const SRC = 'ios/scripts/mona-face.jpg';
 const face = sharp(SRC);
 const { width: W } = await face.metadata();
 const cut = Math.floor(W / N);
 const tile = Math.floor((ICON - 2 * MARGIN - (N - 1) * GAP) / N);
-const r = 20;
+const r = 6;
 const mask = Buffer.from(`<svg width="${tile}" height="${tile}"><rect width="${tile}" height="${tile}" rx="${r}" fill="#fff"/></svg>`);
 const bevel = Buffer.from(`<svg width="${tile}" height="${tile}"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".12" stop-color="#fff" stop-opacity="0"/><stop offset=".88" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".38"/></linearGradient></defs><rect width="${tile}" height="${tile}" rx="${r}" fill="url(#g)"/><rect x="1" y="1" width="${tile - 2}" height="${tile - 2}" rx="${r - 1}" fill="none" stroke="#000" stroke-opacity=".45" stroke-width="2"/></svg>`);
 const layers = [];

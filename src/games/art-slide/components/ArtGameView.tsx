@@ -109,11 +109,11 @@ export function ArtGameView(p: Props) {
     lineMovingRef.current = true;
     setLineMoving(true);
     dispatch({ type: 'lineMove', cell });
-    // Unblock after the shared 260ms tile animation finishes.
+    // Unblock after the shared 217ms tile animation finishes.
     timers.current.push(window.setTimeout(() => {
       lineMovingRef.current = false;
       setLineMoving(false);
-    }, 280));
+    }, 240));
   };
 
   const swipe = (cell: number, dir: ArtDirection) => {

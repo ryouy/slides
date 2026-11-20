@@ -12,7 +12,7 @@ struct ArtBoardView: View {
     var body: some View {
         let d = model.state.dims
         let complete = model.state.cleared && !model.lineMoving
-        let gap: CGFloat = complete ? 0 : (d.cols > 6 || d.rows > 6 ? 1.5 : 3)
+        let gap: CGFloat = complete ? 0 : (d.cols > 6 || d.rows > 6 ? 0.5 : 0.75) // per side: a hairline between pieces (wide gaps made grey dots appear where four corners meet)
         Color.clear
             .aspectRatio(aspect, contentMode: .fit)
             .overlay {
@@ -35,7 +35,7 @@ struct ArtBoardView: View {
                     .frame(width: geo.size.width, height: geo.size.height)
                     .clipped()   // square like the web's art theme; a rounded mask would be redrawn on every animation frame
                     .background { Rectangle().fill(Web.bg).shadow(color: .black.opacity(complete ? 0.25 : 0), radius: 12, y: 6) } // the glow sits behind, on a still layer
-                    .animation(.smooth(duration: model.tileAnimationDuration), value: model.state.board)
+                    .animation(.timingCurve(0.22, 0.8, 0.2, 1, duration: model.tileAnimationDuration), value: model.state.board)
                     .animation(.easeInOut(duration: 0.5), value: complete)
                     .contentShape(Rectangle())
                     .gesture(drag(w: w, h: h, cols: d.cols, rows: d.rows))

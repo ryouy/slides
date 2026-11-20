@@ -6,8 +6,10 @@ struct SplashView: View {
     var onDone: () -> Void
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     private static let n = 5
-    /// cell -> tile of the first frame. Must match START in ios/scripts/make-app-icon.mjs (that script draws the app icon from it).
-    private static let start = [14, 6, 21, 9, 2, 17, 11, 3, 19, 0, 8, 23, 5, 15, 12, 1, 22, 7, 13, 20, 4, 10, 24, 16, 18]
+    /// The blank's walk from the solved picture (tile 24, the last one, is the blank). The first frame is the picture after this walk, so it is
+    /// still clearly the face; the animation plays the walk backwards, one real slide at a time, like the game. The icon is drawn from the same
+    /// walk (WALK in ios/scripts/make-app-icon.mjs): keep the two identical.
+    private static let walk = [24, 23, 22, 21, 20, 15, 16, 17, 18, 19, 14, 13, 12, 11, 10]
     @State private var cellOf: [Int]        // tile -> cell
     @State private var complete = false
     @State private var fade = false
@@ -15,8 +17,12 @@ struct SplashView: View {
 
     init(onDone: @escaping () -> Void) {
         self.onDone = onDone
-        var c = Array(repeating: 0, count: Self.n * Self.n)
-        for (cell, tile) in Self.start.enumerated() { c[tile] = cell }
+        var c = Array(0..<(Self.n * Self.n))   // tile -> cell, solved
+        var blank = Self.walk[0]
+        for next in Self.walk.dropFirst() {
+            if let tile = c.firstIndex(of: next) { c[tile] = blank }   // the tile on the next cell slides into the blank
+            blank = next
+        }
         _cellOf = State(initialValue: c)
     }
 
@@ -24,7 +30,7 @@ struct SplashView: View {
         GeometryReader { geo in
             let side = min(min(geo.size.width, geo.size.height) * 0.62, 340)
             let n = CGFloat(Self.n), last = Self.n * Self.n - 1
-            let gap: CGFloat = complete ? 0 : side * 0.008
+            let gap: CGFloat = complete ? 0 : side * 0.004
             let t = (side - gap * (n - 1)) / n
             ZStack {
                 Web.bg.ignoresSafeArea()
@@ -37,7 +43,7 @@ struct SplashView: View {
                                 .offset(x: -CGFloat(tile % Self.n) * (side / n), y: -CGFloat(tile / Self.n) * (side / n))
                                 .frame(width: side / n, height: side / n, alignment: .topLeading).clipped()
                                 .frame(width: t, height: t, alignment: .topLeading).clipped()
-                                .clipShape(RoundedRectangle(cornerRadius: complete ? 0 : side * 0.018, style: .continuous))
+                                .clipShape(RoundedRectangle(cornerRadius: complete ? 0 : side * 0.004, style: .continuous))
                                 .opacity(tile == last && !complete ? 0 : 1)
                                 .offset(x: CGFloat(cell % Self.n) * (t + gap), y: CGFloat(cell / Self.n) * (t + gap))
                         }
@@ -63,12 +69,16 @@ struct SplashView: View {
             cellOf = Array(0..<(Self.n * Self.n)); complete = true
             try? await Task.sleep(for: .milliseconds(600)); finish(); return
         }
-        try? await Task.sleep(for: .milliseconds(450))   // a beat on the icon's picture
-        // every tile glides to its place, the top-left ones first
-        for tile in 0..<(Self.n * Self.n) {
-            withAnimation(.timingCurve(0.3, 0, 0.2, 1, duration: 0.5).delay(Double(tile) * 0.03)) { cellOf[tile] = tile }
+        try? await Task.sleep(for: .milliseconds(500))   // a beat on the first frame
+        // the walk backwards: each step one tile slides into the blank, with the game's own easing
+        var blank = Self.walk.last!
+        for next in Self.walk.reversed().dropFirst() {
+            guard let tile = cellOf.firstIndex(of: next) else { continue }
+            withAnimation(.timingCurve(0.22, 0.8, 0.2, 1, duration: 0.17)) { cellOf[tile] = blank }
+            blank = next
+            try? await Task.sleep(for: .milliseconds(150))
         }
-        try? await Task.sleep(for: .milliseconds(Int(0.5 * 1000 + Double(Self.n * Self.n) * 30) + 80))
+        try? await Task.sleep(for: .milliseconds(120))
         withAnimation(.easeOut(duration: 0.45)) { complete = true }
         try? await Task.sleep(for: .milliseconds(1000))  // the face, whole
         finish()
