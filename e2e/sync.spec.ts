@@ -59,7 +59,7 @@ test('turning sync on uploads the existing records to Drive and keeps every loca
   await page.getByTestId('sync-enable').click();
   await expect(page.getByTestId('sync-status')).toHaveAttribute('data-status', 'ok');
   const doc = JSON.parse(d.st.file!);
-  expect(doc.schema).toBe(1);
+  expect(doc.schema).toBe(2); // 2 = the document now carries favourites
   expect(Object.values(doc.counters)).toEqual([7]); // the 7 existing clears
   expect(doc.bests['3']).toEqual({ timeMs: 50000, moves: 80 });
   expect(doc.records['monet-water-lilies:3']).toMatchObject({ bestTimeMs: 50000, bestMoves: 80 });
