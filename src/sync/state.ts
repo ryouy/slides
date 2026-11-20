@@ -72,7 +72,7 @@ const BACKOFF_STEPS = [30_000, 120_000, 600_000];
  * token is only kept in memory, so every reload would flash it. A page load or a return to the tab therefore syncs only when the last
  * sync is older than this; changes (a clear, a star) and the "Sync now" button still sync at once.
  */
-const STALE_MS = 30 * 60_000;
+const STALE_MS = 120 * 60_000;
 const isFresh = (): boolean => !!state.lastSyncAt && Date.now() - state.lastSyncAt < STALE_MS;
 
 export function localStore(): LocalStore {

@@ -175,8 +175,8 @@ public struct ArtRootView: View {
             }
             .padding(pad)
             .frame(maxHeight: .infinity)
-            .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).stroke(Web.line, lineWidth: 1))
-            .contentShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(Web.line, lineWidth: 1))
+            .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
@@ -305,8 +305,8 @@ public struct ArtRootView: View {
                 texts.frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(12 * k)
-            .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).stroke(Web.line, lineWidth: 1))
-            .contentShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(Web.line, lineWidth: 1))
+            .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
         }
         .buttonStyle(.plain)
         .padding(.bottom, mode == .row ? 14 : 0)
@@ -337,14 +337,14 @@ public struct ArtRootView: View {
                     }
                     .frame(maxWidth: .infinity, minHeight: 48)
                 }
-                .buttonStyle(HomeTileStyle(radius: 16))
+                .buttonStyle(HomeTileStyle(radius: 10))
                 .accessibilityHint(app.isPremium ? app.t("photos.empty") : app.t("premium.lockedPhotos"))
                 if resumable {
                     Button { path.append(.resume) } label: {
                         HStack(spacing: 4) { Text(app.t("art.resume")); Image(systemName: "chevron.right").font(.system(size: 11, weight: .semibold)) }
                             .frame(maxWidth: .infinity, minHeight: 48)
                     }
-                    .buttonStyle(HomeTileStyle(radius: 16))
+                    .buttonStyle(HomeTileStyle(radius: 10))
                 }
             }
             .font(Web.font(14, .medium, relativeTo: .subheadline)).foregroundStyle(Web.muted)
@@ -413,7 +413,7 @@ public struct ArtRootView: View {
 
 /// The home's two big tiles: a rounded outline that dips a little when pressed.
 struct HomeTileStyle: ButtonStyle {
-    var radius: CGFloat = 22
+    var radius: CGFloat = 12
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .overlay(RoundedRectangle(cornerRadius: radius, style: .continuous).stroke(Web.line, lineWidth: 1))

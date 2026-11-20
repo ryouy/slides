@@ -342,6 +342,8 @@ test('preview lies over the real puzzle a little larger (a readable sheet on pho
     expect(card.width).toBeGreaterThan(board.width + 4);
     expect(card.width).toBeLessThanOrEqual(board.width * 1.09);
     expect(Math.abs(card.x + card.width / 2 - (board.x + board.width / 2))).toBeLessThan(2);
+    expect(card.y).toBeLessThan(board.y - 8); // its top edge sits a little above the puzzle's top edge (a few px: the lift plus the growth)
+    expect(card.y).toBeGreaterThan(board.y - 40); // ...only a little
     expect(card.x).toBeGreaterThanOrEqual(-0.5);
     expect(card.x + card.width).toBeLessThanOrEqual(vp.width + 0.5);
   } else {

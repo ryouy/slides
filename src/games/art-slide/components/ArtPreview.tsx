@@ -87,7 +87,8 @@ export function ArtPreview({
   const vh = window.innerHeight;
   // The card stays centred on the board: near a screen edge it simply grows less, so it is never cut off.
   const cx = rect.left + rect.width / 2;
-  const cy = rect.top + rect.height / 2;
+  const LIFT = 10; // the painting's top edge sits a little above the puzzle's top edge (the card still covers the whole board)
+  const cy = rect.top + rect.height / 2 - LIFT;
   const fit = (centre: number, extent: number, size: number) => (2 * Math.min(centre - 4, extent - centre - 4)) / size;
   const s = Math.max(0.5, Math.min(GROW, (vw - 8) / rect.width, (vh - 8) / rect.height, fit(cx, vw, rect.width), fit(cy, vh, rect.height)));
   const w = rect.width * s;

@@ -17,7 +17,7 @@ struct ArtGameView: View {
     var onNext: () -> Void = {}
     var onMore: () -> Void = {}
 
-    @State private var showPreview = false
+    @State private var showPreview = ArtGameView.debugPreview()
     @State private var pendingLevel: Int?
     @State private var showPremium = false
     @State private var shuffleHint = 0
@@ -57,7 +57,19 @@ struct ArtGameView: View {
             if p != .active { model.flush() }
         }
         .onDisappear { model.flush() }
-        .sheet(isPresented: $showPreview) { ArtInfoSheet(artwork: artwork, image: model.image) }
+        .sheet(isPresented: Binding(get: { showPreview && !isPad }, set: { showPreview = $0 })) { ArtInfoSheet(artwork: artwork, image: model.image) }
+        // iPad: the finished painting lies over the puzzle at the puzzle's own size (the web's preview), its top edge a little above the puzzle's
+        .overlayPreferenceValue(BoardAnchorKey.self) { anchor in
+            GeometryReader { geo in
+                if showPreview && isPad, let anchor {
+                    ArtPreviewOverlay(artwork: artwork, image: model.image, boardFrame: geo[anchor], container: geo.size) {
+                        withAnimation(.easeOut(duration: 0.22)) { showPreview = false }
+                    }
+                    .transition(.opacity)
+                }
+            }
+        }
+        .animation(.easeOut(duration: 0.25), value: showPreview)
         .sheet(isPresented: $showPremium) { PremiumView() }
         .sheet(isPresented: Binding(get: { model.showResult && model.state.cleared }, set: { model.showResult = $0 })) {
             ArtResultSheet(artwork: artwork, model: model, onNext: { model.showResult = false; daily ? onMore() : onNext() },
@@ -68,6 +80,15 @@ struct ArtGameView: View {
             Button(app.t("art.start")) { if let l = pendingLevel { onLevel(l) }; pendingLevel = nil }
             Button(app.t("common.cancel"), role: .cancel) { pendingLevel = nil }
         }
+    }
+
+    /// DEBUG only: `-showPreview` opens the preview at launch (for screenshots).
+    static func debugPreview() -> Bool {
+        #if DEBUG
+        return ProcessInfo.processInfo.arguments.contains("-showPreview")
+        #else
+        return false
+        #endif
     }
 
     private var daily: Bool { model.daily }
@@ -259,7 +280,15 @@ struct ArtInfoSheet: View {
             .accessibilityLabel(app.t("art.preview"))
     }
 
-    @ViewBuilder private var details: some View {
+    @ViewBuilder private var details: some View { ArtDetailsView(artwork: artwork) }
+}
+
+/// The title, artist, description and credits of a painting (the info sheet, and the iPad preview beside the picture).
+struct ArtDetailsView: View {
+    @Environment(AppModel.self) private var app
+    let artwork: PlayArtwork
+    var body: some View { VStack(alignment: .leading, spacing: 12) { content } }
+    @ViewBuilder private var content: some View {
         Text(artwork.title).font(Web.font(18, .semibold, relativeTo: .headline)).foregroundStyle(Web.fg)
         if !artwork.isCustom {
             Text("\(artwork.artist) · \(artwork.year)").font(Web.font(13)).foregroundStyle(Web.muted)

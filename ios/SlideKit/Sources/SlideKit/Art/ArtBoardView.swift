@@ -1,6 +1,12 @@
 import SwiftUI
 import SlideCore
 
+/// The board's bounds as an anchor: the iPad's preview is laid over it (an anchor stays correct while the screen is pushed or rotated).
+struct BoardAnchorKey: PreferenceKey {
+    static let defaultValue: Anchor<CGRect>? = nil
+    static func reduce(value: inout Anchor<CGRect>?, nextValue: () -> Anchor<CGRect>?) { value = nextValue() ?? value }
+}
+
 /// The board: the painting's own proportions, every tile shows its own part of the picture (nothing cropped).
 /// Tap a tile, or drag it toward the blank; tiles in line with the blank slide together.
 struct ArtBoardView: View {
@@ -15,6 +21,7 @@ struct ArtBoardView: View {
         let gap: CGFloat = complete ? 0 : (d.cols > 6 || d.rows > 6 ? 0.5 : 0.75) // per side: a hairline between pieces (wide gaps made grey dots appear where four corners meet)
         Color.clear
             .aspectRatio(aspect, contentMode: .fit)
+            .anchorPreference(key: BoardAnchorKey.self, value: .bounds) { $0 }
             .overlay {
                 GeometryReader { geo in
                     let w = geo.size.width / CGFloat(d.cols), h = geo.size.height / CGFloat(d.rows)
