@@ -2240,3 +2240,12 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .gal-fav:hover, .gal-fav.on { color: var(--fg); }
 .gal-fav:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 .g-fav { position: absolute; top: 6px; left: 6px; display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: color-mix(in srgb, var(--bg) 70%, transparent); color: var(--fg); opacity: .85; z-index: 1; pointer-events: none; }
+
+/* The favourite button is always a star (no word), on phones and on wide screens; it is filled when the painting is a favourite */
+.screen.artgame .art-header-controls .art-actions .fav-btn,
+.screen.artgame > .art-top .art-header-controls .art-actions .fav-btn { min-width: 42px; }
+.screen.artgame .art-header-controls .art-actions .fav-btn .art-action-icon,
+.screen.artgame > .art-top .art-header-controls .art-actions .fav-btn .art-action-icon { display: inline-flex; width: 20px; height: 20px; flex: 0 0 20px; }
+.screen.artgame .art-header-controls .art-actions .fav-btn .art-action-label,
+.screen.artgame > .art-top .art-header-controls .art-actions .fav-btn .art-action-label { display: none; }
+.screen.artgame .art-header-controls .art-actions .fav-btn.on .art-action-icon { fill: currentColor; }
