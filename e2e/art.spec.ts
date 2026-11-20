@@ -721,7 +721,8 @@ test.describe('home on wide screens', () => {
       await page.waitForTimeout(600);
       const strip = page.getByTestId('home-picks');
       await expect(strip).toBeVisible();
-      await expect(strip.locator('a')).toHaveCount(6);
+      await expect(strip.locator('li:not(.pk-more) a')).toHaveCount(11); // more than fit across: the row scrolls sideways
+      await expect(strip.getByTestId('home-picks-more')).toHaveCount(1); // and ends with the way into the gallery
       const m = await page.evaluate(() => ({
         over: document.documentElement.scrollHeight - innerHeight,
         sw: document.documentElement.scrollWidth - innerWidth,
@@ -806,7 +807,7 @@ test.describe('home on wide screens', () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/art-slide');
     const ids = (await page.locator('[data-testid^="pick-"]').evaluateAll((els) => els.map((e) => e.getAttribute('data-testid')!.slice(5))));
-    expect(ids.length).toBe(6);
+    expect(ids.length).toBe(11); // more than fit across; every one is playable for a Free visitor
     for (const id of ids) expect(FREE_ARTWORK_IDS).toContain(id);
   });
 });

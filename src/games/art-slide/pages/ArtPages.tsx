@@ -34,7 +34,7 @@ export function ArtHome() {
   const exhibit = getArtwork(dailyArtworkId(today)) ?? ARTWORKS[0];
   const resumable = data.inProgress.free && data.inProgress.free.status === 'playing';
   const done = data.dailyHistory[today]?.artworkId === exhibit.id;
-  const picks = useMemo(() => homePicks(playableArtworks(premium, gating), today), [premium, gating, today]);
+  const picks = useMemo(() => homePicks(playableArtworks(premium, gating), today, 11), [premium, gating, today]);
   return (
     <div className="screen home art-home">
       <header className="art-home-head">
@@ -113,6 +113,11 @@ export function ArtHome() {
               </Link>
             </li>
           ))}
+          <li className="pk-more">
+            <Link to="/art-slide/gallery" data-testid="home-picks-more">
+              <span className="pk-more-box"><span>{t('home.galleryMore')}</span><ChevronRight size={22} /></span>
+            </Link>
+          </li>
         </ul>
       </section>
     </div>

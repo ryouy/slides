@@ -124,8 +124,8 @@ struct ArtGameView: View {
 
     private var stats: some View {
         HStack(alignment: .bottom, spacing: 4) {
-            stat(app.t("common.time"), ArtStats.formatTime(model.clockMs), width: 64)
-            stat(app.t("common.moves"), "\(model.movesShown)", width: 48)
+            stat(app.t("common.time"), ArtStats.formatTime(model.clockMs), width: 60)
+            stat(app.t("common.moves"), "\(model.movesShown)", width: 44)
         }
         .accessibilityElement(children: .combine)
     }
@@ -149,7 +149,7 @@ struct ArtGameView: View {
                 Image(systemName: "number").font(.system(size: 18, weight: on ? .semibold : .regular))
                     .foregroundStyle(on ? Web.bg : Web.fg).frame(width: 36, height: 36)
                     .background(on ? Web.fg : Color.clear, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
-                    .frame(width: 44, height: 44).contentShape(Rectangle())
+                    .frame(width: 40, height: 44).contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .accessibilityLabel(app.t("art.numbers")).accessibilityAddTraits(on ? .isSelected : [])
@@ -187,7 +187,7 @@ struct ArtGameView: View {
     }
     private func icon(_ symbol: String, _ label: String, action: @escaping () -> Void) -> some View {
         Button(action: { Haptics.tap(); action() }) {
-            Image(systemName: symbol).font(.system(size: 19, weight: .regular)).foregroundStyle(Web.fg).frame(width: 44, height: 44).contentShape(Rectangle())
+            Image(systemName: symbol).font(.system(size: 19, weight: .regular)).foregroundStyle(Web.fg).frame(width: 40, height: 44).contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel(label)
@@ -232,9 +232,10 @@ struct ArtInfoSheet: View {
             GeometryReader { geo in
                 ScrollView {
                     if geo.size.width > 640 {
-                        // iPad / wide window: the painting takes most of the width, the text sits beside it
-                        HStack(alignment: .top, spacing: 28) {
-                            picture.frame(width: geo.size.width * 0.6)
+                        // iPad / wide window: the picture as large as it can be (about the size of the board it covers when previewed),
+                        // the text beside it on the right, as before
+                        HStack(alignment: .top, spacing: 24) {
+                            picture.frame(width: geo.size.width * 0.7)
                             VStack(alignment: .leading, spacing: 12) { details }.frame(maxWidth: .infinity, alignment: .leading)
                         }
                         .padding(20)

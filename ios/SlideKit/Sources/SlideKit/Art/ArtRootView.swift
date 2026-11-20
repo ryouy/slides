@@ -221,27 +221,54 @@ public struct ArtRootView: View {
     }
 
     // MARK: the gallery row (the web's "From the gallery")
-    private var picks: [Artwork] {
-        ArtGallery.homePicks(app.catalog.artworks.filter { !ArtRules.isArtworkLocked($0.id, premium: app.isPremium, catalog: app.catalog) }, dateKey: today)
+    /// More paintings than fit across, so the row invites a swipe, and it ends with the way into the gallery.
+    private func picks(_ count: Int) -> [Artwork] {
+        ArtGallery.homePicks(app.catalog.artworks.filter { !ArtRules.isArtworkLocked($0.id, premium: app.isPremium, catalog: app.catalog) }, dateKey: today, count: count)
     }
 
-    /// Six paintings, the same for everybody on a given day (the web's pick): a row of six on iPad, a sideways row on iPhone.
+    /// Paintings, the same for everybody on a given day (the web's pick; its first six are exactly the web's six). The row scrolls sideways
+    /// and runs on to the edge of the screen; `visible` is how many fit, and about five more wait beyond the edge.
     private func galleryStrip(roomy: Bool, width: CGFloat) -> some View {
-        let items = picks
+        let gap: CGFloat = roomy ? 18 : 12
+        let cardW: CGFloat = roomy ? (width - 5 * gap) / 6 : 136
+        let visible = Int((width / (cardW + gap)).rounded(.up))
+        let items = picks(visible + 5)
+        let edge: CGFloat = roomy ? 32 : 16
         return VStack(alignment: .leading, spacing: 12) {
             if roomy { Rectangle().fill(Web.line).frame(height: 1) }
             Text(app.t("home.fromGallery")).font(Web.font(11, .semibold, relativeTo: .caption2)).tracking(2.4).textCase(.uppercase).foregroundStyle(Web.muted)
                 .padding(.top, roomy ? 10 : 18)
-            if roomy {
-                HStack(alignment: .top, spacing: 18) { ForEach(items) { pickCard($0) } }
-            } else {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(alignment: .top, spacing: 12) { ForEach(items) { pickCard($0).frame(width: 136) } }
-                        .padding(.horizontal, 16)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(alignment: .top, spacing: gap) {
+                    ForEach(items) { pickCard($0).frame(width: cardW) }
+                    galleryMoreCard.frame(width: cardW)
                 }
-                .padding(.horizontal, -16)   // the row runs to the screen edges
+                .padding(.horizontal, edge)
             }
+            .padding(.horizontal, -edge)   // the row runs to the screen edges
         }
+    }
+
+    /// The last card of the row: into the gallery.
+    private var galleryMoreCard: some View {
+        Button { path.append(.gallery) } label: {
+            VStack(alignment: .leading, spacing: 2) {
+                Color.clear.aspectRatio(5.0 / 4.0, contentMode: .fit)
+                    .overlay {
+                        HStack(spacing: 4) {
+                            Text(app.t("home.galleryMore")).font(Web.font(13, .medium, relativeTo: .footnote)).lineLimit(2).multilineTextAlignment(.center)
+                            Image(systemName: "chevron.right").font(.system(size: 12, weight: .semibold))
+                        }
+                        .foregroundStyle(Web.muted).padding(.horizontal, 8)
+                    }
+                    .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).stroke(Web.line, lineWidth: 1))
+                Text(" ").font(Web.font(12, .semibold, relativeTo: .caption)).padding(.top, 6)
+                Text(" ").font(Web.font(11, relativeTo: .caption2))
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(app.t("home.galleryMore"))
     }
 
     private func pickCard(_ a: Artwork) -> some View {

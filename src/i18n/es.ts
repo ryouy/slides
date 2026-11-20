@@ -50,6 +50,7 @@ const es: Partial<Dict> = {
   'premium.signIn': 'Primero inicia sesión con Google.',
   'home.login': 'Entrar', 'home.account': 'Cuenta',
   'fav.title': 'Favoritos', 'fav.add': 'Añadir a favoritos', 'fav.remove': 'Quitar de favoritos', 'fav.count': '{n} favoritos', 'fav.empty': 'Aún no hay favoritos. Toca la estrella mientras juegas.',
+  'home.galleryMore': 'Ir a la galería',
   'home.fromGallery': 'Desde la galería',
   'premium.lockedPhotos': 'Tus propias fotos forman parte de Premium.',
   'premium.thanks': '¡Gracias! Estamos confirmando tu compra…',

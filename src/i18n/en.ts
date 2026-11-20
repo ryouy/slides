@@ -305,6 +305,7 @@ const en = {
   'sync.newer': 'Your Drive holds records from a newer version of ART SLIDE. Nothing was changed.',
   'sync.offNote': 'Turning it off keeps your records.',
   'fav.title': 'Favourites', 'fav.add': 'Add to favourites', 'fav.remove': 'Remove from favourites', 'fav.count': '{n} favourites', 'fav.empty': 'No favourites yet. Tap the star while playing a painting.',
+  'home.galleryMore': 'See the whole gallery',
   'home.fromGallery': 'From the gallery',
   'premium.lockedPhotos': 'Your own photos are part of Premium.',
   'premium.thanks': 'Thank you! Your purchase is being confirmed…',

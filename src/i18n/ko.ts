@@ -50,6 +50,7 @@ const ko: Partial<Dict> = {
   'premium.signIn': '먼저 Google로 로그인해 주세요.',
   'home.login': '로그인', 'home.account': '계정',
   'fav.title': '즐겨찾기', 'fav.add': '즐겨찾기에 추가', 'fav.remove': '즐겨찾기에서 제거', 'fav.count': '즐겨찾기 {n}점', 'fav.empty': '아직 즐겨찾기가 없습니다. 플레이 중에 별을 눌러 추가하세요.',
+  'home.galleryMore': '갤러리로',
   'home.fromGallery': '갤러리에서',
   'premium.lockedPhotos': '내 사진은 Premium 전용입니다.',
   'premium.thanks': '감사합니다! 구매를 확인하고 있습니다…',
