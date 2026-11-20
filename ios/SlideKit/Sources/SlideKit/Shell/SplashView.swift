@@ -6,10 +6,13 @@ struct SplashView: View {
     var onDone: () -> Void
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     private static let n = 5
-    /// The blank's walk from the solved picture (tile 24, the last one, is the blank). The first frame is the picture after this walk, so it is
-    /// still clearly the face; the animation plays the walk backwards, one real slide at a time, like the game. The icon is drawn from the same
-    /// walk (WALK in ios/scripts/make-app-icon.mjs): keep the two identical.
+    /// The blank's walk from the solved picture (tile 24, the last one, is the blank): the app icon is the picture after ALL of it
+    /// (WALK in ios/scripts/make-app-icon.mjs, identical). The splash does not start from the icon but already close to done: it starts after
+    /// only the first `steps` moves and plays them backwards, one real slide at a time, like the game. The face is almost whole at first.
     private static let walk = [24, 23, 18, 17, 22, 21, 16, 15, 10, 11, 6, 7, 12, 13, 18, 19, 14, 13, 8, 9, 4, 3, 8, 13, 12, 7, 6]
+    private static let steps = 7
+    /// the part of the walk the splash replays (the blank starts at its last cell)
+    private static var path: [Int] { Array(walk.prefix(steps + 1)) }
     @State private var cellOf: [Int]        // tile -> cell
     @State private var complete = false
     @State private var fade = false
@@ -18,8 +21,8 @@ struct SplashView: View {
     init(onDone: @escaping () -> Void) {
         self.onDone = onDone
         var c = Array(0..<(Self.n * Self.n))   // tile -> cell, solved
-        var blank = Self.walk[0]
-        for next in Self.walk.dropFirst() {
+        var blank = Self.path[0]
+        for next in Self.path.dropFirst() {
             if let tile = c.firstIndex(of: next) { c[tile] = blank }   // the tile on the next cell slides into the blank
             blank = next
         }
@@ -76,18 +79,18 @@ struct SplashView: View {
             cellOf = Array(0..<(Self.n * Self.n)); complete = true
             try? await Task.sleep(for: .milliseconds(600)); finish(); return
         }
-        try? await Task.sleep(for: .milliseconds(400))   // a beat on the first frame
+        try? await Task.sleep(for: .milliseconds(350))   // a beat on the first frame
         // the walk backwards: each step one tile slides into the blank, with the game's own easing
-        var blank = Self.walk.last!
-        for next in Self.walk.reversed().dropFirst() {
+        var blank = Self.path.last!
+        for next in Self.path.reversed().dropFirst() {
             guard let tile = cellOf.firstIndex(of: next) else { continue }
-            withAnimation(.timingCurve(0.22, 0.8, 0.2, 1, duration: 0.096)) { cellOf[tile] = blank }
+            withAnimation(.timingCurve(0.22, 0.8, 0.2, 1, duration: 0.28)) { cellOf[tile] = blank }
             blank = next
-            try? await Task.sleep(for: .milliseconds(70))
+            try? await Task.sleep(for: .milliseconds(310))
         }
-        try? await Task.sleep(for: .milliseconds(120))
+        try? await Task.sleep(for: .milliseconds(180))
         withAnimation(.easeOut(duration: 0.36)) { complete = true }
-        try? await Task.sleep(for: .milliseconds(800))  // the face, whole
+        try? await Task.sleep(for: .milliseconds(700))  // the face, whole
         finish()
     }
 
