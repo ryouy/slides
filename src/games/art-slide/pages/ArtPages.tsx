@@ -74,6 +74,26 @@ export function ArtHome() {
         {gating && <button className="btn big" data-testid="art-photos" onClick={() => go('photos')}>{t('home.photos')}{!premium && <LockIcon size={15} />}<ChevronRight size={26} className="btn-chev" /></button>}
         {resumable && <button className="btn big" data-testid="art-resume" onClick={() => go('play')}>{t('art.resume')}<ChevronRight size={26} className="btn-chev" /></button>}
       </nav>
+      {/* paintings from the gallery: a row that scrolls sideways (phones too) and ends with the way into the gallery */}
+      <section className="art-home-strip" aria-label={t('home.fromGallery')} data-testid="home-picks">
+        <h2 className="visually-hidden">{t('home.fromGallery')}</h2>
+        <ul>
+          {picks.map((a) => (
+            <li key={a.id}>
+              <Link to={`/art-slide/play/${a.id}`} data-testid={`pick-${a.id}`}>
+                <img src={a.thumbnailUrl} alt="" loading="lazy" decoding="async" width={Math.round(a.width / 4)} height={Math.round(a.height / 4)} />
+                <span className="pk-title" title={a.title}>{a.title}</span>
+                <span className="pk-artist">{a.artist}</span>
+              </Link>
+            </li>
+          ))}
+          <li className="pk-more">
+            <Link to="/art-slide/gallery" data-testid="home-picks-more">
+              <span className="pk-more-box"><span>{t('home.galleryMore')}</span><ChevronRight size={22} /></span>
+            </Link>
+          </li>
+        </ul>
+      </section>
       <div className="art-home-secondary">
         <details className="art-more" data-testid="art-more">
           <summary>{t('home.other')}</summary>
@@ -100,26 +120,6 @@ export function ArtHome() {
         </details>
         <a className="appstore-link" data-testid="appstore-link" href="https://apps.apple.com/app/art-slide" target="_blank" rel="noopener noreferrer">{t('home.iosApp')}</a>
       </div>
-      {/* wide screens only (hidden by CSS on phones, where the images are then never loaded) */}
-      <section className="art-home-strip" aria-label={t('home.fromGallery')} data-testid="home-picks">
-        <h2>{t('home.fromGallery')}</h2>
-        <ul>
-          {picks.map((a) => (
-            <li key={a.id}>
-              <Link to={`/art-slide/play/${a.id}`} data-testid={`pick-${a.id}`}>
-                <img src={a.thumbnailUrl} alt="" loading="lazy" decoding="async" width={Math.round(a.width / 4)} height={Math.round(a.height / 4)} />
-                <span className="pk-title" title={a.title}>{a.title}</span>
-                <span className="pk-artist">{a.artist}</span>
-              </Link>
-            </li>
-          ))}
-          <li className="pk-more">
-            <Link to="/art-slide/gallery" data-testid="home-picks-more">
-              <span className="pk-more-box"><span>{t('home.galleryMore')}</span><ChevronRight size={22} /></span>
-            </Link>
-          </li>
-        </ul>
-      </section>
     </div>
   );
 }

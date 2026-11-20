@@ -169,3 +169,25 @@ test('a signed-out visitor sees no sync section and a build without the paid pla
   expect(urls).toEqual([]);
   await ctx2.close();
 });
+
+test('a star set on the play screen is uploaded to Drive (so the iOS app can get it), and a star from Drive shows up here', async ({ page }) => {
+  const d = fakeDrive();
+  await setup(page, d, ME);
+  await page.goto('/art-slide/account');
+  await page.getByTestId('sync-enable').click();
+  await expect(page.getByTestId('sync-status')).toHaveAttribute('data-status', 'ok');
+  // star a painting while playing
+  await page.goto('/art-slide/play/monet-water-lilies');
+  await page.getByTestId('favorite-toggle').click();
+  await expect.poll(() => JSON.parse(d.st.file!).favorites?.['monet-water-lilies']?.on, { timeout: 15000 }).toBe(true); // synced a few seconds later
+  expect(JSON.parse(d.st.file!).schema).toBe(2);
+  // another device (the iOS app) stars a second painting in Drive: it appears here after the next sync
+  const doc = JSON.parse(d.st.file!);
+  doc.favorites['hokusai-great-wave'] = { on: true, at: Date.now() + 1000 };
+  d.st.file = JSON.stringify(doc);
+  await page.goto('/art-slide/account');
+  await page.getByTestId('sync-now').click();
+  await expect(page.getByTestId('sync-status')).toHaveAttribute('data-status', 'ok');
+  await page.goto('/art-slide/play/hokusai-great-wave');
+  await expect(page.getByTestId('favorite-toggle')).toHaveAttribute('aria-pressed', 'true');
+});

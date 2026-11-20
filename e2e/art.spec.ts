@@ -790,15 +790,17 @@ test.describe('home on wide screens', () => {
     await expect(page.locator('.aboard')).toBeVisible();
   });
 
-  test('phones keep the old home: no strip, and its images are never loaded', async ({ page }, info) => {
+  test('phones show the row of paintings too: it scrolls sideways, ends with the way into the gallery, and the page itself does not scroll sideways', async ({ page }, info) => {
     test.skip(info.project.name !== 'mobile', 'phones only');
-    const images: string[] = [];
-    page.on('request', (r) => /\/artworks\/.*-thumb\.webp/.test(r.url()) && images.push(r.url()));
     await page.goto('/art-slide');
-    await page.waitForTimeout(600);
-    await expect(page.getByTestId('home-picks')).toBeHidden();
-    expect(images.length).toBeLessThanOrEqual(1); // only today's exhibit
+    const strip = page.getByTestId('home-picks');
+    await expect(strip).toBeVisible();
+    await expect(strip.locator('li:not(.pk-more) a')).toHaveCount(11);
+    expect(await strip.locator('ul').evaluate((e) => e.scrollWidth > e.clientWidth)).toBe(true); // more than fits across
     expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
+    await strip.getByTestId('home-picks-more').scrollIntoViewIfNeeded();
+    await strip.getByTestId('home-picks-more').click();
+    await expect(page).toHaveURL(/\/art-slide\/gallery$/);
   });
 
   test('with the paid plan switched on, Free visitors are only offered paintings they can play', async ({ page }, info) => {

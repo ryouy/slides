@@ -194,6 +194,27 @@ final class DriveTestsRunner: XCTestCase {
         XCTAssertEqual(d.counters, ["devA": 2]); XCTAssertEqual(d.records["monet-water-lilies:3"]?.clears, ["devA": 2])
     }
 
+    /// The exact JSON the web writes (schema 2, favourites with "on" and a millisecond time): the app reads it and the stars reach the save;
+    /// a star set here goes back to Drive; an un-star made later elsewhere wins.
+    func testFavouritesFromTheWebReachTheAppAndBack() async throws {
+        let web = #"{"schema":2,"counters":{},"bests":{},"records":{},"dailyHistory":{},"history":[],"favorites":{"monet-water-lilies":{"on":true,"at":1795157607629},"hokusai-great-wave":{"on":true,"at":1795157609000}}}"#
+        let net = FakeDrive(); net.file = Data(web.utf8)
+        var s = device("devA"); s.favorites["van-gogh-bedroom"] = ArtFavorite(on: true, at: 1795157608000)
+        let local = MemLocal(s)
+        let r = await go(net, local)
+        XCTAssertEqual(r, .ok(uploaded: true))
+        XCTAssertEqual(local.save.favorites["monet-water-lilies"], ArtFavorite(on: true, at: 1795157607629))      // from the web
+        XCTAssertEqual(local.save.favorites["hokusai-great-wave"], ArtFavorite(on: true, at: 1795157609000))
+        XCTAssertEqual(local.save.favorites["van-gogh-bedroom"], ArtFavorite(on: true, at: 1795157608000))        // this device's own
+        let up = try DriveDoc.parse(net.file!)
+        XCTAssertEqual(up.favorites.count, 3)                                                                     // Drive has all three now
+        // the web un-stars the Monet painting later; the app picks that up
+        net.file = Data(#"{"schema":2,"favorites":{"monet-water-lilies":{"on":false,"at":1795157700000}}}"#.utf8)
+        _ = await go(net, local)
+        XCTAssertEqual(local.save.favorites["monet-water-lilies"], ArtFavorite(on: false, at: 1795157700000))
+        XCTAssertEqual(local.save.favorites["hokusai-great-wave"]?.on, true)
+    }
+
     func testSecondDeviceRestoresAndNothingIsCountedTwice() async throws {
         var a = device("devA"); clear(&a, "monet-water-lilies"); clear(&a, "monet-water-lilies")
         var b = device("devB"); clear(&b, "van-gogh-bedroom", size: 4)

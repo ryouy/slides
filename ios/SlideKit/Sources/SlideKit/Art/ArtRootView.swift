@@ -236,8 +236,7 @@ public struct ArtRootView: View {
         let edge: CGFloat = roomy ? 32 : 16
         return VStack(alignment: .leading, spacing: 12) {
             if roomy { Rectangle().fill(Web.line).frame(height: 1) }
-            Text(app.t("home.fromGallery")).font(Web.font(11, .semibold, relativeTo: .caption2)).tracking(2.4).textCase(.uppercase).foregroundStyle(Web.muted)
-                .padding(.top, roomy ? 10 : 18)
+            Color.clear.frame(height: roomy ? 4 : 10)   // (no heading: the row speaks for itself)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .top, spacing: gap) {
                     ForEach(items) { pickCard($0).frame(width: cardW) }
@@ -261,7 +260,6 @@ public struct ArtRootView: View {
                         }
                         .foregroundStyle(Web.muted).padding(.horizontal, 8)
                     }
-                    .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).stroke(Web.line, lineWidth: 1))
                 Text(" ").font(Web.font(12, .semibold, relativeTo: .caption)).padding(.top, 6)
                 Text(" ").font(Web.font(11, relativeTo: .caption2))
             }
