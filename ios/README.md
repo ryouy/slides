@@ -98,6 +98,16 @@ The web site keeps using AdMax.
 * Premium paintings: downloaded once (Settings can download all / delete all) into Application Support, playable offline afterwards.
 * Records are JSON files in Application Support (atomic writes + backup copy); a damaged file falls back to the backup, then to defaults.
 
+## Before every upload: check the privacy manifests
+
+Apple rejects (ITMS-91064) a manifest with `NSPrivacyTracking` = true and no tracking domains, or false with some. The app's own manifest is
+`NSPrivacyTracking` = false with **no** `NSPrivacyTrackingDomains` key (see `docs/IOS_PRIVACY.md` §11). After Product → Archive run:
+
+    npm run ios:check-privacy -- "<archive>.xcarchive/Products/Applications/App.app"
+
+It checks every `PrivacyInfo.xcprivacy` in the build (app, frameworks, SDK bundles) and must end with "all N manifest(s) valid". Raise
+`CURRENT_PROJECT_VERSION` in `Config/Shared.xcconfig` for every upload (Build 2 is the first after the rejection).
+
 ## Not done yet / verify by hand
 
 * Real-device and sandbox validation of the shared Premium linking flow remains required before release.

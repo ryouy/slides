@@ -2,15 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<!-- This manifest describes what the APP ITSELF collects. The advertising SDKs (Google Mobile Ads, Google UMP) ship their own
+	<!-- This manifest describes what the APP ITSELF collects. The SDKs (Google Mobile Ads, UMP, Google Sign-In ...) ship their own
 	     PrivacyInfo.xcprivacy with their data types, linking and required-reason APIs; Xcode merges them into the Privacy Report, so
 	     they are deliberately not repeated here. See docs/IOS_PRIVACY.md for the full App Store Connect answers.
-	     NSPrivacyTracking is true because the embedded Google Mobile Ads SDK uses the advertising identifier for tracking when the user
-	     allows it (App Tracking Transparency); the SDKs declare no tracking domains, so none are listed. -->
+	     TRACKING: the app itself connects to no tracking domain, so NSPrivacyTracking is false and NSPrivacyTrackingDomains is ABSENT.
+	     Apple rejects (ITMS-91064, TN3181) NSPrivacyTracking=true with an empty NSPrivacyTrackingDomains, and false with a non-empty one.
+	     Do not list ad domains here: iOS would then block them for people who decline App Tracking Transparency, which also stops the
+	     non-personalised banner. That the advertising SDK uses the advertising identifier (Device ID, tracking) is declared by the SDK's
+	     own manifest and in App Store Connect; the ATT prompt (NSUserTrackingUsageDescription + AdsManager) is independent of this key.
+	     ios/scripts/check-privacy-manifests.mjs checks these rules for every manifest in a build or archive. -->
 	<key>NSPrivacyTracking</key>
-	<true/>
-	<key>NSPrivacyTrackingDomains</key>
-	<array/>
+	<false/>
 	<key>NSPrivacyCollectedDataTypes</key>
 	<array>
 		<!-- Sign in with Apple (optional): Apple's user id and our own account id are stored on our server. -->
@@ -23,6 +25,13 @@
 		<!-- Records sync (optional, off by default): the three games' records are stored on our server. -->
 		<dict>
 			<key>NSPrivacyCollectedDataType</key><string>NSPrivacyCollectedDataTypeGameplayContent</string>
+			<key>NSPrivacyCollectedDataTypeLinked</key><true/>
+			<key>NSPrivacyCollectedDataTypeTracking</key><false/>
+			<key>NSPrivacyCollectedDataTypePurposes</key><array><string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string></array>
+		</dict>
+		<!-- Premium: the subscription's original transaction id, expiry and revoked state are tied to the account (shared Premium with the web). -->
+		<dict>
+			<key>NSPrivacyCollectedDataType</key><string>NSPrivacyCollectedDataTypePurchaseHistory</string>
 			<key>NSPrivacyCollectedDataTypeLinked</key><true/>
 			<key>NSPrivacyCollectedDataTypeTracking</key><false/>
 			<key>NSPrivacyCollectedDataTypePurposes</key><array><string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string></array>
