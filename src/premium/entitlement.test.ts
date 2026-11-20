@@ -5,9 +5,9 @@ import { nextArtwork, pickRandomArtwork, playableArtworks } from '../games/art-s
 import { FREE_ARTWORK_IDS, FREE_MAX_LEVEL, isArtworkLocked, isCustomArtwork, isLevelLocked } from './entitlement';
 
 describe('free artwork list', () => {
-  it('is 40 distinct, existing, fixed paintings', () => {
-    expect(FREE_ARTWORK_IDS).toHaveLength(40);
-    expect(new Set(FREE_ARTWORK_IDS).size).toBe(40);
+  it('is 75 distinct, existing, fixed paintings (the first 40 are the original list)', () => {
+    expect(FREE_ARTWORK_IDS).toHaveLength(75);
+    expect(new Set(FREE_ARTWORK_IDS).size).toBe(75);
     const ids = new Set(ARTWORKS.map((a) => a.id));
     for (const id of FREE_ARTWORK_IDS) expect(ids.has(id), id).toBe(true);
   });
@@ -15,7 +15,7 @@ describe('free artwork list', () => {
     const free = ARTWORKS.filter((a) => FREE_ARTWORK_IDS.includes(a.id));
     expect(new Set(free.map((a) => a.theme)).size).toBe(new Set(ARTWORKS.map((a) => a.theme)).size);
     expect(new Set(free.map((a) => a.era)).size).toBe(new Set(ARTWORKS.map((a) => a.era)).size);
-    expect(new Set(free.map((a) => a.artist)).size).toBeGreaterThanOrEqual(30);
+    expect(new Set(free.map((a) => a.artist)).size).toBeGreaterThanOrEqual(60);
   });
 });
 
@@ -42,11 +42,11 @@ describe('locks', () => {
     expect(isCustomArtwork('van-gogh-bedroom')).toBe(false);
   });
   it('random and "next" never hand a Free visitor a locked painting', () => {
-    expect(playableArtworks(false, true)).toHaveLength(40);
+    expect(playableArtworks(false, true)).toHaveLength(75);
     expect(playableArtworks(true, true)).toHaveLength(ARTWORKS.length);
     for (let i = 0; i < 200; i++) expect(isArtworkLocked(pickRandomArtwork(undefined, Math.random, false, true).id, false, true)).toBe(false);
     let id = FREE_ARTWORK_IDS[0];
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 75; i++) {
       id = nextArtwork(id, false, true).id;
       expect(FREE_ARTWORK_IDS).toContain(id);
     }

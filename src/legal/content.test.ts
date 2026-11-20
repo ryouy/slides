@@ -131,14 +131,14 @@ describe('the texts agree with each other and with how the service works', () =>
     const ids = termsSections('ja', full).map((s) => s.id);
     for (const id of ['plans', 'fees', 'cancel', 'refund', 'failed', 'price-change', 'photos', 'law', 'disclaimer']) expect(ids).toContain(id);
   });
-  it('the terms state the same plans as the product: 40 paintings, level 5 / 7, daily for everybody', () => {
+  it('the terms state the same plans as the product: 75 paintings, level 5 / 7, daily for everybody', () => {
     const ja = text(termsSections('ja', full));
-    expect(ja).toContain('固定の40作品');
+    expect(ja).toContain('固定の75作品');
     expect(ja).toContain('レベル5まで');
     expect(ja).toContain('レベル7まで');
     expect(ja).toContain('デイリーパズルは、プランにかかわらず');
     const en = text(termsSections('en', full));
-    expect(en).toContain('40 paintings');
+    expect(en).toContain('75 paintings');
     expect(en).toContain('levels up to 5');
     expect(en).toContain('levels up to 7');
   });

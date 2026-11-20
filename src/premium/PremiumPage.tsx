@@ -12,7 +12,7 @@ import { Page } from '../ui/Pages';
 import { useAccount } from '../account/store';
 import { openPortal, purchaseState, startCheckout, type PurchaseOutcome } from './billing';
 import { signInUrl } from '../account/api';
-import { useEntitlement } from './entitlement';
+import { FREE_ARTWORK_IDS, useEntitlement } from './entitlement';
 
 /** Japanese and Chinese have no spaces: a line may then break anywhere. Each clause is kept whole (it moves to the next line as a unit), so a line never ends in the middle of a phrase. */
 function Phrases({ text, lang }: { text: string; lang: string }) {
@@ -60,7 +60,7 @@ export function PremiumPanel({ reason }: { reason?: 'art' | 'size' | 'photos' })
         <p className="premium-sub"><Phrases text={t('premium.cancelAnytime')} lang={lang} /></p>
       </div>
       <ul className="premium-list">
-        <li>{t('premium.f1', { n: ARTWORKS.length })}</li>
+        <li>{t('premium.f1', { n: ARTWORKS.length - FREE_ARTWORK_IDS.length })}</li>
         <li>{t('premium.f2')}</li>
         <li>{t('premium.f3')}</li>
         <li>{t('premium.f4')}</li>

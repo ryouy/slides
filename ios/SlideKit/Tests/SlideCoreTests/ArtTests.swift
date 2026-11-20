@@ -67,15 +67,20 @@ final class ArtTests: XCTestCase {
         // same dates as rng.json "iosDaily" (frozen pool, so already-played days never change)
         let c = try catalog()
         XCTAssertEqual(ArtDaily.artworkID("2026-11-18", pools: c.dailyPools), "hiroshige-arai")
-        XCTAssertEqual(ArtDaily.artworkID("2026-12-25", pools: c.dailyPools), "sorolla-rocks-at-the-lighthouse-biarritz")
-        XCTAssertEqual(ArtDaily.artworkID("2027-01-01", pools: c.dailyPools), "harnett-just-dessert")
+        XCTAssertEqual(ArtDaily.artworkID("2026-11-30", pools: c.dailyPools), "constable-stoke-by-nayland")        // last day of the frozen 40-painting pool
+        XCTAssertEqual(ArtDaily.artworkID("2026-12-01", pools: c.dailyPools), "david-madame-de-pastoret-and-her-son") // first day of the 75-painting pool
+        XCTAssertEqual(ArtDaily.artworkID("2026-12-25", pools: c.dailyPools), "hiroshige-mishima-morning-mist")
+        XCTAssertEqual(ArtDaily.artworkID("2027-01-01", pools: c.dailyPools), "aic-110881")
     }
 
     func testDailyCoversWholePoolBeforeRepeating() throws {
         let c = try catalog()
-        let n = c.dailyPools[0].ids.count
+        XCTAssertEqual(c.dailyPools.count, 2)
+        XCTAssertEqual(c.dailyPools[0].ids.count, 40)
+        let n = c.dailyPools[1].ids.count   // the 75-painting pool: all of it once before any repeat
+        XCTAssertEqual(n, 75)
         var seen = Set<String>()
-        var day = c.dailyPools[0].from
+        var day = c.dailyPools[1].from
         for _ in 0..<n { seen.insert(ArtDaily.artworkID(day, pools: c.dailyPools)!); day = DateKeys.addDays(day, 1) }
         XCTAssertEqual(seen.count, n)
     }

@@ -18,7 +18,7 @@ public struct PremiumView: View {
                     Image(systemName: "sparkles").font(.system(size: 44)).foregroundStyle(.tint).padding(.top, 8)
                     Text("Premium").font(.largeTitle.bold())
                     VStack(alignment: .leading, spacing: 14) {
-                        feature("photo.stack", app.t("premium.f1", ["n": app.catalog.artworks.count]))
+                        feature("photo.stack", app.t("premium.f1", ["n": app.catalog.artworks.filter { !app.catalog.isFree($0.id) }.count]))
                         feature("square.grid.3x3", app.t("premium.f2"))
                         feature("nosign", app.t("premium.f3"))
                         feature("photo.badge.plus", app.t("premium.f4"))

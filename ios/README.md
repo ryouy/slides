@@ -93,7 +93,7 @@ The web site keeps using AdMax.
 
 ## Offline behaviour
 
-* Bundled: 40 free paintings (full size), all thumbnails, metadata and licences, UI texts, word list, all game logic.
+* Bundled: 75 free paintings (full size), all thumbnails, metadata and licences, UI texts, word list, all game logic.
 * iOS daily painting: only from the 40 free paintings (frozen pools; each cycle of 40 reshuffled). Date numbers and the 0:00 JST rollover are the same as the web; WORD / BIG SLIDE dailies are the web's generators ported (identical puzzles).
 * Premium paintings: downloaded once (Settings can download all / delete all) into Application Support, playable offline afterwards.
 * Records are JSON files in Application Support (atomic writes + backup copy); a damaged file falls back to the backup, then to defaults.

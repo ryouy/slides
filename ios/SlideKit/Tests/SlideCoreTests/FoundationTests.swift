@@ -45,7 +45,7 @@ final class CatalogTests: XCTestCase {
         try XCTSkipUnless(FileManager.default.fileExists(atPath: url.path), "run `npm run ios:data` first")
         let c = try ArtCatalog(url: url)
         XCTAssertGreaterThan(c.artworks.count, 100)
-        XCTAssertEqual(c.freeIDs.count, 40)
+        XCTAssertEqual(c.freeIDs.count, 75)
         XCTAssertTrue(c.freeIDs.allSatisfy { c.artwork($0) != nil })
     }
     func testJSONFileStoreRoundTripAndRecovery() throws {

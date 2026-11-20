@@ -1,6 +1,6 @@
 import { rngFromString, shuffled } from '../../../utils/rng';
 import { dailyNumber } from '../../../utils/date';
-import { FREE_ARTWORK_IDS } from '../../../premium/freeList';
+import { FREE_ARTWORK_IDS, FREE_ARTWORK_IDS_V1 } from '../../../premium/freeList';
 
 /**
  * Daily painting for the iOS app. Every painting here is bundled in the app, so the daily puzzle always works offline.
@@ -14,7 +14,8 @@ export const IOS_DAILY_ALGO = 'ios1';
 export interface IosPool { from: string; ids: readonly string[] }
 
 export const IOS_DAILY_POOLS: readonly IosPool[] = [
-  { from: '2026-11-01', ids: [...FREE_ARTWORK_IDS] },
+  { from: '2026-11-01', ids: [...FREE_ARTWORK_IDS_V1] },   // the first 40 (frozen)
+  { from: '2026-12-01', ids: [...FREE_ARTWORK_IDS] },       // all 75 free paintings (from the release that bundles them)
 ];
 
 export function iosPoolFor(dateKey: string): IosPool {
