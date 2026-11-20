@@ -25,7 +25,7 @@ struct ArtPlayHost: View {
         Group {
             switch phase {
             case .ready:
-                if let art, let model { ArtGameView(artwork: art, model: model, onLevel: { next(art, level: $0) }, onNext: { nextArtwork(from: art) }, onMore: { dismiss(); onGallery() }).id(sessionKey) }
+                if let art, let model { ArtGameView(artwork: art, model: model, onLevel: { next(art, level: $0) }, onNext: { nextArtwork(from: art) }, onMore: { dismiss(); onGallery() }).id(sessionKey).transition(.opacity.combined(with: .scale(scale: 0.985))) }
             case .download:
                 if let art { ArtDownloadView(artwork: art) { phase = .loading; Task { await open() } } }
             case .locked:
@@ -38,6 +38,7 @@ struct ArtPlayHost: View {
                 VStack { ArtTopBar(""); Spacer(); ProgressView(); Spacer() }.artScreen()
             }
         }
+        .animation(.easeInOut(duration: 0.5), value: phase)   // the download screen melts into the puzzle instead of cutting to it
         .task { if !started { started = true; await open() } }
     }
 
@@ -167,7 +168,7 @@ struct ArtDownloadView: View {
     @Environment(AppModel.self) private var app
     let artwork: PlayArtwork
     var onDone: () -> Void
-    enum S: Equatable { case idle, busy(Double), failed(String) }
+    enum S: Equatable { case idle, busy(Double), done, failed(String) }
     @State private var s = S.idle
 
     var body: some View {
@@ -188,6 +189,8 @@ struct ArtDownloadView: View {
                 case .busy(let p):
                     ProgressView(value: p).tint(Web.fg).padding(.horizontal, 20)
                     Text("\(Int(p * 100))%").font(Web.font(13)).monospacedDigit().foregroundStyle(Web.muted)
+                case .done:
+                    Image(systemName: "checkmark.circle").font(.system(size: 30, weight: .ultraLight)).foregroundStyle(Web.fg).transition(.opacity.combined(with: .scale(scale: 0.9)))
                 case .failed(let m):
                     Text(m).font(Web.font(14)).foregroundStyle(Web.fg).multilineTextAlignment(.center)
                     Button(app.t("ios.dl.retry")) { Task { await go() } }.buttonStyle(WebButtonStyle(filled: true, minHeight: 50))
@@ -204,6 +207,8 @@ struct ArtDownloadView: View {
         s = .busy(0)
         do {
             try await app.images.download(artwork.id, premium: app.premium, account: app.account) { p in s = .busy(p) }
+            withAnimation(.easeOut(duration: 0.3)) { s = .done }   // a quiet tick, then the page fades into the puzzle
+            try? await Task.sleep(for: .milliseconds(450))
             onDone()
         } catch let e as ImageStore.DownloadError {
             switch e {

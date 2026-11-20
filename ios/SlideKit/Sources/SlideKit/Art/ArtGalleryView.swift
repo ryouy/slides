@@ -127,6 +127,7 @@ struct ArtGalleryView: View {
 
     private func card(_ a: Artwork) -> some View {
         let locked = ArtRules.isArtworkLocked(a.id, premium: app.isPremium, catalog: app.catalog)
+        let notYet = !locked && !app.images.isAvailableOffline(a.id)   // a Premium painting that is not on this device yet
         return Button {
             if locked { Haptics.tap(); showPremium = true } else { path.append(.play(a.id)) }
         } label: {
@@ -136,6 +137,9 @@ struct ArtGalleryView: View {
                     if locked {
                         Image(systemName: "lock.fill").font(.system(size: 11, weight: .semibold)).foregroundStyle(Web.fg)
                             .frame(width: 24, height: 24).background(Web.bg.opacity(0.82), in: Circle()).padding(6)
+                    } else if notYet {
+                        Image(systemName: "icloud.and.arrow.down").font(.system(size: 12, weight: .semibold)).foregroundStyle(Web.fg)
+                            .frame(width: 26, height: 26).background(Web.bg.opacity(0.85), in: Circle()).padding(6)
                     }
                 }
                 Text(a.title).font(Web.font(13, .semibold, relativeTo: .footnote)).foregroundStyle(Web.fg).lineLimit(2).multilineTextAlignment(.leading).padding(.top, 4)
@@ -145,6 +149,6 @@ struct ArtGalleryView: View {
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(a.title), \(a.artist)" + (locked ? ", " + app.t("premium.lock") : ""))
+        .accessibilityLabel("\(a.title), \(a.artist)" + (locked ? ", " + app.t("premium.lock") : notYet ? ", " + app.t("ios.dl.badge") : ""))
     }
 }
