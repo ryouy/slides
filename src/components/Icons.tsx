@@ -27,3 +27,10 @@ export function BackButton({ onClick, label }: { onClick: () => void; label: str
     </button>
   );
 }
+
+/** A five-point star: outline, or filled when `filled`. */
+export const StarIcon = ({ filled, ...p }: IconProps & { filled?: boolean }) => (
+  <svg className={p.className} width={p.size ?? 20} height={p.size ?? 20} viewBox="0 0 24 24" fill={filled ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" aria-hidden="true" focusable="false">
+    <path d="m12 3.6 2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 17l-5.2 2.8 1-5.9-4.3-4.1 5.9-.8z" />
+  </svg>
+);

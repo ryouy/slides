@@ -49,6 +49,7 @@ const zh: Partial<Dict> = {
   'acct.iosApp': '获取 iOS 应用',
   'premium.signIn': '请先使用 Google 登录。',
   'home.login': '登录', 'home.account': '账户',
+  'fav.title': '收藏', 'fav.add': '加入收藏', 'fav.remove': '取消收藏', 'fav.count': '收藏 {n} 幅', 'fav.empty': '还没有收藏。游玩时点按星标即可添加。',
   'home.fromGallery': '画廊精选',
   'premium.lockedPhotos': '自己的照片属于 Premium。',
   'premium.thanks': '谢谢！正在确认你的购买…',

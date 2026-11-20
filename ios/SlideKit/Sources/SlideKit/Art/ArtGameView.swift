@@ -88,13 +88,14 @@ struct ArtGameView: View {
                 Button { dismiss() } label: { Image(systemName: "chevron.left").font(.system(size: 18)).foregroundStyle(Web.fg).frame(width: 36, height: 44).contentShape(Rectangle()) }
                     .accessibilityLabel(app.t("common.back"))
                 titles
+                starButton
             }
             if typeSize.isAccessibilitySize {
-                VStack(alignment: .leading, spacing: 6) { stats; actions }
+                VStack(alignment: .leading, spacing: 6) { stats; actions(star: false) }
             } else {
                 ViewThatFits(in: .horizontal) {
-                    HStack(alignment: .center, spacing: 8) { stats; Spacer(minLength: 0); actions }
-                    VStack(alignment: .leading, spacing: 4) { stats; actions }
+                    HStack(alignment: .center, spacing: 8) { stats; Spacer(minLength: 0); actions(star: false) }
+                    VStack(alignment: .leading, spacing: 4) { stats; actions(star: false) }
                 }
                 .padding(.leading, 42) // under the title, past the back arrow
             }
@@ -114,7 +115,7 @@ struct ArtGameView: View {
             .accessibilityElement(children: .combine)
             Spacer(minLength: 8)
             stats
-            actions
+            actions()
             if !daily {
                 Button { onNext() } label: { Image(systemName: "forward.end").font(.system(size: 17)).foregroundStyle(Web.fg).frame(width: 44, height: 44).contentShape(Rectangle()) }
                     .accessibilityLabel(app.t(artwork.isCustom ? "photos.title" : "art.nextArtwork"))
@@ -136,14 +137,10 @@ struct ArtGameView: View {
         }
     }
 
-    private var actions: some View {
+    private func actions(star: Bool = true) -> some View {
         HStack(spacing: 2) {
             if !daily { levelMenu }
-            if !artwork.isCustom {
-                let fav = favorites.contains(artwork.id)
-                icon(fav ? "star.fill" : "star", app.t(fav ? "ios.fav.remove" : "ios.fav.add")) { favorites.toggle(artwork.id) }
-                    .accessibilityAddTraits(fav ? .isSelected : [])
-            }
+            if star { starButton }
             icon("info.circle", app.t("art.preview")) { showPreview = true }
             icon("shuffle", app.t("art.shuffle")) { model.shuffle(reduceMotion: reduceMotion) }.disabled(model.shuffling).opacity(model.shuffling ? 0.45 : 1)
             let on = store.save.showNumbers
@@ -155,6 +152,14 @@ struct ArtGameView: View {
             }
             .buttonStyle(.plain)
             .accessibilityLabel(app.t("art.numbers")).accessibilityAddTraits(on ? .isSelected : [])
+        }
+    }
+    /// The favourite toggle (not for the visitor's own photos).
+    @ViewBuilder private var starButton: some View {
+        if !artwork.isCustom {
+            let fav = favorites.contains(artwork.id)
+            icon(fav ? "star.fill" : "star", app.t(fav ? "ios.fav.remove" : "ios.fav.add")) { favorites.toggle(artwork.id) }
+                .accessibilityAddTraits(fav ? .isSelected : [])
         }
     }
     /// Piece count (grid) chooser: just "4×3", no level names. Premium sizes show a lock.

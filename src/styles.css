@@ -2226,3 +2226,11 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 /* A very long title (some prints have a full catalogue title) must not stretch today's exhibit card and push the page past one screen */
 .art-home .exhibit-card .ex-text b { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; overflow-wrap: anywhere; }
 @media (min-width: 900px) { .art-home .exhibit-card .ex-text b { -webkit-line-clamp: 3; } }
+
+/* Favourites: the star toggle on the play screen and in the gallery's header, and a quiet star on starred paintings */
+.fav-btn.on { color: var(--fg); }
+.fav-btn.on svg { fill: currentColor; }
+.gal-fav { background: transparent; border: 0; padding: 6px; border-radius: 8px; color: var(--muted); display: inline-grid; place-items: center; cursor: pointer; }
+.gal-fav:hover, .gal-fav.on { color: var(--fg); }
+.gal-fav:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.g-fav { position: absolute; top: 6px; left: 6px; display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: color-mix(in srgb, var(--bg) 70%, transparent); color: var(--fg); opacity: .85; z-index: 1; pointer-events: none; }

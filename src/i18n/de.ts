@@ -49,6 +49,7 @@ const de: Partial<Dict> = {
   'acct.iosApp': 'iOS-App holen',
   'premium.signIn': 'Bitte zuerst mit Google anmelden.',
   'home.login': 'Anmelden', 'home.account': 'Konto',
+  'fav.title': 'Favoriten', 'fav.add': 'Zu Favoriten hinzufügen', 'fav.remove': 'Aus Favoriten entfernen', 'fav.count': '{n} Favoriten', 'fav.empty': 'Noch keine Favoriten. Tippe beim Spielen auf den Stern.',
   'home.fromGallery': 'Aus der Galerie',
   'premium.lockedPhotos': 'Deine eigenen Fotos gehören zu Premium.',
   'premium.thanks': 'Danke! Dein Kauf wird bestätigt…',

@@ -49,6 +49,7 @@ const ja: Partial<Dict> = {
   'acct.iosApp': 'iOSアプリ版はこちら',
   'premium.signIn': 'まずGoogleでログインしてください。',
   'home.login': 'ログイン', 'home.account': 'アカウント',
+  'fav.title': 'お気に入り', 'fav.add': 'お気に入りに追加', 'fav.remove': 'お気に入りから外す', 'fav.count': 'お気に入り {n}点', 'fav.empty': 'お気に入りはまだありません。パズルのプレイ中に★を押すと追加できます。',
   'home.fromGallery': 'ギャラリーから',
   'premium.lockedPhotos': '自分の写真はPremium限定です。',
   'premium.thanks': 'ありがとうございます。購入を確認しています…',

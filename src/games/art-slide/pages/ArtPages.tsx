@@ -1,4 +1,5 @@
-import { BackButton, ChevronRight, LockIcon } from '../../../components/Icons';
+import { BackButton, ChevronRight, LockIcon, StarIcon } from '../../../components/Icons';
+import { useFavorites } from '../favorites';
 import { PremiumPanel } from '../../../premium/PremiumPage';
 import { FREE_MAX_LEVEL, isArtworkLocked, isCustomArtwork, isLevelLocked, useEntitlement } from '../../../premium/entitlement';
 import { loadCustomArtwork } from '../../../custom/loader';
@@ -127,6 +128,8 @@ export function ArtGallery() {
   const { groupBy, columns, randomSeed, randomized } = data.gallery;
   const [query, setQuery] = useState('');
   const [selectedGroup, setSelectedGroup] = useState('');
+  const favorites = useFavorites();
+  const [favOnly, setFavOnly] = useState(false);
   const [wideGallery, setWideGallery] = useState(() => window.innerWidth >= 640);
   useEffect(() => {
     const onResize = () => setWideGallery(window.innerWidth >= 640);
@@ -140,8 +143,10 @@ export function ArtGallery() {
     () => groupArtworks(filtered, groupBy, randomized ? 'random' : 'artist', randomSeed, (a) => isArtworkLocked(a.id, premium, gating)),
     [filtered, groupBy, randomized, randomSeed, premium, gating],
   );
-  const activeGroup = groups.find((g) => g.key === selectedGroup) ?? groups[0];
-  const activeIndex = activeGroup ? groups.findIndex((g) => g.key === activeGroup.key) : -1;
+  const favItems = useMemo(() => filtered.filter((a) => favorites.includes(a.id)), [filtered, favorites]);
+  // the star filter shows the starred paintings as one flat group (the search still applies)
+  const activeGroup = favOnly ? { key: 'favorites', label: 'favorites', items: favItems } : (groups.find((g) => g.key === selectedGroup) ?? groups[0]);
+  const activeIndex = activeGroup && !favOnly ? groups.findIndex((g) => g.key === activeGroup.key) : -1;
   const setPrefs = (prefs: Partial<typeof data.gallery>) =>
     update((d) => ({ ...d, gallery: { ...d.gallery, ...prefs } }));
   const selectGrouping = (value: GroupBy) => {
@@ -172,7 +177,12 @@ export function ArtGallery() {
       <header className="topbar">
         <BackButton onClick={() => go('')} label={t('common.back')} />
         <h1>{t('gal.title')}</h1>
-        <div className="top-right" />
+        <div className="top-right">
+          <button className={`icon-btn gal-fav${favOnly ? ' on' : ''}`} type="button" data-testid="gal-fav" aria-pressed={favOnly}
+            aria-label={t('fav.title')} title={t('fav.title')} onClick={() => setFavOnly((v) => !v)}>
+            <StarIcon size={20} filled={favOnly} />
+          </button>
+        </div>
       </header>
       <div className="gal-controls">
         <input className="gal-search" data-testid="gal-search" type="search" placeholder={t('gal.search')}
@@ -201,7 +211,8 @@ export function ArtGallery() {
           {t('gal.filtered', { n: filtered.length, total: ARTWORKS.length })}
         </p>
       )}
-      {groupBy !== 'none' && groups.length > 0 && (
+      {favOnly && <p className="gal-count" data-testid="gal-fav-count">{t('fav.count', { n: favItems.length })}</p>}
+      {!favOnly && groupBy !== 'none' && groups.length > 0 && (
         <div className="gal-tabs" role="tablist" aria-label={t('gal.groupBy')} data-testid="gal-tabs">
           {groups.map((g, i) => (
             <button key={g.key} type="button" role="tab" id={`gal-tab-${i}`}
@@ -218,17 +229,19 @@ export function ArtGallery() {
         </div>
       )}
       <div data-testid="gallery">
-        {!activeGroup && <p className="gal-empty">{t('gal.empty', { q: query })}</p>}
-        {activeGroup && (
+        {favOnly && favItems.length === 0 && <p className="gal-empty" data-testid="gal-fav-empty">{t('fav.empty')}</p>}
+        {!favOnly && !activeGroup && <p className="gal-empty">{t('gal.empty', { q: query })}</p>}
+        {activeGroup && (!favOnly || favItems.length > 0) && (
           <section key={activeGroup.key} className="gal-group" id="gal-active-panel"
-            role={groupBy === 'none' ? undefined : 'tabpanel'}
-            aria-labelledby={groupBy === 'none' ? undefined : `gal-tab-${activeIndex}`}
+            role={groupBy === 'none' || favOnly ? undefined : 'tabpanel'}
+            aria-labelledby={groupBy === 'none' || favOnly ? undefined : `gal-tab-${activeIndex}`}
             data-testid={`group-${slugId(activeGroup.key)}`}>
             <ul className="gallery" data-columns={columns} key={`${activeGroup.key}-${randomSeed}-${randomized}`}
               style={columns === 'auto' ? undefined : { ['--gallery-cols' as string]: columns }}>
               {activeGroup.items.flatMap((a, i) => [
                 <li key={a.id} style={{ ['--i' as string]: Math.min(i, 12) }}>
                   <Link to={`/art-slide/play/${a.id}`} className={`gcard${isArtworkLocked(a.id, premium, gating) ? ' locked' : ''}`} data-testid={`art-${a.id}`}>
+                    {favorites.includes(a.id) && <span className="g-fav" data-testid={`fav-${a.id}`} role="img" aria-label={t('fav.title')}><StarIcon size={12} filled /></span>}
                     {isArtworkLocked(a.id, premium, gating) && <span className="g-lock" data-testid={`lock-${a.id}`} role="img" aria-label={t('premium.lock')}><LockIcon size={15} /></span>}
                     <img src={a.thumbnailUrl} alt={`${a.title} – ${a.artist}`}
                       loading="lazy" decoding="async"

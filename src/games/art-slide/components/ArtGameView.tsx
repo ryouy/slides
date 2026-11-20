@@ -1,4 +1,5 @@
-import { BackButton } from '../../../components/Icons';
+import { BackButton, StarIcon } from '../../../components/Icons';
+import { toggleFavorite, useFavorites } from '../favorites';
 import { isCustomArtwork, isLevelLocked, useEntitlement } from '../../../premium/entitlement';
 import { go } from '../../../router';
 import { useEffect, useReducer, useRef, useState } from 'react';
@@ -66,6 +67,7 @@ export function ArtGameView(p: Props) {
   const locked = !!preview || cleared || shuffling || lineMoving || img.status !== 'ready';
   const aspect = aspectOf(artwork);
   const own = isCustomArtwork(artwork.id); // the visitor's own photo: no painting details, no sharing
+  const favorite = useFavorites().includes(artwork.id);
 
   useGameTimer((ms) => dispatch({ type: 'tick', ms }));
 
@@ -198,6 +200,13 @@ export function ArtGameView(p: Props) {
             </div>
           )}
           <div className="actions art-actions">
+            {!own && (
+              <button className={`btn fav-btn${favorite ? ' on' : ''}`} type="button" data-testid="favorite-toggle" aria-pressed={favorite}
+                aria-label={t(favorite ? 'fav.remove' : 'fav.add')} title={t(favorite ? 'fav.remove' : 'fav.add')} onClick={() => toggleFavorite(artwork.id)}>
+                <StarIcon className="art-action-icon" size={20} filled={favorite} />
+                <span className="art-action-label">{t('fav.title')}</span>
+              </button>
+            )}
             <button className="btn" data-testid="preview" aria-label={t('art.preview')} title={t('art.preview')}
               onClick={() => {
                 const rect = boardRef.current?.getBoundingClientRect();
