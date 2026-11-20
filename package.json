@@ -13,6 +13,7 @@
     "legal:date": "node scripts/set-effective-date.mjs",
     "check:deploy": "node scripts/check-deploy.mjs",
     "share-assets": "vite-node scripts/make-share-assets.ts --dir public",
+    "ios:check-strings": "node ios/scripts/check-strings.mjs",
     "ios:check-privacy": "node ios/scripts/check-privacy-manifests.mjs",
     "ios:data": "for f in ios/scripts/export-*.ts; do vite-node $f || exit 1; done"
   },

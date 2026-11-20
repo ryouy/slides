@@ -98,6 +98,15 @@ The web site keeps using AdMax.
 * Premium paintings: downloaded once (Settings can download all / delete all) into Application Support, playable offline afterwards.
 * Records are JSON files in Application Support (atomic writes + backup copy); a damaged file falls back to the backup, then to defaults.
 
+## Before every build you archive: regenerate the data, then check the texts
+
+`ios/App/App/public` (texts, paintings, word list, golden vectors) is generated and not in git. An app built from an older copy shows raw
+keys such as `home.galleryMore` for any text added since. Always run, then build:
+
+    npm run ios:data && npm run ios:check-strings
+
+`ios:check-strings` fails when the Swift code asks for a text key that is missing from the generated data.
+
 ## Before every upload: check the privacy manifests
 
 Apple rejects (ITMS-91064) a manifest with `NSPrivacyTracking` = true and no tracking domains, or false with some. The app's own manifest is
