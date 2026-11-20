@@ -143,21 +143,46 @@ import SlideCore
                         }.foregroundStyle(Web.fg).frame(maxWidth: .infinity).padding(.vertical, 12)
                     } else {
                         let addTitle = busy ? "…" : app.t("photos.add") // read here (main actor), not inside the picker's non-isolated label closure
-                        PhotosPicker(selection: $picks, maxSelectionCount: max(1, CustomPhotoRules.maxPhotos - photos.photos.count), matching: .images) {
-                            Text(addTitle).frame(maxWidth: .infinity, minHeight: 50)
+                        let emptyHint = app.t("photos.empty")
+                        let full = photos.photos.count >= CustomPhotoRules.maxPhotos
+                        let slots = max(1, CustomPhotoRules.maxPhotos - photos.photos.count)
+                        if photos.photos.isEmpty {
+                            // nothing yet: the empty frame is itself the way in
+                            PhotosPicker(selection: $picks, maxSelectionCount: slots, matching: .images) {
+                                VStack(spacing: 10) {
+                                    Image(systemName: "photo.badge.plus").font(.system(size: 36, weight: .ultraLight))
+                                    Text(addTitle).font(Web.font(16, .semibold))
+                                    Text(emptyHint).font(Web.font(13)).foregroundStyle(Web.muted).multilineTextAlignment(.center)
+                                }
+                                .foregroundStyle(Web.fg).frame(maxWidth: .infinity, minHeight: 190).padding(.horizontal, 20)
+                                .background(Web.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+                                .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).strokeBorder(Web.line, style: StrokeStyle(lineWidth: 1.2, dash: [6, 5])))
+                                .contentShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                            }
+                            .buttonStyle(.plain).disabled(busy)
+                        } else {
+                            PhotosPicker(selection: $picks, maxSelectionCount: slots, matching: .images) {
+                                HStack(spacing: 8) { Image(systemName: "plus"); Text(addTitle) }.frame(maxWidth: .infinity, minHeight: 50)
+                            }
+                            .buttonStyle(WebButtonStyle(filled: true, minHeight: 50))
+                            .disabled(busy || full)
                         }
-                        .buttonStyle(WebButtonStyle(filled: true, minHeight: 50))
-                        .disabled(busy || photos.photos.count >= CustomPhotoRules.maxPhotos)
-                        Text(app.t("photos.usage", ["n": photos.photos.count, "max": CustomPhotoRules.maxPhotos, "mb": String(format: "%.1f", Double(photos.usedBytes) / 1_048_576), "maxmb": CustomPhotoRules.maxTotalBytes / 1_048_576]))
-                            .font(Web.font(12)).foregroundStyle(Web.muted)
+                        usageMeter
                     }
                     ForEach(errors, id: \.self) { Text($0).font(Web.font(13)).foregroundStyle(Web.fg).accessibilityAddTraits(.isStaticText) }
-                    if photos.photos.isEmpty && !locked { Text(app.t("photos.empty")).font(Web.font(14)).foregroundStyle(Web.muted).padding(.vertical, 20) }
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible())], spacing: 14) {
                         ForEach(photos.photos) { p in card(p, locked: locked) }
                     }
-                    Text(app.t("photos.private")).font(Web.font(12)).foregroundStyle(Web.muted)
-                    Text(app.t("photos.kept")).font(Web.font(12)).foregroundStyle(Web.muted)
+                    HStack(alignment: .top, spacing: 12) {
+                        Image(systemName: "lock.shield").font(.system(size: 18, weight: .light)).padding(.top, 1)
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text(app.t("photos.private")); Text(app.t("photos.kept"))
+                        }
+                    }
+                    .font(Web.font(12)).foregroundStyle(Web.muted)
+                    .padding(14).frame(maxWidth: .infinity, alignment: .leading)
+                    .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(Web.line, lineWidth: 1))
+                    .padding(.top, 6)
                 }
                 .padding(.horizontal, 16).padding(.vertical, 14).frame(maxWidth: 560).frame(maxWidth: .infinity)
             }
@@ -177,13 +202,35 @@ import SlideCore
         }
     }
 
+    /// "3 / 20 photos · 4.2 MB": a thin bar for the count, the sizes beside it.
+    private var usageMeter: some View {
+        let n = photos.photos.count, mx = CustomPhotoRules.maxPhotos
+        return VStack(alignment: .leading, spacing: 7) {
+            GeometryReader { g in
+                ZStack(alignment: .leading) {
+                    Capsule().fill(Web.line)
+                    Capsule().fill(Web.fg).frame(width: max(n > 0 ? 6 : 0, g.size.width * CGFloat(n) / CGFloat(max(1, mx))))
+                }
+            }.frame(height: 4)
+            Text(app.t("photos.usage", ["n": n, "max": mx, "mb": String(format: "%.1f", Double(photos.usedBytes) / 1_048_576), "maxmb": CustomPhotoRules.maxTotalBytes / 1_048_576]))
+                .font(Web.font(12)).foregroundStyle(Web.muted)
+        }
+        .accessibilityElement(children: .combine)
+    }
+
     private func card(_ p: CustomPhoto, locked: Bool) -> some View {
         let best = store.save.customRecords.filter { $0.key.hasPrefix("\(p.artworkID):") }.compactMap(\.value.bestTimeMs).min()
         return Button { if locked { showPremium = true } else { path.append(.play(p.artworkID)) } } label: {
             VStack(alignment: .leading, spacing: 2) {
                 SquareThumb(image: photos.thumb(p), dim: locked)
-                Text(p.name).font(Web.font(13, .semibold)).foregroundStyle(Web.fg).lineLimit(1).padding(.top, 4)
-                Text(best.map { app.t("photos.best", ["time": ArtStats.formatTime($0)]) } ?? " ").font(Web.font(11)).foregroundStyle(Web.muted)
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(Web.line, lineWidth: 1))
+                Text(p.name).font(Web.font(13, .semibold)).foregroundStyle(Web.fg).lineLimit(1).padding(.top, 6).padding(.leading, 2)
+                HStack(spacing: 4) {
+                    if best != nil { Image(systemName: "stopwatch").font(.system(size: 10)) }
+                    Text(best.map { app.t("photos.best", ["time": ArtStats.formatTime($0)]) } ?? " ")
+                }
+                .font(Web.font(11)).foregroundStyle(Web.muted).padding(.leading, 2)
             }
         }
         .buttonStyle(.plain)
