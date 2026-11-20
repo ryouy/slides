@@ -79,12 +79,14 @@ struct SplashView: View {
             cellOf = Array(0..<(Self.n * Self.n)); complete = true
             try? await Task.sleep(for: .milliseconds(600)); finish(); return
         }
+        Haptics.prepare()
         try? await Task.sleep(for: .milliseconds(350))   // a beat on the first frame
         // the walk backwards: each step one tile slides into the blank, with the game's own easing
         var blank = Self.path.last!
         for next in Self.path.reversed().dropFirst() {
             guard let tile = cellOf.firstIndex(of: next) else { continue }
             withAnimation(.timingCurve(0.22, 0.8, 0.2, 1, duration: 0.28)) { cellOf[tile] = blank }
+            Haptics.slide()   // the same tick as a slide in the game
             blank = next
             try? await Task.sleep(for: .milliseconds(220))
         }
