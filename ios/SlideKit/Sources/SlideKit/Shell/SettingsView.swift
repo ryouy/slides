@@ -5,6 +5,7 @@ import SlideCore
 public struct SettingsView: View {
     @Environment(AppModel.self) private var app
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.openURL) private var openURL
     @State private var showPremium = false
     @State private var web: WebPage?
     @State private var bulk: (Int, Int)?
@@ -65,7 +66,7 @@ public struct SettingsView: View {
             .toolbar {
                 // the web version: a small link beside the title, not a row of its own
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button { if let u = URL(string: site) { web = WebPage(url: u) } } label: {
+                    Button { if let u = URL(string: site) { openURL(u) } } label: {   // the web version opens in the browser app, not in a sheet
                         HStack(spacing: 4) { Image(systemName: "globe"); Text("Web") }.font(.subheadline.weight(.medium))
                     }
                     .accessibilityLabel(app.t("ios.account.webApp"))
