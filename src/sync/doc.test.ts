@@ -2,15 +2,16 @@ import { describe, expect, it } from 'vitest';
 import { emptyDoc, HISTORY_LIMIT, mergeDocs, normalizeDoc, recordKey, SYNC_SCHEMA, totalClears, type SyncDoc } from './doc';
 
 const docA = (): SyncDoc => ({
-  schema: 1,
+  schema: 2,
   counters: { devA: 5 },
   bests: { '3': { timeMs: 50_000, moves: 80 }, '4': { timeMs: 120_000 } },
   records: { 'monet-water-lilies:3': { bestTimeMs: 50_000, bestMoves: 80, lastClearedAt: 1000, clears: { devA: 3 } } },
   dailyHistory: { '2026-11-15': { number: 15, artworkId: 'aic-81539', timeMs: 70_000, moves: 90 } },
   history: [{ date: '2026-11-15', mode: 'daily', size: 4, artworkId: 'aic-81539', timeMs: 70_000, moves: 90 }],
+  favorites: { 'monet-water-lilies': { on: true, at: 1000 }, 'van-gogh-bedroom': { on: true, at: 2000 } },
 });
 const docB = (): SyncDoc => ({
-  schema: 1,
+  schema: 2,
   counters: { devA: 4, devB: 2 },
   bests: { '3': { timeMs: 40_000, moves: 95 }, '5': { timeMs: 300_000, moves: 400 } },
   records: {
@@ -19,6 +20,7 @@ const docB = (): SyncDoc => ({
   },
   dailyHistory: { '2026-11-15': { number: 15, artworkId: 'aic-81539', timeMs: 60_000, moves: 100 }, '2026-11-16': { number: 16, artworkId: 'x', timeMs: 1, moves: 1 } },
   history: [{ date: '2026-11-16', mode: 'endless', size: 3, artworkId: 'van-gogh-bedroom', timeMs: 5, moves: 6 }],
+  favorites: { 'van-gogh-bedroom': { on: false, at: 3000 }, 'hokusai-great-wave': { on: true, at: 500 } },
 });
 
 describe('merging records from two devices', () => {
@@ -64,6 +66,30 @@ describe('merging records from two devices', () => {
 
   it('record keys separate board sizes of the same painting', () => {
     expect(recordKey('monet-water-lilies', 3)).not.toBe(recordKey('monet-water-lilies', 6));
+  });
+});
+
+describe('favourites in the document', () => {
+  it('the latest change wins on every device, an un-star travels as a record, and a tie keeps the star', () => {
+    const m = mergeDocs(docA(), docB());
+    expect(m.favorites['monet-water-lilies']).toEqual({ on: true, at: 1000 });
+    expect(m.favorites['van-gogh-bedroom']).toEqual({ on: false, at: 3000 }); // B un-starred it later than A starred it
+    expect(m.favorites['hokusai-great-wave']).toEqual({ on: true, at: 500 });
+    const tieOn = { ...emptyDoc(), favorites: { x: { on: true, at: 5 } } };
+    const tieOff = { ...emptyDoc(), favorites: { x: { on: false, at: 5 } } };
+    expect(mergeDocs(tieOn, tieOff).favorites.x.on).toBe(true);
+    expect(mergeDocs(tieOff, tieOn)).toEqual(mergeDocs(tieOn, tieOff));
+  });
+  it('is idempotent, commutative and associative with favourites too', () => {
+    const c: SyncDoc = { ...emptyDoc(), favorites: { 'monet-water-lilies': { on: false, at: 1500 }, z: { on: true, at: 9 } } };
+    expect(mergeDocs(docA(), docA())).toEqual(docA());
+    expect(mergeDocs(docA(), docB())).toEqual(mergeDocs(docB(), docA()));
+    expect(mergeDocs(mergeDocs(docA(), docB()), c)).toEqual(mergeDocs(docA(), mergeDocs(docB(), c)));
+  });
+  it('is read defensively and a document without favourites (schema 1) is accepted', () => {
+    expect(normalizeDoc({ schema: 1, counters: {} })?.favorites).toEqual({});
+    const n = normalizeDoc({ schema: 2, favorites: { ok: { on: true, at: 5 }, 'bad id!': { on: true, at: 1 }, noflag: { at: 3 }, strflag: { on: 'yes', at: 3 }, negat: { on: false, at: -4 }, huge: { on: true, at: 1e15 } } });
+    expect(n?.favorites).toEqual({ ok: { on: true, at: 5 }, negat: { on: false, at: 0 }, huge: { on: true, at: 0 } });
   });
 });
 

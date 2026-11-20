@@ -33,6 +33,12 @@ public struct ArtGalleryPrefs: Codable, Hashable, Sendable {
     enum K: String, CodingKey { case groupBy, columns, randomSeed, randomized }
 }
 
+/// A starred painting: `on` is the latest state and `at` (unix ms) when it was set; the later change wins on every device (the same as the web).
+public struct ArtFavorite: Codable, Equatable, Sendable {
+    public var on: Bool; public var at: Int
+    public init(on: Bool, at: Int) { self.on = on; self.at = at }
+}
+
 public struct ArtSave: Codable, Equatable, Sendable {
     public static let version = 1
     public var version = ArtSave.version
@@ -54,6 +60,8 @@ public struct ArtSave: Codable, Equatable, Sendable {
     public var deviceId = ""
     public var counters: [String: Int] = [:]
     public var keyClears: [String: [String: Int]] = [:]
+    /// Starred paintings by artwork id (an un-starred one stays as `on: false`); synced through Google Drive with the records.
+    public var favorites: [String: ArtFavorite] = [:]
 
     public init() {}
 
@@ -86,9 +94,10 @@ public struct ArtSave: Codable, Equatable, Sendable {
         deviceId = (try? c.decode(String.self, forKey: .deviceId)) ?? ""
         counters = (try? c.decode([String: Int].self, forKey: .counters)) ?? [:]
         keyClears = (try? c.decode([String: [String: Int]].self, forKey: .keyClears)) ?? [:]
+        favorites = (try? c.decode([String: ArtFavorite].self, forKey: .favorites)) ?? [:]
         completed = max(completed, records.values.reduce(0) { $0 + $1.clears })
     }
-    enum K: String, CodingKey { case version, completed, dailyHistory, bests, history, inProgressDaily, inProgressFree, lastSize, showNumbers, gallery, records, customRecords, deviceId, counters, keyClears }
+    enum K: String, CodingKey { case version, completed, dailyHistory, bests, history, inProgressDaily, inProgressFree, lastSize, showNumbers, gallery, records, customRecords, deviceId, counters, keyClears, favorites }
 
     public static func recordKey(_ artworkId: String, _ size: Int) -> String { "\(artworkId):\(size)" }
 

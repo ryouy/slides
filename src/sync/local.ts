@@ -12,6 +12,7 @@ export function toDoc(save: ArtSave): SyncDoc {
   for (const [k, r] of Object.entries(save.records)) d.records[k] = { ...r, clears: { ...r.clears } };
   d.dailyHistory = { ...save.dailyHistory };
   d.history = save.history.map((h) => ({ ...h }));
+  d.favorites = Object.fromEntries(Object.entries(save.favorites).map(([k, f]) => [k, { ...f }]));
   return d;
 }
 
@@ -30,5 +31,6 @@ export function fromMerged(save: ArtSave, merged: SyncDoc): ArtSave {
     records: merged.records,
     dailyHistory: merged.dailyHistory,
     history: merged.history.filter((h): h is typeof h & { size: ArtLevel } => (ART_LEVELS as readonly number[]).includes(h.size)),
+    favorites: merged.favorites,
   };
 }

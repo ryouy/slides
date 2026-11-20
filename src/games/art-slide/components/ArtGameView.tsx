@@ -1,5 +1,5 @@
 import { BackButton, StarIcon } from '../../../components/Icons';
-import { toggleFavorite, useFavorites } from '../favorites';
+import { useFavorites, useToggleFavorite } from '../favorites';
 import { isCustomArtwork, isLevelLocked, useEntitlement } from '../../../premium/entitlement';
 import { go } from '../../../router';
 import { useEffect, useReducer, useRef, useState } from 'react';
@@ -68,6 +68,7 @@ export function ArtGameView(p: Props) {
   const aspect = aspectOf(artwork);
   const own = isCustomArtwork(artwork.id); // the visitor's own photo: no painting details, no sharing
   const favorite = useFavorites().includes(artwork.id);
+  const toggleFavorite = useToggleFavorite();
 
   useGameTimer((ms) => dispatch({ type: 'tick', ms }));
 

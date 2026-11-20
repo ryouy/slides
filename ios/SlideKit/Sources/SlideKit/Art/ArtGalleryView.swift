@@ -5,7 +5,6 @@ import SlideCore
 struct ArtGalleryView: View {
     @Environment(AppModel.self) private var app
     @Environment(ArtStore.self) private var store
-    @Environment(FavoriteStore.self) private var favorites
     @Binding var path: [ArtRoute]
 
     @State private var query = ""
@@ -34,7 +33,7 @@ struct ArtGalleryView: View {
                         Text(app.t("gal.filtered", ["n": filtered.count, "total": app.catalog.artworks.count])).font(Web.font(12)).foregroundStyle(Web.muted).padding(.bottom, 8)
                     }
                     if favOnly {
-                        let favs = filtered.filter { favorites.contains($0.id) }.sorted { ($0.artist, $0.title) < ($1.artist, $1.title) }
+                        let favs = filtered.filter { store.isFavorite($0.id) }.sorted { ($0.artist, $0.title) < ($1.artist, $1.title) }
                         Text(app.t("ios.fav.count", ["n": favs.count])).font(Web.font(12, .semibold, relativeTo: .caption)).tracking(1.2).foregroundStyle(Web.muted).padding(.bottom, 12)
                         if favs.isEmpty { Text(app.t("ios.fav.empty")).font(Web.font(14)).foregroundStyle(Web.muted).multilineTextAlignment(.center).frame(maxWidth: .infinity).padding(.vertical, 40) }
                         else { grid(favs) }
@@ -149,7 +148,7 @@ struct ArtGalleryView: View {
                 ZStack(alignment: .topTrailing) {
                     SquareThumb(image: app.images.thumbnail(a.id), dim: locked)
                         .overlay(alignment: .topLeading) {
-                            if favorites.contains(a.id) {
+                            if store.isFavorite(a.id) {
                                 Image(systemName: "star.fill").font(.system(size: 10, weight: .semibold)).foregroundStyle(Web.fg.opacity(0.85))
                                     .frame(width: 20, height: 20).background(Web.bg.opacity(0.7), in: Circle()).padding(6)
                             }
@@ -169,6 +168,6 @@ struct ArtGalleryView: View {
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(a.title), \(a.artist)" + (locked ? ", " + app.t("premium.lock") : notYet ? ", " + app.t("ios.dl.badge") : "") + (favorites.contains(a.id) ? ", " + app.t("ios.fav.title") : ""))
+        .accessibilityLabel("\(a.title), \(a.artist)" + (locked ? ", " + app.t("premium.lock") : notYet ? ", " + app.t("ios.dl.badge") : "") + (store.isFavorite(a.id) ? ", " + app.t("ios.fav.title") : ""))
     }
 }

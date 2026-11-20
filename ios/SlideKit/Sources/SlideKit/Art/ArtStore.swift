@@ -14,7 +14,22 @@ final class ArtStore {
 
     init() {
         var s = file.load() ?? ArtSave()
-        if s.ensureDriveFields() { file.save(s) } // this install's id for Drive sync is created once and kept
+        var dirty = s.ensureDriveFields() // this install's id for Drive sync is created once and kept
+        // the first favourites (a few hours of use) lived in their own small file: they become "on, at 1" so any later change wins
+        let oldFavorites = JSONFileStore<[String]>(name: "art-favorites")
+        if let ids = oldFavorites.load() {
+            for id in ids where s.favorites[id] == nil { s.favorites[id] = ArtFavorite(on: true, at: 1) }
+            dirty = true
+        }
+        if dirty { file.save(s) }
+        if let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first?.appendingPathComponent("Records", isDirectory: true) {
+            for n in ["art-favorites.json", "art-favorites.json.bak"] { try? FileManager.default.removeItem(at: dir.appendingPathComponent(n)) }
+        }
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("-demoFavorites") { // screenshots only, never saved
+            for id in ["monet-water-lilies", "hokusai-great-wave", "van-gogh-bedroom", "bierstadt-mountain-brook"] { s.favorites[id] = ArtFavorite(on: true, at: 2) }
+        }
+        #endif
         save = s
         reloadObserver = RecordsReloadObserver { [weak self] in self?.reloadFromDisk() }
     }
@@ -27,8 +42,15 @@ final class ArtStore {
         guard let d = file.load() else { return }
         ArtRecords(d).apply(to: &save)
         save.counters = d.counters
+        save.favorites = d.favorites   // a Drive sync may have merged stars from another device
         save.keyClears = d.keyClears
         if save.deviceId.isEmpty { save.deviceId = d.deviceId }
+    }
+
+    func isFavorite(_ id: String) -> Bool { save.favorites[id]?.on == true }
+    /// Stars or un-stars a painting. The time of the change is kept, so the latest change wins on every device (Google Drive sync).
+    func toggleFavorite(_ id: String) {
+        update { $0.favorites[id] = ArtFavorite(on: !($0.favorites[id]?.on ?? false), at: Int(Date().timeIntervalSince1970 * 1000)) }
     }
 
     func update(_ f: (inout ArtSave) -> Void) {

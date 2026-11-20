@@ -18,6 +18,9 @@ final class ArtGameModel {
     /// The running clock. It lives apart from `state` on purpose: ticking `state` every 200 ms made the whole board rebuild five times
     /// a second (jank while tiles slide). `state.elapsedMs` catches up whenever the board changes, is saved or is cleared.
     private(set) var clockMs: Int
+    /// The moves counter as shown: when one slide moves several pieces it counts up one by one, quickly, instead of jumping.
+    private(set) var movesShown: Int
+    private var movesTask: Task<Void, Never>?
     var outcome: ArtSave.ClearOutcome?
     let daily: Bool
     let image: UIImage
@@ -28,7 +31,6 @@ final class ArtGameModel {
 
     private var recorded: Bool
     private var shuffleTask: Task<Void, Never>?
-    private var rewindTask: Task<Void, Never>?
     private var pendingPlan: ArtGenerator.ReshufflePlan?
     private var lastTick: Date?
     var paused = false { didSet { lastTick = nil } }
@@ -36,6 +38,7 @@ final class ArtGameModel {
     init(state: ArtState, image: UIImage, daily: Bool) {
         self.state = state; self.image = image; self.daily = daily
         clockMs = state.elapsedMs
+        movesShown = state.moves
         recorded = state.cleared
         showResult = state.cleared
     }
@@ -90,12 +93,26 @@ final class ArtGameModel {
         tap(cell)
     }
 
+    private func syncMovesShown() {
+        let target = state.moves
+        if target <= movesShown { movesTask?.cancel(); movesTask = nil; movesShown = target; return }
+        guard movesTask == nil else { return }   // a count-up is already running: it follows state.moves
+        movesTask = Task { [weak self] in
+            while let self, !Task.isCancelled, self.movesShown < self.state.moves {
+                self.movesShown += 1
+                try? await Task.sleep(for: .milliseconds(55))
+            }
+            self?.movesTask = nil
+        }
+    }
+
     private func syncClock() { if state.elapsedMs != clockMs { state.elapsedMs = clockMs } }
 
     private func change(_ f: (inout ArtState) -> Void) {
         syncClock()
         tileAnimationDuration = Self.moveDuration
         withAnimation(.timingCurve(0.22, 0.8, 0.2, 1, duration: tileAnimationDuration)) { f(&state) }
+        syncMovesShown()
         afterChange()
     }
 
@@ -133,13 +150,13 @@ final class ArtGameModel {
         recorded = false
         outcome = nil
         if reduceMotion {
-            state = ArtState(puzzle: plan.puzzle); clockMs = state.elapsedMs; onProgress(state); return
+            state = ArtState(puzzle: plan.puzzle); clockMs = state.elapsedMs; syncMovesShown(); onProgress(state); return
         }
         shuffling = true
         pendingPlan = plan
         let step = ArtGenerator.visibleShuffleStep(state.dims)
         tileAnimationDuration = step * 0.92
-        rewindClock(over: max(0.9, Double(plan.clicks.count) * step + 0.06 + max(0.08, step * 2)))
+        clockMs = 0   // the timer goes back to 0:00 at once when the shuffle starts
         shuffleTask = Task { [weak self] in
             try? await Task.sleep(for: .milliseconds(60))
             for c in plan.clicks {
@@ -153,30 +170,13 @@ final class ArtGameModel {
         }
     }
 
-    /// The timer runs back to 0:00 while the pieces shuffle, tick by tick (it eases out as it nears zero).
-    private func rewindClock(over duration: Double) {
-        rewindTask?.cancel()
-        let from = clockMs
-        guard from > 0 else { return }
-        rewindTask = Task { [weak self] in
-            let t0 = Date()
-            while !Task.isCancelled {
-                let p = min(1, Date().timeIntervalSince(t0) / duration)
-                self?.clockMs = Int(Double(from) * (1 - (1 - pow(1 - p, 1.6))))
-                if p >= 1 { break }
-                try? await Task.sleep(for: .milliseconds(30))
-            }
-            if !Task.isCancelled { self?.clockMs = 0 }
-        }
-    }
-
     private func finishShuffleNow() {
-        rewindTask?.cancel(); rewindTask = nil
         shuffleTask?.cancel(); shuffleTask = nil
         guard let plan = pendingPlan else { shuffling = false; return }
         pendingPlan = nil
         state = ArtState(puzzle: plan.puzzle)
         clockMs = state.elapsedMs
+        syncMovesShown()
         shuffling = false
         tileAnimationDuration = Self.moveDuration
         onProgress(state)

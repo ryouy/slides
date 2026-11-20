@@ -43,6 +43,31 @@ const save = (over: Partial<ArtSave> = {}): ArtSave => ({ ...defaultArtSave(), d
 const rec = { bestTimeMs: 50_000, bestMoves: 80, lastClearedAt: 1000, clears: { devA: 3 } };
 const withRecords = (): ArtSave => save({ bests: { '3': { timeMs: 50_000, moves: 80 } }, records: { 'monet-water-lilies:3': rec } });
 
+describe('favourites through a sync round', () => {
+  it('a star set on one device reaches the other, and an un-star set later removes it there too', async () => {
+    const d = fakeDrive();
+    const a = localWith(save({ favorites: { 'monet-water-lilies': { on: true, at: 1000 } } }));
+    const b = localWith(save({ deviceId: 'devB', counters: {}, completed: 0 }));
+    const run = (local: ReturnType<typeof localWith>) => syncOnce({ drive: driveClient(d.fetchFn), getToken: async () => 't', local });
+    await run(a); await run(b);
+    expect(b.cur().favorites['monet-water-lilies']).toEqual({ on: true, at: 1000 });
+    b.update((x) => ({ ...x, favorites: { ...x.favorites, 'monet-water-lilies': { on: false, at: 2000 } } })); // B un-stars it later
+    await run(b); await run(a);
+    expect(a.cur().favorites['monet-water-lilies']).toEqual({ on: false, at: 2000 });
+    expect(d.doc()!.favorites['monet-water-lilies']).toEqual({ on: false, at: 2000 });
+  });
+  it('a schema-1 file (written before favourites) is read, and its records are kept when we write schema 2', async () => {
+    const old = { ...toDoc(withRecords()), schema: 1 } as Partial<SyncDoc>;
+    delete old.favorites;
+    const d = fakeDrive(old);
+    const local = localWith(save({ favorites: { x: { on: true, at: 7 } } }));
+    await syncOnce({ drive: driveClient(d.fetchFn), getToken: async () => 't', local });
+    expect(d.doc()!.schema).toBe(2);
+    expect(d.doc()!.favorites.x).toEqual({ on: true, at: 7 });
+    expect(d.doc()!.records['monet-water-lilies:3']).toEqual(rec);
+  });
+});
+
 describe('sync round', () => {
   it('first sync migrates the device records to Drive and changes nothing locally', async () => {
     const d = fakeDrive();

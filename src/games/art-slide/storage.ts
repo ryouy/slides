@@ -4,7 +4,7 @@ import { ART_LEVELS, type ArtLevel } from './logic/board';
 import { GALLERY_COLUMN_OPTIONS, GROUP_OPTIONS, type GalleryColumns, type GroupBy } from './logic/gallery';
 import { updateBest } from '../../storage/stats';
 import type { Best } from '../../storage/storage';
-import type { KeyRecord } from '../../sync/doc';
+import type { FavRec, KeyRecord } from '../../sync/doc';
 import { recordKey } from '../../sync/doc';
 import type { LocalStore } from '../../sync/engine';
 
@@ -46,6 +46,8 @@ export interface ArtSave {
   records: Record<string, KeyRecord>;
   /** Best time / fewest moves / clears of the visitor's own photos ("<custom:id>:<size>"). Kept apart from the paintings and never synced. */
   customRecords: Record<string, CustomRecord>;
+  /** Starred paintings ("on" + when it was set): synced through Google Drive like the records. */
+  favorites: Record<string, FavRec>;
 }
 
 export interface CustomRecord {
@@ -71,6 +73,7 @@ export const defaultArtSave = (): ArtSave => ({
   counters: {},
   records: {},
   customRecords: {},
+  favorites: {},
 });
 
 export function migrateArt(raw: unknown): ArtSave {
@@ -108,7 +111,27 @@ export function migrateArt(raw: unknown): ArtSave {
   out.completed = Math.max(completed, Object.values(out.counters).reduce((a, b) => a + b, 0));
   out.records = isRecords(r.records) ? r.records : recordsFromHistory(out.history, out.deviceId);
   out.customRecords = isObj(r.customRecords) ? (r.customRecords as Record<string, CustomRecord>) : {};
+  out.favorites = { ...legacyFavorites(), ...cleanFavorites(r.favorites) }; // what is already in the save wins over the early local-only list
   return out;
+}
+
+/** Only well-formed favourites (an id, on/off, when). */
+function cleanFavorites(v: unknown): Record<string, FavRec> {
+  const out: Record<string, FavRec> = {};
+  if (!isObj(v)) return out;
+  for (const [k, f] of Object.entries(v)) {
+    if (k.length > 0 && k.length <= 120 && isObj(f) && typeof f.on === 'boolean') out[k] = { on: f.on, at: typeof f.at === 'number' && Number.isFinite(f.at) && f.at >= 0 ? f.at : 0 };
+  }
+  return out;
+}
+/** The first favourites were a plain list of ids under their own key (a few hours of use): they become "on, at 1" so any later change wins. */
+function legacyFavorites(): Record<string, FavRec> {
+  try {
+    const v: unknown = JSON.parse(localStorage.getItem('artslide:favorites') ?? 'null');
+    return Array.isArray(v) ? Object.fromEntries(v.filter((x): x is string => typeof x === 'string' && x.length > 0 && x.length <= 120).map((id) => [id, { on: true, at: 1 }])) : {};
+  } catch {
+    return {};
+  }
 }
 
 const isObj = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v);

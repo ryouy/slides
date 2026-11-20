@@ -6,7 +6,6 @@ import SlideCore
 struct ArtGameView: View {
     @Environment(AppModel.self) private var app
     @Environment(ArtStore.self) private var store
-    @Environment(FavoriteStore.self) private var favorites
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -124,17 +123,19 @@ struct ArtGameView: View {
     }
 
     private var stats: some View {
-        HStack(alignment: .bottom, spacing: 20) {
-            stat(app.t("common.time"), ArtStats.formatTime(model.clockMs))
-            stat(app.t("common.moves"), "\(model.state.moves)")
+        HStack(alignment: .bottom, spacing: 4) {
+            stat(app.t("common.time"), ArtStats.formatTime(model.clockMs), width: 64)
+            stat(app.t("common.moves"), "\(model.movesShown)", width: 48)
         }
         .accessibilityElement(children: .combine)
     }
-    private func stat(_ label: String, _ value: String) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text(label).font(Web.font(9, .semibold, relativeTo: .caption2)).tracking(1.4).foregroundStyle(Web.muted)
+    /// A fixed-width column with the label centred and the number centred right under it, so the digits never push the column sideways.
+    private func stat(_ label: String, _ value: String, width: CGFloat) -> some View {
+        VStack(alignment: .center, spacing: 0) {
+            Text(label).font(Web.font(9, .semibold, relativeTo: .caption2)).tracking(1.4).foregroundStyle(Web.muted).lineLimit(1)
             Text(value).font(Web.font(22, .light, relativeTo: .title3)).monospacedDigit().foregroundStyle(Web.fg).minimumScaleFactor(0.6).lineLimit(1)
         }
+        .frame(width: width)
     }
 
     private func actions(star: Bool = true) -> some View {
@@ -157,8 +158,8 @@ struct ArtGameView: View {
     /// The favourite toggle (not for the visitor's own photos).
     @ViewBuilder private var starButton: some View {
         if !artwork.isCustom {
-            let fav = favorites.contains(artwork.id)
-            icon(fav ? "star.fill" : "star", app.t(fav ? "ios.fav.remove" : "ios.fav.add")) { favorites.toggle(artwork.id) }
+            let fav = store.isFavorite(artwork.id)
+            icon(fav ? "star.fill" : "star", app.t(fav ? "ios.fav.remove" : "ios.fav.add")) { store.toggleFavorite(artwork.id) }
                 .accessibilityAddTraits(fav ? .isSelected : [])
         }
     }

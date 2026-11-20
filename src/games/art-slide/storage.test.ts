@@ -64,3 +64,12 @@ describe('a clear updates the synced records', () => {
     expect(s.records['monet-water-lilies:6'].clears[s.deviceId]).toBe(1); // untouched
   });
 });
+
+describe('favourites in the save', () => {
+  it('are kept when the save is read back, and a damaged list is ignored', () => {
+    const base = { version: 1 };
+    const longId = 'x'.repeat(200);
+    expect(migrateArt({ ...base, favorites: { a: { on: true, at: 5 }, [longId]: { on: true, at: 1 }, b: { on: 'no' }, c: { on: false, at: 'x' } } }).favorites).toEqual({ a: { on: true, at: 5 }, c: { on: false, at: 0 } });
+    expect(migrateArt({ ...base }).favorites).toEqual({});
+  });
+});

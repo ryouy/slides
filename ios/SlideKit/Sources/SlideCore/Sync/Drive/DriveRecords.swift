@@ -20,6 +20,7 @@ public enum DriveRecords {
         }
         for (k, r) in save.dailyHistory { d.dailyHistory[k] = .init(number: r.number, artworkId: r.artworkId, timeMs: r.timeMs, moves: r.moves) }
         d.history = save.history.map { .init(date: $0.date, mode: $0.mode, size: $0.size, artworkId: $0.artworkId, timeMs: $0.timeMs, moves: $0.moves) }
+        d.favorites = save.favorites
         return d
     }
 
@@ -36,13 +37,14 @@ public enum DriveRecords {
         }
         s.dailyHistory = merged.dailyHistory.mapValues { ArtDailyRecord(number: $0.number, artworkId: $0.artworkId, timeMs: $0.timeMs, moves: $0.moves) }
         s.history = merged.history.filter { artLevels.contains($0.size) }.map { ArtPlayRecord(date: $0.date, mode: $0.mode, size: $0.size, artworkId: $0.artworkId, timeMs: $0.timeMs, moves: $0.moves) }
+        s.favorites = merged.favorites
         return s
     }
 
     /// Replaces the play records (never puzzles in progress, preferences, own photos or this install's id) with empty ones.
     public static func cleared(_ save: ArtSave) -> ArtSave {
         var s = save
-        s.completed = 0; s.dailyHistory = [:]; s.bests = [:]; s.history = []; s.records = [:]; s.counters = [:]; s.keyClears = [:]
+        s.completed = 0; s.dailyHistory = [:]; s.bests = [:]; s.history = []; s.records = [:]; s.counters = [:]; s.keyClears = [:]; s.favorites = [:]
         return s
     }
 }

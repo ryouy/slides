@@ -9,7 +9,8 @@
  *
  * Only play records live here: never the subscription or Premium status (those stay in Cloudflare D1).
  */
-export const SYNC_SCHEMA = 1;
+/** 2 adds `favorites` (starred paintings). A client that only knows schema 1 sees 2 as "newer" and leaves the file alone, so it can never wipe the favourites. */
+export const SYNC_SCHEMA = 2;
 export const HISTORY_LIMIT = 200;
 const MAX_RECORDS = 6000;
 
@@ -25,6 +26,9 @@ export interface KeyRecord {
 export interface HistoryEntry { date: string; mode: 'daily' | 'endless'; size: number; artworkId: string; timeMs: number; moves: number }
 export interface DailyEntry { number: number; artworkId: string; timeMs: number; moves: number }
 
+/** A starred painting: `on` is the latest state and `at` (unix ms) says when it was set; a later change wins on every device. */
+export interface FavRec { on: boolean; at: number }
+
 export interface SyncDoc {
   schema: number;
   /** total clears, per device */
@@ -35,11 +39,13 @@ export interface SyncDoc {
   records: Record<string, KeyRecord>;
   dailyHistory: Record<string, DailyEntry>;
   history: HistoryEntry[];
+  /** starred paintings by artwork id (an un-starred one stays as `on: false`, so the change reaches the other devices) */
+  favorites: Record<string, FavRec>;
 }
 
 export const recordKey = (artworkId: string, size: number): string => `${artworkId}:${size}`;
 
-export const emptyDoc = (): SyncDoc => ({ schema: SYNC_SCHEMA, counters: {}, bests: {}, records: {}, dailyHistory: {}, history: [] });
+export const emptyDoc = (): SyncDoc => ({ schema: SYNC_SCHEMA, counters: {}, bests: {}, records: {}, dailyHistory: {}, history: [], favorites: {} });
 
 const minDef = (a?: number, b?: number): number | undefined => (a === undefined ? b : b === undefined ? a : Math.min(a, b));
 const maxDef = (a?: number, b?: number): number | undefined => (a === undefined ? b : b === undefined ? a : Math.max(a, b));
@@ -86,6 +92,14 @@ export function mergeDocs(a: SyncDoc, b: SyncDoc): SyncDoc {
   for (const h of [...a.history, ...b.history]) seen.set(histKey(h), h);
   const history = [...seen.values()].sort((p, q) => histKey(p).localeCompare(histKey(q))).slice(-HISTORY_LIMIT);
 
+  // the later change wins; at the same instant "on" wins, so the result never depends on the order of the merge
+  const favorites: Record<string, FavRec> = {};
+  for (const k of new Set([...Object.keys(a.favorites), ...Object.keys(b.favorites)])) {
+    const x = a.favorites[k];
+    const y = b.favorites[k];
+    favorites[k] = !x || !y ? (x ?? y)! : x.at !== y.at ? (x.at > y.at ? x : y) : x.on ? x : y;
+  }
+
   return {
     schema: Math.max(a.schema, b.schema),
     counters: sortedObject(maxMap(a.counters, b.counters)),
@@ -93,6 +107,7 @@ export function mergeDocs(a: SyncDoc, b: SyncDoc): SyncDoc {
     records: sortedObject(records),
     dailyHistory: sortedObject(dailyHistory),
     history,
+    favorites: sortedObject(favorites),
   };
 }
 
@@ -166,6 +181,13 @@ export function normalizeDoc(raw: unknown): SyncDoc | null {
       }
     }
     doc.history = doc.history.slice(-HISTORY_LIMIT);
+  }
+  if (isObj(raw.favorites)) {
+    for (const [k, f] of Object.entries(raw.favorites).slice(0, MAX_RECORDS)) {
+      const id = idStr(k, 120);
+      if (!id || !isObj(f) || typeof f.on !== 'boolean') continue;
+      doc.favorites[id] = { on: f.on, at: num(f.at, 1e14) ?? 0 };
+    }
   }
   return doc;
 }

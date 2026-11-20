@@ -23,6 +23,7 @@ private func iosSave(_ o: [String: Any]) -> ArtSave {
         s.keyClears[k] = clears
     }
     s.dailyHistory = (try! JSONDecoder().decode([String: DriveDoc.Daily].self, from: data(o["dailyHistory"]!))).mapValues { ArtDailyRecord(number: $0.number, artworkId: $0.artworkId, timeMs: $0.timeMs, moves: $0.moves) }
+    s.favorites = (try! JSONDecoder().decode([String: ArtFavorite].self, from: data(o["favorites"] ?? [String: Any]())))
     s.history = (try! JSONDecoder().decode([DriveDoc.History].self, from: data(o["history"]!))).map { ArtPlayRecord(date: $0.date, mode: $0.mode, size: $0.size, artworkId: $0.artworkId, timeMs: $0.timeMs, moves: $0.moves) }
     return s
 }
@@ -80,6 +81,7 @@ final class DriveTestsGolden: XCTestCase {
             for (k, v) in s.records { XCTAssertEqual(v.clears, (s.keyClears[k] ?? [:]).values.reduce(0, +)) } // UI total = sum of the devices
             XCTAssertEqual(DriveRecords.toDoc(s).dailyHistory, try JSONDecoder().decode([String: DriveDoc.Daily].self, from: data(want["dailyHistory"]!)), "daily #\(i)")
             XCTAssertEqual(DriveRecords.toDoc(s).history, try JSONDecoder().decode([DriveDoc.History].self, from: data(want["history"]!)), "history #\(i)")
+            XCTAssertEqual(s.favorites, try JSONDecoder().decode([String: ArtFavorite].self, from: data(want["favorites"]!)), "favorites #\(i)")
         }
     }
 }

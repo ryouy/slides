@@ -30,6 +30,7 @@ function randDoc(): SyncDoc {
     d.records[key] = { ...(rnd(4) ? { bestTimeMs: 1000 * (1 + rnd(9)) } : {}), ...(rnd(4) ? { bestMoves: 10 + rnd(90) } : {}), ...(rnd(3) ? { lastClearedAt: 1_700_000_000_000 + rnd(1000) * 1000 } : {}), clears };
   }
   for (let i = 0; i < rnd(6); i++) d.dailyHistory[day(rnd(8))] = { number: 1 + rnd(30), artworkId: rnd(5) ? 'aic-81539' : pick(arts), timeMs: 1000 * (1 + rnd(5)), moves: 10 + rnd(5) };
+  for (let i = 0; i < rnd(5); i++) d.favorites[pick(arts)] = { on: !!rnd(2), at: 1_700_000_000_000 + rnd(6) * 1000 }; // few distinct instants: ties happen
   for (let i = 0; i < rnd(8); i++) {
     const h: HistoryEntry = { date: day(rnd(8)), mode: rnd(2) ? 'daily' : 'endless', size: 3 + rnd(5), artworkId: pick(arts), timeMs: [7, 70, 700, 7000, 70000][rnd(5)], moves: [9, 90, 900][rnd(3)] };
     d.history.push(h);
@@ -47,6 +48,8 @@ const raws: unknown[] = [
   emptyDoc(), randDoc(), randDoc(),
   { schema: 99, counters: { x: 1 } }, { schema: 0 }, { schema: 'x' }, [], null, 'str',
   { schema: 1 },
+  { schema: 2, favorites: { ok: { on: true, at: 5 }, 'bad id!': { on: true, at: 1 }, noflag: { at: 3 }, strflag: { on: 'yes', at: 3 }, neg: { on: false, at: -4 }, huge: { on: true, at: 1e15 }, frac: { on: true, at: 7.6 }, nonum: { on: false } } },
+  { schema: 2, favorites: [1, 2] },
   { schema: 1, counters: { 'ok-id': 3, 'bad id!': 4, neg: -1, big: 1e9, frac: 2.6 }, bests: { '3': { timeMs: 5.4, moves: -1 }, 'x': { timeMs: 1 }, '12': {} } },
   { schema: 1, records: { 'monet:3': { clears: { a: 1 }, bestTimeMs: 'x', lastClearedAt: 1.7e12 }, 'bad key': { clears: {} }, 'm:123': {clears: {}} } },
   { schema: 1, dailyHistory: { '2026-11-01': { artworkId: 'a', timeMs: 1, moves: 2 }, '2026-1-1': { artworkId: 'a', timeMs: 1, moves: 2 }, '2026-11-02': { artworkId: '', timeMs: 1, moves: 2 } } },
@@ -54,22 +57,24 @@ const raws: unknown[] = [
 ];
 const normalize = raws.map((raw) => ({ raw, normalized: normalizeDoc(raw) }));
 
+const favs = { 'monet-water-lilies': { on: true, at: 1000 }, 'van-gogh-bedroom': { on: false, at: 2000 } };
 const saveWith = (over: Partial<ArtSave>): ArtSave => ({ ...defaultArtSave(), deviceId: 'devA', ...over });
 const saves: ArtSave[] = [
   saveWith({}),
   saveWith({ counters: { devA: 3, devB: 2 }, completed: 5, bests: { '3': { timeMs: 50000, moves: 80 }, '4': { timeMs: 9 } }, records: { 'monet-water-lilies:3': { bestTimeMs: 50000, bestMoves: 80, lastClearedAt: 1000, clears: { devA: 3, devB: 2 } } },
     dailyHistory: { '2026-11-15': { number: 15, artworkId: 'aic-81539', timeMs: 70000, moves: 90 } }, history: [{ date: '2026-11-15', mode: 'daily', size: 4, artworkId: 'aic-81539', timeMs: 70000, moves: 90 }] }),
   saveWith({ counters: { devA: 4 }, completed: 6, records: { 'a:5': { clears: { devA: 4 } } } }), // completed above the counters (an older total)
+  saveWith({ favorites: favs }),
 ];
 const toDocs = saves.map((save) => ({ save, doc: toDoc(save) }));
 
 const fromMerged = saves.flatMap((save) => [randDoc(), randDoc(), toDoc(save)].map((doc) => {
   const r = applyDoc(save, doc);
-  return { save, doc, result: { counters: r.counters, completed: r.completed, bests: r.bests, records: r.records, dailyHistory: r.dailyHistory, history: r.history } };
+  return { save, doc, result: { counters: r.counters, completed: r.completed, bests: r.bests, records: r.records, dailyHistory: r.dailyHistory, history: r.history, favorites: r.favorites } };
 }));
 
 const dir = new URL('../SlideKit/Tests/SlideCoreTests/Golden/', import.meta.url).pathname;
 mkdirSync(dir, { recursive: true });
 writeFileSync(dir + 'drive.json', JSON.stringify({ merges, normalize, toDoc: toDocs.map((t) => ({ save: pickSave(t.save), doc: t.doc })), fromMerged: fromMerged.map((f) => ({ save: pickSave(f.save), doc: f.doc, result: f.result })) }));
-function pickSave(s: ArtSave) { return { deviceId: s.deviceId, completed: s.completed, counters: s.counters, bests: s.bests, records: s.records, dailyHistory: s.dailyHistory, history: s.history }; }
+function pickSave(s: ArtSave) { return { deviceId: s.deviceId, completed: s.completed, counters: s.counters, bests: s.bests, records: s.records, dailyHistory: s.dailyHistory, history: s.history, favorites: s.favorites }; }
 console.log(`export-drive: ${merges.length} merges, ${normalize.length} normalize, ${toDocs.length} toDoc, ${fromMerged.length} fromMerged`);
