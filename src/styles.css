@@ -2222,3 +2222,7 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   .art-home .art-home-menu .btn[data-testid="art-resume"] { font-size: clamp(17px, 1.3vw, 21px); padding: 0 4px; justify-content: center; }
   .art-home .art-home-menu { grid-auto-rows: minmax(0, 1fr); }
 }
+
+/* A very long title (some prints have a full catalogue title) must not stretch today's exhibit card and push the page past one screen */
+.art-home .exhibit-card .ex-text b { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; overflow-wrap: anywhere; }
+@media (min-width: 900px) { .art-home .exhibit-card .ex-text b { -webkit-line-clamp: 3; } }
