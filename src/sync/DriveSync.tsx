@@ -19,7 +19,8 @@ export function DriveSync({ children }: { children?: ReactNode }) {
       setBusy(false);
     }
   };
-  const time = s.lastSyncAt ? new Date(s.lastSyncAt).toLocaleString(lang) : '';
+  // short: "11/20 16:25" (the year and the seconds are not needed)
+  const time = s.lastSyncAt ? new Date(s.lastSyncAt).toLocaleString(lang, { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
   const line =
     s.status === 'syncing' ? t('sync.syncing')
     : s.status === 'ok' ? t('sync.ok', { time })
@@ -28,14 +29,18 @@ export function DriveSync({ children }: { children?: ReactNode }) {
     : s.status === 'other-account' ? t('sync.other')
     : s.status === 'newer-version' ? t('sync.newer')
     : '';
+  const inButton = s.status === 'ok' || s.status === 'syncing';
   return (
     <section className="drive-sync" data-testid="sync">
       <h3>{t('sync.title')}</h3>
-      <p className="muted">{t('sync.desc')}</p>
-      {s.enabled && line && <p className="muted" role="status" data-testid="sync-status" data-status={s.status}>{line}</p>}
+      {/* when it last synced sits inside the Sync now button; only trouble gets a line of its own */}
+      {s.enabled && line && !inButton && <p className="muted" role="status" data-testid="sync-status" data-status={s.status}>{line}</p>}
       {s.enabled && s.status === 'needs-consent' && <button className="btn wide" data-testid="sync-reconnect" disabled={busy} onClick={() => run(reconnectSync)}>{t('sync.reconnect')}</button>}
       {s.enabled && s.status === 'other-account' && <button className="btn wide" data-testid="sync-use-device" disabled={busy} onClick={() => run(useDeviceForThisAccount)}>{t('sync.useDevice')}</button>}
-      {s.enabled && s.status !== 'other-account' && s.status !== 'needs-consent' && <button className="btn wide" data-testid="sync-now" disabled={busy || s.status === 'syncing'} onClick={() => run(syncNow)}>{t('sync.now')}</button>}
+      {s.enabled && s.status !== 'other-account' && s.status !== 'needs-consent' && <button className="btn wide sync-now" data-testid="sync-now" disabled={busy || s.status === 'syncing'} onClick={() => run(syncNow)}>
+        <span>{t('sync.now')}</span>
+        {line && inButton && <small className="sync-when" role="status" data-testid="sync-status" data-status={s.status}>{line}</small>}
+      </button>}
       {/* the sync switch and Sign out side by side */}
       <div className="account-row">
         {!s.enabled ? (
@@ -45,7 +50,6 @@ export function DriveSync({ children }: { children?: ReactNode }) {
         )}
         {children}
       </div>
-      {s.enabled && <p className="muted premium-note">{t('sync.offNote')}</p>}
     </section>
   );
 }

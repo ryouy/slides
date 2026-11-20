@@ -76,10 +76,8 @@ export function AccountPage() {
         )}
         {error && <p className="muted" role="alert" data-testid="account-error">{t('acct.error')}</p>}
         <div className="account-platform-note" data-testid="account-ios-link">
-          <p className="muted" style={{ whiteSpace: 'pre-line' }}>{t('acct.commonPremium')}</p>
           <a className="btn wide" href="https://apps.apple.com/jp/search?term=ART%20SLIDE" target="_blank" rel="noopener noreferrer">{t('acct.iosApp')}</a>
         </div>
-        <button className="btn wide" onClick={() => go('')}>{t('common.back')}</button>
       </div>
     </Page>
   );

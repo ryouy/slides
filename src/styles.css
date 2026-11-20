@@ -2258,3 +2258,7 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .screen.artgame .art-header-controls .art-actions .fav-btn .art-action-label,
 .screen.artgame > .art-top .art-header-controls .art-actions .fav-btn .art-action-label { display: none; }
 .screen.artgame .art-header-controls .art-actions .fav-btn.on .art-action-icon { fill: currentColor; }
+
+/* the account page, with fewer words: when it last synced is a small line inside the Sync now button */
+.drive-sync .btn.sync-now, .drive-sync .btn.wide.sync-now { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
+.drive-sync .sync-now .sync-when { display: block; font-size: 11px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted); }
