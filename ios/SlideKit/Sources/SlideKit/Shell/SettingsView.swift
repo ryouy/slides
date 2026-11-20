@@ -46,7 +46,9 @@ public struct SettingsView: View {
                         // the section header already says "Downloaded paintings": the row holds only the count, on one line
                         Text(app.images.downloaded.isEmpty ? app.t("ios.dl.none") : app.t("ios.dl.count", ["n": app.images.downloaded.count, "mb": String(format: "%.1f", Double(app.images.totalBytes) / 1_048_576)]))
                             .lineLimit(1).minimumScaleFactor(0.8).foregroundStyle(.secondary)
-                        Button(bulk.map { app.t("ios.dl.busy", ["a": $0.0, "b": $0.1]) } ?? app.t("ios.dl.all")) { Task { await downloadAll() } }.disabled(bulk != nil)
+                        if remainingBytes > 0 || bulk != nil {
+                            Button(bulk.map { app.t("ios.dl.busy", ["a": $0.0, "b": $0.1]) } ?? app.t("ios.dl.allSize", ["mb": Self.mbText(remainingBytes)])) { Task { await downloadAll() } }.disabled(bulk != nil)
+                        }
                         if let downloadNotice { Text(downloadNotice).font(.footnote).foregroundStyle(.secondary) }
                         if !app.images.downloaded.isEmpty {
                             Button(app.t("ios.dl.deleteAll"), role: .destructive) { Task { await app.images.deleteAll() } }
@@ -301,6 +303,15 @@ public struct SettingsView: View {
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+    }
+
+    /// Premium paintings not on this device yet, in bytes (the total the "download all" button would fetch).
+    private var remainingBytes: Int {
+        app.catalog.artworks.filter { !app.catalog.isFree($0.id) && !app.images.downloaded.contains($0.id) }.reduce(0) { $0 + app.images.expectedBytes($1.id) }
+    }
+    private static func mbText(_ bytes: Int) -> String {
+        let mb = Double(bytes) / 1_048_576
+        return mb >= 10 ? String(Int(mb.rounded())) : String(format: "%.1f", mb)
     }
 
     private func downloadAll() async {

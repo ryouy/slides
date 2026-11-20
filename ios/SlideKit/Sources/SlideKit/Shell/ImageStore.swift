@@ -13,6 +13,8 @@ public final class ImageStore {
     private let catalog: ArtCatalog
     private let cache = NSCache<NSString, UIImage>()
     private var manifest: [String: (bytes: Int, sha256: String)] = [:]
+    /// The size of a painting's full-size image in bytes (from the bundled manifest; 0 if unknown).
+    public func expectedBytes(_ id: String) -> Int { manifest[id]?.bytes ?? 0 }
 
     private let dir: URL = {
         var u = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("ArtDownloads", isDirectory: true)
