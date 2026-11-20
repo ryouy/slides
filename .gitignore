@@ -19,3 +19,4 @@ ios/Config/Local.xcconfig
 ios/SlideKit/.build
 .DS_Store
 dist-ios
+ios/App/*.pdf
