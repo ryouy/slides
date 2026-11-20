@@ -186,32 +186,37 @@ public struct ArtRootView: View {
     /// The ways in as large serif lines between hairlines, a chevron at the right (the web's wide menu).
     private func deskMenu(k: CGFloat) -> some View {
         let resumable = store.save.inProgressFree.map { $0.status == .playing } ?? false
-        func line(_ title: String, lock: Bool = false, action: @escaping () -> Void) -> some View {
+        func line(_ title: String, lock: Bool = false, small: Bool = false, chevron: Bool = true, action: @escaping () -> Void) -> some View {
             Button(action: action) {
                 HStack(spacing: 10) {
-                    Text(title).font(.system(size: 26 * k, weight: .regular, design: .serif)).foregroundStyle(Web.fg).lineLimit(1).minimumScaleFactor(0.7)
-                    if lock { Image(systemName: "lock.fill").font(.system(size: 14 * k)).foregroundStyle(Web.muted) }
+                    Text(title).font(.system(size: (small ? 20 : 26) * k, weight: .regular, design: .serif)).foregroundStyle(small ? Web.muted : Web.fg).lineLimit(1).minimumScaleFactor(0.7)
+                    if lock { Image(systemName: "lock.fill").font(.system(size: 13 * k)).foregroundStyle(Web.muted) }
                     Spacer(minLength: 8)
-                    Image(systemName: "chevron.right").font(.system(size: 18 * k, weight: .light)).foregroundStyle(Web.muted)
+                    if chevron { Image(systemName: "chevron.right").font(.system(size: (small ? 14 : 18) * k, weight: .light)).foregroundStyle(Web.muted) }
                 }
-                .padding(.horizontal, 4)
+                .padding(.horizontal, small ? 14 * k : 4)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
         }
+        let hair = Rectangle().fill(Web.line)
         return VStack(spacing: 0) {
-            Rectangle().fill(Web.line).frame(height: 1)
+            hair.frame(height: 1)
             line(app.t("art.gallery")) { path.append(.gallery) }
-            Rectangle().fill(Web.line).frame(height: 1)
+            hair.frame(height: 1)
             line(app.t("art.random")) { path.append(.play(randomArtwork())) }
-            Rectangle().fill(Web.line).frame(height: 1)
-            line(app.t("home.photos"), lock: !app.isPremium) { if app.isPremium { path.append(.photos) } else { showPremium = true } }
-            if resumable {
-                Rectangle().fill(Web.line).frame(height: 1)
-                line(app.t("art.resume")) { path.append(.resume) }
+            hair.frame(height: 1)
+            // My Photos (left) and Resume (right) side by side, like the web; My Photos alone fills the row when there is nothing to resume
+            HStack(spacing: 0) {
+                line(app.t("home.photos"), lock: !app.isPremium, small: true) { if app.isPremium { path.append(.photos) } else { showPremium = true } }
+                if resumable {
+                    hair.frame(width: 1)
+                    line(app.t("art.resume"), small: true) { path.append(.resume) }
+                }
             }
-            Rectangle().fill(Web.line).frame(height: 1)
+            .frame(height: 76 * k)
+            hair.frame(height: 1)
         }
     }
 
@@ -296,14 +301,8 @@ public struct ArtRootView: View {
                 Button { path.append(.gallery) } label: { tile(app.t("art.gallery")) }.buttonStyle(HomeTileStyle())
                 Button { path.append(.play(randomArtwork())) } label: { tile(app.t("art.random")) }.buttonStyle(HomeTileStyle())
             }
-            HStack(spacing: 0) {
-                if resumable {
-                    Button { path.append(.resume) } label: {
-                        HStack(spacing: 4) { Text(app.t("art.resume")); Image(systemName: "chevron.right").font(.system(size: 11, weight: .semibold)) }
-                            .frame(maxWidth: .infinity, minHeight: 44)
-                    }
-                    .buttonStyle(.plain)
-                }
+            // My Photos (left) and Resume (right), side by side in quiet outlined boxes; My Photos alone fills the row when there is nothing to resume
+            HStack(spacing: 10) {
                 Button {
                     if app.isPremium { path.append(.photos) } else { showPremium = true }
                 } label: {
@@ -311,10 +310,17 @@ public struct ArtRootView: View {
                         Text(app.t("home.photos"))
                         if !app.isPremium { Image(systemName: "lock.fill").font(.system(size: 11)) }
                     }
-                    .frame(maxWidth: .infinity, minHeight: 44)
+                    .frame(maxWidth: .infinity, minHeight: 48)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(HomeTileStyle(radius: 16))
                 .accessibilityHint(app.isPremium ? app.t("photos.empty") : app.t("premium.lockedPhotos"))
+                if resumable {
+                    Button { path.append(.resume) } label: {
+                        HStack(spacing: 4) { Text(app.t("art.resume")); Image(systemName: "chevron.right").font(.system(size: 11, weight: .semibold)) }
+                            .frame(maxWidth: .infinity, minHeight: 48)
+                    }
+                    .buttonStyle(HomeTileStyle(radius: 16))
+                }
             }
             .font(Web.font(14, .medium, relativeTo: .subheadline)).foregroundStyle(Web.muted)
         }
@@ -382,11 +388,12 @@ public struct ArtRootView: View {
 
 /// The home's two big tiles: a rounded outline that dips a little when pressed.
 struct HomeTileStyle: ButtonStyle {
+    var radius: CGFloat = 22
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .overlay(RoundedRectangle(cornerRadius: 22, style: .continuous).stroke(Web.line, lineWidth: 1))
+            .overlay(RoundedRectangle(cornerRadius: radius, style: .continuous).stroke(Web.line, lineWidth: 1))
             .scaleEffect(configuration.isPressed ? 0.97 : 1)
             .animation(.easeOut(duration: 0.14), value: configuration.isPressed)
-            .contentShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+            .contentShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
     }
 }
