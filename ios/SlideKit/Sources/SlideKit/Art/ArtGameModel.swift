@@ -13,11 +13,15 @@ final class ArtGameModel {
     private(set) var lineMoving = false
     private(set) var tileAnimationDuration = 0.26
     var showResult = false
+    /// The running clock. It lives apart from `state` on purpose: ticking `state` every 200 ms made the whole board rebuild five times
+    /// a second (jank while tiles slide). `state.elapsedMs` catches up whenever the board changes, is saved or is cleared.
+    private(set) var clockMs: Int
     var outcome: ArtSave.ClearOutcome?
     let daily: Bool
     let image: UIImage
 
     var onProgress: (ArtState) -> Void = { _ in }
+    var onFlush: () -> Void = {}
     var onCleared: (ArtState) -> ArtSave.ClearOutcome = { _ in .init(newBestTime: false, newBestMoves: false, firstClear: false) }
 
     private var recorded: Bool
@@ -28,6 +32,7 @@ final class ArtGameModel {
 
     init(state: ArtState, image: UIImage, daily: Bool) {
         self.state = state; self.image = image; self.daily = daily
+        clockMs = state.elapsedMs
         recorded = state.cleared
         showResult = state.cleared
     }
@@ -82,7 +87,10 @@ final class ArtGameModel {
         tap(cell)
     }
 
+    private func syncClock() { if state.elapsedMs != clockMs { state.elapsedMs = clockMs } }
+
     private func change(_ f: (inout ArtState) -> Void) {
+        syncClock()
         tileAnimationDuration = 0.26
         withAnimation(.smooth(duration: tileAnimationDuration)) { f(&state) }
         afterChange()
@@ -103,14 +111,15 @@ final class ArtGameModel {
         let now = Date()
         defer { lastTick = now }
         guard !paused, let last = lastTick, state.started, !state.cleared else { return }
-        let ms = Int(min(now.timeIntervalSince(last), 1.0) * 1000) // a long gap (app suspended) is never counted
-        state.tick(ms: ms)
+        clockMs += Int(min(now.timeIntervalSince(last), 1.0) * 1000) // a long gap (app suspended) is never counted
     }
 
     /// Saves now (called when the app goes to the background or the screen closes).
     func flush() {
         if shuffling { finishShuffleNow() }
+        syncClock()
         onProgress(state)
+        onFlush()
     }
 
     // MARK: shuffle (real sliding, from what is on screen; the result is always solvable)
@@ -121,7 +130,7 @@ final class ArtGameModel {
         recorded = false
         outcome = nil
         if reduceMotion {
-            state = ArtState(puzzle: plan.puzzle); onProgress(state); return
+            state = ArtState(puzzle: plan.puzzle); clockMs = state.elapsedMs; onProgress(state); return
         }
         shuffling = true
         pendingPlan = plan
@@ -145,6 +154,7 @@ final class ArtGameModel {
         guard let plan = pendingPlan else { shuffling = false; return }
         pendingPlan = nil
         state = ArtState(puzzle: plan.puzzle)
+        clockMs = state.elapsedMs
         shuffling = false
         tileAnimationDuration = 0.26
         onProgress(state)

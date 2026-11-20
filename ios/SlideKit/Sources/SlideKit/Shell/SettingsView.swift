@@ -125,11 +125,11 @@ public struct SettingsView: View {
     /// One compact section: Apple | Google tabs, the sign-in button or the signed-in row, one sync switch, a link to the web version.
     @ViewBuilder private var accountSection: some View {
         Section(app.t("ios.account.title")) {
-            Picker("", selection: Binding(get: { shownTab }, set: { tab = $0 })) {
-                Text("Apple").tag(0)
-                Text("Google").tag(1)
+            HStack(spacing: 10) {
+                providerTab(0, "Apple") { Image(systemName: "applelogo").font(.system(size: 16, weight: .medium)) }
+                providerTab(1, "Google") { GoogleGMark().frame(width: 16, height: 16) }
             }
-            .pickerStyle(.segmented).labelsHidden()
+            .listRowInsets(EdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 16))
             if shownTab == 0 { appleTab } else { googleTab }
             if anySignedIn {
                 Toggle(isOn: Binding(get: { syncOn }, set: { setSync($0) })) {
@@ -144,9 +144,24 @@ public struct SettingsView: View {
         }
     }
 
+    /// A capsule tab with the provider's own mark: filled when selected, outlined otherwise.
+    private func providerTab<Icon: View>(_ index: Int, _ name: String, @ViewBuilder icon: () -> Icon) -> some View {
+        let on = shownTab == index
+        return Button { withAnimation(.easeOut(duration: 0.16)) { tab = index } } label: {
+            HStack(spacing: 7) { icon(); Text(name).font(.system(size: 15, weight: .semibold)) }
+                .frame(maxWidth: .infinity, minHeight: 40)
+                .foregroundStyle(on ? Web.bg : Web.fg)
+                .background(on ? Web.fg : Color.clear, in: Capsule())
+                .overlay(Capsule().stroke(on ? Color.clear : Web.line, lineWidth: 1))
+                .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(on ? .isSelected : [])
+    }
+
     @ViewBuilder private var appleTab: some View {
         if appleIn {
-            signedInRow("Apple", systemImage: "applelogo", canDelete: true) { await signOutApple() }
+            signedInRow("Apple", google: false, canDelete: true) { await signOutApple() }
             if googleIn, let token = app.googleAccount.idToken {
                 Button(app.t("ios.account.linkGoogle")) { Task { await app.account.linkGoogle(idToken: token) } }.disabled(app.account.busy)
             }
@@ -172,7 +187,7 @@ public struct SettingsView: View {
 
     @ViewBuilder private var googleTab: some View {
         if googleIn {
-            signedInRow("Google", systemImage: "g.circle", canDelete: false) { await signOutGoogle() }
+            signedInRow("Google", google: true, canDelete: false) { await signOutGoogle() }
         } else if app.googleAccount.isConfigured {
             Button { Task { await app.googleAccount.signIn() } } label: {
                 HStack(spacing: 10) {
@@ -190,9 +205,12 @@ public struct SettingsView: View {
     }
 
     /// "Signed in" on the left; sign out on the right; delete (Apple account) in a small menu.
-    private func signedInRow(_ name: String, systemImage: String, canDelete: Bool, signOut: @escaping () async -> Void) -> some View {
+    private func signedInRow(_ name: String, google: Bool, canDelete: Bool, signOut: @escaping () async -> Void) -> some View {
         HStack(spacing: 12) {
-            Label(name, systemImage: systemImage).lineLimit(1).fixedSize()
+            HStack(spacing: 8) {
+                if google { GoogleGMark().frame(width: 18, height: 18) } else { Image(systemName: "applelogo").font(.system(size: 17, weight: .medium)) }
+                Text(name).fontWeight(.medium)
+            }.lineLimit(1).fixedSize()
             Spacer(minLength: 8)
             Button(app.t("ios.account.signOut")) { Task { await signOut() } }
                 .buttonStyle(.borderless).lineLimit(1).fixedSize().disabled(app.account.busy)

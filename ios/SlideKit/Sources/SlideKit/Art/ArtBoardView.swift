@@ -33,8 +33,8 @@ struct ArtBoardView: View {
                         }
                     }
                     .frame(width: geo.size.width, height: geo.size.height)
-                    .clipShape(RoundedRectangle(cornerRadius: complete ? 0 : 3))
-                    .shadow(color: .black.opacity(complete ? 0.25 : 0), radius: 12, y: 6)
+                    .clipped()   // square like the web's art theme; a rounded mask would be redrawn on every animation frame
+                    .background { Rectangle().fill(Web.bg).shadow(color: .black.opacity(complete ? 0.25 : 0), radius: 12, y: 6) } // the glow sits behind, on a still layer
                     .animation(.smooth(duration: model.tileAnimationDuration), value: model.state.board)
                     .animation(.easeInOut(duration: 0.5), value: complete)
                     .contentShape(Rectangle())
@@ -59,7 +59,6 @@ struct ArtBoardView: View {
                 .resizable()
                 .interpolation(.medium)
                 .frame(width: max(1, w - gap * 2), height: max(1, h - gap * 2))
-                .clipShape(RoundedRectangle(cornerRadius: complete ? 0 : 1.5))
                 .overlay(alignment: .topLeading) {
                     if showNumbers && !isGhost {
                         Text("\(id + 1)")

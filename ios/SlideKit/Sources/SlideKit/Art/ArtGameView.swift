@@ -123,7 +123,7 @@ struct ArtGameView: View {
 
     private var stats: some View {
         HStack(alignment: .bottom, spacing: 20) {
-            stat(app.t("common.time"), ArtStats.formatTime(model.state.elapsedMs))
+            stat(app.t("common.time"), ArtStats.formatTime(model.clockMs))
             stat(app.t("common.moves"), "\(model.state.moves)")
         }
         .accessibilityElement(children: .combine)
@@ -217,31 +217,54 @@ struct ArtInfoSheet: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack { Spacer(); Button(app.t("common.close")) { dismiss() }.font(Web.font(14, .medium)).foregroundStyle(Web.fg).frame(minHeight: 44) }.padding(.horizontal, 16)
-            ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
-                    Image(uiImage: image).resizable().scaledToFit().frame(maxWidth: .infinity)
-                        .accessibilityLabel(app.t("art.preview"))
-                    Text(artwork.title).font(Web.font(18, .semibold, relativeTo: .headline)).foregroundStyle(Web.fg)
-                    if !artwork.isCustom {
-                        Text("\(artwork.artist) · \(artwork.year)").font(Web.font(13)).foregroundStyle(Web.muted)
-                        if let a = artwork.artwork {
-                            Text(a.description(in: app.lang)).font(Web.font(15)).lineSpacing(4).foregroundStyle(Web.fg)
-                            HStack(spacing: 4) {
-                                Text(a.museum); Text("·")
-                                if let u = URL(string: a.licenseUrl) { Link("CC0", destination: u) }; Text("·")
-                                if let u = URL(string: a.sourceUrl) { Link(app.t("art.source"), destination: u) }
-                            }.font(Web.font(12)).foregroundStyle(Web.muted)
-                            if let l = a.descriptionLicense ?? (a.descriptionLicenseUrl != nil ? "CC BY 4.0" : nil) {
-                                Text("\(app.t("art.textSource")): \(a.descriptionAttribution ?? a.museum) · \(l)").font(Web.font(11)).foregroundStyle(Web.muted)
-                            }
+            GeometryReader { geo in
+                ScrollView {
+                    if geo.size.width > 640 {
+                        // iPad / wide window: the painting takes most of the width, the text sits beside it
+                        HStack(alignment: .top, spacing: 28) {
+                            picture.frame(width: geo.size.width * 0.6)
+                            VStack(alignment: .leading, spacing: 12) { details }.frame(maxWidth: .infinity, alignment: .leading)
                         }
+                        .padding(20)
+                    } else {
+                        VStack(alignment: .leading, spacing: 12) { picture; details }.padding(16)
                     }
                 }
-                .padding(16)
             }
         }
         .background(Web.bg.ignoresSafeArea())
         .presentationDetents([.large])
+        .modifier(PageSizedSheet())
+    }
+
+    private var picture: some View {
+        Image(uiImage: image).resizable().scaledToFit().frame(maxWidth: .infinity)
+            .accessibilityLabel(app.t("art.preview"))
+    }
+
+    @ViewBuilder private var details: some View {
+        Text(artwork.title).font(Web.font(18, .semibold, relativeTo: .headline)).foregroundStyle(Web.fg)
+        if !artwork.isCustom {
+            Text("\(artwork.artist) · \(artwork.year)").font(Web.font(13)).foregroundStyle(Web.muted)
+            if let a = artwork.artwork {
+                Text(a.description(in: app.lang)).font(Web.font(15)).lineSpacing(4).foregroundStyle(Web.fg)
+                HStack(spacing: 4) {
+                    Text(a.museum); Text("·")
+                    if let u = URL(string: a.licenseUrl) { Link("CC0", destination: u) }; Text("·")
+                    if let u = URL(string: a.sourceUrl) { Link(app.t("art.source"), destination: u) }
+                }.font(Web.font(12)).foregroundStyle(Web.muted)
+                if let l = a.descriptionLicense ?? (a.descriptionLicenseUrl != nil ? "CC BY 4.0" : nil) {
+                    Text("\(app.t("art.textSource")): \(a.descriptionAttribution ?? a.museum) · \(l)").font(Web.font(11)).foregroundStyle(Web.muted)
+                }
+            }
+        }
+    }
+}
+
+/// On iPad (iOS 18+) the sheet fills the window instead of the small form-sheet card.
+private struct PageSizedSheet: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 18.0, *) { content.presentationSizing(.page) } else { content }
     }
 }
 

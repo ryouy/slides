@@ -113,6 +113,7 @@ struct ArtPlayHost: View {
         }
         let m = ArtGameModel(state: st, image: img, daily: daily)
         m.onProgress = { [store] s in store.setProgress(daily: daily, s) }
+        m.onFlush = { [store] in store.flushProgress() }
         m.onCleared = { [store] s in store.recordClear(s, dateKey: DateKeys.jstDateKey()) }
         model = m
         sessionKey = UUID()

@@ -8,6 +8,9 @@ final class ArtStore {
     private(set) var save: ArtSave
     private let file = JSONFileStore<ArtSave>(name: "art-save")
     @ObservationIgnored private var reloadObserver: RecordsReloadObserver?
+    @ObservationIgnored private var progressDirty = false
+    @ObservationIgnored private var writer: Task<Void, Never>?
+    @ObservationIgnored private let ioQueue = DispatchQueue(label: "art-save-io", qos: .utility)
 
     init() {
         var s = file.load() ?? ArtSave()
@@ -28,12 +31,36 @@ final class ArtStore {
         if save.deviceId.isEmpty { save.deviceId = d.deviceId }
     }
 
-    func update(_ f: (inout ArtSave) -> Void) { f(&save); if file.save(save) { NotificationCenter.default.post(name: .slideRecordsChanged, object: nil) } }
+    func update(_ f: (inout ArtSave) -> Void) {
+        f(&save); progressDirty = false
+        let snapshot = save, file = file
+        if ioQueue.sync(execute: { file.save(snapshot) }) { NotificationCenter.default.post(name: .slideRecordsChanged, object: nil) }
+    }
 
     func setProgress(daily: Bool, _ s: ArtState?) {
-        // the progress of a running puzzle is saved silently (no UI depends on it every move)
+        // The progress of a running puzzle is kept in memory at once and written to disk a moment later, off the main thread:
+        // writing the whole save file (encode, backup copy, atomic write) on every tap stalled the slide animation.
         if daily { save.inProgressDaily = s } else { save.inProgressFree = s }
-        file.save(save)
+        progressDirty = true
+        guard writer == nil else { return }
+        writer = Task { [weak self] in
+            try? await Task.sleep(for: .milliseconds(700))
+            guard let self else { return }
+            self.writer = nil
+            guard self.progressDirty else { return }
+            self.progressDirty = false
+            let snapshot = self.save, f = self.file
+            self.ioQueue.async { f.save(snapshot) }   // one serial queue for every write: a later snapshot can never be overtaken by an earlier one
+        }
+    }
+
+    /// Writes any pending progress now (app goes to the background, the screen closes).
+    func flushProgress() {
+        writer?.cancel(); writer = nil
+        guard progressDirty else { return }
+        progressDirty = false
+        let snapshot = save, f = file
+        _ = ioQueue.sync { f.save(snapshot) }
     }
 
     @discardableResult
