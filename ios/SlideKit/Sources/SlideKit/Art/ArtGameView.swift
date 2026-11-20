@@ -6,6 +6,7 @@ import SlideCore
 struct ArtGameView: View {
     @Environment(AppModel.self) private var app
     @Environment(ArtStore.self) private var store
+    @Environment(FavoriteStore.self) private var favorites
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -138,6 +139,11 @@ struct ArtGameView: View {
     private var actions: some View {
         HStack(spacing: 2) {
             if !daily { levelMenu }
+            if !artwork.isCustom {
+                let fav = favorites.contains(artwork.id)
+                icon(fav ? "star.fill" : "star", app.t(fav ? "ios.fav.remove" : "ios.fav.add")) { favorites.toggle(artwork.id) }
+                    .accessibilityAddTraits(fav ? .isSelected : [])
+            }
             icon("info.circle", app.t("art.preview")) { showPreview = true }
             icon("shuffle", app.t("art.shuffle")) { model.shuffle(reduceMotion: reduceMotion) }.disabled(model.shuffling).opacity(model.shuffling ? 0.45 : 1)
             let on = store.save.showNumbers

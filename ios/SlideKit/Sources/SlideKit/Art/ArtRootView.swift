@@ -11,6 +11,7 @@ public struct ArtRootView: View {
     @Environment(AppModel.self) private var app
     @State private var store = ArtStore()
     @State private var photos = CustomPhotoStore()
+    @State private var favorites = FavoriteStore()
     @State private var path: [ArtRoute] = ArtRootView.debugRoute()
     @State private var showSettings = ArtRootView.debugSettings()
     @State private var showPremium = false
@@ -50,6 +51,7 @@ public struct ArtRootView: View {
         }
         .environment(store)
         .environment(photos)
+        .environment(favorites)
         #if DEBUG
         .onAppear {
             // DEBUG only: `-forceLandscape` rotates the app at launch (for screenshots)

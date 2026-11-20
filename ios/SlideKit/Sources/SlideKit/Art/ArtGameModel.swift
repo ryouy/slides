@@ -28,6 +28,7 @@ final class ArtGameModel {
 
     private var recorded: Bool
     private var shuffleTask: Task<Void, Never>?
+    private var rewindTask: Task<Void, Never>?
     private var pendingPlan: ArtGenerator.ReshufflePlan?
     private var lastTick: Date?
     var paused = false { didSet { lastTick = nil } }
@@ -112,7 +113,7 @@ final class ArtGameModel {
     func tick() {
         let now = Date()
         defer { lastTick = now }
-        guard !paused, let last = lastTick, state.started, !state.cleared else { return }
+        guard !paused, !shuffling, let last = lastTick, state.started, !state.cleared else { return }
         clockMs += Int(min(now.timeIntervalSince(last), 1.0) * 1000) // a long gap (app suspended) is never counted
     }
 
@@ -138,6 +139,7 @@ final class ArtGameModel {
         pendingPlan = plan
         let step = ArtGenerator.visibleShuffleStep(state.dims)
         tileAnimationDuration = step * 0.92
+        rewindClock(over: max(0.9, Double(plan.clicks.count) * step + 0.06 + max(0.08, step * 2)))
         shuffleTask = Task { [weak self] in
             try? await Task.sleep(for: .milliseconds(60))
             for c in plan.clicks {
@@ -151,7 +153,25 @@ final class ArtGameModel {
         }
     }
 
+    /// The timer runs back to 0:00 while the pieces shuffle, tick by tick (it eases out as it nears zero).
+    private func rewindClock(over duration: Double) {
+        rewindTask?.cancel()
+        let from = clockMs
+        guard from > 0 else { return }
+        rewindTask = Task { [weak self] in
+            let t0 = Date()
+            while !Task.isCancelled {
+                let p = min(1, Date().timeIntervalSince(t0) / duration)
+                self?.clockMs = Int(Double(from) * (1 - (1 - pow(1 - p, 1.6))))
+                if p >= 1 { break }
+                try? await Task.sleep(for: .milliseconds(30))
+            }
+            if !Task.isCancelled { self?.clockMs = 0 }
+        }
+    }
+
     private func finishShuffleNow() {
+        rewindTask?.cancel(); rewindTask = nil
         shuffleTask?.cancel(); shuffleTask = nil
         guard let plan = pendingPlan else { shuffling = false; return }
         pendingPlan = nil

@@ -5,11 +5,13 @@ import SlideCore
 struct ArtGalleryView: View {
     @Environment(AppModel.self) private var app
     @Environment(ArtStore.self) private var store
+    @Environment(FavoriteStore.self) private var favorites
     @Binding var path: [ArtRoute]
 
     @State private var query = ""
     @State private var selected = ""
     @State private var showPremium = false
+    @State private var favOnly = false
     @FocusState private var searchFocus: Bool
 
     private var prefs: ArtGalleryPrefs { store.save.gallery }
@@ -31,8 +33,13 @@ struct ArtGalleryView: View {
                     if filtered.count != app.catalog.artworks.count {
                         Text(app.t("gal.filtered", ["n": filtered.count, "total": app.catalog.artworks.count])).font(Web.font(12)).foregroundStyle(Web.muted).padding(.bottom, 8)
                     }
-                    if prefs.groupBy != .none && !groups.isEmpty { tabs(groups, active: active) }
-                    if let active {
+                    if favOnly {
+                        let favs = filtered.filter { favorites.contains($0.id) }.sorted { ($0.artist, $0.title) < ($1.artist, $1.title) }
+                        Text(app.t("ios.fav.count", ["n": favs.count])).font(Web.font(12, .semibold, relativeTo: .caption)).tracking(1.2).foregroundStyle(Web.muted).padding(.bottom, 12)
+                        if favs.isEmpty { Text(app.t("ios.fav.empty")).font(Web.font(14)).foregroundStyle(Web.muted).multilineTextAlignment(.center).frame(maxWidth: .infinity).padding(.vertical, 40) }
+                        else { grid(favs) }
+                    } else if prefs.groupBy != .none && !groups.isEmpty { tabs(groups, active: active) }
+                    if favOnly { EmptyView() } else if let active {
                         grid(active.items).id("\(active.key)-\(prefs.randomSeed)-\(prefs.randomized)-\(columns)")
                     } else {
                         Text(app.t("gal.empty", ["q": query])).font(Web.font(14)).foregroundStyle(Web.muted).frame(maxWidth: .infinity).padding(.vertical, 40)
@@ -74,6 +81,13 @@ struct ArtGalleryView: View {
                         }
                     } label: { trigger(prefs.columns == 0 ? app.t("gal.columnsAuto") : "\(prefs.columns)") }
                 }
+                Button { Haptics.tap(); withAnimation(.easeOut(duration: 0.15)) { favOnly.toggle() } } label: {
+                    Image(systemName: favOnly ? "star.fill" : "star").font(.system(size: 16, weight: .medium)).foregroundStyle(favOnly ? Web.bg : Web.fg)
+                        .frame(width: 40, height: 40)
+                        .background(favOnly ? Web.fg : Color.clear, in: RoundedRectangle(cornerRadius: 3))
+                        .overlay(RoundedRectangle(cornerRadius: 3).stroke(Web.line, lineWidth: 1))
+                }
+                .buttonStyle(.plain).accessibilityLabel(app.t("ios.fav.title")).accessibilityAddTraits(favOnly ? .isSelected : [])
                 Button { Haptics.tap(); selected = ""; store.update { $0.gallery.randomized = true; $0.gallery.randomSeed = UInt32.random(in: 0...UInt32.max) } } label: { Text(app.t("gal.randomize")).lineLimit(1).minimumScaleFactor(0.7) }
                     .buttonStyle(WebButtonStyle(minHeight: 40)).font(Web.font(12, .medium)).frame(width: 84)
             }
@@ -134,6 +148,12 @@ struct ArtGalleryView: View {
             VStack(alignment: .leading, spacing: 2) {
                 ZStack(alignment: .topTrailing) {
                     SquareThumb(image: app.images.thumbnail(a.id), dim: locked)
+                        .overlay(alignment: .topLeading) {
+                            if favorites.contains(a.id) {
+                                Image(systemName: "star.fill").font(.system(size: 10, weight: .semibold)).foregroundStyle(Web.fg.opacity(0.85))
+                                    .frame(width: 20, height: 20).background(Web.bg.opacity(0.7), in: Circle()).padding(6)
+                            }
+                        }
                     if locked {
                         Image(systemName: "lock.fill").font(.system(size: 11, weight: .semibold)).foregroundStyle(Web.fg)
                             .frame(width: 24, height: 24).background(Web.bg.opacity(0.82), in: Circle()).padding(6)
@@ -149,6 +169,6 @@ struct ArtGalleryView: View {
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(a.title), \(a.artist)" + (locked ? ", " + app.t("premium.lock") : notYet ? ", " + app.t("ios.dl.badge") : ""))
+        .accessibilityLabel("\(a.title), \(a.artist)" + (locked ? ", " + app.t("premium.lock") : notYet ? ", " + app.t("ios.dl.badge") : "") + (favorites.contains(a.id) ? ", " + app.t("ios.fav.title") : ""))
     }
 }
