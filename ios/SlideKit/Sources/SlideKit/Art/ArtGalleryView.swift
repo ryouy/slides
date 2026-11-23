@@ -11,6 +11,7 @@ struct ArtGalleryView: View {
     @State private var selected = ""
     @State private var showPremium = false
     @State private var favOnly = false
+    @State private var gridWidth: CGFloat = 360
     @FocusState private var searchFocus: Bool
 
     private var prefs: ArtGalleryPrefs { store.save.gallery }
@@ -47,7 +48,6 @@ struct ArtGalleryView: View {
                 .padding(.horizontal, 16).padding(.bottom, 20)
             }
             .scrollDismissesKeyboard(.interactively)
-            AdBannerSlot()
         }
         .artScreen()
         .sheet(isPresented: $showPremium) { PremiumView() }
@@ -133,9 +133,17 @@ struct ArtGalleryView: View {
         // "auto": as many paintings per row as fit (like the web on a wide window): 2 on a phone in portrait, 6 in landscape, 8+ on a big iPad
         let cols = prefs.columns == 0 ? [GridItem(.adaptive(minimum: 120, maximum: 180), spacing: 12, alignment: .top)]
                                       : Array(repeating: GridItem(.flexible(), spacing: 12, alignment: .top), count: prefs.columns)
-        return LazyVGrid(columns: cols, spacing: 14) {
-            ForEach(items) { a in card(a) }
+        // like the web: a banner after every three rows of paintings (never after the last one)
+        let perRow = prefs.columns == 0 ? max(1, Int((gridWidth + 12) / (120 + 12))) : prefs.columns
+        let every = perRow * 3
+        let chunks = stride(from: 0, to: items.count, by: every).map { Array(items[$0..<min($0 + every, items.count)]) }
+        return VStack(spacing: 0) {
+            ForEach(Array(chunks.enumerated()), id: \.offset) { i, chunk in
+                LazyVGrid(columns: cols, spacing: 14) { ForEach(chunk) { a in card(a) } }
+                if i < chunks.count - 1 { AdBannerSlot().padding(.vertical, 8) }
+            }
         }
+        .background(GeometryReader { g in Color.clear.onAppear { gridWidth = g.size.width }.onChange(of: g.size.width) { _, w in gridWidth = w } })
     }
 
     private func card(_ a: Artwork) -> some View {

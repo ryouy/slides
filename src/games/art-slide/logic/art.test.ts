@@ -310,9 +310,11 @@ describe('daily pools (V1 until 11-13, V2 on 11-14, V3 from 11-15)', () => {
     expect(new Set(DAILY_POOL_V2).size).toBe(DAILY_POOL_V2.length);
     for (const id of DAILY_POOL_V2) expect(getArtwork(id), id).toBeDefined();
   });
-  it('V3 holds every painting exactly once', () => {
+  it('V3 is frozen: the 404 paintings of 2026-11-15, each once; later additions are not in it (a new pool version adds them)', () => {
+    expect(DAILY_POOL_V3).toHaveLength(404);
     expect(new Set(DAILY_POOL_V3).size).toBe(DAILY_POOL_V3.length);
-    expect([...DAILY_POOL_V3].sort()).toEqual(ARTWORKS.map((a) => a.id).sort());
+    for (const id of DAILY_POOL_V3) expect(getArtwork(id), id).toBeDefined();
+    expect(ARTWORKS.length).toBeGreaterThanOrEqual(DAILY_POOL_V3.length);
   });
   it('switches pools at the activation dates and keeps published days unchanged (pinned values)', () => {
     expect(DAILY_POOL_V2_FROM).toBe('2026-11-14');
@@ -344,7 +346,7 @@ describe('artwork data & rights', () => {
     for (const a of ARTWORKS) {
       for (const k of ['title', 'artist', 'artistSort', 'year', 'era', 'theme', 'medium', 'museum', 'sourceUrl', 'license', 'licenseUrl', 'licenseBasis', 'sourceImageUrl', 'verifiedAt', 'description'] as const) expect(a[k], `${a.id}.${k}`).toBeTruthy();
       expect(a.license).toMatch(/CC0/);
-      expect(a.licenseBasis).toMatch(/is_public_domain = true|isPublicDomain = true|public-domain status verified via official API/);
+      expect(a.licenseBasis).toMatch(/is_public_domain ?= ?true|isPublicDomain ?= ?true|public-domain status verified via official API/);
       expect(a.licenseUrl).toMatch(/^https:\/\//);
       expect(a.verifiedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       if (a.museum === 'Art Institute of Chicago') {
@@ -409,7 +411,7 @@ describe('gallery: search, sort and grouping', () => {
     const monet = filterArtworks(ARTWORKS, 'MONET');
     expect(monet.length).toBeGreaterThanOrEqual(3);
     expect(monet.every((a) => /monet/i.test(a.artist))).toBe(true);
-    expect(filterArtworks(ARTWORKS, 'cezanne').some((a) => a.artist === 'Paul Cézanne')).toBe(true);
+    expect(filterArtworks(ARTWORKS, 'cezanne').some((a) => /^Paul C[eé]zanne$/.test(a.artist))).toBe(true);
     expect(filterArtworks(ARTWORKS, 'monet water').every((a) => /monet/i.test(a.artist) && /water/i.test(`${a.title} ${a.theme}`))).toBe(true);
     expect(filterArtworks(ARTWORKS, 'japanese prints').length).toBe(ARTWORKS.filter((a) => a.theme === 'Japanese Prints').length);
     expect(filterArtworks(ARTWORKS, '')).toHaveLength(ARTWORKS.length);

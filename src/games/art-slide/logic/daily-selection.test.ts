@@ -12,12 +12,12 @@ describe('full-catalogue artwork of the day', () => {
     expect(dailyArtworkId('2026-11-13')).toBe(dailyArtworkId('2026-11-13'));
   });
 
-  it('contains EVERY painting even when its Japanese description is short', () => {
+  it('holds every painting of the catalogue as of 2026-11-15 (frozen: later additions are not in it) even when its Japanese description is short', () => {
     expect(DAILY_POOL_V3_FROM).toBe('2026-11-15');
-    const allIds = ARTWORKS.map((art) => art.id);
-    expect(DAILY_POOL_V3).toHaveLength(allIds.length);
-    expect(new Set(DAILY_POOL_V3).size).toBe(allIds.length);
-    expect(new Set(DAILY_POOL_V3)).toEqual(new Set(allIds));
+    expect(DAILY_POOL_V3).toHaveLength(404);
+    expect(new Set(DAILY_POOL_V3).size).toBe(404);
+    const allIds = new Set(ARTWORKS.map((art) => art.id));
+    for (const id of DAILY_POOL_V3) expect(allIds.has(id), id).toBe(true);
     expect(DAILY_POOL_V3).toContain('hokusai-hara');
     expect(getArtwork('hokusai-hara')?.descriptionTranslations?.ja?.length).toBeLessThan(150);
   });
