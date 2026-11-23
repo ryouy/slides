@@ -16920,5 +16920,23 @@
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
     "automatedExclusionScreening": "passed",
     "manualVisualReview": "required before public release"
+  },
+  {
+    "id": "wd-q3794124",
+    "wikidataId": "Q3794124",
+    "sourceUrl": "https://www.wikidata.org/wiki/Q3794124",
+    "commonsFileUrl": "https://commons.wikimedia.org/wiki/File:Monet_-_Monets_Garten_in_Giverny.jpg",
+    "commonsSha1": "f7f9e3528097656ed1f457d1b605a527ffd5e9dc",
+    "imageRights": {
+      "license": "Public domain",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Licensing",
+      "verifiedAt": "2026-11-23",
+      "authorDied": 1926
+    },
+    "originalImageDimensions": {
+      "width": 977,
+      "height": 871
+    },
+    "manualVisualReview": "required before public release"
   }
 ]
