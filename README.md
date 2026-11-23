@@ -2,14 +2,13 @@
 
 名画をスライドして完成させるパズルゲーム。絵画を探して遊べるギャラリーと、毎日更新されるデイリーパズルがあります。
 
-**[ART SLIDE](https://slides.ryouy.workers.dev/art-slide)** · [BIG SLIDE](https://slides.ryouy.workers.dev/big-slide) · [WORD SLIDE](https://slides.ryouy.workers.dev/word-slide)
+**[ART SLIDE (Web)](https://slides.ryouy.workers.dev/art-slide)** · **[App Store](https://apps.apple.com/jp/app/art-slide/id6836618274)**
 
 
 ## 主な機能
 
 - **ART SLIDE** — 作品の閲覧・検索、難易度選択、プレビュー、シャッフル、解説の日／英切り替え、デイリーパズル
 - **ギャラリー** — テーマ・作者・年代のタブ切り替え、ランダム表示、1行あたり1〜6枚の表示
-- **BIG SLIDE / WORD SLIDE** — 別ルールのスライドパズル
 - **共通** — 7言語対応、ローカルでの進行状況・記録の保存
 
 ## 作品データ
