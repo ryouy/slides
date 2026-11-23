@@ -60,23 +60,33 @@ public final class AdsManager {
 /// offline, or when loading fails. Put it only on calm screens (home, gallery, results), never next to a board in play.
 public struct AdBannerSlot: View {
     @Environment(AppModel.self) private var app
-    @State private var height: CGFloat = 0
-    public init() {}
+    /// -1 = still loading, 0 = failed, > 0 = the loaded ad's height
+    @State private var height: CGFloat = -1
+    @State private var width: CGFloat = max(UIScreen.main.bounds.width - 32, 320)
+    /// Keep the room free while the ad loads (the play screen: a board that shrinks and moves up when the ad arrives is a jolt). Freed again if loading fails.
+    var reserve = false
+    public init(reserve: Bool = false) { self.reserve = reserve }
     public var body: some View {
-        if app.premium.hasResolved && !app.isPremium && app.ads.canShowAds && app.network.isOnline {
-            GeometryReader { geo in
-                // The banner view must have its real size while it loads (a zero-height view makes the SDK fail with "Invalid ad width or height"):
-                // it keeps the full ad size, and only the slot around it is collapsed (clipped) until an ad has arrived.
-                let w = max(geo.size.width, 320)
-                BannerRepresentable(width: w, height: $height)
-                    .frame(width: w, height: largeAnchoredAdaptiveBanner(width: w).size.height)
-                    .frame(width: geo.size.width, height: height, alignment: .top)
-                    .clipped()
-            }
-            .frame(height: height)
-            .accessibilityHidden(true)
+        if app.premium.hasResolved && !app.isPremium && app.ads.canShowAds && app.network.isOnline && height != 0 {
+            // The banner view must have its real size while it loads (a zero-height view makes the SDK fail with "Invalid ad width or height"):
+            // it keeps the full ad size, and only the slot around it is collapsed (clipped) until an ad has arrived.
+            let w = max(width, 320)
+            let full = Self.size(w).size.height
+            Color.clear
+                .frame(maxWidth: .infinity).frame(height: slotHeight(full))
+                .overlay(alignment: .top) {
+                    BannerRepresentable(width: w, height: $height)
+                        .frame(width: w, height: full)
+                        .frame(maxWidth: .infinity, maxHeight: slotHeight(full), alignment: .top)
+                        .clipped()
+                }
+                .background(GeometryReader { g in Color.clear.onAppear { width = g.size.width }.onChange(of: g.size.width) { _, v in width = v } })
+                .accessibilityHidden(true)
         }
     }
+    private func slotHeight(_ full: CGFloat) -> CGFloat { height > 0 ? height : (height < 0 && reserve ? full : 0) }
+    /// The standard adaptive banner (about 50-60 pt tall on a phone), not the "large" one.
+    static func size(_ width: CGFloat) -> AdSize { currentOrientationAnchoredAdaptiveBanner(width: width) }
 }
 
 private struct BannerRepresentable: UIViewRepresentable {
@@ -85,7 +95,7 @@ private struct BannerRepresentable: UIViewRepresentable {
 
     func makeCoordinator() -> Coordinator { Coordinator(height: $height) }
     func makeUIView(context: Context) -> BannerView {
-        let b = BannerView(adSize: largeAnchoredAdaptiveBanner(width: max(width, 320)))
+        let b = BannerView(adSize: AdBannerSlot.size(max(width, 320)))
         b.adUnitID = AdsManager.bannerUnitID
         b.rootViewController = AdsManager.topViewController()
         b.delegate = context.coordinator

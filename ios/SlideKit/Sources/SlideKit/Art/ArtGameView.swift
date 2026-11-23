@@ -36,7 +36,7 @@ struct ArtGameView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     if geo.size.height > 560 { extra.padding(.horizontal, 16).padding(.bottom, 8) }
                     // like the web: the ad sits under the board and its controls
-                    AdBannerSlot().padding(.horizontal, 16).padding(.bottom, 4)
+                    AdBannerSlot(reserve: true).padding(.horizontal, 16).padding(.bottom, 4)
                 }
             } else {
                 VStack(spacing: 0) {
@@ -45,7 +45,7 @@ struct ArtGameView: View {
                         .padding(.horizontal, 16).padding(.vertical, 6)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     extra.padding(.horizontal, 16).padding(.bottom, 8)
-                    AdBannerSlot().padding(.horizontal, 16).padding(.bottom, 4)
+                    AdBannerSlot(reserve: true).padding(.horizontal, 16).padding(.bottom, 4)
                 }
             }
         }
