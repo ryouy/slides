@@ -100,7 +100,6 @@ public struct ArtRootView: View {
                 if let a = exhibit { exhibitCard(a, k: 1, mode: .row) }
                 menu(vertical: false)
                 galleryStrip(roomy: false, width: size.width).padding(.bottom, 8)
-                AdBannerSlot().padding(.top, 8)
             }
             .padding(.horizontal, 16).padding(.top, 8).padding(.bottom, 24)
             .frame(maxWidth: min(size.width, 520))
@@ -142,7 +141,6 @@ public struct ArtRootView: View {
                     deskMenu(k: k).frame(maxWidth: .infinity).frame(height: cardH)
                 }
                 galleryStrip(roomy: true, width: content).padding(.top, 36 * k)
-                AdBannerSlot().padding(.top, 20)
             }
             .padding(.horizontal, 32).padding(.bottom, 28)
             .frame(maxWidth: min(size.width, 1180), minHeight: size.height, alignment: .center)   // centred when the page is shorter than the screen
