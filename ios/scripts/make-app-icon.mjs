@@ -33,6 +33,13 @@ for (let cell = 0; cell < N * N; cell++) {
   const withBevel = await sharp(piece).composite([{ input: bevel }]).png().toBuffer();
   layers.push({ input: withBevel, left: x, top: y });
 }
-await sharp({ create: { width: ICON, height: ICON, channels: 3, background: '#000' } }).composite(layers).removeAlpha().png().toFile('ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png');
+const ICON_OUT = 'ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png';
+import { existsSync } from 'node:fs';
+// The owner's own artwork (ios/scripts/app-icon-source.png, transparent corners) is the app icon as it is: scaled to 1024 and put on black (App Store icons must be opaque).
+if (existsSync('ios/scripts/app-icon-source.png')) {
+  await sharp('ios/scripts/app-icon-source.png').resize(ICON, ICON).flatten({ background: '#000' }).removeAlpha().png().toFile(ICON_OUT);
+} else {
+  await sharp({ create: { width: ICON, height: ICON, channels: 3, background: '#000' } }).composite(layers).removeAlpha().png().toFile(ICON_OUT);
+}
 await sharp(SRC).resize(1250, 1250).png({ compressionLevel: 9 }).toFile('ios/App/App/Assets.xcassets/SplashArt.imageset/splash-art.png');
 console.log('app icon (scrambled first frame) and splash picture (complete face) written');
