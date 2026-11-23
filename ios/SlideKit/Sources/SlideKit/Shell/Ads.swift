@@ -21,7 +21,7 @@ public final class AdsManager {
 
     func prepare() async {
         #if DEBUG
-        if ProcessInfo.processInfo.arguments.contains("-skipConsent") { return } // DEBUG builds only: skip the UMP/ATT pop-ups for screenshots and UI tests
+        if ProcessInfo.processInfo.arguments.contains("-skipConsent") { refreshState(); return } // DEBUG builds only: skip the UMP/ATT pop-ups for screenshots and UI tests
         #endif
         let vc = Self.topViewController()
         _ = try? await ConsentInformation.shared.requestConsentInfoUpdate(with: RequestParameters())
@@ -38,6 +38,9 @@ public final class AdsManager {
     private func refreshState() {
         privacyOptionsRequired = ConsentInformation.shared.privacyOptionsRequirementStatus == .required
         canShowAds = ConsentInformation.shared.canRequestAds && Self.bannerUnitID != nil
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("-forceAds") { canShowAds = Self.bannerUnitID != nil }
+        #endif
         if canShowAds, !started { started = true; MobileAds.shared.start(completionHandler: nil) }
     }
 
@@ -62,9 +65,13 @@ public struct AdBannerSlot: View {
     public var body: some View {
         if app.premium.hasResolved && !app.isPremium && app.ads.canShowAds && app.network.isOnline {
             GeometryReader { geo in
-                BannerRepresentable(width: geo.size.width, height: $height)
-                    .frame(width: geo.size.width, height: height)
-                    .frame(maxWidth: .infinity)
+                // The banner view must have its real size while it loads (a zero-height view makes the SDK fail with "Invalid ad width or height"):
+                // it keeps the full ad size, and only the slot around it is collapsed (clipped) until an ad has arrived.
+                let w = max(geo.size.width, 320)
+                BannerRepresentable(width: w, height: $height)
+                    .frame(width: w, height: largeAnchoredAdaptiveBanner(width: w).size.height)
+                    .frame(width: geo.size.width, height: height, alignment: .top)
+                    .clipped()
             }
             .frame(height: height)
             .accessibilityHidden(true)

@@ -28,7 +28,7 @@ struct ArtPlayHost: View {
                 if let art, let model { ArtGameView(artwork: art, model: model, onLevel: { next(art, level: $0) }, onNext: { nextArtwork(from: art) }, onMore: { dismiss(); onGallery() }).id(sessionKey).transition(.opacity.combined(with: .scale(scale: 0.97))) }
             case .download:
                 // stay on this page until the puzzle is ready: one soft cross-fade, no spinner in between
-                if let art { ArtDownloadView(artwork: art) { Task { await open() } } }
+                if let art { ArtDownloadView(artwork: art) { Task { await reopen() } }.id(art.id) }
             case .locked:
                 LockedView(art: art, reasonKey: art?.isCustom == true ? "premium.lockedPhotos" : "premium.lockedArt")
             case .missing:
@@ -41,6 +41,9 @@ struct ArtPlayHost: View {
         }
         .animation(.easeInOut(duration: 0.9), value: phase)   // the download screen melts into the puzzle instead of cutting to it
         .task { if !started { started = true; await open() } }
+        #if DEBUG
+        .task { if ProcessInfo.processInfo.arguments.contains("-autoNext") { try? await Task.sleep(for: .seconds(4)); if let art { nextArtwork(from: art) } } }
+        #endif
     }
 
     private func messageScreen(_ text: String, button: (String, () -> Void)? = nil) -> some View {
@@ -71,6 +74,12 @@ struct ArtPlayHost: View {
             guard let s = store.save.inProgressFree else { phase = .empty; return }
             await openFree(id: s.puzzle.artworkId, premium: premium)
         }
+    }
+
+    /// After a download: open the painting that was being downloaded. `open()` would resolve `kind` again, which is the painting this page was
+    /// FIRST opened for, so after "Next painting" onto a painting that is not on the device it jumped back to the previous one (and looked as if Next did nothing).
+    private func reopen() async {
+        if let art, !art.isCustom { await openFree(id: art.id, premium: app.isPremium) } else { await open() }
     }
 
     private func playArtwork(_ id: String) -> PlayArtwork? {
