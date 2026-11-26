@@ -21,6 +21,8 @@ struct ArtGameView: View {
     @State private var pendingLevel: Int?
     @State private var showPremium = false
     @State private var shuffleHint = 0
+    @AppStorage("previewSeen") private var previewSeen = false
+    @State private var pulse = false
 
     private var d: Dims { model.state.dims }
 
@@ -116,11 +118,12 @@ struct ArtGameView: View {
             if typeSize.isAccessibilitySize {
                 VStack(alignment: .leading, spacing: 6) { stats; actions(star: false, next: isPad) }
             } else {
+                // one row under the title (past the back arrow); on a narrower phone the same row without that indent; only then stacked
                 ViewThatFits(in: .horizontal) {
-                    HStack(alignment: .center, spacing: 8) { stats; Spacer(minLength: 0); actions(star: false, next: isPad) }
-                    VStack(alignment: .leading, spacing: 4) { stats; actions(star: false, next: isPad) }
+                    HStack(alignment: .center, spacing: 8) { stats; Spacer(minLength: 0); actions(star: false, next: isPad) }.padding(.leading, 42)
+                    HStack(alignment: .center, spacing: 4) { stats; Spacer(minLength: 0); actions(star: false, next: isPad) }.padding(.leading, 4)
+                    VStack(alignment: .leading, spacing: 4) { stats; actions(star: false, next: isPad) }.padding(.leading, 42)
                 }
-                .padding(.leading, 42) // under the title, past the back arrow
             }
         }
     }
@@ -148,8 +151,8 @@ struct ArtGameView: View {
 
     private var stats: some View {
         HStack(alignment: .bottom, spacing: 4) {
-            stat(app.t("common.time"), ArtStats.formatTime(model.clockMs), width: 60)
-            stat(app.t("common.moves"), "\(model.movesShown)", width: 44)
+            stat(app.t("common.time"), ArtStats.formatTime(model.clockMs), width: 54)
+            stat(app.t("common.moves"), "\(model.movesShown)", width: 40)
         }
         .accessibilityElement(children: .combine)
     }
@@ -166,14 +169,14 @@ struct ArtGameView: View {
         HStack(spacing: 2) {
             if !daily { levelMenu }
             if star { starButton }
-            icon("info.circle", app.t("art.preview")) { showPreview = true }
+            previewButton
             icon("shuffle", app.t("art.shuffle")) { model.shuffle(reduceMotion: reduceMotion) }.disabled(model.shuffling).opacity(model.shuffling ? 0.45 : 1)
             let on = store.save.showNumbers
             Button { Haptics.tap(); store.update { $0.showNumbers.toggle() } } label: {
                 Image(systemName: "number").font(.system(size: 18, weight: on ? .semibold : .regular))
-                    .foregroundStyle(on ? Web.bg : Web.fg).frame(width: 36, height: 36)
+                    .foregroundStyle(on ? Web.bg : Web.fg).frame(width: 34, height: 34)
                     .background(on ? Web.fg : Color.clear, in: RoundedRectangle(cornerRadius: 9, style: .continuous))
-                    .frame(width: 40, height: 44).contentShape(Rectangle())
+                    .frame(width: 36, height: 44).contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .accessibilityLabel(app.t("art.numbers")).accessibilityAddTraits(on ? .isSelected : [])
@@ -182,6 +185,20 @@ struct ArtGameView: View {
             }
         }
     }
+    /// The reference picture: the word "お手本" / "Preview" in a small outlined pill (the ⓘ icon alone was not found). Until it has been opened once it pulses softly.
+    private var previewButton: some View {
+        Button { Haptics.tap(); previewSeen = true; showPreview = true } label: {
+            Text(app.t("art.preview")).font(Web.font(13, .medium, relativeTo: .footnote)).lineLimit(1).minimumScaleFactor(0.8)
+            .foregroundStyle(Web.fg).padding(.horizontal, 12).frame(height: 32)
+            .overlay(Capsule().strokeBorder(Web.fg.opacity(previewSeen ? 0.45 : 0.9), lineWidth: previewSeen ? 1 : 1.5))
+            .scaleEffect(!previewSeen && pulse && !reduceMotion ? 1.07 : 1)
+            .frame(minHeight: 44).contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(app.t("art.preview"))
+        .task { guard !previewSeen, !reduceMotion else { return }; withAnimation(.easeInOut(duration: 1.1).repeatForever(autoreverses: true)) { pulse = true } }
+    }
+
     /// The favourite toggle (not for the visitor's own photos).
     @ViewBuilder private var starButton: some View {
         if !artwork.isCustom {
@@ -205,7 +222,7 @@ struct ArtGameView: View {
                 Text(gridLabel(model.state.puzzle.size)).font(Web.font(15, .medium, relativeTo: .subheadline)).monospacedDigit()
                 Image(systemName: "chevron.down").font(.system(size: 9, weight: .semibold))
             }
-            .fixedSize().foregroundStyle(Web.fg).padding(.horizontal, 8).frame(minHeight: 44).contentShape(Rectangle())
+            .fixedSize().foregroundStyle(Web.fg).padding(.horizontal, 4).frame(minHeight: 44).contentShape(Rectangle())
         }
         .fixedSize()
         .disabled(model.shuffling)
@@ -214,7 +231,7 @@ struct ArtGameView: View {
     }
     private func icon(_ symbol: String, _ label: String, action: @escaping () -> Void) -> some View {
         Button(action: { Haptics.tap(); action() }) {
-            Image(systemName: symbol).font(.system(size: 19, weight: .regular)).foregroundStyle(Web.fg).frame(width: 40, height: 44).contentShape(Rectangle())
+            Image(systemName: symbol).font(.system(size: 19, weight: .regular)).foregroundStyle(Web.fg).frame(width: 36, height: 44).contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel(label)

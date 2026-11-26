@@ -92,7 +92,7 @@ const ja: Partial<Dict> = {
   'sync.useDevice': 'この端末の記録をこのアカウントで使う',
   'sync.newer': 'ドライブにART SLIDEの新しいバージョンの記録があります。何も変更していません。',
   'sync.offNote': 'オフにしても、記録は消えません。',
-  'art.dailyTitle': 'デイリー #{n}', 'art.preview': 'プレビュー', 'art.shuffle': 'シャッフル',
+  'art.dailyTitle': 'デイリー #{n}', 'art.preview': 'お手本', 'art.shuffle': 'シャッフル',
   'art.numbers': '番号', 'art.change': 'ギャラリーへ戻る', 'art.source': '出典',
   'art.loading': '読み込み中…', 'art.loadError': 'この絵画を読み込めませんでした。', 'art.tryAgain': '再試行', 'art.chooseOther': '別の絵画を選ぶ',
   'art.confirmLevel': '{grid} に切り替えますか？ 進行中のデータは失われます。',

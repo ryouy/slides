@@ -2268,3 +2268,8 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
   .artgame > .aboard-wrap { margin-top: calc(6px + var(--art-center, 0px)); }
   .artgame > .art-extra { margin-top: calc(6px + var(--art-center, 0px)); }
 }
+
+/* the preview ("お手本") button pulses softly until it has been opened once */
+.art-actions .preview-btn.hint { animation: preview-pulse 2.2s ease-in-out infinite; }
+@keyframes preview-pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--fg) 0%, transparent); } 50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--fg) 22%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .art-actions .preview-btn.hint { animation: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--fg) 30%, transparent); } }

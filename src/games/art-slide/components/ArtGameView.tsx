@@ -40,6 +40,14 @@ interface Props {
   onNextArtwork: () => void;
 }
 
+const PREVIEW_SEEN_KEY = 'artslide:previewSeen';
+function previewSeen(): boolean {
+  try { return localStorage.getItem(PREVIEW_SEEN_KEY) === '1'; } catch { return true; }
+}
+function markPreviewSeen(): void {
+  try { localStorage.setItem(PREVIEW_SEEN_KEY, '1'); } catch { /* the hint just shows again next time */ }
+}
+
 export function ArtGameView(p: Props) {
   const { initial, artwork, daily } = p;
   const t = useT();
@@ -49,6 +57,8 @@ export function ArtGameView(p: Props) {
   const hasJapaneseDescription = !!artwork.descriptionTranslations?.ja;
   const [state, dispatch] = useReducer(artReducer, initial);
   const [preview, setPreview] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
+  // until the visitor has opened the preview once, its button pulses softly so it is easy to find
+  const [hint, setHint] = useState(() => !previewSeen());
   const boardRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const [pending, setPending] = useState<ArtLevel | null>(null);
@@ -229,12 +239,13 @@ export function ArtGameView(p: Props) {
                 <span className="art-action-label">{t('fav.title')}</span>
               </button>
             )}
-            <button className="btn" data-testid="preview" aria-label={t('art.preview')} title={t('art.preview')}
+            <button className={`btn preview-btn${hint ? ' hint' : ''}`} data-testid="preview" aria-label={t('art.preview')} title={t('art.preview')}
               onClick={() => {
+                markPreviewSeen();
+                setHint(false);
                 const rect = boardRef.current?.getBoundingClientRect();
                 if (rect) setPreview({ left: rect.left, top: rect.top, width: rect.width, height: rect.height });
               }}>
-              <svg className="art-action-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r=".9" fill="currentColor" stroke="none"/></svg>
               <span className="art-action-label">{t('art.preview')}</span>
             </button>
             <button className="btn" data-testid="shuffle" aria-label={t('art.shuffle')} title={t('art.shuffle')} disabled={shuffling} onClick={runShuffle}>
