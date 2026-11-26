@@ -2273,3 +2273,9 @@ html[data-nav='back'] .page-enter { animation-name: pageInBack; }
 .art-actions .preview-btn.hint { animation: preview-pulse 2.2s ease-in-out infinite; }
 @keyframes preview-pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--fg) 0%, transparent); } 50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--fg) 22%, transparent); } }
 @media (prefers-reduced-motion: reduce) { .art-actions .preview-btn.hint { animation: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--fg) 30%, transparent); } }
+
+/* the preview button is the word "お手本" / "Preview": it keeps its label (and its own width) in the compact header too, where the other buttons are bare icons */
+.artgame .art-header-controls .art-actions .btn.preview-btn,
+.screen.artgame > .art-top .art-header-controls .art-actions .btn.preview-btn { width: auto; min-width: 0; flex: 0 0 auto; padding-left: 10px; padding-right: 10px; }
+.artgame .art-header-controls .art-actions .btn.preview-btn .art-action-label,
+.screen.artgame > .art-top .art-header-controls .art-actions .btn.preview-btn .art-action-label { display: inline; font-size: 12px; letter-spacing: 0; white-space: nowrap; }
