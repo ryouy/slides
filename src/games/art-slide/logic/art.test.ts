@@ -6,7 +6,7 @@ import { artReducer, newArtGame } from './game';
 import { gridFor } from './grid';
 import { planReshuffle, reduceBlankPath } from './reshuffle';
 import { tileBackground, tileRegion } from './tiles';
-import { ARTWORKS, getArtwork, nextArtwork, pickRandomArtwork } from '../data';
+import { ARTWORKS, getArtwork, licenseLabel, nextArtwork, pickRandomArtwork } from '../data';
 import { DAILY_POOL_V2, DAILY_POOL_V3 } from '../data/daily-pools';
 import { ERA_ORDER, THEME_ORDER, filterArtworks, groupArtworks, homePicks, sortArtworks } from './gallery';
 import { rngFromString } from '../../../utils/rng';
@@ -345,19 +345,27 @@ describe('artwork data & rights', () => {
   it('records source, licence and verification for every work, and only open licences', () => {
     for (const a of ARTWORKS) {
       for (const k of ['title', 'artist', 'artistSort', 'year', 'era', 'theme', 'medium', 'museum', 'sourceUrl', 'license', 'licenseUrl', 'licenseBasis', 'sourceImageUrl', 'verifiedAt', 'description'] as const) expect(a[k], `${a.id}.${k}`).toBeTruthy();
-      expect(a.license).toMatch(/CC0/);
-      expect(a.licenseBasis).toMatch(/is_public_domain ?= ?true|isPublicDomain ?= ?true|public-domain status verified via official API/);
+      expect(a.license).toMatch(/CC0|^Public domain$/);
+      expect(a.licenseBasis).toMatch(/is_public_domain ?= ?true|isPublicDomain ?= ?true|public-domain status verified via official API|Wikimedia Commons file-level Public Domain/);
       expect(a.licenseUrl).toMatch(/^https:\/\//);
       expect(a.verifiedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       if (a.museum === 'Art Institute of Chicago') {
         expect(a.sourceUrl).toMatch(/^https:\/\/www\.artic\.edu\/artworks\/\d+$/);
         expect(a.sourceImageUrl).toMatch(/^https:\/\/www\.artic\.edu\/iiif\/2\//);
+      } else if (a.museum === 'Wikimedia Commons') {
+        expect(a.sourceUrl).toMatch(/^https:\/\/www\.wikidata\.org\/wiki\/Q\d+$/);
+        expect(a.sourceImageUrl).toMatch(/^https:\/\/upload\.wikimedia\.org\//);
+        expect(a.license).toBe('Public domain');
       } else {
         expect(a.museum).toBe('The Metropolitan Museum of Art');
         expect(a.sourceUrl).toMatch(/^https:\/\/www\.metmuseum\.org\//);
         expect(a.sourceImageUrl).toMatch(/^https:\/\/images\.metmuseum\.org\//);
       }
     }
+  });
+  it('names the licence honestly: CC0 for the open-access museums, "Public domain" for a Wikimedia Commons file', () => {
+    expect(licenseLabel(getArtwork('aic-61603')!)).toBe('CC0');
+    expect(licenseLabel(getArtwork('wd-q3794124')!)).toBe('Public domain');
   });
   it('has substantive descriptions without links, copyright marks or placeholder text', () => {
     for (const a of ARTWORKS) {

@@ -5,6 +5,9 @@ import type { Artwork } from '../types';
 import { isArtworkLocked } from '../../../premium/entitlement';
 
 export { ARTWORKS_VERSION } from './artworks';
+
+/** The short licence name shown next to the museum: CC0 for the open-access museums, the file's own wording ("Public domain") otherwise. */
+export const licenseLabel = (a: Pick<Artwork, 'license'>): string => (/CC0/.test(a.license) ? 'CC0' : a.license);
 /** Colab picks that do not belong in the game (an imitation of Van Gogh): hidden here so a rerun of the notebook cannot bring them back. */
 const EXCLUDED_IDS = new Set(['aic-27952']);
 
