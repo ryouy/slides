@@ -185,14 +185,11 @@ struct ArtGameView: View {
             }
         }
     }
-    /// The reference picture: an eye with the word "お手本" / "Preview" in a small outlined pill (an icon alone was not found). Until it has been opened once it pulses softly.
+    /// The reference picture: the word "お手本" / "Preview" in a small outlined pill (the ⓘ icon alone was not found). Until it has been opened once it pulses softly.
     private var previewButton: some View {
         Button { Haptics.tap(); previewSeen = true; showPreview = true } label: {
-            HStack(spacing: 4) {
-                Image(systemName: "eye").font(.system(size: 15, weight: .regular))
-                Text(app.t("art.preview")).font(Web.font(13, .medium, relativeTo: .footnote)).lineLimit(1).minimumScaleFactor(0.8)
-            }
-            .foregroundStyle(Web.fg).padding(.horizontal, 8).frame(height: 32)
+            Text(app.t("art.preview")).font(Web.font(13, .medium, relativeTo: .footnote)).lineLimit(1).minimumScaleFactor(0.8)
+            .foregroundStyle(Web.fg).padding(.horizontal, 12).frame(height: 32)
             .overlay(Capsule().strokeBorder(Web.fg.opacity(previewSeen ? 0.45 : 0.9), lineWidth: previewSeen ? 1 : 1.5))
             .scaleEffect(!previewSeen && pulse && !reduceMotion ? 1.07 : 1)
             .frame(minHeight: 44).contentShape(Rectangle())
