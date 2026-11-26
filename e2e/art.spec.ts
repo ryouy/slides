@@ -900,7 +900,7 @@ test('Numbers: when ON the button is filled, so it is clearly different from the
   void info;
 });
 
-test('daily on a phone: three icon buttons in the header (Information, Shuffle, Numbers)', async ({ page }, info) => {
+test('daily on a phone: the Preview word and icon buttons in the header (Shuffle, Numbers)', async ({ page }, info) => {
   test.skip(info.project.name !== 'mobile', 'touch layouts only');
   await page.goto('/art-slide/daily');
   await expect(page.locator('.aboard')).toBeVisible();
@@ -910,7 +910,7 @@ test('daily on a phone: three icon buttons in the header (Information, Shuffle, 
   expect(nm.height).toBeGreaterThanOrEqual(44);
   expect(Math.abs(pv.y - nm.y)).toBeLessThan(2);
   expect(pv.width).toBeGreaterThanOrEqual(40);
-  await expect(page.getByTestId('preview').locator('.art-action-label')).toBeHidden();
+  await expect(page.getByTestId('preview').locator('.art-action-label')).toBeVisible(); // the word "お手本" / "Preview" stays: an icon alone was not found
   const sh = (await page.getByTestId('shuffle').boundingBox())!;
   expect(sh.height).toBeGreaterThanOrEqual(44);
   expect(sh.x - (pv.x + pv.width)).toBeGreaterThanOrEqual(10); // Information is kept apart from Shuffle here too
