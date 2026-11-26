@@ -16835,5 +16835,34 @@ export const NEW_ARTWORKS: Artwork[] = [
     "descriptionLicense": "CC BY 4.0",
     "descriptionLicenseUrl": "https://creativecommons.org/licenses/by/4.0/",
     "descriptionModifications": "Museum HTML cleaned and adapted to English and Japanese; flexible length and facts-only fallback when required."
+  },
+  {
+    "id": "wd-q3794124",
+    "title": "The artist's garden at Giverny",
+    "artist": "Claude Monet",
+    "artistSort": "claude monet",
+    "year": "1900",
+    "yearStart": 1900,
+    "yearEnd": 1900,
+    "era": "1900s",
+    "theme": "Landscape",
+    "medium": "Painting",
+    "imageUrl": "/artworks/wd-q3794124.webp",
+    "thumbnailUrl": "/artworks/wd-q3794124-thumb.webp",
+    "width": 977,
+    "height": 871,
+    "museum": "Wikimedia Commons",
+    "sourceUrl": "https://www.wikidata.org/wiki/Q3794124",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Licensing",
+    "licenseBasis": "Wikimedia Commons file-level Public Domain metadata checked 2026-11-23",
+    "sourceImageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b1/Monet_-_Monets_Garten_in_Giverny.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+    "verifiedAt": "2026-11-23",
+    "description": "The artist's garden at Giverny is a painting by Claude Monet, dated 1900. The artwork is documented in Wikidata and Wikimedia Commons.",
+    "descriptionTranslations": {
+      "ja": "「The artist's garden at Giverny」はClaude Monetが1900年に制作した絵画です。作品情報はWikidata、画像はWikimedia Commonsの公開資料に基づきます。"
+    },
+    "descriptionVersion": "famous-flex-en-ja-v1",
+    "descriptionKind": "metadata_summary"
   }
 ];

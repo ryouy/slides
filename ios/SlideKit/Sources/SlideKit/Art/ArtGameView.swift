@@ -316,7 +316,7 @@ struct ArtDetailsView: View {
                 Text(a.description(in: app.lang)).font(Web.font(15)).lineSpacing(4).foregroundStyle(Web.fg)
                 HStack(spacing: 4) {
                     Text(a.museum); Text("·")
-                    if let u = URL(string: a.licenseUrl) { Link("CC0", destination: u) }; Text("·")
+                    if let u = URL(string: a.licenseUrl) { Link(a.license.contains("CC0") ? "CC0" : a.license, destination: u) }; Text("·")
                     if let u = URL(string: a.sourceUrl) { Link(app.t("art.source"), destination: u) }
                 }.font(Web.font(12)).foregroundStyle(Web.muted)
                 if let l = a.descriptionLicense ?? (a.descriptionLicenseUrl != nil ? "CC BY 4.0" : nil) {

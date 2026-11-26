@@ -1,3 +1,4 @@
+import { licenseLabel } from '../data';
 import { BackButton, StarIcon } from '../../../components/Icons';
 import { useFavorites, useToggleFavorite } from '../favorites';
 import { isCustomArtwork, isLevelLocked, useEntitlement } from '../../../premium/entitlement';
@@ -329,7 +330,7 @@ export function ArtGameView(p: Props) {
             onClick={() => setDescriptionLangChoice('en')}>En</button>
         </div>
         <p className="ap-credit">
-          {artwork.museum} · <a href={artwork.licenseUrl} target="_blank" rel="noopener noreferrer">CC0</a> · <a href={artwork.sourceUrl} target="_blank" rel="noopener noreferrer">{t('art.source')}</a>
+          {artwork.museum} · <a href={artwork.licenseUrl} target="_blank" rel="noopener noreferrer">{licenseLabel(artwork)}</a> · <a href={artwork.sourceUrl} target="_blank" rel="noopener noreferrer">{t('art.source')}</a>
         </p>
           </>
         )}

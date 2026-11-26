@@ -1,3 +1,4 @@
+import { licenseLabel } from '../data';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import type { Artwork } from '../types';
@@ -108,7 +109,7 @@ export function ArtPreview({
         </div>
         <figcaption>
           <span className="pv-title">{artwork.title}{!plain && <> <i>{artwork.artist}, {artwork.year}</i></>}</span>
-          {!plain && <span className="pv-credit">{artwork.museum} · CC0</span>}
+          {!plain && <span className="pv-credit">{artwork.museum} · {licenseLabel(artwork)}</span>}
         </figcaption>
         {!plain && (
         <div className="preview-description" data-testid="preview-description">
@@ -128,7 +129,7 @@ export function ArtPreview({
               onClick={() => onDescriptionLanguageChange('en')}>En</button>
           </div>
           <p className="ap-credit">
-            {artwork.museum} · <a href={artwork.licenseUrl} target="_blank" rel="noopener noreferrer">CC0</a> ·{' '}
+            {artwork.museum} · <a href={artwork.licenseUrl} target="_blank" rel="noopener noreferrer">{licenseLabel(artwork)}</a> ·{' '}
             <a href={artwork.sourceUrl} target="_blank" rel="noopener noreferrer">{sourceLabel}</a>
           </p>
         </div>
